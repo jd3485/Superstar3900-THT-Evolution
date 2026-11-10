@@ -1,0 +1,58 @@
+name: V1.3 genuine KiCad9 PLL RX hierarchy and full native pin-net equivalence
+on:
+  push:
+    branches: [main, "feature/v1.3-kicad-native-hierarchy-pll-rx"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  hierarchy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad 9
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Deterministically regenerate all three native sheets
+        run: |
+          cp -a 04_KiCad/V1.3 "$RUNNER_TEMP/old-v13"
+          node 04_KiCad/V1.3/genera_gerarchia_rx_v13.js
+          for f in PLL_RX_HIERARCHICAL_MASTER_V1.3.kicad_sch PLL_CORE_DIGITAL_V1.3.kicad_sch PD_FILTER_DRIVER_V1.3.kicad_sch sym-lib-table; do
+            cmp "$RUNNER_TEMP/old-v13/$f" "04_KiCad/V1.3/$f"
+          done
+      - name: Register original THT KiCad symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V1.3").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Real KiCad9 ERC of root and BOTH child sheets
+        run: |
+          mkdir -p 03_Verifiche/V1.3/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.3/kicad_results/erc.json 04_KiCad/V1.3/PLL_RX_HIERARCHICAL_MASTER_V1.3.kicad_sch
+      - name: Export V1.2 and V1.3 netlists; compare ALL component pin connectivity
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.3/kicad_results/flat_v12.net 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.3/kicad_results/hier_v13.net 04_KiCad/V1.3/PLL_RX_HIERARCHICAL_MASTER_V1.3.kicad_sch
+          python3 -B 03_Verifiche/V1.3/verify_hierarchy_partition_v13.py 03_Verifiche/V1.3/kicad_results/flat_v12.net 03_Verifiche/V1.3/kicad_results/hier_v13.net
+      - name: KiCad SVG all hierarchical pages
+        run: |
+          mkdir -p 03_Verifiche/V1.3/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.3/kicad_results/svg/ 04_KiCad/V1.3/PLL_RX_HIERARCHICAL_MASTER_V1.3.kicad_sch
+          test "$(find 03_Verifiche/V1.3/kicad_results/svg -name '*.svg' | wc -l)" -ge 3
+      - name: Preserve proof on failure or success
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v13-kicad9-THT-hierarchy-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.3/kicad_results/
+          if-no-files-found: warn
