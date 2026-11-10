@@ -1,3 +1,9 @@
+# Nota cumulativa V0.2
+
+La V0.2 **non rigenera ZIP** né sostituisce la V0.1: il commit su `main` conserva il progetto completo e i file invariati. Per ricostruire la V0.2 usare lo SHA del commit; `MANIFEST_SHA256_V0.1.csv` riguarda esclusivamente la V0.1 e non va applicato al `main` aggiornato. Un tag v0.2 non è dichiarato finché non creato e verificato. A ogni futura revisione aggiungere/modificare soltanto i percorsi necessari.
+
+---
+
 # GitHub — pubblicazione e gestione cumulativa V0.1
 
 **Repository privata:** `jd3485/Superstar3900-THT-Evolution`  

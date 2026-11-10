@@ -1,0 +1,7 @@
+ref,sottosistema,mpn,produttore,package_tht,stato,fonte,note
+REF-PLL-A,PLL tradizionale candidato A,MC145151P2,Motorola/Freescale legacy; sourcing Lansdale da validare,PDIP28,NON APPROVATO - OBSOLESCENZA,https://www.nxp.com/products/MC145151_2,T/R alto; fIN dopo /2; sourcing autentico essenziale
+REF-DIV2,Divisore LO candidati A/B,SN74AC74N,Texas Instruments,PDIP14,CANDIDATO DA VERIFICARE,https://www.ti.com/product/SN74AC74/part-details/SN74AC74N,Clock LO 36.31..39 MHz; livelli RF da verificare
+REF-PLL-B,Comparatori fase candidato B,CD74HC4046AE,Texas Instruments,PDIP16,CANDIDATO DA VERIFICARE,https://www.ti.com/product/CD74HC4046A/part-details/CD74HC4046AE,VCO interno NON valido a 39 MHz; usare VCO esterno
+REF-N-B,Contatore candidato B,TC74AC161P,Toshiba,DIP16,CANDIDATO DA VERIFICARE,https://toshiba.semicon-storage.com/us/semiconductor/product/general-purpose-logic-ics/detail.TC74AC161P.html,Cascata N e timing non progettati
+REF-XTAL,Riferimento,TBD,TBD,Quarzo THT,NON SELEZIONATO,,10.240 MHz; tolleranza/carico da definire
+REF-VCO,VCO RX,TBD,TBD,Discreti THT e bobina,NON SELEZIONATO,,"36.310..39.000 MHz, filtro loop, rumore da studiare"

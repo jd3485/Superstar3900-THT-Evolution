@@ -1,3 +1,13 @@
+# STATO ATTUALE — V0.2 integrata in main (10 novembre 2026)
+
+**270 posizioni RX documentate**: 6 bande A–F con 30 ALFA, CH9 D/9 27,065 MHz; tabella verificata nel percorso `02_Piano_Frequenze/V0.2/`. Proposta di PLL classico THT: IF1=10,695 MHz candidata, LO1 high-side 36,310–39,000 MHz, quarzo 10,240 MHz /2048 = 5 kHz, divisore /2 e N integer 3631..3900. Due architetture alternative in studio; nessun circuito approvato, MC145151P2 legacy non prodotto da NXP.
+
+**V0.2: 24 test aritmetici/statici PASS; V0.1: 12 test regressivi PASS**, non sono simulazioni elettriche. Nessun KiCad/ERC/DRC, SPICE o prova hardware. **NO FAB / NO TX.**
+
+**Prossima V0.3:** studio circuitale del PLL con componenti THT autentici, verifica dei pin e del timing, progettazione di VCO e alimentazioni; prima leggere l'ultimo README, handoff e rapporto tecnico.
+
+---
+
 # Superstar 3900 THT Evolution
 
 **Revisione iniziale V0.1 — 10 novembre 2026.** Progetto **nuovo e indipendente** di ricetrasmettitore CB prevalentemente analogico, ispirato all'esperienza d'uso del Superstar 3900, con **soli componenti elettronici THT sulle schede** e PCB destinati alla fabbricazione presso PCBWay, **assemblati e saldati internamente**.

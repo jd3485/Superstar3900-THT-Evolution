@@ -1,0 +1,19 @@
+name: THT radio - V0.1 and V0.2 mathematical checks (NO FAB NO TX)
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  static-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Baseline V0.1 structural tests
+        run: python3 -B -m unittest discover -s 03_Verifiche/V0.1 -p 'test_*.py' -v
+      - name: V0.2 channel plan and candidate PLL arithmetic tests
+        run: python3 -B -m unittest discover -s 03_Verifiche/V0.2 -p 'test_*.py' -v
