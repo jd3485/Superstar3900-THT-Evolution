@@ -74,7 +74,7 @@ parts=[
 conn=[
  ('J901','PDout + GND','PLL_PDOUT_3STATE','GND',55.88,134.62),
  ('J902','20V + GND','VANA20_FILT','GND',95.25,134.62),
- ('J903','VTUNE + GND','VTUNE_RAIL','GND',155.88,134.62),
+ ('J903','VTUNE + GND','VTUNE_RAIL','GND',154.94,134.62),
 ]
 libs=[
  lib_symbol('LM358N_PDIP8','U','LM358N','Package_DIP:DIP-8_W7.62mm',[
@@ -122,10 +122,10 @@ elements.append('(embedded_fonts no)')
 # Include project-local custom symbol library, not merely cached lib symbols.
 LOCAL_LIB=OUT.parent/'THT_V09.kicad_sym'
 LOCAL_TABLE=OUT.parent/'sym-lib-table'
-LOCAL_LIB.write_text('(kicad_symbol_lib (version 20250114) (generator "tht_v09_generator")\\n'+
-  '\\n'.join(x.replace('(symbol "THT_V09:', '(symbol "') for x in libs)+'\\n)\\n',encoding='utf-8')
-LOCAL_TABLE.write_text('(sym_lib_table\\n'+
-  ' (lib (name "THT_V09") (type "KiCad") (uri "${KIPRJMOD}/THT_V09.kicad_sym") (options "") (descr "THT V0.9 project-local custom symbols"))\\n)\\n',encoding='utf-8')
+LOCAL_LIB.write_text('(kicad_symbol_lib (version 20250114) (generator "tht_v09_generator")\n'+
+  '\n'.join(x.replace('(symbol "THT_V09:', '(symbol "') for x in libs)+'\n)\n',encoding='utf-8')
+LOCAL_TABLE.write_text('(sym_lib_table\n'+
+  ' (lib (name "THT_V09") (type "KiCad") (uri "${KIPRJMOD}/THT_V09.kicad_sym") (options "") (descr "THT V0.9 project-local custom symbols"))\n)\n',encoding='utf-8')
 elements.append(')')
 src='\n'.join(elements)+'\n'
 OUT.parent.mkdir(parents=True,exist_ok=True)
