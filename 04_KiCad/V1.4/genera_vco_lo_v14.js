@@ -134,6 +134,10 @@ function build(lib10,root13,dig13,ana13){
  wire([[391.16,129.54],[402.59,129.54]]),wire([[402.59,129.54],[402.59,27.94]]),
  wire([[402.59,27.94],[30.48,27.94]]),wire([[30.48,27.94],[30.48,109.22]]),wire([[30.48,109.22],[43.18,109.22]]),
  `(text "V1.4 FOUR SHEETS: candidate VCO B + provisional AC14 conditioner connected to U402 clock.\\nRF performance, +5V supplies, L501 footprint, phase margin and hardware unverified. NO FAB / NO TX." (at 50.8 195.58 0) (effects (font (size 1.27 1.27))) (uuid "${uid()}"))`);
+ const _wireIdx=formsOut.findIndex(s=>s.startsWith('(wire (pts (xy 129.54 87.63) (xy 177.8 87.63))'));
+ if(_wireIdx<0)throw Error("Cannot split legacy GND wire at branch junction");
+ formsOut[_wireIdx]=formsOut[_wireIdx].replace('(xy 177.8 87.63)','(xy 154.94 87.63)');
+ formsOut.push('(wire (pts (xy 154.94 87.63) (xy 177.8 87.63)) (stroke (width 0) (type default)) (uuid "7b14bcd1-faae-4e37-bf14-000000009999"))');
  const master="(kicad_sch\n"+formsOut.join("\n")+"\n)\n";
  const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT original analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT original PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/THT_V14.kicad_sym") (options "") (descr "THT VCO candidate BB204G + AC14 pin verified"))\n)\n';
  return {master,dig,ana,vco,lib14,table,count:parts.length,nets:[...new Set(parts.flatMap(p=>p[3].map(n=>n[1])))].length};

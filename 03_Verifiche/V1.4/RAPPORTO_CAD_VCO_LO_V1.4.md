@@ -23,3 +23,6 @@ L501 ancora SENZA MPN/footprint certificato, BB204G legacy sourcing/lead pitch/s
 ## Validazione CAD
 `.github/workflows/cad_native_v14.yml` verifica rigenerazione deterministica, export simboli THT, ERC dei quattro fogli, netlist native old/new con conservazione di TUTTI i gruppi pin-net legacy e 15 gruppi candidati nuovi (con distinzione necessaria delle alimentazioni), SVG di 4 pagine e artefatti.
 **In attesa del risultato runner prima di dichiarare il PASS.**
+
+## Errore ERC V1.4 intercettato e corretto
+Primo run [42891325528](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42891325528) = **FAIL CAD**: due violazioni KiCad9, `pin_not_connected` sul pin GND del foglio filtro e `power_pin_not_driven` U803 pin4. Il problema è la linea GND legacy non divisa nel punto di diramazione x154,94 mm / y87,63 mm. Aggiornati sia il master sia il generatore riproducibile: spezzata fisicamente la linea esistente in due segmenti, tenendo il junction e il nuovo ramo verso VCO. **ERC da rieseguire prima di dichiarare PASS**.
