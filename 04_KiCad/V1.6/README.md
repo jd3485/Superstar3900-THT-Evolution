@@ -1,0 +1,4 @@
+# V1.6 — Cinque pagine KiCad9: PLL RX + VCO + Alimentatore THT 5 V realmente collegato
+Il root `PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch` contiene quattro figli. `POWER5_DISTRIBUTION_V1.6.kicad_sch` è ora un sottoschema **fisicamente connesso alle rail** `+5V_PLL`, `VCC_VCO5`, `VCC_BUF5` e GND della radio RX PLL. I componenti V1.5 U601, D601, R611/R612/R613 e condensatori sono **riutilizzati senza mutarli**. Generator deterministico: `node 04_KiCad/V1.6/genera_integrated_power_v16.js`; solo sorgenti originali V1.4/V1.5.
+
+**ATTENZIONE:** questo master è solo parziale, non la radio. `+13V8_PROTECTED` resta ingresso presunto NON protetto nello schema, le uscite 5V sono non qualificate per termica e carichi. Nessun 20 V VTUNE, powergood, protezione da inversione/TVS o corrente di corto validata. VCO e PLL non RF qualificati. Niente PCB / DRC. **NO FAB / NO TX**.
