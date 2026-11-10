@@ -17,5 +17,8 @@ Data 10 novembre 2026. Radio solo THT, senza modificare la SMD. Questa è una **
 
 ## Gate
 - GitHub Actions `cad_native_v15.yml`: rigenerazione bit-per-bit, ERC KiCad 9 nativo, export netlist con sei reti distinte e pin corretti, export SVG, script budget termico.
-- Evidenza PENDING sino a CI. L'ERC non prova la stabilità del 7805, ripple/PSRR, temperatura, capacità di avviamento di VCO o le emissioni.
+- **Evidenza verificata:** [GitHub Actions run 42909924401](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42909924401) SUCCESS. **ERC 0 violazioni** (nessun waiver), netlist nativa **6 reti esatte** e pin-to-net di U601, D601, rami e connettori PASS, esportazione SVG e simboli PASS, generazione deterministica PASS. Budget termico parametrico generato: **12 scenari**, **4 segnalazioni di rischio** con ipotesi esplicite. Questo NON è collaudo termico/RF, non qualifica correnti/carichi o ingressi. L'ERC non prova la stabilità del 7805, ripple/PSRR, temperatura, capacità di avviamento di VCO o le emissioni.
 - **NO FAB / NO TX**. Prima di portare questa sezione nel master servono load budget reale, valore meccanico di C e R, verifica scelta di protezioni, rielaborazione carico e KiCad integrazione.
+
+## Esito finale di questa PR
+**CAD KiCad standalone 5 V = PASS; Integrazione nel master RX, powergood e protezioni = NOT_RUN; simulazione L7805 vendor e load-step hardware = NOT_RUN; KiCad PCB/DRC = NOT_RUN.** Il criterio di gate è fermo finché non vengono assegnati gli assorbimenti reali, i requisiti di ripple e i vincoli termici/meccanici. NO FAB / NO TX.

@@ -1,3 +1,9 @@
+# V1.5 CAD 5V THT — nuovo sottoblocco AUTONOMO verificato con KiCad 9, NON integrato nel master V1.4
+- `04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch` con U601 L7805CV TO-220, D601 anti-scarica, condensatori e tre rami RC per PLL/VCO/buffer.
+- [GitHub KiCad run 42909924401](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42909924401): **ERC 0 violazioni**, netlist **6/6 reti PASS**, rigenerazione deterministic, export simboli/SVG e screening termico.
+- Budget puramente analitico: 12 scenari VIN/carico, **4 segnalati termicamente a rischio** con ipotesi 50°C ambiente e RθJA 50°C/W. Né assorbimenti reali né dissipatore sono definiti. NON è una qualifica termica o RF.
+- La protezione 13,8 V a monte NON è progettata e la sezione 20 V VTUNE NON è integrata. File V1.4 preservati. **NO FAB / NO TX**.
+
 # V1.4 — VCO Colpitts THT e SN74AC14N su 4 fogli KiCad9: ERC 0, 50 reti native, 33 reti legacy non alterate, collegamenti VTUNE→D501/2 e U520→U402/3 PASS ([KiCad 42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874)). ngspice con ingresso analogico caricato 4 punti eseguito ([42892783098](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892783098)); margine minimo inverso varicap 0,376 V: **VCO/buffer/PLL NON qualificati RF**, coil e PCB incompleti. NO FAB / NO TX.
 
 **PASS CAD V1.4, NON RF:** 37 nuove istanze THT fisiche/prova/flag; BB204G pin1+3 anodi e pin2 catodo; alimentazioni VCC_VCO5 e VCC_BUF5 provvisorie, separate. Quarto foglio nativo integrato in gerarchia, ma radio nel suo insieme ancora senza RX mixer/IF/audio/power/fanout e senza PCB. Coil L501 senza MPN e footprint; SMD separata e intatta. **NO FAB / NO TX**.
