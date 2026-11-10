@@ -1,3 +1,9 @@
+# Nota cumulativa V0.3
+
+**main è cumulativo**: V0.3 aggiunge i nuovi documenti e modifica solo stato, test/regressioni e handoff; i file V0.1/V0.2 rimangono recuperabili nello storico. Introdotta la baseline `CONFIGURAZIONE_V0.2.json` perché test storici V0.2 continuino a controllare quella revisione anche se `CONFIGURAZIONE_CORRENTE.json` avanza. Non richiedere ZIP ogni volta. I manifest SHA di V0.1 si riferiscono SOLO a V0.1. Nessun tag dichiarato senza verifica. **NO FAB / NO TX.**
+
+---
+
 # Nota cumulativa V0.2
 
 La V0.2 **non rigenera ZIP** né sostituisce la V0.1: il commit su `main` conserva il progetto completo e i file invariati. Per ricostruire la V0.2 usare lo SHA del commit; `MANIFEST_SHA256_V0.1.csv` riguarda esclusivamente la V0.1 e non va applicato al `main` aggiornato. Un tag v0.2 non è dichiarato finché non creato e verificato. A ogni futura revisione aggiungere/modificare soltanto i percorsi necessari.

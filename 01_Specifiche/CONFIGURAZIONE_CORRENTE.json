@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.2",
+  "revision": "V0.3",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -52,7 +52,16 @@
       3631,
       3900
     ],
-    "pll_component_selection_status": "TWO_CANDIDATE_ARCHITECTURES_NOT_APPROVED"
+    "pll_component_selection_status": "PINNET_CANDIDATE_ML145151YP_PURCHASE_BLOCKED",
+    "pll_primary_candidate": "ML145151YP",
+    "pll_div2_candidate": "TC74AC74P(F)",
+    "reference_crystal_candidate": "HC-49/U-S10240000ABJB",
+    "reference_crystal_suitable_for_final_ssb": false,
+    "pll_core_pinmap_count": 42,
+    "lo_buffer_status": "NOT_DESIGNED",
+    "vco_status": "IDEAL_LC_ONLY",
+    "loop_filter_status": "NOT_DESIGNED",
+    "pll_n_controller_status": "NOT_DESIGNED"
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -70,5 +79,5 @@
     "rf_lab": "NOT_RUN",
     "hardware_prototypes": 0
   },
-  "repository_publication": "MAIN_V0_2"
+  "repository_publication": "MAIN_V0_3"
 }

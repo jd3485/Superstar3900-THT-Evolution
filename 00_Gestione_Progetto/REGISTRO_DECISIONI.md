@@ -1,3 +1,15 @@
+# Decisioni nuove — V0.3
+
+- **DT-024 (CANDIDATA, non approvazione acquisto):** prima architettura circuitale U401 `ML145151YP` (Lansdale DIP28, equivalente legacy MC145151P2) con N0..N11 codificati e N12=N13=0. Lansdale offre documentazione e quote su richiesta, **stock e quantità non verificati**; alternativa B con CD74HC4046AE resta aperta.
+- **DT-025 (CANDIDATA):** U402 `TC74AC74P(F)` Toshiba DIP14 come prescaler /2; /Q→D, ingresso 36,31–39 MHz condizionato a CMOS; 5V rail separata, pin seconda sezione in stato definito.
+- **DT-026 (CANDIDATA per banco, NON adatta SSB finale):** quarzo THT Citizen HC-49/U-S10240000ABJB 10,240 MHz CL18pF; Pierce integrato, C403/C404 22pF candidate. Il budget iniziale ±30ppm più ±50ppm stabilità può corrispondere fino a 3,12kHz a LO=39MHz. Richiesta fonte più stabile/calibrata futura.
+- **DT-027 (DATASHEET):** U401 riferimento R=2048 con pin RA2/RA1/RA0 = 1/0/1, T/R pin21 HIGH tramite pullup, fIN=LO/2 18,155–19,5MHz; VDD=5V. Non confondere T/R del chip con una autorizzazione TX.
+- **DT-028 (SCELTA DI METODO):** pin-net U401/U402 e primi passivi documentati, **non sono uno schema KiCad, non superano ERC/DRC**, e il lock detect non è ancora un interblocco RX garantito.
+- **DT-029 (APERTA):** VCO, buffer clock, varicap THT, loop filter compensato, controller N parallelo, power-good e supervisor devono essere progettati con pin e MPN reali prima della validazione fisica. Nessun montaggio/ordine.
+- **DT-030 (REGRESSIONE):** rendere `CONFIGURAZIONE_V0.2.json` snapshot immutabile per i test V0.2, mantenendo `CONFIGURAZIONE_CORRENTE.json` aggiornata a V0.3; test V0.2 ora leggono snapshot storico per continuare a funzionare.
+
+---
+
 # Decisioni introdotte in V0.2 — 10 novembre 2026
 
 - **DT-017 (confermata come tabella RX):** 270 posizioni RX indipendentemente derivate dai dati Superstar 3900 (CBTricks), 30 ALFA, ordine tradizionale 23/24/25; priorità CH9 D/9 27,065 AM. Nessuna autorizzazione TX.

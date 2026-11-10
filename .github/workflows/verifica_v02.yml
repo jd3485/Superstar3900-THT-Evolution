@@ -1,4 +1,4 @@
-name: THT radio - V0.1 and V0.2 mathematical checks (NO FAB NO TX)
+name: THT radio - V0.1 V0.2 V0.3 software regressions (NO FAB NO TX)
 on:
   push:
     branches: [main]
@@ -17,3 +17,5 @@ jobs:
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.1 -p 'test_*.py' -v
       - name: V0.2 channel plan and candidate PLL arithmetic tests
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.2 -p 'test_*.py' -v
+      - name: V0.3 PLL pinout and candidate THT core static checks
+        run: python3 -B -m unittest discover -s 03_Verifiche/V0.3 -p 'test_*.py' -v

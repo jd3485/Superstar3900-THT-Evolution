@@ -1,0 +1,43 @@
+reference,mpn,pin,nome_datasheet,net,direzione,descrizione,fonte
+U401,ML145151YP,1,fin,PLL_FB_18M,INPUT,Da U402 pin 5 dopo divide by 2,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,2,VSS,GND,POWER,Massa digitale RF,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,3,VDD,+5V_PLL,POWER,Decoupling locale C401/C402,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,4,PDout,PLL_PD_RAW,OUTPUT,"Filtro di anello candidato, nessuna TX",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,5,RA0,+5V_PLL,INPUT,R=2048: RA0=1,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,6,RA1,GND,INPUT,R=2048: RA1=0,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,7,RA2,+5V_PLL,INPUT,R=2048: RA2=1,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,8,phiR,TP_PHI_R,OUTPUT,"Solo punto prova, alto impedance",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,9,phiV,TP_PHI_V,OUTPUT,"Solo punto prova, alto impedance",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,10,fV,TP_FV,OUTPUT,"Solo punto prova, alto impedance",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,11,N0,N_CODE_0,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,12,N1,N_CODE_1,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,13,N2,N_CODE_2,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,14,N3,N_CODE_3,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,15,N4,N_CODE_4,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,16,N5,N_CODE_5,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,17,N6,N_CODE_6,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,18,N7,N_CODE_7,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,19,N8,N_CODE_8,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,20,N9,N_CODE_9,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,21,T/R,TR_RX_BIAS,INPUT,"RX: alto, evita offset +856",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,22,N12,GND,INPUT,"N max 3900, bit12=0",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,23,N13,GND,INPUT,"N max 3900, bit13=0",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,24,N10,N_CODE_10,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,25,N11,N_CODE_11,INPUT,"Codice N 12 bit, ingresso parallelo da cablaggio provvisorio/controllo futuro",https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,26,OSCout,XTAL_DRIVE,OUTPUT,R401 0 ohm al cristallo serie,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,27,OSCin,XTAL_IN,INPUT,Cristallo a 10.240 MHz e C403,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U401,ML145151YP,28,LD,PLL_LD_OBSERVE,OUTPUT,Non e un consenso TX autonomo,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+U402,TC74AC74P,1,1CLR_N,PRESCALER_RESET_N,INPUT,Reset fisico LOW; non flottante,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,2,1D,DIV2_QBAR,INPUT,Retroazione FF Qbar,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,3,1CK,LO1_CMOS_BUFFERED,INPUT,NON collegare direttamente segnale RF analogico,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,4,1PR_N,+5V_PLL,INPUT,Preset disabilitato; HIGH,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,5,1Q,PLL_FB_18M,OUTPUT,FLO/2 verso U401 fin,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,6,1QBAR,DIV2_QBAR,OUTPUT,Verso D del FF1,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,7,GND,GND,POWER,Massa,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,8,2QBAR,NC,OUTPUT,Secondo FF inutilizzato,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,9,2Q,NC,OUTPUT,Secondo FF inutilizzato,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,10,2PR_N,+5V_PLL,INPUT,Inactive HIGH,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,11,2CK,GND,INPUT,Secondo FF non clockato,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,12,2D,GND,INPUT,Secondo FF a livello definito,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,13,2CLR_N,GND,INPUT,Secondo FF mantenuto in reset,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
+U402,TC74AC74P,14,VCC,+5V_PLL,POWER,5 V con C405 a 100 nF,https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P

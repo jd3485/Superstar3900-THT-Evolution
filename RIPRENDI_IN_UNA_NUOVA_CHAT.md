@@ -1,3 +1,19 @@
+# RIPRESA AGGIORNATA — V0.3 (10 novembre 2026)
+
+**Repository privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. **Fonte di verità:** HEAD `main`, non i tag precedenti. Aprire README, protocollo `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md`, questo file, stato, decisioni e ultimo rapporto tecnico. Controllare commit, PR, tag se presenti e CI.
+
+**V0.3 integra:**
+- Piano 270 RX/30 ALFA completo da V0.2, IF1=10,695 MHz candidato, LO=36,310–39,000 MHz, fPFD=5 kHz, prescaler /2 e 14 bit N=3631–3900.
+- **Primo nucleo pin-to-net**: U401 ML145151YP DIP28 (alternativa Lansdale al Motorola obsoleto), U402 TC74AC74P(F) DIP14, quarzo Citizen 10,240 MHz THT HC49 18pF candidato, condensatori 22pF e decoupling iniziale, predisposizione N bus e reset; 42 pin documentati.
+- **Problema approvvigionamento:** U401 solo da confermare via richiesta al costruttore, nessuna disponibilità in piccole quantità garantita. **Precisione SSB:** quarzo Citizen ±30ppm + stabilità ±50ppm, non approvato per uso SSB definitivo.
+- **No schema KiCad nativo/ ERC/DRC/SPICE/hardware**. Codice e tests Python sono solo verifiche aritmetiche/statiche. **NO FAB / NO TX**.
+
+**Leggere prima di continuare:** `01_Specifiche/V0.3/PLL_CORE_CIRCUITO_V0.3.md`, `04_KiCad/V0.3/README.md`, `03_Verifiche/V0.3/RAPPORTO_TECNICO_V0.3.md`, BOM V0.3, registro rischi e decisioni.
+
+**Prossima V0.4:** confermare forniture, specificare VCO analogico, interfaccia LO CMOS e filtro di anello compensato con dati Kvco; progettare selezione parallela N e reset/lock hardware, creare schemi KiCad nativi e svolgere verifiche vere. Solo THT sulle schede, accordatore manuale, PCBWay fabbrica schede nude, saldatura interna. Ogni revisione cambia solo file pertinenti e conserva versioni e storico. Se è presente un workflow CI controllarne l'esito relativo all'ultimo commit.
+
+---
+
 # ISTRUZIONI ATTUALI — V0.2 (10 novembre 2026)
 
 **Repo privata indipendente `jd3485/Superstar3900-THT-Evolution`, branch `main`.** All'inizio di ogni chat verificare HEAD, eventuali tag/PR/CI, poi README, questo file, protocollo, registro decisioni, stato e ultimo rapporto. Non usare la versione SMD come fonte né dipendere da memoria della conversazione.

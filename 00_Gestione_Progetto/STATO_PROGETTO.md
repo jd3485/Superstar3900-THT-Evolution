@@ -1,3 +1,25 @@
+# Stato corrente V0.3 — 10/11/2026
+
+| Area | Stato attuale |
+|---|---|
+| Piano frequenze | 270 posizioni RX, 30 ALFA, 25,615–28,305 MHz (V0.2) |
+| Sintesi numerica | 10,240 MHz / 2048 = 5 kHz, /2 VCO, N=3631..3900 |
+| U401 PLL | **ML145151YP Lansdale PDIP28**, candidato; pinout documentato, sourcing/quantità non confermati |
+| U402 /2 | **TC74AC74P(F) Toshiba DIP14**, pinout documentato e confronto limite clock dati produttore |
+| Riferimento X401 | Citizen 10,240 MHz HC-49/US, CL18pF, ±30ppm / stabilità ±50ppm, **solo candidato banco prova** |
+| Core analogico | Pierce e primi passivi; **VCO, driver 39MHz, filtro loop, codifica N e powergood ancora aperti** |
+| Schema CAD | Matrice pin-net 42/42, **non .kicad_sch nativo**, KiCad ERC/DRC NON ESEGUITI |
+| Analisi LC | Tank teorico L=220nH, Ceq 87,33..75,70pF per copertura LO, solo matematica |
+| Test | V0.3 32 test software predisposti; V0.2 24 e V0.1 12 regressioni, risultati CI da verificare |
+| PCB/prototipi | Nessun PCB, Gerber o hardware; PCBWay solo schede nude |
+| Sicurezza | **NO FAB / NO TX** |
+
+**Blocchi principali prima del PCB:** reperibilità U401 in quantità accessibili, eventuale seconda architettura non legacy, specifica riferimento SSB, selettore 270 posizioni, VCO/varicap THT, loop filter, reset/lock RX, alimentazione, schemi nativi e ERC/DRC.
+
+**Prossima V0.4:** sviluppare VCO + buffer/filtro + schema KiCad con verifica datasheet, senza dichiarare il circuito completo finché esistono reti aperte.
+
+---
+
 # Stato corrente — V0.2, 10 novembre 2026
 
 | Area | Stato |

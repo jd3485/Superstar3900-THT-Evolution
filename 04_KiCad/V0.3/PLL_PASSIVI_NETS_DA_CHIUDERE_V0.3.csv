@@ -1,0 +1,22 @@
+reference,tipo,pin,net,net_riferimento,nota,fonte
+X401,HC-49/U-S10240000ABJB,2,XTAL_IN,XTAL_LEFT,Quarzo 10.240 MHz 18pF +/-30ppm (candidato),https://www.digikey.com/en/products/detail/citizen-finedevice-co-ltd/HC-49-U-S10240000ABJB/284210
+X401,HC-49/U-S10240000ABJB,1,XTAL_LEFT,XTAL_IN,"Incapsulamento THT, nessuna polarita",https://www.digikey.com/en/products/detail/citizen-finedevice-co-ltd/HC-49-U-S10240000ABJB/284210
+R401,0R pad THT,1,XTAL_LEFT,XTAL_LEFT,R serie opzionale per calibrare drive; placeholder 0R,
+R401,0R pad THT,2,XTAL_DRIVE,XTAL_DRIVE,Seguire formule del costruttore per overdrive,
+C403,22pF C0G THT,1,XTAL_IN,XTAL_IN,C carico verso GND; valore candidato,
+C403,22pF C0G THT,2,GND,GND,,
+C404,22pF C0G THT,1,XTAL_LEFT,XTAL_LEFT,C carico verso GND; valore candidato,
+C404,22pF C0G THT,2,GND,GND,,
+R402,10k THT,1,+5V_PLL,+5V_PLL,Pullup esplicito T/R; ridondanza prudenziale,
+R402,10k THT,2,TR_RX_BIAS,TR_RX_BIAS,TR_RX_BIAS deve essere unito a U401 pin21 +5V,
+C401,100nF ceramic THT,1,+5V_PLL,+5V_PLL,Decoupling U401 vicino pin3,
+C401,100nF ceramic THT,2,GND,GND,,
+C402,10uF radial THT,1,+5V_PLL,+5V_PLL,"Bulk U401, polarizzato",
+C402,10uF radial THT,2,GND,GND,,
+C405,100nF ceramic THT,1,+5V_PLL,+5V_PLL,Decoupling U402 vicino pin14,
+C405,100nF ceramic THT,2,GND,GND,,
+R403,10k THT,1,+5V_PLL,+5V_PLL,"Pullup reset U402 FF1, solo modello bench",
+R403,10k THT,2,PRESCALER_RESET_N,PRESCALER_RESET_N,Reset powergood/esterno da integrare,
+C406,100nF THT,1,PRESCALER_RESET_N,PRESCALER_RESET_N,"RC startup candidato, NON brownout supervisor",
+C406,100nF THT,2,GND,GND,,
+J401,PinHeader_2x07_P2.54mm_Vertical THT,1,N_CODE_0,N_CODE_0,"Bus N0...N11 di prova/controller, GND e +5V",

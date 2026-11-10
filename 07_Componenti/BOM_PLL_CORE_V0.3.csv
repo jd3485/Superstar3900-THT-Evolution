@@ -1,0 +1,14 @@
+ref,qta,tipo,mpn_o_valore,produttore,package,stato,datasheet_o_fonte,nota
+U401,1,PLL programmabile,ML145151YP,Lansdale,DIP28,SCHEMA_CANDIDATO_QUOTE_REQUIRED,https://www.lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf,Sostituzione manufacturer legacy MC145151P2; acquisto non confermato
+U402,1,Dual flip-flop /2,TC74AC74P(F),Toshiba,DIP14,SCHEMA_CANDIDATO,https://toshiba.semicon-storage.com/eu/semiconductor/product/general-purpose-logic-ics/detail.TC74AC74P.html,39MHz sotto fMAX datasheet; buffering da fare
+X401,1,Quarzo fondamentale,HC-49/U-S10240000ABJB,Citizen,HC-49/US THT,SOLO_BENCH_PRECISIONE_SSB_INSUFFICIENTE,https://www.digikey.com/en/products/detail/citizen-finedevice-co-ltd/HC-49-U-S10240000ABJB/284210,10.240 MHz 18pF ±30ppm iniziale
+C403 C404,2,Condensatore carico quarzo,22pF C0G 5pct,TBD,Radiale THT,VALORE_PRELIMINARE,,Da tarare con Co e datasheet X401
+R401,1,Resistenza serie quarzo,0ohm oppure da tarare,TBD,Assiale THT,VALORE_PRELIMINARE,,Drive quarzo/ESR non verificati
+R402,1,Resistenza T/R pullup,10kohm 1pct,TBD,Assiale THT,VALORE_PRELIMINARE,,"Pin21 HIGH, RX senza offset"
+R403,1,Resistenza reset prescaler,10kohm 1pct,TBD,Assiale THT,SOLO_BENCH,,Non supervisor brownout
+C406,1,Condensatore reset prescaler,100nF 10pct,TBD,Radiale THT,SOLO_BENCH,,RC avvio da sostituire con supervisore
+C401 C405,2,Decoupling,100nF C0G/X7R,TBD,Radiale THT,SCHEMA_CANDIDATO,,Vicino ai pin VCC
+C402,1,Bulk local,10uF 16V,TBD,Radiale THT,SCHEMA_CANDIDATO,,Verificare ESR e ripple
+J401,1,Connettore N bus,2x7 2.54mm,TBD,Header THT,INTERFACCIA_DA_COMPLETARE,,"Reti N0..N11 e servizi, pinout header da definire"
+J402,1,Connettore LO clock,2pin 2.54mm,TBD,Header THT,INTERFACCIA_DA_COMPLETARE,,Clock CMOS proviene da futuro buffer
+J403,1,Connettore +5V,2pin 2.54mm,TBD,Header THT,INTERFACCIA_DA_COMPLETARE,,Alimentazione regolata esterna da progettare

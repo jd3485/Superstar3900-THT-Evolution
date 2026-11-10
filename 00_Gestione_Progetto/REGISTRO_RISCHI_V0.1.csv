@@ -7,3 +7,7 @@ RT-005,Tuner,"Tensioni RF, correnti, dissipazione, isolamento commutatore LC",AL
 RT-006,Meccanica,Ingombri THT e bobine/variabili su singola PCB,MEDIO,ALTA,Definire envelope e disposizione prima del PCB,OPEN
 RT-007,Supply,Parti legacy THT obsolete o contraffatte,ALTO,ALTA,"Preferire MPN disponibili, second source e verifica acquisti",OPEN
 RT-008,Test,Confondere PASS documentali con misure circuitali,ALTO,MEDIA,Gate con evidenze e categorie separate,OPEN
+RT-009,PLL,ML145151YP ordine minimo/prezzo/tempi non verificati,ALTO,ALTA,"Richiedere offerta reale; tenere alternativa 4046+DIP",OPEN
+RT-010,RIF,Precisione quarzo 30ppm+50ppm insufficiente SSB,ALTO,ALTA,"Definire riferimento tarabile/termocompensato realmente THT e misura deriva",OPEN
+RT-011,VCO,"Mancano varicap THT con datasheet e circuito VCO completo",ALTO,ALTA,"Verificare L/C parasitiche, buffer e Kvco a banco/simulazione",OPEN
+RT-012,PLL,Ingressi N e LD/reset non fail-closed con hardware finale,ALTO,ALTA,"Controllo N parallelo con mute RX fisico e supervisione alimentazione",OPEN

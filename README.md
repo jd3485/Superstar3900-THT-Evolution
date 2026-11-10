@@ -1,3 +1,13 @@
+# STATO ATTUALE — V0.3, 10 novembre 2026
+
+La V0.3 trasforma lo studio PLL in un **primo nucleo circuitale pin-to-net THT**, con U401 Lansdale ML145151YP DIP28 e U402 Toshiba TC74AC74P DIP14; 42/42 pin documentati, primi passivi e X401 Citizen 10,240 MHz HC49 THT. Componenti **candidati non acquistati**, ML145151YP da richiedere a quotazione, riferimento del quarzo non adeguato per SSB ad alta precisione senza ulteriore progettazione. **Non esiste ancora un .kicad_sch nativo, VCO, loop filter dimensionato, PCB o scheda operativa**. Il progetto rimane 100% THT, con TX disabilitata.
+
+**Nuovi elaborati:** `01_Specifiche/V0.3/PLL_CORE_CIRCUITO_V0.3.md`, `04_KiCad/V0.3/PLL_U401_U402_PINNET_V0.3.csv`, `07_Componenti/BOM_PLL_CORE_V0.3.csv`, `03_Verifiche/V0.3/RAPPORTO_TECNICO_V0.3.md`.
+
+**Prossima revisione V0.4:** chiudere sourcing del PLL, progettare VCO/buffer e filtro, controller dei 270 canali, iniziare lo schema KiCad nativo, verificare compatibilità; vietato ordinare PCB o abilitare TX finché non chiusi i gate.
+
+---
+
 # STATO ATTUALE — V0.2 integrata in main (10 novembre 2026)
 
 **270 posizioni RX documentate**: 6 bande A–F con 30 ALFA, CH9 D/9 27,065 MHz; tabella verificata nel percorso `02_Piano_Frequenze/V0.2/`. Proposta di PLL classico THT: IF1=10,695 MHz candidata, LO1 high-side 36,310–39,000 MHz, quarzo 10,240 MHz /2048 = 5 kHz, divisore /2 e N integer 3631..3900. Due architetture alternative in studio; nessun circuito approvato, MC145151P2 legacy non prodotto da NXP.
