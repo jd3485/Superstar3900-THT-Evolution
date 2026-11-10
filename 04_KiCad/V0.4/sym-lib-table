@@ -1,0 +1,2 @@
+(sym_lib_table
+(lib (name "THT_V04")(type "KiCad")(uri "${KIPRJMOD}/THT_V04.kicad_sym")(options "")(descr "Custom THT candidate symbols V0.4")))

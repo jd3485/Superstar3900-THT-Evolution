@@ -1,3 +1,23 @@
+# Stato progetto corrente — V0.4 (10 novembre 2026)
+
+| Modulo | Stato reale |
+|---|---|
+| Ricezione/piano | 270 posizioni RX matematicamente verificate V0.2; TX OFF |
+| PLL core | U401 ML145151YP candidato e U402 TC74AC74P(F) in DIP; fornitura U401 ancora non confermata |
+| Primo CAD nativo | `PLL_PRESCALER_RX_V0.4.kicad_sch` = soltanto U402 + 4 connettori, simboli locali, non ancora aperto in KiCad |
+| VCO analogico | Tank teorico BB204G TO-92 / L=220nH / Ceq fixed=57.5pF; tensioni nominali interpolate 4.87–15.97V, **NON un oscillatore completo** |
+| PLL loop | Tipo B candidato 2.2k + 10k + 100nF, polo 130.5 Hz e zero 159.2 Hz; **stabilità NON convalidata** |
+| Clock LO | Buffer/limitatore AC14 DIP solo candidato; PCB non cablata |
+| Controllo canali | PIC18F47Q43-I/P PDIP40 candidato; N bus e mute progettati solo come contratto logico, firmware assente |
+| Simulazioni circuitali/SPICE | **NON ESEGUITE** |
+| KiCad ERC/DRC | **NON ESEGUITI**; esistono solo controlli testuali automatici sul primo .kicad_sch |
+| Produzione e collaudi | 0 PCB, 0 prototipi, 0 collaudi; PCBWay fabbrica solo PCB nude quando saranno autorizzate |
+| TX / fabbricazione | **NO TX / NO FAB** |
+
+**Bloccanti:** fornitura U401/BB204G, VCO/buffer reali, filtri e margini, precisione riferimento SSB, MCU controllo/fail-closed, KiCad/Erc/DRC nativi e layout PCB. Prossima V0.5: completamento progressivo della catena PLL/VCO e integrazione CAD.
+
+---
+
 # Stato corrente V0.3 — 10/11/2026
 
 | Area | Stato attuale |

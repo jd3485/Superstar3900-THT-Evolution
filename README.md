@@ -1,3 +1,13 @@
+# STATO ATTUALE — V0.4, 10 novembre 2026
+
+**Nuovo:** studio analitico del VCO THT (varactor BB204G storico TO-92, L220nH e capacità totale teorica) e primo **sottoschema nativo `.kicad_sch`** del divisore RX U402 TC74AC74P(F) DIP14, completo di simboli locali e quattro connettori THT. **Non è ancora un circuito PLL completo né un file verificato dall'app KiCad:** ERC/DRC/SPICE/hardware NON ESEGUITI. Scelta controller semplice PIC18F47Q43-I/P PDIP40 come candidato, senza firmware/pinout finali.
+
+**V0.4:** `01_Specifiche/V0.4/VCO_PLL_CONTROLLO_V0.4.md`, `04_KiCad/V0.4/PLL_PRESCALER_RX_V0.4.kicad_sch`, `02_Piano_Frequenze/V0.4/vco_tuning_v04.py`, `03_Verifiche/V0.4/RAPPORTO_TECNICO_V0.4.md`. Le suite V0.1/0.2/0.3 restano cumulative e si aggiunge la suite V0.4.
+
+**Prossima V0.5:** circuito oscillatore transistor + varicap pin-numbered, buffer LO, filtro loop basato su Kvco/Kphi e controller/pinout; validazione KiCad nativa quando eseguibile. **NO FAB / NO TX**, PCBWay solo PCB nude e montaggio interno.
+
+---
+
 # STATO ATTUALE — V0.3, 10 novembre 2026
 
 La V0.3 trasforma lo studio PLL in un **primo nucleo circuitale pin-to-net THT**, con U401 Lansdale ML145151YP DIP28 e U402 Toshiba TC74AC74P DIP14; 42/42 pin documentati, primi passivi e X401 Citizen 10,240 MHz HC49 THT. Componenti **candidati non acquistati**, ML145151YP da richiedere a quotazione, riferimento del quarzo non adeguato per SSB ad alta precisione senza ulteriore progettazione. **Non esiste ancora un .kicad_sch nativo, VCO, loop filter dimensionato, PCB o scheda operativa**. Il progetto rimane 100% THT, con TX disabilitata.

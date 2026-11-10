@@ -9,7 +9,7 @@ sys.path.insert(0,str(ROOT/'02_Piano_Frequenze/V0.2'))
 from frequency_plan_v02 import all_rows,rx_plan
 PINS=ROOT/'04_KiCad/V0.3/PLL_U401_U402_PINNET_V0.3.csv'
 BOM=ROOT/'07_Componenti/BOM_PLL_CORE_V0.3.csv'
-CURRENT=ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json'
+CURRENT=ROOT/'01_Specifiche/CONFIGURAZIONE_V0.3.json'
 class PLLV03(unittest.TestCase):
  @classmethod
  def setUpClass(cls):

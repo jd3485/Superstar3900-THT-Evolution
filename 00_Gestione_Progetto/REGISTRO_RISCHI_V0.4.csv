@@ -1,0 +1,7 @@
+id,area,rischio,impatto,probabilita_preliminare,mitigazione,stato
+RT-013,VCO,BB204G THT solo stock storico NOS e autenticita non documentata,ALTO,ALTA,"Qualifica sourcing o scelta varactor THT alternativo",OPEN
+RT-014,VCO,Modello C(V) a 1MHz non dimostra accordo reale a 37MHz,ALTO,ALTA,"SPICE con modello e misure; sweep Vtune e temperatura",OPEN
+RT-015,LO,Assenza buffer/limitatore 39MHz e livelli compatibili CMOS,ALTO,ALTA,"Schema transistor/AC14 con timing e forma d'onda",OPEN
+RT-016,PLL,Filtro R-C studio senza Kvco/Kphi/margine fase e lock time,ALTO,ALTA,"Calcolo loop e modello dinamico prima di prototipazione",OPEN
+RT-017,CAD,File kicad_sch generato ma apertura KiCad/Erc non eseguiti,ALTO,ALTA,"Aprire in KiCad e correggere, eseguire ERC native",OPEN
+RT-018,CTRL,Controller PIC THT senza pinout firmware e hardwired interlocks,ALTO,ALTA,"Pinmap schema firmware, mute fail closed indipendente",OPEN

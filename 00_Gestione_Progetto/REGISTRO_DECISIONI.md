@@ -1,3 +1,15 @@
+# Decisioni V0.4 — 10 novembre 2026
+
+- **DT-031 (CANDIDATO VCO, non circuito approvato):** D501 `BB204G` Philips varactor doppio TO-92 storico come possibile tuning; L_eff=220nH e C_fixed_eff=57.5pF; una sola giunzione equivalente nel modello, non definito utilizzo terminale del secondo diodo. Fattibilità solo analitica; stock storico non garantito.
+- **DT-032 (FILTRO LOOP CANDIDATO):** per U401 PDout scegliere la topologia passiva tipo B del manuale Lansdale; valori preliminari R1=2.2kΩ, R2=10kΩ, C=100nF, f_polo≈130.5Hz, f_zero≈159.2Hz. Non dichiarare loop stabile/compensato prima di Kvco e fase effettivi.
+- **DT-033 (LO BUFFER CANDIDATO):** `SN74AC14N` TI PDIP14 Schmitt ad alta velocità candidato per produrre clock CMOS dal VCO solo dopo buffer/condizionamento RF reale. Non collegare VCO sine direttamente a pin clock.
+- **DT-034 (CONTROLLO CANDIDATO):** `PIC18F47Q43-I/P` Microchip PDIP40 per controllo semplice di canali, ALFA, CH9 e N[11:0] parallelo; nessun DSP avanzato o funzioni escluse. Pinout MCU e firmware futuri; TX inibita fisicamente.
+- **DT-035 (CAD PARZIALE):** primo .kicad_sch nativo solo U402 prescaler e connettori, con simboli locali. **Non è schema della radio né KiCad ERC/DRC eseguito**; GUI e tool CAD non disponibili in questa revisione.
+- **DT-036 (REGRESSIONI):** la configurazione V0.3 è congelata in `CONFIGURAZIONE_V0.3.json` e i test storici V0.3 leggono lo snapshot; `CONFIGURAZIONE_CORRENTE.json` procede a V0.4.
+- **DT-037 (VINCOLI RIBADITI):** 100% THT, tuner manuale, PCBWay solo PCB nude, assemblaggio interno. Non produrre né trasmettere RF: **NO FAB / NO TX**.
+
+---
+
 # Decisioni nuove — V0.3
 
 - **DT-024 (CANDIDATA, non approvazione acquisto):** prima architettura circuitale U401 `ML145151YP` (Lansdale DIP28, equivalente legacy MC145151P2) con N0..N11 codificati e N12=N13=0. Lansdale offre documentazione e quote su richiesta, **stock e quantità non verificati**; alternativa B con CD74HC4046AE resta aperta.

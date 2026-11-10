@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'02_Piano_Frequenze/V0.2'))
 from frequency_plan_v02 import (CHANNEL_D_KHZ,BAND_OFFSET_KHZ,ALPHAS,frequency_hz,rx_plan,all_rows,apply_ch9_priority,FPFD_HZ,R_REF,FREF_HZ,PRESCALER)
 CSV=ROOT/'02_Piano_Frequenze/V0.2/PIANO_RX_PLL_270_V0.2.csv'
-CFG=json.loads((ROOT/'01_Specifiche/CONFIGURAZIONE_V0.2.json').read_text(encoding='utf-8'))
+CFG=json.loads((ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json').read_text(encoding='utf-8'))
 class V02(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

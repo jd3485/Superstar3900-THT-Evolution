@@ -1,3 +1,14 @@
+# V0.4 — 10 novembre 2026 — VCO analitico e primo CAD digitale THT
+
+- Primo **sottoschema KiCad S-expression `.kicad_sch`** di U402 prescaler con simboli locali e quattro header THT. File generato e controllato staticamente; **non aperto in KiCad e non validato con ERC**.
+- BB204G Philips TO-92 trovato in documentazione originale, circuito VCO studiato con modello LC e varactor equivalente: C_var teoriche 29.83..18.20 pF, tensioni interpolate 4.87..15.97 V. Non simulazione RF.
+- Filtro di anello passivo tipo B candidato 2.2kΩ / 10kΩ / 100nF; polo e zero calcolati, nessun margine fase certificato.
+- Controller `PIC18F47Q43-I/P` PDIP40 candidato per 270 posizioni, CH9/ALFA/mute, senza DSP o funzioni escluse.
+- Aggiunti test software V0.4, modello Python, rapporto, BOM e rischi. Le versioni storiche continuano a leggere snapshot di configurazione coerenti.
+- VCO reale, filtri/buffer LO, ERC/DRC, SPICE, meccanica, hardware, TX e PCBWay ancora non eseguiti.
+
+---
+
 # V0.3 — 10 novembre 2026 — Core PLL THT pin-to-net
 
 - Sviluppo vero del nucleo PLL candidato: ML145151YP DIP28 e TC74AC74P(F) DIP14, **tutti i 42 pin mappati**, reti logiche, sequenza RX e 270 parole N.

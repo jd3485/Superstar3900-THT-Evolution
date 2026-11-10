@@ -1,0 +1,10 @@
+ref,mpn,produttore,contenitore_tht,stato_funzionale,fonte,note
+U601,PIC18F47Q43-I/P,Microchip,PDIP40,CONTROLLO N/CH9 E PANNELLO; candidato senza schema,https://www.microchip.com/en-us/product/pic18f47q43,QUANTITA 1; controller non DSP; pinout da assegnare
+U503,SN74AC14N,Texas Instruments,PDIP14,BUFFER/LIMITATORE CLOCK; candidato non cablato,https://www.ti.com/product/SN74AC14,QUANTITA 1; sorgente clock senza condizionamento attuale
+D501,BB204G,Philips (legacy),TO-92 variante THT,"VARICAP DOPPIO; candidato NOS, non ordinare",https://datasheet4u.com/pdf-down/B/B/2/BB204G_PhilipsSemiconductors.pdf,"QUANTITA 1; pin1 A1, pin2 K comune, pin3 A2"
+Q501,2N3904-AP,Micro Commercial Components,TO-92 THT,BJT OSCILLATORE; candidato non cablato,https://www.digikey.com/en/products/detail/micro-commercial-components-mcc/2N3904-AP/950731,QUANTITA 1; pinout package verifica obbligatoria
+Q502,2N3904-AP,Micro Commercial Components,TO-92 THT,BJT BUFFER; candidato non cablato,https://www.digikey.com/en/products/detail/micro-commercial-components-mcc/2N3904-AP/950731,QUANTITA 1; condizioni oscillazione e accoppiamento da progettare
+L501,220 nH effettivi (da selezionare),TBD,Induttore THT,MODELLO LC IDEALE,,QUANTITA 1; SRF/Q/temperatura non provati
+R501,2.2 kohm,TBD,Resistenza assiale THT,FILTRO LOOP valore candidato,,QUANTITA 1
+R502,10 kohm,TBD,Resistenza assiale THT,FILTRO LOOP valore candidato,,QUANTITA 1
+C501,100 nF,TBD,Condensatore radiale THT,FILTRO LOOP valore candidato,,QUANTITA 1

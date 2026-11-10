@@ -1,3 +1,22 @@
+# CONTINUITÀ ATTUALE — V0.4 (10 novembre 2026)
+
+**Repository autonoma privata:** `jd3485/Superstar3900-THT-Evolution`. Verificare **HEAD di main**, PR, tag, CI; leggere README, questo handoff, protocollo continuità, registro decisioni e ultimo rapporto tecnico V0.4. **Mai copiare automaticamente parti dalla repository SMD.**
+
+Stato cumulativo: V0.2 = 270 RX e calcolo PLL integer-N; V0.3 = pin-net U401 Lansdale DIP28 + U402 Toshiba DIP14, quarzo THT 10,24MHz; **V0.4 = modello tank VCO 36,31–39MHz con BB204G TO-92 storico (non validato), filtro anello tipo B analitico, scelta di controller PIC18F47Q43-I/P PDIP40 candidata, e primo sottoschema KiCad nativo GENERATO solo per U402 + 4 connettori** (`04_KiCad/V0.4/`). **Nessun ERC/DRC KiCad nativo, SPICE, PCB, VCO completo, hardware o autorizzazione TX.**
+
+Leggere:
+`01_Specifiche/V0.4/VCO_PLL_CONTROLLO_V0.4.md`,
+`04_KiCad/V0.4/README.md`,
+`03_Verifiche/V0.4/RAPPORTO_TECNICO_V0.4.md`,
+`00_Gestione_Progetto/REGISTRO_RISCHI_V0.4.csv`.
+CI V0.4 aggiunge 34 test matematici/statici alle suite 12+24+32 precedenti: verificare l'esito della run prima di citare PASS.
+
+**Prossima V0.5:** concretizzare oscillatore Q501/varicap D501 ed eventuale alternativa fornibile, buffer/limitatori, filtro loop con modello dinamico e stabilità, MCU reale e controllo N/powergood/lock. Aprire schematico KiCad in app ed eseguire ERC se disponibile; nessun Gerber prima del rilascio.
+
+Metodo fisso: a ogni «continua» aggiornare solo file nuovi/modificati sul `main`, mantenere cronologia, rapporti, snapshot configurazioni passate e handoff. Progetto 100% THT, analogico, accordatore manuale, PCBWay schede nude, saldatura interna. **NO FAB / NO TX.**
+
+---
+
 # RIPRESA AGGIORNATA — V0.3 (10 novembre 2026)
 
 **Repository privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. **Fonte di verità:** HEAD `main`, non i tag precedenti. Aprire README, protocollo `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md`, questo file, stato, decisioni e ultimo rapporto tecnico. Controllare commit, PR, tag se presenti e CI.

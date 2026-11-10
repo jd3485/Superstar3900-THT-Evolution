@@ -1,3 +1,9 @@
+# Nota GitHub V0.4
+
+La fonte è `main` cumulativo; si aggiungono i nuovi file V0.4 e si aggiornano solo i registri attivi, la configurazione corrente, la suite regressiva V0.3 (per leggere lo snapshot) e il workflow. Le configurazioni storiche V0.1, V0.2 e V0.3 rimangono immutabili. Nessun ZIP per ogni revisione. Per scaricare l'intero progetto alla V0.4 usare l'archivio del commit `main` verificato; eventuali tag v0.4 devono essere **verificati creati** prima di dichiararli disponibili. Nessun ordine PCB o TX.
+
+---
+
 # Nota cumulativa V0.3
 
 **main è cumulativo**: V0.3 aggiunge i nuovi documenti e modifica solo stato, test/regressioni e handoff; i file V0.1/V0.2 rimangono recuperabili nello storico. Introdotta la baseline `CONFIGURAZIONE_V0.2.json` perché test storici V0.2 continuino a controllare quella revisione anche se `CONFIGURAZIONE_CORRENTE.json` avanza. Non richiedere ZIP ogni volta. I manifest SHA di V0.1 si riferiscono SOLO a V0.1. Nessun tag dichiarato senza verifica. **NO FAB / NO TX.**
