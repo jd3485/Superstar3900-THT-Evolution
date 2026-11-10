@@ -1,4 +1,4 @@
-(kicad_sch (version 20250114) (generator "tht_v09_generator")
+(kicad_sch (version 20250114) (generator "tht_v09_generator") (generator_version "9.0")
 (uuid "3d86fc80-36d7-4d76-a243-000000000001")
 (paper "A3")
 (lib_symbols (symbol "THT_V09:LM358N_PDIP8" (pin_numbers (hide yes)) (pin_names (offset 0.76)) (in_bom yes) (on_board yes)
@@ -235,8 +235,7 @@
 )
 (wire (pts (xy 129.92 156.00) (xy 124.84 156.00)) (stroke (width 0) (type default)) (uuid "3d86fc80-36d7-4d76-a243-000000000110"))
 (label "GND" (at 124.84 156.00 0) (effects (font (size 1.0 1.0))) (uuid "3d86fc80-36d7-4d76-a243-000000000111"))
-(text "V0.9 RX ONLY: ML145151 PDout pin4 THREE-STATE is EXTERNAL. PD_FILTER resistor/cap are CANDIDATES, NOT COMPENSATED PLL.
-External +20V and GND power flags only DECLARE supplied ports for partial ERC.
-C805 is DNI because VCO candidate already has C505 100nF on VTUNE.
-No native schematic for U401, power converter, VCO here. NO FAB / NO TX." (at 145 180 0) (effects (font (size 1.2 1.2))) (uuid "3d86fc80-36d7-4d76-a243-000000000112"))
+(text "V0.9 RX ONLY: ML145151 PDout pin4 THREE-STATE is EXTERNAL. PD_FILTER resistor/cap are CANDIDATES, NOT COMPENSATED PLL.\nExternal +20V and GND power flags only DECLARE supplied ports for partial ERC.\nC805 is DNI because VCO candidate already has C505 100nF on VTUNE.\nNo native schematic for U401, power converter, VCO here. NO FAB / NO TX." (at 145 180 0) (effects (font (size 1.2 1.2))) (uuid "3d86fc80-36d7-4d76-a243-000000000112"))
+(sheet_instances (path "/" (page "1")))
+(embedded_fonts no)
 )
