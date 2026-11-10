@@ -53,7 +53,7 @@ def analyze(params,tmp,index):
     span=freqs[-1]-freqs[0] if all_ok else None
     safe=all_ok and all(x<=0.05 for x in fwd)
     covers=all_ok and min(freqs)<=36.31 and max(freqs)>=39.0
-    score=(max(0.,max(fwd)-0.05)*10
+    score=(max(0.,max((x for x in fwd if x is not None),default=1.0)-0.05)*10
            + (abs(freqs[0]-36.31)+abs(freqs[-1]-39.) if all_ok else 100)
            + (2 if not safe else 0)
            + (2 if all_ok and span<0.3 else 0))
