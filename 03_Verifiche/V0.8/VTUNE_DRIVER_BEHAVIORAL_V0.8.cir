@@ -1,0 +1,24 @@
+* V0.8 CANDIDATE LM358N PDIP8 VTUNE gain stage - IDEAL BEHAVIORAL MODEL
+* INPUT PD_FILTER DC source is SYNTHETIC; NOT actual ML145151 PDOUT waveforms.
+* An LM358 device macro model, PLL dynamics and RF interference are NOT present.
+* VANA20 rail PWL nominal +20V, output clamp simulates 3V HIGH headroom ASSUMPTION.
+.title V0.8 RX-only VTUNE noninverting gain 4 static output model
+.param V_CONTROL=2.0
+.param V_RAIL=20.0
+.param V_HEADROOM=3.0
+VRAIL VANA20 0 PWL(0 0 100u {V_RAIL})
+VPD PD_FILTER 0 PWL(0 0 1m {V_CONTROL})
+* Noninverting LM358 A (pins physical: 1 OUT, 2 IN-, 3 IN+, 4 V-, 8 V+)
+* Caution: Bamp is a CLAMPED controlled voltage source, not transistor opamp.
+BAMP OPA_DRV 0 V=min(max(100000*(V(PD_FILTER)-V(FEEDBACK)),0),max(V(VANA20)-{V_HEADROOM},0))
+RFB OPA_DRV FEEDBACK 30k
+RG FEEDBACK 0 10k
+RISO OPA_DRV VTUNE 220
+CISO VTUNE 0 100n
+RLOAD VTUNE 0 1Meg
+.tran 5u 10m 0 1u
+.measure tran av_vtune AVG v(VTUNE) FROM=8m TO=10m
+.measure tran min_vtune MIN v(VTUNE) FROM=8m TO=10m
+.measure tran max_vtune MAX v(VTUNE) FROM=8m TO=10m
+.measure tran av_filtered AVG v(PD_FILTER) FROM=8m TO=10m
+.end
