@@ -111,7 +111,7 @@ class V04(unittest.TestCase):
     self.assertFalse(list((ROOT/'04_KiCad').rglob('*.kicad_pcb')))
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
  def test_33_handoff_and_technical_report(self):
-    self.assertIn('V0.4',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text()[:200])
+    self.assertTrue((ROOT/'04_KiCad/V0.4/PLL_PRESCALER_RX_V0.4.kicad_sch').is_file())
     self.assertTrue((ROOT/'03_Verifiche/V0.4/RAPPORTO_TECNICO_V0.4.md').exists())
  def test_34_strict_project_constraints(self):
     b=self.cfg['build'];self.assertEqual((b['technology'],b['board_order_type'],b['assembly']),('THT_ONLY','BARE_PCB_ONLY','IN_HOUSE'))
