@@ -1,7 +1,7 @@
 name: V0.6 experimental ngspice RX VCO (NO FAB NO TX)
 on:
   push:
-    branches: ["feature/v0.6-spice-validation"]
+    branches: [main, "feature/v0.6-spice-validation"]
   pull_request:
     branches: [main]
 permissions:
@@ -20,15 +20,22 @@ jobs:
       - name: Sweep three bias points and measure actual model waveforms
         run: python3 -B 03_Verifiche/V0.6/run_spice_v06.py
       - name: Explore candidate RF oscillators and record failures
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.6-spice-validation'
         run: python3 -B 03_Verifiche/V0.6/explore_vco_v06.py
       - name: Refine candidate inductance for frequency range
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.6-spice-validation'
         run: python3 -B 03_Verifiche/V0.6/refine_vco_v06.py
       - name: Check reworked VCO at eight bias points
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.6-spice-validation'
         run: python3 -B 03_Verifiche/V0.6/run_reworked_v06.py
       - name: Test RF startup sensitivity with supply ramp and 6-15V bias
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.6-spice-validation'
         run: python3 -B 03_Verifiche/V0.6/run_operating_window_v06.py
       - name: Evaluate supply-ramp-only variants at 8-15 V
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.6-spice-validation'
         run: python3 -B 03_Verifiche/V0.6/run_ramp_scan_v06.py
+      - name: Selected candidate B with realistic supply startup
+        run: python3 -B 03_Verifiche/V0.6/run_selected_v06.py
       - name: Upload data and logs (not hardware qualification)
         uses: actions/upload-artifact@v4
         if: always()
