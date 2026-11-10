@@ -45,7 +45,7 @@ class BoostPoint:
     exceeds_typ_sense_limit:bool
 
 def boost_point(vin_v:float):
-    if not 0 < vin_v < BOOST_TARGET_V or vin_v<=SWITCH_SAT_V:
+    if not 0 < vin_v < BOOST_TARGET_V or vin_v<=SWITCH_SAT_V_ASSUMED:
         raise ValueError("invalid step up condition")
     ratio=(BOOST_TARGET_V+DIODE_FORWARD_V_ASSUMED-vin_v)/(vin_v-SWITCH_SAT_V_ASSUMED)
     duty=ratio/(1+ratio)
