@@ -1,0 +1,6 @@
+reference,quantity,mpn_candidate,package,footprint,value_and_function,source,status,qualified
+J701,1,THT 2pin lab header,2.54mm THT,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical,13V8 RAW lab input,KiCad catalog,LAB_ONLY_NOT_VEHICLE,NO
+F701,1,Littelfuse 0251.500MXL,AXIAL_THT,UNSELECTED,500mA fast acting inline fuse,DigiKey Littelfuse 251 series,I2T_SOURCE_COORDINATION_NOT_TESTED,NO
+D701,1,Vishay 1N5819,DO-41 axial,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,Schottky reverse polarity blocking 1A/40V,Vishay 88525,REVERSE_DC_ONLY_SURGES_NOT_TESTED,NO
+D702,1,ST P6KE20CA bidirectional,DO-15 axial,UNSELECTED,17.1V stand-off transient shunt 600W 10/1000us,ST P6KE bidirectional datasheet,NO_CONTINUOUS_OVP_OR_AUTOMOTIVE_QUAL,NO
+PWR701,1,KiCad PWR_FLAG not real hardware,NO_BOARD,NOT_APPLICABLE,ERC annotated power source,KiCad ERC,SYMBOL_ONLY,NO

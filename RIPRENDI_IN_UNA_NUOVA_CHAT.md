@@ -1,3 +1,11 @@
+# V1.7 — ingresso THT con fusibile, Schottky e TVS nel master a 6 fogli (baseline elettrica V0.9 preservata)
+- **KiCad9 CAD nativo:** `04_KiCad/V1.7/PLL_RX_HIERARCHICAL_MASTER_V1.7.kicad_sch` include nuovo child J701 `+13V8_RAW` → F701 Littelfuse 0251.500MXL 500mA → D701 Vishay 1N5819 A2/K1 → `+13V8_PROTECTED` al regolatore U601; D702 ST P6KE20CA bidirezionale tra FUSED_RAW e GND. Rimossi vecchi J601 bypass e PWR601 ERC-only dal solo child V1.7, fonti V1.6 intatte.
+- [**KiCad native CI 42921509495**](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42921509495): **ERC 0**, **54 reti** in V1.7 vs **52** di V1.6, tutte le partizioni-pin conservate eccetto J601 rimosso, esportazione SVG 6 pagine e libreria simboli PASS. `genera_gerarchia_input_v17.js --check` verifica la migrazione bit-per-bit dei cinque file CAD derivati da V1.6; i due originali nuovi (foglio protezione e libreria) restano editabili.
+- **Non qualificato per sicurezza:** il TVS limita solo i transitori specificati, **non** scollega una sovratensione prolungata; fusibile 500mA e I²t non coordinati, fault-current e vehicle/load-dump ignoti, footprint F701/D702 mancanti, J701 solo laboratorio. V1.5 aveva 4/12 scenari termici analitici a rischio. Senza 20V VTUNE, power-good/mute, prove hardware o PCB.
+- **NO FAB / NO TX**. Non collegare a veicolo o batteria; progetto esclusivamente THT, SMD invariata.
+
+---
+
 # V1.6 — alimentazione THT 5V connessa nel master KiCad a cinque fogli (baseline elettrica V0.9 preservata)
 - `04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch`: root KiCad9 + 4 child reali; U601 L7805CV alimenta elettricamente tre rami isolati R611/R612/R613 per PLL U401/U402, VCO Colpitts e buffer LO U520. `GND` unita via wire root.
 - [KiCad9 run 42918087055](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42918087055): **ERC nativo 0 violazioni**, netlist **52 reti** = 50 originali V1.4 + 6 V1.5 − 4 unioni intenzionali; tutte le partizioni dei pin conservate, SVG 5 pagine, rigenerazione bit-per-bit PASS. Corretto un `PWR_FLAG` GND solo-ERC ridondante senza waivers.
