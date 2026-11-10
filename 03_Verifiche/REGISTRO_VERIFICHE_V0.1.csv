@@ -1,0 +1,7 @@
+id,revisione,tipo,oggetto,stato,evidenza,limiti
+VT-001,V0.1,statico software,coerenza vincoli/struttura JSON,PASS,03_Verifiche/V0.1/test_v01.py; 12 PASS,Non verifica circuiti e componenti
+VT-002,V0.1,aritmetico,frequenze RX 270 righe,NON_ESEGUITO,CSV da compilare in V0.2,Nessuna frequenza verificata
+VT-003,V0.1,simulazione,PLL classico e RF/IF analogica,NON_ESEGUITO,Non disponibili circuiti,Nessun risultato di simulazione
+VT-004,V0.1,KiCad,ERC DRC e parita schema PCB,NON_ESEGUITO,Nessun CAD nativo,Non approvato PCB
+VT-005,V0.1,produzione,PCBWay DFM Gerber Excellon,NON_ESEGUITO,Nessun layout,Non ordinare
+VT-006,V0.1,hardware,RX TX sicurezza e qualifica,NON_ESEGUITO,0 prototipi,TX inibita

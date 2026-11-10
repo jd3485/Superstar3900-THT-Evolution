@@ -1,0 +1,9 @@
+id,area,rischio,impatto,probabilita_preliminare,misura_prevista,stato
+RT-001,PLL,Reperibilita sintetizzatori/prescaler realmente THT e prestazioni di fase,ALTO,ALTA,"Confronto datasheet, disponibilita e architetture V0.2-V0.3",OPEN
+RT-002,RF/IF,Filtri/quarzi bobine THT con selettivita e tolleranze adeguate,ALTO,MEDIA,"Budget immagini, scelte reali, simulazioni e collaudi",OPEN
+RT-003,PCB,"Accoppiamenti RF, ritorni GND, schermature e percorsi THT lunghi",ALTO,ALTA,"Partizionamento, layout fisico, KiCad e review RF",OPEN
+RT-004,TX,"Finale, protezioni, armoniche, legalita e isolamento antenna",CRITICO,ALTA,"Fail-closed, filtri e controlli indipendenti; nessuna TX fino a qualifica",OPEN
+RT-005,Tuner,"Tensioni RF, correnti, dissipazione, isolamento commutatore LC",ALTO,MEDIA,"Dimensionamento alla potenza prevista, BYPASS, prove controllate",OPEN
+RT-006,Meccanica,Ingombri THT e bobine/variabili su singola PCB,MEDIO,ALTA,Definire envelope e disposizione prima del PCB,OPEN
+RT-007,Supply,Parti legacy THT obsolete o contraffatte,ALTO,ALTA,"Preferire MPN disponibili, second source e verifica acquisti",OPEN
+RT-008,Test,Confondere PASS documentali con misure circuitali,ALTO,MEDIA,Gate con evidenze e categorie separate,OPEN

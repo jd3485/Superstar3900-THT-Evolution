@@ -1,0 +1,17 @@
+test_bande_e_270_posizioni_rx (test_v01.BaselineV01.test_bande_e_270_posizioni_rx) ... ok
+test_bom_non_inventata (test_v01.BaselineV01.test_bom_non_inventata) ... ok
+test_continuita_tra_chat (test_v01.BaselineV01.test_continuita_tra_chat) ... ok
+test_esclusioni_concordate (test_v01.BaselineV01.test_esclusioni_concordate) ... ok
+test_fabbricazione_e_tx_bloccate (test_v01.BaselineV01.test_fabbricazione_e_tx_bloccate) ... ok
+test_modes_and_comandi (test_v01.BaselineV01.test_modes_and_comandi) ... ok
+test_non_dichiarare_verifiche_non_fatte (test_v01.BaselineV01.test_non_dichiarare_verifiche_non_fatte) ... ok
+test_pcbway_solo_schede_nude (test_v01.BaselineV01.test_pcbway_solo_schede_nude) ... ok
+test_piano_freq_non_spacciato_per_completo (test_v01.BaselineV01.test_piano_freq_non_spacciato_per_completo) ... ok
+test_progetto_indipendente (test_v01.BaselineV01.test_progetto_indipendente) ... ok
+test_solo_tht_no_adattatori (test_v01.BaselineV01.test_solo_tht_no_adattatori) ... ok
+test_tuner_manuale_e_pll_tradizionale (test_v01.BaselineV01.test_tuner_manuale_e_pll_tradizionale) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK

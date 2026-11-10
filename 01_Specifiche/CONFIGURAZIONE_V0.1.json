@@ -1,0 +1,63 @@
+{
+  "name": "Superstar 3900 THT Evolution",
+  "slug": "Superstar3900-THT-Evolution",
+  "revision": "V0.1",
+  "date": "2026-11-10",
+  "independent_project": true,
+  "build": {
+    "technology": "THT_ONLY",
+    "allow_smd_components": false,
+    "allow_smd_to_dip_adapters": false,
+    "board_fabricator": "PCBWay",
+    "board_order_type": "BARE_PCB_ONLY",
+    "assembly": "IN_HOUSE",
+    "preferred_main_board_count": 1
+  },
+  "radio": {
+    "bands": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "normal_positions_per_band": 40,
+    "alpha_positions_per_band": 5,
+    "total_rx_positions": 270,
+    "rx_modes": [
+      "AM",
+      "FM",
+      "USB",
+      "LSB",
+      "CW"
+    ],
+    "channel_9_priority": true,
+    "physical_alpha_control": true,
+    "manual_tuner": true,
+    "tuner_bypass": true,
+    "frequency_table_status": "NOT_DEFINED",
+    "first_if_hz_candidate": 10695000,
+    "second_if_hz_candidate": 455000,
+    "pll_approach": "TRADITIONAL_THT_CANDIDATE",
+    "tx_authorized": false,
+    "fabrication_authorized": false
+  },
+  "excluded_features": [
+    "advanced_audio_dsp",
+    "modern_integrated_rf_pll",
+    "dual_watch",
+    "ctcss_dcs",
+    "vox",
+    "automatic_antenna_tuner"
+  ],
+  "validation": {
+    "schematic_complete": false,
+    "kicad_erc": "NOT_RUN",
+    "kicad_drc": "NOT_RUN",
+    "spice": "NOT_RUN",
+    "rf_lab": "NOT_RUN",
+    "hardware_prototypes": 0
+  },
+  "repository_publication": "MAIN_V0_1"
+}

@@ -1,0 +1,11 @@
+id,gate,stato,evidenza_richiesta
+G-01,schemi completi pinout footprint THT,OPEN,Review elettrica e datasheet
+G-02,BOM definitiva e reperibilita THT,OPEN,MPN verificati e piano acquisto
+G-03,simulazioni/calcoli dei sottosistemi reali,OPEN,Report riproducibili e limiti
+G-04,KiCad ERC nativo,OPEN,Report reale con anomalie risolte
+G-05,KiCad DRC refill e connessioni GND,OPEN,Report e ispezione layout RF
+G-06,CAD meccanico e foro/pad THT,OPEN,Disegni e confronti datasheet
+G-07,stack-up e DFM PCBWay,OPEN,Specifiche e conferma di fabbricabilita
+G-08,alimentazione protezioni termica,OPEN,Calcoli e revisione indipendente
+G-09,sicurezza TX interblocchi e vincoli normativi,OPEN,Prove/validazione prima di abilitare TX
+G-10,autorizzazione ordine PCB nude,OPEN,Approvazione esplicita versione produttiva
