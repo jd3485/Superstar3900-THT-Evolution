@@ -3,7 +3,7 @@
    DO NOT substitute this for final hierarchical master, PCB, PLL lock test or approval to fabricate/transmit. */
 const fs=require("fs"),path=require("path");
 function generateMaster(core,filter){
- const ROOT="5c01bcb6-faae-4e37-bf12-000000000001",NAME="PLL_RX_MASTER_CAD_V1.2",DX=300,DY=10;
+ const ROOT="5c01bcb6-faae-4e37-bf12-000000000001",NAME="PLL_RX_MASTER_CAD_V1.2",DX=304.8,DY=10.16;
  function forms(src){
   const result=[];let start=-1,level=0,quoted=false,escape=false;
   for(let i=0;i<src.length;i++){

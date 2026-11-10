@@ -20,3 +20,7 @@ Generato `04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch` **integrando nello ste
 
 ## Prossimo blocco
 Passare dal pilota piatto alla gerarchia di schemi con pin e interfacce espliciti, aggiungere il reale VCO candidato e il buffer LO, alimentazione THT e lock/mute fisico, sviluppando contemporaneamente SPICE vendor/di riferimento, BOM e sorgenti MCU. PCB solo quando è tecnicamente il momento, e sempre NO FAB / NO TX prima dei gate.
+
+## Correzione geometrica V1.2
+
+Il primo ERC nativo ha identificato **41 avvisi `endpoint_off_grid`** nel blocco CAD-01 traslato: coordinate originali corrette ma offset arbitrario (300, 10 mm) non multiplo della griglia di connessione. Il generatore ora applica una traslazione **(+304,8 mm, +10,16 mm)**, cioè multipli esatti di 1,27 mm, mantenendo tutte le connessioni originali. **Rieseguire ERC e netlist prima di qualunque dichiarazione PASS.**
