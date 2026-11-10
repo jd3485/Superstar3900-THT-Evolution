@@ -64,6 +64,12 @@ jobs:
           PY
           echo "Registered THT_V09 custom symbol library for native ERC"
           cat "$HOME/.config/kicad/9.0/sym-lib-table"
+      - name: Validate project-local KiCad symbol library can export native SVG
+        run: |
+          mkdir -p "$RUNNER_TEMP/v09-symbols"
+          kicad-cli sym export svg --output "$RUNNER_TEMP/v09-symbols/" 04_KiCad/V0.9/THT_V09.kicad_sym
+          echo "Symbols physically exported:"
+          ls -la "$RUNNER_TEMP/v09-symbols/"
       - name: Run native KiCad ERC only for V0.9 partial loop
         shell: bash
         run: |
