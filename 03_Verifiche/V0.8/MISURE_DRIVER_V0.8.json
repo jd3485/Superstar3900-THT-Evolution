@@ -1,0 +1,60 @@
+{
+  "revision": "V0.8",
+  "date": "2026-11-10",
+  "run_id": 42841818820,
+  "run_url": "https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42841818820",
+  "simulation_scope": "ngspice actually executed ideal saturated opamp B-source + physical R/C, NO manufacturer device model",
+  "driver_supply_synthetic": true,
+  "mc34063_physical_model_present": false,
+  "lm317_physical_model_present": false,
+  "lm358_physical_model_present": false,
+  "phase_detector_connected": false,
+  "closed_loop_pll_simulated": false,
+  "observations": [
+    {
+      "pd_filter_v": 2,
+      "rail_v": 19.05,
+      "headroom_assumed_v": 3,
+      "vtune_avg_v": 7.99792
+    },
+    {
+      "pd_filter_v": 2.5,
+      "rail_v": 19.05,
+      "headroom_assumed_v": 3,
+      "vtune_avg_v": 9.9974
+    },
+    {
+      "pd_filter_v": 3.75,
+      "rail_v": 19.05,
+      "headroom_assumed_v": 3,
+      "vtune_avg_v": 14.9961
+    },
+    {
+      "pd_filter_v": 3.75,
+      "rail_v": 20.02225,
+      "headroom_assumed_v": 3,
+      "vtune_avg_v": 14.9961
+    },
+    {
+      "pd_filter_v": 4.3,
+      "rail_v": 19.05,
+      "headroom_assumed_v": 3,
+      "vtune_avg_v": 16.04647
+    },
+    {
+      "pd_filter_v": 3.75,
+      "rail_v": 19.05,
+      "headroom_assumed_v": 4.3,
+      "vtune_avg_v": 14.74676
+    }
+  ],
+  "candidate_rail_goal_v": 20.02225,
+  "candidate_boost_goal_v": 26.9791666667,
+  "candidate_inductor": "Bourns RLB0914-471KL THT, Irms560mA typical, Isat1A typical, unshielded",
+  "candidate_diode": "Vishay SB160-E3/54 Schottky 60V 1A DO-41",
+  "hardware_qualified": false,
+  "pcb_authorized": false,
+  "tx_authorized": false,
+  "kicad_erc": "NOT_RUN",
+  "kicad_drc": "NOT_RUN"
+}

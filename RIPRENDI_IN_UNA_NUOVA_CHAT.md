@@ -1,3 +1,27 @@
+# CONTINUITÀ ATTUALE — V0.8 (10 novembre 2026)
+
+**Fonte di verità:** repository privata indipendente `jd3485/Superstar3900-THT-Evolution`, HEAD branch `main`, GitHub Actions, PR e README. Rileggere `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md` e rapporto tecnico **V0.8**. Non copiare automaticamente file della versione SMD, non rigenerare ZIP e non cancellare revisioni.
+
+**Missione:** reinterpretazione radio Superstar3900 analogica 100% THT, 270 posizioni RX, AM/FM/USB/LSB/CW, PLL tradizionale, accordatore antenna manuale, PCBWay solo PCB nude, montaggio interno; escluse le funzioni avanzate precedentemente rimosse. **NO FAB / NO TX**.
+
+**V0.6:** VCO Colpitts candidata B, Q501/Q502 2N3904 TO92 e D501 BB204G TO92 legacy, L166nH C470pF VCC5V. In *modello ngspice non vendor* VTUNE8–15V -> LO 36,048–39,196MHz in cinque punti e varicap inversi. Non misura RF o circuito qualificato.
+
+**V0.7:** booster solo comportamento ideale target24V + LM317~18,3V; dimostrazione che Rsc1Ω e carico LM317 non garantiscono margini. Schemi non completi.
+
+**V0.8:** corregge studio alimentazione: MC34063ABN DIP8 target **27V**, Rsc0,47Ω, L470µH Bourns RLB0914-471KL THT (Irms0,56A typ, Isat1A typ, NON schermata), diodo **Vishay SB160-E3/54** Schottky DO41 60V; LM317T TO220 target **20,022V** con R240Ω/3,57kΩ e **precarico2,4kΩ/0,5W**; LM358N PDIP8 non invertente gain4 da PD_FILTER a VTUNE. `PD_FILTER` non ancora derivato da reale phase detector U401, filtro PLL e powergood/mute fisici non progettati. 19 pin su 3 IC, 22 passivi e BOM25 componenti candidati.
+
+**Simulazione V0.8:** ngspice sul solo modello **comportamentale ideale** del driver, con R/C reali ed uscita clip artificiale. 6 transienti: input PD_FILTER2,2,5,3,75V -> VTUNE ~8/10/15V con rail19,05V e headroom stimata3V; caso headroom4,3V **FAIL** con output14,75V. Il reale LM358, il vero circuito MC34063 e LM317 NON sono stati simulati e nessun PLL lock è verificato.
+
+Aprire: `01_Specifiche/V0.8/VTUNE_POWER_DRIVER_THT_V0.8.md`, `03_Verifiche/V0.8/RAPPORTO_TECNICO_V0.8.md`, `03_Verifiche/V0.8/MISURE_DRIVER_V0.8.json`, `04_KiCad/V0.8/VTUNE_PINNET_V0.8.csv`, `07_Componenti/BOM_VTUNE_V0.8.csv`. Controllare CI V0.8 prima di citare PASS.
+
+**Bloccanti:** VCO vendor model/varicap BB204G legacy; frequenza MC34063/Ct corrente/ESR/EMI, minimo carico LM317 worst-case termico, swing reale LM358, progetto circuito completo del PD U401 + phase margin/mute, schematici KiCad/ ERC/DRC e PCB. Né fabbricazione né TX autorizzate.
+
+**Prossima V0.9:** modellazione componenti reali e regolatore, hardwired powergood/mute, circuito U401 e filtro compensato, avvio CAD nativo di driver/supply con ERC, senza forzare approvazione PCB.
+
+**Metodo di continuità:** aggiornare in modo cumulativo main via branch e PR, eseguire verifiche tutte le revisioni, congelare snapshot V0.1..V0.8, registrare PASS / FAIL / NOT_RUN, mai promettere un PCB pronta senza ERC/DRC e prove RF.
+
+---
+
 # V0.7 INTEGRATA SU MAIN — GitHub Actions 190/190 Python PASS (run 42829647107); VCO V0.6 ngspice run 42829647299 PASS (solo modello); VTUNE boost V0.7 ngspice run 42829647279 PASS (solo switch ideali). PR #3 integrata. NO FAB / NO TX.
 
 # CONTINUITÀ ATTUALE — V0.7 (10 novembre 2026)

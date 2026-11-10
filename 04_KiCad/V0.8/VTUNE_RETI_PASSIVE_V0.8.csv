@@ -1,0 +1,23 @@
+ref,value_package,net_A,net_B,technology,notes
+R701,0.47 ohm 0.5W axial,VIN_FILT,VIN_SENSE,THT,Current sense candidate. STM MC34063 min sense 250mV; L/DC load unverified
+L701,Bourns RLB0914-471KL 470uH,VIN_SENSE,SW_NODE,THT,"Irms 0.56A typ Isat 1.0A typ DCR 1.3ohm max; no purchase, EMI unshielded"
+D701,Vishay SB160-E3/54 1A 60V Schottky DO41,SW_NODE,VBOOST27,THT,A SW_NODE K VBOOST27; larger reverse margin
+R702,24.7kohm 1pct axial,VBOOST27,BOOST_FB,THT,Feedback for nominal ~26.979V
+R703,1.2kohm 1pct axial,BOOST_FB,GND,THT,Feedback bottom
+R710,240ohm 1pct axial,VREG20_RAW,ADJ20,THT,LM317 ~5.2mA feedback path
+R711,3.57kohm 1pct axial,ADJ20,GND,THT,LM317 ~20.022V model
+R713,2.4kohm 0.5W axial,VREG20_RAW,GND,THT,"Additional minimum load, dissipates ~0.17W nominal"
+R712,10ohm axial,VREG20_RAW,VANA20_FILT,THT,RF switching supply isolation candidate
+C712,100uF 35V radial,VANA20_FILT,GND,THT,ESR frequency model NOT verified
+R803,30kohm axial,OPA_OUT_A,OPA_FB_A,THT,LM358 A positive gain feedback Rf
+R804,10kohm axial,OPA_FB_A,GND,THT,LM358 A gain Rg; nominal gain 4
+R805,220ohm axial,OPA_OUT_A,VTUNE_RAIL,THT,"Isolate capacitive VCO load, PLL phase margin unknown"
+C805,100nF 25V radial,VTUNE_RAIL,GND,THT,"VCO includes varicap decoupling; may duplicate, verify"
+C803,100nF 35V radial,VANA20_FILT,GND,THT,U803 local analog supply bypass
+C700,47uF 25V radial,VIN_FILT,GND,THT,V0.7 retained
+C700B,100nF 50V radial,VIN_FILT,GND,THT,V0.7 retained
+C701,47uF 50V radial,VBOOST27,GND,THT,Increased voltage rating from 35 V to 50 V for surge
+C702,470pF radial ceramic,CT_NODE,GND,THT,V0.7 candidate Ct now timing uncertain; 40kHz NOT verified
+C710,10uF 50V radial,VBOOST27,GND,THT,LM317 input decoupling
+C711,10uF 35V radial,ADJ20,GND,THT,Dextra protection required if Cout/Cadj large
+C713,10uF 35V radial,VREG20_RAW,GND,THT,Regulator local bypass

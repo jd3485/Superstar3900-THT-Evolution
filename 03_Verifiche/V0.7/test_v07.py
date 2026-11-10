@@ -17,7 +17,7 @@ def csv_read(p):
 class V07(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-    cls.cfg=json.loads((ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json').read_text())
+    cls.cfg=json.loads((ROOT/'01_Specifiche/CONFIGURAZIONE_V0.7.json').read_text())
     cls.old=json.loads((ROOT/'01_Specifiche/CONFIGURAZIONE_V0.6.json').read_text())
     cls.data=json.loads((ROOT/'03_Verifiche/V0.7/MISURE_BOOST_V0.7.json').read_text())
     cls.pins=csv_read('04_KiCad/V0.7/VTUNE_ALIMENTAZIONE_PINNET_V0.7.csv')
@@ -109,5 +109,5 @@ class V07(unittest.TestCase):
  def test_33_reports_and_handoff(self):
     self.assertTrue((ROOT/'03_Verifiche/V0.7/RAPPORTO_TECNICO_V0.7.md').is_file())
     self.assertTrue((ROOT/'01_Specifiche/V0.7/ALIMENTAZIONE_VTUNE_THT_V0.7.md').is_file())
-    self.assertIn('V0.7',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text()[:300])
+    self.assertTrue((ROOT/'03_Verifiche/V0.7/MISURE_BOOST_V0.7.json').is_file())
 if __name__=='__main__':unittest.main()

@@ -1,3 +1,24 @@
+# Stato attuale V0.8 — 10 novembre 2026
+
+| Blocco | Stato |
+|---|---|
+| RX 270 frequenze | Piano numerico storico verificato, non radio reale |
+| PLL tradizionale | U401 ML145151YP DIP28 e U402 TC74AC74P DIP14 candidati; sourcing U401 aperto |
+| VCO | Candidata B V0.6 con 5 punti SPICE e modelli non ufficiali; test RF hardware NON RUN |
+| Vboost | MC34063ABN DIP8 **27V candidata**, Rsc0,47Ω L470µH Bourns RLB0914-471KL candidata, SB160 DO41 60V; no modello vendor |
+| Regolatore | LM317T TO220 **20,022V nominali**, R240/3570 e precarico2,4kΩ/0,5W; no modello vendor |
+| Driver VTUNE | LM358N PDIP8 gain4 candidato, `PD_FILTER` esterna, feedback30k/10k e isolatore220Ω/100nF |
+| SPICE | 6 transienti **reali del modello IDEALE di opamp**, non reale LM358, PDout o PLL; a headroom peggiorata FAIL VTUNE |
+| BOM e reti | 19 pin IC/22 passivi/25 componenti candidate; **NON uno schema KiCad integrato** |
+| Sicurezza | Nessun powergood hardware, mute e TX interlock fisico progettati |
+| KiCad | V0.4 sottoschema prescaler presente, V0.8 soltanto CSV: ERC/DRC NON RUN |
+| Produzione | 0 PCB, 0 Gerber, 0 prototipi, nessun ordine |
+| Gate | **NO FAB / NO TX** |
+
+**V0.9:** sostituire modelli ideali, progettare PLL vero, interblocchi e fare avanzare KiCad.
+
+---
+
 # Stato progetto V0.7 — 10 novembre 2026
 
 | Sezione | Stato reale |
