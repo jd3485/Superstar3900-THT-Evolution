@@ -44,7 +44,7 @@ class V09(unittest.TestCase):
     self.assertGreater(a["after_first_v"]-a["before_v"],b["after_first_v"]-b["before_v"])
  def test_19_leak_not_real_bom(self):
     self.assertEqual(self.data["leak_resistor_ohm"],100e6)
-    self.assertIn("DO_NOT_ORDER",(ROOT/"07_Componenti/BOM_FILTRO_PLL_V0.9.csv").read_text())
+    self.assertIn("DO_NOT_PURCHASE",(ROOT/"07_Componenti/BOM_FILTRO_PLL_V0.9.csv").read_text())
  def test_20_vendor_qualification_false(self):
     self.assertFalse(self.data["vendor_pd_model"])
     self.assertFalse(self.data["closed_pll_loop"])
