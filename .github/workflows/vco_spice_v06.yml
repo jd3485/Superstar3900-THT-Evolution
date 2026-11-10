@@ -1,0 +1,34 @@
+name: V0.6 experimental ngspice RX VCO (NO FAB NO TX)
+on:
+  push:
+    branches: ["feature/v0.6-spice-validation"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  ngspice-exploratory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ngspice for circuit-level transient analysis
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ngspice
+          ngspice --version
+      - name: Run V0.5 original SPICE deck unmodified for diagnostic
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/v06"
+          ngspice -b -o "$RUNNER_TEMP/v06/v05_original.log" 03_Verifiche/V0.5/VCO_COLPITTS_CANDIDATE_V0.5.cir
+          echo "ORIGINAL V0.5 MEASUREMENTS, DIAGNOSTIC ONLY"
+          grep -E -i "max_tank|min_tank|max_out|min_out|error|warning|no. of data rows|failed" "$RUNNER_TEMP/v06/v05_original.log" || true
+          cp "$RUNNER_TEMP/v06/v05_original.log" 03_Verifiche/V0.6_orig_run.log
+      - name: Upload reproducible diagnostics (not RF qualification)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ngspice-v05-original-diagnostic
+          path: 03_Verifiche/V0.6_orig_run.log
+          if-no-files-found: warn
