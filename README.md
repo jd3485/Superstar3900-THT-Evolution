@@ -1,3 +1,13 @@
+# STATO CORRENTE — V0.9 (10 novembre 2026)
+
+**Nuovo passo elettrico:** il phase detector A del PLL THT `U401 ML145151YP` usa `PDout pin4` a tre stati `+5V / GND / HIGH-Z`. La V0.8 aveva progettato il driver LM358N partendo da `PD_FILTER` senza definire come fosse generato. Nella V0.9 abbiamo creato il primo sottoblocco filtro RC THT **R90110k/47k + C9011µF**, con prova ngspice di impulsi positivi, negativi e alta impedenza. Risultati di sei vere transienti con **switch surrogati ideali**, non con il ML145151 fisico.
+
+**Risultato qualificato soltanto nel modello:** tensione del condensatore sale con impulsi positivi, scende con negativi e resta quasi fissa a breve termine durante Hi-Z. R901/C901 è **solo candidata e non è un filtro PLL approvato**; compensazione, Kvco locale, Kphi, capture e phase margin NON sono simulati. **R902 100MΩ è componente fittizio per perdita numerica** da NON ordinare.
+
+Il progetto resta 100% THT, indipendente, storico V0.1–V0.8 completo. **NO FAB / NO TX; schematico KiCad completo/ERC/DRC NON ESEGUITI**. File: `01_Specifiche/V0.9/PDOUT_TRISTATE_FILTRO_V0.9.md`, `03_Verifiche/V0.9/RAPPORTO_TECNICO_V0.9.md`, `03_Verifiche/V0.9/PDOUT_TRISTATE_SURROGATE_V0.9.cir`. Prossima V1.0: loop PLL realmente chiuso e KiCad nativo.
+
+---
+
 # STATO CORRENTE — V0.8 (10 novembre 2026)
 
 **Nuovo circuito candidato interamente THT per l'alimentazione e il pilotaggio VTUNE:** U701 MC34063ABN PDIP8 con target27V e corrente di soglia ricalcolata (Rsc0,47Ω, L470µH Bourns RLB0914-471KL candidata); D701 Vishay SB160 60V assiale; U702 LM317T TO220 a circa20,022V con precarico R7132,4kΩ0,5W per minimo carico; U803 LM358N PDIP8 in configurazione non invertente ×4 da **PD_FILTER** a VTUNE. **19 pin IC / 22 passivi documentati**, BOM25 righe.

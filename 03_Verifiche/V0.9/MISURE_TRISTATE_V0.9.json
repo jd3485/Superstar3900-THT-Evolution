@@ -1,0 +1,62 @@
+{
+  "revision": "V0.9",
+  "date": "2026-11-10",
+  "workflow_run_id": 42851241908,
+  "source_model": "03_Verifiche/V0.9/PDOUT_TRISTATE_SURROGATE_V0.9.cir",
+  "vendor_pd_model": false,
+  "closed_pll_loop": false,
+  "artificial_initial_v": 2.5,
+  "pulse_width_ms": 1,
+  "pulse_period_ms": 10,
+  "filter_cap_uf": 1,
+  "leak_resistor_ohm": 100000000,
+  "cases": [
+    {
+      "mode": "UP",
+      "r_filter_ohm": 10000,
+      "before_v": 2.499963,
+      "after_first_v": 2.736908,
+      "final_v": 3.145
+    },
+    {
+      "mode": "DOWN",
+      "r_filter_ohm": 10000,
+      "before_v": 2.499963,
+      "after_first_v": 2.262904,
+      "final_v": 1.85372
+    },
+    {
+      "mode": "HOLD",
+      "r_filter_ohm": 10000,
+      "before_v": 2.499963,
+      "after_first_v": 2.4999,
+      "final_v": 2.499275
+    },
+    {
+      "mode": "UP",
+      "r_filter_ohm": 47000,
+      "before_v": 2.499963,
+      "after_first_v": 2.552527,
+      "final_v": 2.653848
+    },
+    {
+      "mode": "DOWN",
+      "r_filter_ohm": 47000,
+      "before_v": 2.499963,
+      "after_first_v": 2.447276,
+      "final_v": 2.344741
+    },
+    {
+      "mode": "HOLD",
+      "r_filter_ohm": 47000,
+      "before_v": 2.499963,
+      "after_first_v": 2.4999,
+      "final_v": 2.499275
+    }
+  ],
+  "hardware_qualified": false,
+  "kicad_erc": "NOT_RUN",
+  "kicad_drc": "NOT_RUN",
+  "tx_authorized": false,
+  "fabrication_authorized": false
+}

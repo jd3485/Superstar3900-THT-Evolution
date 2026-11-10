@@ -1,0 +1,4 @@
+ref,quantity,value,package,status,notes
+R901,1,10k or 47k,THT axial,CANDIDATE_ONLY,Only one value after loop phase stability analysis
+C901,1,1uF low leakage film,THT radial film,CANDIDATE_ONLY,Dielectric ESR tolerance footprint thermal not qualified
+R902,0,100Meg model leakage,MODEL_ONLY,DO_NOT_PURCHASE,Only ideal simulation placeholder; leakage input bias hardware not modeled

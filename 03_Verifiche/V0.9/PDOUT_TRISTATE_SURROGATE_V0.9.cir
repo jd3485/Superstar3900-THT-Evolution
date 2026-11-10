@@ -1,0 +1,26 @@
+* V0.9 ML145151 PIN4 PDout THREE STATE SURROGATE: +5, 0, Hi-Z
+* This is NOT a behavioral simulation of the actual ML145151 / any closed PLL.
+* It exercises PASSIVE charge retention and transient pulses (no real comparator/lock).
+.title THT phase detector output surrogate UP DOWN HOLD
+.param UP_ACTIVE=1
+.param DN_ACTIVE=0
+.param R_FILTER=10000
+VLOGIC +5V_PLL 0 DC 5
+V_UP CTRL_UP 0 PULSE(0 {5*UP_ACTIVE} 2m 1u 1u 1m 10m)
+V_DN CTRL_DN 0 PULSE(0 {5*DN_ACTIVE} 2m 1u 1u 1m 10m)
+S_UP PLL_PD_RAW +5V_PLL CTRL_UP 0 S_MODEL
+S_DN PLL_PD_RAW 0 CTRL_DN 0 S_MODEL
+.model S_MODEL SW(Ron=50 Roff=1e12 Vt=2.5 Vh=0.2)
+R901 PLL_PD_RAW PD_FILTER {R_FILTER}
+C901 PD_FILTER 0 1u
+R902 PD_FILTER 0 100Meg
+* artificial initial voltage to compare charge retention between modes.
+* This is NOT lock acquisition from power on.
+.ic v(PD_FILTER)=2.5 v(PLL_PD_RAW)=2.5
+.tran 5u 30m 0 5u uic
+.measure tran before_pulse FIND v(PD_FILTER) AT=1.5m
+.measure tran after_first FIND v(PD_FILTER) AT=4m
+.measure tran final_voltage FIND v(PD_FILTER) AT=29m
+.measure tran min_filter MIN v(PD_FILTER) FROM=2m TO=30m
+.measure tran max_filter MAX v(PD_FILTER) FROM=2m TO=30m
+.end

@@ -1,3 +1,21 @@
+# Stato tecnico attuale V0.9 — 10 novembre 2026
+
+| Sezione | Evidenza |
+|---|---|
+| Frequenze RX | 270 piano numerico storico, non qualifica radio |
+| PLL U401/U402 | ML145151YP PDIP28, U402÷2 DIP14 candidati; sourcing U401 irrisolto |
+| Phase detector | **PDout U401 pin4 tri-state ±/Hi-Z da datasheet**, direzione impulsi nota |
+| Filtro PLL | **R90110k o47k / C9011µF solo candidati**, test ngspice 6 casi surrogati UP/DOWN/HOLD; non loop stabile |
+| VCO | V0.6 candidata Colpitts, 5 punti simulati, vendor/hardware non qualificati |
+| Driver VTUNE | LM358N DIP8 x4 V0.8, non agganciato al phase detector, solo opamp ideale |
+| Alimentation | MC34063 DIP8 target27V, LM317T TO220 target20V, solo proposte, EMI non misurata |
+| Segnali RX sicuri | Modelli fail-closed Python, non circuito interlock fisico |
+| KiCad | Soltanto vecchio schemino prescaler; CAD filtro V0.9 è CSV, ERC/DRC NOT_RUN |
+| PCB/Hardware | 0 PCB, 0 Gerber, 0 prototipi |
+| Fab/TX | **NO FAB / NO TX** |
+
+---
+
 # Stato attuale V0.8 — 10 novembre 2026
 
 | Blocco | Stato |

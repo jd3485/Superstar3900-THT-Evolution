@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.8",
+  "revision": "V0.9",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -106,7 +106,22 @@
     "vtune_boost_inductor_candidate": "Bourns RLB0914-471KL 470uH THT not EMI-qualified",
     "vtune_boost_diode_candidate": "Vishay SB160-E3/54 DO-41 60V",
     "vtune_lm317_bleeder_candidate": "2.4kohm 0.5W THT",
-    "vtune_driver_candidate": "LM358N PDIP8 non-inverting x4"
+    "vtune_driver_candidate": "LM358N PDIP8 non-inverting x4",
+    "pfd_type": "ML145151_PDOUT_PIN4_THREE_STATE_PLUS_MINUS_HIGH_Z",
+    "pll_phase_detector_filter_status": "FIRST_PASS_PASSIVE_OPEN_LOOP_SURROGATE_ONLY",
+    "pll_phase_detector_filter_candidates": [
+      {
+        "r_ohm": 10000,
+        "c_f": 0.000001
+      },
+      {
+        "r_ohm": 47000,
+        "c_f": 0.000001
+      }
+    ],
+    "pll_closed_loop_stable": false,
+    "pll_lock_proven": false,
+    "pll_filter_kicad_native_complete": false
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -141,7 +156,9 @@
     "v08_software_main_run_id": 42843501500,
     "v08_vco_regression_main_run_id": 42843501265,
     "v08_boost_regression_main_run_id": 42843501213,
-    "v08_driver_main_run_id": 42843501144
+    "v08_driver_main_run_id": 42843501144,
+    "v09_pdout_spice": "SIX_TRANSIENTS_THREE_STATE_SURROGATE_ONLY_NOT_VENDOR",
+    "v09_pdout_run_id": 42851241908
   },
-  "repository_publication": "MAIN_V0_8_INTEGRATED_CI_VERIFIED"
+  "repository_publication": "V0_9_PENDING_PR_CI"
 }

@@ -1,3 +1,9 @@
+# GitHub versione cumulativa V0.9
+
+Branch `feature/v0.9-pll-tristate-filter` e PR prima di `main`; vecchie revisioni restano intatte. I nuovi file del filtro non sovrascrivono VCO V0.6 o driver V0.8. Snapshot V0.8 rende i test storici indipendenti dal file `CONFIGURAZIONE_CORRENTE`. Ogni versione scaricata su GitHub comprende **tutti** i file presenti a quel commit; non è necessario rigenerare ZIP. Riportare CI e simulazioni vere nel rapporto. No fabbricazione e no TX.
+
+---
+
 # Versionamento cumulativo V0.8
 
 `main` è fonte di verità. V0.8 viene integrata con PR/CI dopo revisione; nessun file V0.1–V0.7 rimosso. I file `CONFIGURAZIONE_V0.7.json` / `CONFIGURAZIONE_CORRENTE.json` mantengono la tracciabilità delle suite. BOM V0.8, pin-net, diagrammi, dataset ngspice, test e rapporto sono aggiunti senza ricreare archivi ZIP, e il progetto SMD indipendente resta intatto.
