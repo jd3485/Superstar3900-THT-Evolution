@@ -12,4 +12,4 @@ CAD-10,SSB USB LSB CW oscillators and product detector,NO,NO,Architecture_only,N
 CAD-11,Audio amplifier volume squelch metering,NO,NO,Requirements_only,NOT_RUN,NOT_STARTED,Audio_power_and_AGC
 CAD-12,PIC THT bands channel selection and firmware,NO,NO,270_channel_logic_static_tests,NOT_RUN,NOT_STARTED,PIC_native_schematic_and_firmware
 CAD-13,Front panel connectors mechanical I_O,NO,NO,Functional_requirements,NOT_RUN,NOT_STARTED,Front_panel_dimensions_keypad_bands
-CAD-14,Master hierarchical KiCad and production PCB,NO,ERC_PASS_FLAT_PARTIAL_V12,KiCad9_ERC_0_33_nets_28_groups_run_42878584174,NOT_RUN,NOT_STARTED,Build true hierarchy and VCO supply controller before PCB
+CAD-14,Master hierarchical KiCad and production PCB,NO,ERC_PASS_RX_PLL_3_SHEET_ONLY_V13,KiCad9_ERC_0_and_all_pin_partitions_33_of_33_equal_run_42884939754,NOT_RUN,NOT_STARTED,Integrate_THT_VCO_LO_buffer_supply_N_control_and_rest_of_radio_then_PCB

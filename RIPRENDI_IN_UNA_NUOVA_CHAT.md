@@ -1,4 +1,4 @@
-# V1.2 CAD INTEGRAZIONE PASS — KiCad9 ERC 0 violazioni, 33 reti reali, 28 gruppi pin-net su GitHub run 42878584174; nuovo file 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch. U401 PDout pin4 ↔ R901 pin1 confermato. Schema PARZIALE e PIATTO; non gerarchico, VCO non integrato, PCB non iniziata. Baseline elettrica V0.9 e sorgenti V1.0/V1.1 preservate. NO FAB / NO TX.
+# V1.3 PASS — baseline V0.9 preservata; master gerarchico RX PLL in 04_KiCad/V1.3/ con root e due child THT. KiCad9 run 42884939754: ERC 0 violazioni, 3 pagine SVG, equivalenza integrale pin-net 33/33 rispetto a V1.2. U401 PDout pin4 ↔ R901 pin1; GND tra child. È solo RX PLL parziale, VCO/PCB assenti. NO FAB / NO TX.
 
 # V0.9 baseline elettrica / V1.1 CAD-02 branch feature/v1.1-cad02-pll-core: schematico KiCad nucleo PLL U401/U402, quarzo, netlist gate, CON VALIDAZIONE CAD-02 NATIVA: KiCad9 ERC 0 violazioni, netlist 22 reti PASS (run 42870145756), ma non PLL completo né PCB. Leggere rapporto 03_Verifiche/V1.1/RAPPORTO_CAD02_V1.1.md. Non merge senza verifica CI, NO FAB / NO TX.
 
