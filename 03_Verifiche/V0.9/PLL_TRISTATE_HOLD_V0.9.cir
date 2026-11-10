@@ -1,0 +1,29 @@
+* V0.9 ML145151 PDout tri-state OPEN LOOP BENCH with ideal switches.
+* Positive pulse 2.0-2.5ms, hold high impedance, negative 24.0-24.5ms.
+* C901 precharged to 2.5V solely to study HOLD/LEAKAGE, NOT physical startup.
+* NO DIVIDERS / REAL PLL / VENDOR LM145151 / REAL LM358 DEVICE MODEL.
+.title V0.9 RX PLL phase-detector three-state behavior, mathematical validation only
+.param I_BIAS=20n
+VPLUS VPD5 0 DC 5
+VUP CTRL_UP 0 PWL(0 0 1.999m 0 2.000m 5 2.500m 5 2.501m 0)
+VDOWN CTRL_DN 0 PWL(0 0 23.999m 0 24.000m 5 24.500m 5 24.501m 0)
+SUP PLL_PDOUT VPD5 CTRL_UP 0 S_TRI
+SDN PLL_PDOUT 0 CTRL_DN 0 S_TRI
+.model S_TRI SW(Ron=30 Roff=1e12 Vt=2.5 Vh=0.1)
+R901 PLL_PDOUT PD_FILTER 22k
+C901 PD_FILTER 0 100n IC=2.5
+IBIAS PD_FILTER 0 DC {I_BIAS}
+* Feedback gain=4 and high-side clamp 17V ideal, not LM358 macro-model
+BGAIN OPA_OUT_A 0 V=min(max(4*V(PD_FILTER),0),17)
+R805 OPA_OUT_A VTUNE 220
+C505 VTUNE 0 100n
+RLOAD VTUNE 0 1Meg
+.tran 2u 36m 0 2u uic
+.measure tran before_up FIND v(PD_FILTER) AT=1.5m
+.measure tran after_up FIND v(PD_FILTER) AT=3m
+.measure tran hold_start FIND v(PD_FILTER) AT=5m
+.measure tran hold_end FIND v(PD_FILTER) AT=20m
+.measure tran after_down FIND v(PD_FILTER) AT=26m
+.measure tran vtune_hold_start FIND v(VTUNE) AT=5m
+.measure tran vtune_hold_end FIND v(VTUNE) AT=20m
+.end

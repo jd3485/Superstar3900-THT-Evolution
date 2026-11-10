@@ -1,0 +1,10 @@
+id,sezione,rischio,gravita,stato,azione
+RT-056,PLL,PDout ML145151 pin4 trifase ad alta impedenza on-lock non semplice uscita DC,CRITICO,DESCRITTO,Progettare filtro d'anello reale e leakage
+RT-057,PLL,R90122k C901100n smorzamento linearizzato zeta ~0.33-0.53 troppo variabile,ALTA,OPEN,Compensazione e simulazione closed-loop vera prima di PCB
+RT-058,PLL,Output current leak/high-Z può causare variazioni VTUNE se impulsi non correttivi,ALTA,OPEN,Usare modelli vendor con bias correnti, power-good e LD
+RT-059,PLL,LD alta non basta senza qualificazione e mute hardwired,CRITICO,OPEN,Progettare monitor lock fail closed con timing
+RT-060,CAD,Schema KiCad V0.9 solo sottosistema driver senza U401 U402 VCO+alimentazione,CRITICO,OPEN,ERC parziale separato da ERC integrato
+RT-061,CAD,C805 100n replica C505 VCO stesso VTUNE,ALTA,MIGLIORATO_DNI,Confermare una sola capacità e topologia RC complessiva
+RT-062,PARTI,ML145151YP dispositivo legacy reperibilità non garantita,ALTA,OPEN,Qualificare acquisto o scelta THT alternativa prima del PCB
+RT-063,EMC,5kHz spurs RF high-side loop e switching BOOST 27V,CRITICO,OPEN,Power rail +PLL RF spur simulation and hardware
+RT-064,CAD,Flag power su supply esterna non provano funzionamento,ALTA,OPEN,Integrazione sorgente e monitor reale

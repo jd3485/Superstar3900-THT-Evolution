@@ -1,0 +1,28 @@
+name: V0.9 three-state PLL phase-detector open-loop ngspice (NO FAB NO TX)
+on:
+  push:
+    branches: ["feature/v0.9-pll-tristate-kicad-erc",main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  tristate-bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ngspice
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ngspice
+          ngspice --version
+      - name: Model tri-state UP/HOLD/DOWN with three assumed leakage currents
+        run: python3 -B 03_Verifiche/V0.9/run_tristate_v09.py
+      - name: Publish model waveforms and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v09-pll-tristate-not-closed-loop
+          path: 03_Verifiche/V0.9/tristate_results/
+          if-no-files-found: warn
