@@ -43,7 +43,8 @@ def read_nets(path:Path):
     result={}
     for net in child(root,"nets")[1:]:
         if not isinstance(net,list) or not net or net[0]!="net":continue
-        name=child(net,"name")[1]
+        # KiCad 9 qualifies root-sheet net names as /NET; strip only that leading root slash.
+        name=str(child(net,"name")[1]).removeprefix("/")
         nodes=set()
         for n in net[1:]:
             if isinstance(n,list) and n and n[0]=="node":
