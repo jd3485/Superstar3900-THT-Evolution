@@ -1,0 +1,11 @@
+reference,quantity,part_candidate,tht_package_or_footprint,value_or_role,source,status,qualified_hardware
+Q501;Q502,2,2N3904,Package_TO_SOT_THT:TO-92_Inline,NPN Colpitts + emitter follower,V0.6 model B + vendor datasheet,PINMAP_CANDIDATE_CHECK_MPN,NO
+D501,1,BB204G,Package_TO_SOT_THT:TO-92_Inline,dual common cathode 1/2/3,Philips BB204B_G pinout,LEGACY_STOCK_AND_LEADFORM_UNVERIFIED,NO
+L501,1,RF inductor selected source TBD,FOOTPRINT_UNDEFINED,166nH target model B,V0.6 ngspice candidate,MPN_SRF_Q_PITCH_UNSELECTED_BLOCKER,NO
+U520,1,SN74AC14N,Package_DIP:DIP-14_W7.62mm,two stage Schmitt LO conditioner,TI SN74AC14 datasheet PINMAP,ANALOG_INPUT_THRESHOLD_39MHZ_NOT_QUALIFIED,NO
+R501;R502;R503;R505;R506;R507;R508;R509,8,THT axial resistor,Resistor_THT DIN0207,original V0.6 bias values,03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir,MODEL_ONLY,NO
+C500;C501;C502;C503;C504;C505;C506;C507;C508,9,THT C0G or bypass capacitor,Capacitor_THT radial pitch check,original V0.6 cap values,V0.6 SPICE,MODEL_ONLY_PACKAGE_CHECK,NO
+C500B,1,10uF radial electrolytic,Capacitor_THT:CP_Radial_D5.0mm_P2.00mm,model B supply reservoir,V0.6 SPICE,PROVISIONAL,NO
+R510;R511;R512;R513,4,THT axial resistor,Resistor_THT DIN0207,provisional Schmitt bias and clock drive,V1.4 VCO/LO draft,REQUIRES_BUFFER_RF_SIMULATION,NO
+C510;C511;C512,3,THT capacitors,radial THT,C510 analog coupling plus AC14 bypass,V1.4 VCO/LO draft,REQUIRES_MECHANICAL_TOLERANCE_CHECK,NO
+J520;J521;J522;J523;J524,5,2-pin THT header,Connector_PinHeader_2.54mm,temporary external supply and probes,V1.4 CAD,LAB_ONLY_NOT_FINAL_PRODUCTION,NO
