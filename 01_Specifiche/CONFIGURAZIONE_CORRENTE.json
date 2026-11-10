@@ -127,7 +127,10 @@
     "software_regression_main_ci_run_id": 42823693863,
     "vtune_boost_spice": "BEHAVIORAL_IDEAL_SWITCH_ONLY",
     "vtune_boost_spice_run_id": 42827358481,
-    "vtune_power_schematic_complete": false
+    "vtune_power_schematic_complete": false,
+    "v07_regression_main_run_id": 42829647107,
+    "v07_boost_behavioral_main_run_id": 42829647279,
+    "v06_vco_regression_main_run_id": 42829647299
   },
-  "repository_publication": "V0_7_PENDING_CI"
+  "repository_publication": "MAIN_V0_7_INTEGRATED"
 }

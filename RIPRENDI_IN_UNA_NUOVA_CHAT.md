@@ -1,3 +1,5 @@
+# V0.7 INTEGRATA SU MAIN — GitHub Actions 190/190 Python PASS (run 42829647107); VCO V0.6 ngspice run 42829647299 PASS (solo modello); VTUNE boost V0.7 ngspice run 42829647279 PASS (solo switch ideali). PR #3 integrata. NO FAB / NO TX.
+
 # CONTINUITÀ ATTUALE — V0.7 (10 novembre 2026)
 
 **Repository privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. Prima di fare qualsiasi lavoro rileggere HEAD `main`, PR, Actions, README, questo file, protocollo, registro decisioni e ultimo rapporto V0.7. Non usare né modificare `Superstar3900-SMD-Evolution`.
