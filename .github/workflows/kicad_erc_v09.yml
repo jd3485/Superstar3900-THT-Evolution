@@ -40,10 +40,10 @@ jobs:
       - name: Commit generated draft schematic on feature branch (ERC still pending)
         if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.9-pll-tristate-kicad-erc'
         run: |
-          if [ -n "$(git status --porcelain -- 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch)" ]; then
+          if [ -n "$(git status --porcelain -- 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch 04_KiCad/V0.9/THT_V09.kicad_sym 04_KiCad/V0.9/sym-lib-table)" ]; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch
+            git add 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch 04_KiCad/V0.9/THT_V09.kicad_sym 04_KiCad/V0.9/sym-lib-table
             git commit -m 'V0.9: check in deterministic KiCad PLL partial draft for native parser review'
             git push
           fi
