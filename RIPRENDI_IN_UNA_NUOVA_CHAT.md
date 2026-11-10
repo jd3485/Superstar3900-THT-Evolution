@@ -1,3 +1,5 @@
+# V0.8 INTEGRATA IN MAIN — 226/226 test software PASS; 3 simulazioni ngspice workflow PASS (solo modelli non vendor). PR #4 MERGED. CI su main 42843501500, 42843501265, 42843501213, 42843501144. **NO FAB / NO TX**.
+
 # CONTINUITÀ ATTUALE — V0.8 (10 novembre 2026)
 
 **Fonte di verità:** repository privata indipendente `jd3485/Superstar3900-THT-Evolution`, HEAD branch `main`, GitHub Actions, PR e README. Rileggere `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md` e rapporto tecnico **V0.8**. Non copiare automaticamente file della versione SMD, non rigenerare ZIP e non cancellare revisioni.

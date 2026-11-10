@@ -43,3 +43,14 @@ La run [42841818820](https://github.com/jd3485/Superstar3900-THT-Evolution/actio
 Prossima revisione: realizzazione simulazione IC switching e LM358 reale dove disponibile, filtro loop da Kphi/Kvco, powergood hardware e rilievo KiCad/ERC progressivo, senza aggirare standard di progetto.
 
 **Fonti:** https://www.st.com/resource/en/datasheet/mc34063ab.pdf , https://www.ti.com/product/LM317 , https://www.ti.com/product/LM358 , https://www.bourns.com/docs/product-datasheets/rlb.pdf , https://www.vishay.com/doc?88715
+
+## Risultati GitHub reali verificati sul commit di merge
+
+- [PR #4](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/4) **MERGED**, commit `cdd4941fb0ba3aab3edcefa0ff8cdcfd0b717d21`.
+- [Software CI V0.1..V0.8](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501500): **SUCCESS, 226 test Python** (=12+24+32+34+34+21+33+36). Questi test controllano consistenza matematica/dati/testo, non l'elettronica reale.
+- [ngspice storico VCO V0.6](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501265): **SUCCESS**, modello VCO limitato e non qualificato.
+- [ngspice storico boost V0.7](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501213): **SUCCESS**, soltanto convertitore ideale/comportamentale, non MC34063 vero.
+- [ngspice nuovo driver V0.8](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501144): **SUCCESS**, sei transienti del modello di amplificatore ideale con limitazione artificiale, non LM358 vero.
+- **GATE NON ESEGUITI:** simulazione SPICE vendor IC e completo PLL, KiCad native ERC/DRC, EMC/rumore fase, hardware e fabbricazione. **NO FAB / NO TX**.
+
+**Importante:** GitHub SUCCESS significa processo/test previsti terminati; non significa il circuito fisico funzionante.

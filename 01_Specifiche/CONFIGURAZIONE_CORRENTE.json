@@ -137,7 +137,11 @@
     "v07_boost_behavioral_main_run_id": 42829647279,
     "v06_vco_regression_main_run_id": 42829647299,
     "v08_driver_spice": "EXECUTED_SIX_IDEAL_BEHAVIORAL_TESTS_NOT_VENDOR_MODEL",
-    "v08_driver_spice_run_id": 42841818820
+    "v08_driver_spice_run_id": 42841818820,
+    "v08_software_main_run_id": 42843501500,
+    "v08_vco_regression_main_run_id": 42843501265,
+    "v08_boost_regression_main_run_id": 42843501213,
+    "v08_driver_main_run_id": 42843501144
   },
-  "repository_publication": "V0_8_PENDING_PR_CI"
+  "repository_publication": "MAIN_V0_8_INTEGRATED_CI_VERIFIED"
 }

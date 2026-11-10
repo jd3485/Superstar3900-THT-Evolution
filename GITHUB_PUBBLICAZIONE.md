@@ -79,3 +79,14 @@ La presenza di `main` e dei file va verificata su GitHub. Un tag `v0.1` è utile
 - [VCO V0.6 con ngspice](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42829647299): **SUCCESS** (esecuzione di un modello RF, non qualifica hardware).
 - [Boost VTUNE V0.7 comportamentale](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42829647279): **SUCCESS** (3 transitori su switch/PWM ideali; il componente fisico MC34063 e l'LM317 NON sono stati simulati).
 - Gli esiti verdi **non** rappresentano test hardware, KiCad ERC/DRC, assenza di spurie RF, lock PLL, prototipo o autorizzazione PCBWay/TX. **NO FAB / NO TX**.
+
+## Risultati GitHub reali verificati sul commit di merge
+
+- [PR #4](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/4) **MERGED**, commit `cdd4941fb0ba3aab3edcefa0ff8cdcfd0b717d21`.
+- [Software CI V0.1..V0.8](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501500): **SUCCESS, 226 test Python** (=12+24+32+34+34+21+33+36). Questi test controllano consistenza matematica/dati/testo, non l'elettronica reale.
+- [ngspice storico VCO V0.6](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501265): **SUCCESS**, modello VCO limitato e non qualificato.
+- [ngspice storico boost V0.7](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501213): **SUCCESS**, soltanto convertitore ideale/comportamentale, non MC34063 vero.
+- [ngspice nuovo driver V0.8](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42843501144): **SUCCESS**, sei transienti del modello di amplificatore ideale con limitazione artificiale, non LM358 vero.
+- **GATE NON ESEGUITI:** simulazione SPICE vendor IC e completo PLL, KiCad native ERC/DRC, EMC/rumore fase, hardware e fabbricazione. **NO FAB / NO TX**.
+
+**Importante:** GitHub SUCCESS significa processo/test previsti terminati; non significa il circuito fisico funzionante.
