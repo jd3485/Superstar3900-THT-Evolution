@@ -1,3 +1,14 @@
+# Registro decisioni V0.9 — 10 novembre 2026
+
+- **DT-067 CORREZIONE FATTO DOCUMENTATO:** `U401 ML145151YP` `PDout` pin4 è **tre-stati**: impulsi positivi se fV inferiore a fR, impulsi negativi se fV superiore a fR, alta impedenza in coincidenza di fase/frequenza. Il filtro V0.8 `PD_FILTER` non può assumere DC dalla sola logica senza stadio passivo. Fonte Lansdale.
+- **DT-068 STUDIO NON APPROVATO:** inserire R90110kΩ o47kΩ assiale e C9011µF film THT, sorgente PDout0/5V/Hi-Z. R902100Meg è SOLO leakage modellato, nessun MPN d'acquisto.
+- **DT-069 EVIDENZA ngspice:** vero ngspice su **surrogato a switch ideale**, 6 casi UP/DOWN/HOLD ×R10k/47k, partenza artificiale a2,5V, variazioni verso corretto e tenuta breve in alta impedenza. NO ML145151 vero né PLL closed loop.
+- **DT-070 ANALITICA:** R10k/C1µF tau10ms taglio15,9Hz, R47k/C1µF tau47ms taglio3,39Hz. Reiezione ideale 5kHz ~−50 e−63dB, non margine fase o fase rumore.
+- **DT-071 GATE:** leakage R100Meg artificiale, input bias LM358, Kphase locale e Kvco, powergood/mute e RC compensato ancora aperti; niente approvazione BOM/PCB. **NO FAB / NO TX**.
+- **DT-072 CONTINUITÀ:** congelare `CONFIGURAZIONE_V0.8.json`, aggiornare test storico V0.8 per usarlo; aggiungere suite V0.9 e nuovo report a main solo dopo CI verdi. Non toccare versioni storiche più di quanto necessario.
+
+---
+
 # Decisioni V0.8 — 10 novembre 2026
 
 - **DT-058 STUDY:** incrementare target boost a **27V** con U701 MC34063ABN DIP8, Rsc0,47Ω THT e L701 470µH; soglia MC34063 ST 250/300/350mV min/typ/max, a Vin11V deltaI stimata0,331A e soglia minima0,532A, margine _solo da corrente zero_0,201A. **Non prova comportamento CCM/timing Ct**.

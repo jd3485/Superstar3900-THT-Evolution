@@ -1,0 +1,7 @@
+id,blocker,severity,status,closing_action
+RT-056,PDout pin4 three-state cannot be treated as continuous DC source,CRITICAL,IDENTIFIED_AND_MODELED_SURROGATE,Use tri-state real comparator model and characterize source impedance
+RT-057,100Meg simulated leakage artificially preserves held voltage,CRITICAL,OPEN,Test real LM358 input bias PCB leakage C film dielectric and temperature
+RT-058,RC stage not stabilized with VCO and feedback divider,CRITICAL,OPEN,Compute Kphi and local Kvco phase margin capture and response on 270 RX
+RT-059,One-pole response no guaranteed zero or phase margin,CRITICAL,OPEN,Design 2nd order loop and verify closed-loop dynamics
+RT-060,No physical PLL lock and POWERGOOD reset interlock,CRITICAL,OPEN,Design hardware RX mute gate no TX
+RT-061,No native KiCad ERC/DRC or hardware RF measures,CRITICAL,OPEN,Complete schematic with verified device symbol and ERC

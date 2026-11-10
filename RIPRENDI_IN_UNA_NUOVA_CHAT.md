@@ -1,3 +1,19 @@
+# CONTINUITÀ ATTUALE — V0.9 (10 novembre 2026)
+
+**Repository autonoma THT:** `jd3485/Superstar3900-THT-Evolution`; fonte di verità HEAD `main`, controllare PR e Actions e rileggere protocollo/README/Stato/Decisioni/rapporto V0.9. Non toccare il repository SMD. Ogni versione aggiunge solo file nuovi o modificati, nessuna rigenerazione ZIP o azzeramento storico.
+
+**Radio progettata:** CB stile Superstar 3900 interamente THT; 270 posizioni RX (A-F, CH ALFA), AM/FM/USB/LSB/CW, PLL tradizionale ML145151YP candidato, accordatore manuale/bypass, PCBWay solo scheda nuda, montaggio interno; esclusi DSP evoluto, PLL moderno, VOX, CTCSS/DCS, Dual Watch. **NO FAB / NO TX**.
+
+**V0.6:** VCO candidata B Q501/Q502 2N3904 TO92, BB204G TO92 legacy, L166nH, C470pF, VCC5V, richiede VTUNE8–15V per LO36,310–39MHz nel modello; non vendor/hardware qualificato.
+
+**V0.7/V0.8:** sorgente candidato MC34063ABN DIP8 boost27V, LM317T TO220 regolato20V e LM358N PDIP8 x4 su `PD_FILTER` verso VTUNE. Modelli switching e opamp IDEALI, non real vendor/PLL; nessun powergood fisico, KiCad o noise phase margin.
+
+**V0.9:** `ML145151YP` **pin4 PDout trifase nel senso logico**, ovvero tre stati: positivo, negativo, alta impedenza a coincidenza. `PD_FILTER` V0.8 necessita filtro THT di accumulo per queste transizioni. **R90110k o47k / C9011µF** come sola prova iniziale; 6 ngspice realmente eseguiti su surrogate ± digitali, non ML145151; passi da2,5V in UP/DOWN/HOLD. R902100Meg **solo leakage fittizio**, non BOM d'acquisto. Non c'è loop in retroazione, non sono note stabilità, fase e tempi di aggancio. Dati nel rapporto `03_Verifiche/V0.9/RAPPORTO_TECNICO_V0.9.md` e `MISURE_TRISTATE_V0.9.json`; pin-net `04_KiCad/V0.9/PLL_PDOUT_FILTRI_CANDIDATI_V0.9.csv`. Controllare CI nuova V0.9 prima di affermare PASS.
+
+**Prossima V1.0:** filtro PLL stabilizzato realmente con Kphi/Kvco/PLL completo, test continuità lock e powergood-mute HW, progetto KiCad verificabile; modulo analogico RF e architettura alta tensione restano in sviluppo. **Niente PCB fabbricabile, ERC DRC NOT_RUN, nessuna TX.**
+
+---
+
 # V0.8 INTEGRATA IN MAIN — 226/226 test software PASS; 3 simulazioni ngspice workflow PASS (solo modelli non vendor). PR #4 MERGED. CI su main 42843501500, 42843501265, 42843501213, 42843501144. **NO FAB / NO TX**.
 
 # CONTINUITÀ ATTUALE — V0.8 (10 novembre 2026)

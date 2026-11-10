@@ -1,0 +1,6 @@
+ref,package,signal_in,signal_out,values,status,notes
+U401,PDIP-28,PDout_pin4,PLL_PD_RAW,ML145151YP,EXISTING_CANDIDATE,Three-state source +5/GND/Hi-Z datasheet
+R901,Axial_THT,PLL_PD_RAW,PD_FILTER,10k_or_47k,OPEN_CANDIDATE,Needs actual phase response validation
+C901,Radial_Film_THT,PD_FILTER,GND,1uF,OPEN_CANDIDATE,Low leakage ESR temp drift qualification
+R902,MODEL_ONLY,PD_FILTER,GND,100Meg,DO_NOT_ORDER,Numeric leakage reference not physical BOM
+U803,PDIP-8,PD_FILTER,LM358_pin3,LM358N,EXISTING_CANDIDATE,Input bias common-mode phase margin unverified

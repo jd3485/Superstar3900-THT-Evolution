@@ -1,3 +1,13 @@
+# V0.9 — 10 novembre 2026 — filtro phase detector tri-state e primo simulatore vero
+
+- Dimostrato da datasheet che `PDout` ML145151YP pin4 emette impulsi positivi/negativi ed è high-Z in lock, richiede filtro RC di mantenimento verso ingresso LM358 V0.8.
+- Creato primo sottoblocco passivo THT candidato R90110k/47k + C9011µF film e netlist SPICE con uscita surrogate ±/Hi-Z.
+- Eseguiti 6 transitori ngspice veri con artificiale condizioni iniziali2,5V (non modello PFD reale), misurato incremento/decremento/mantenimento: nessuna stabilità PLL garantita.
+- Aggiunti studio frequenza RC/ripple5kHz, matrice reti/BOM, rapporto rischi, test regressivi e snapshot di configurazione V0.8, documenti handoff.
+- Integrato solo dopo CI V0.1–V0.9 e regressioni SPICE. **NO FAB / NO TX**, nessun ERC/DRC KiCad nativo.
+
+---
+
 # V0.8 — 10 novembre 2026 — correzione margini alimentazione e driver THT
 
 - V0.7 boost24/rail18.3/Rsc1ohm superata come idea ma non dimensionata: nuova proposta boost27V, Rsc0,47Ω e L470µH con soglia minima ST250mV, rettificatore SB160 DO41 60V.
