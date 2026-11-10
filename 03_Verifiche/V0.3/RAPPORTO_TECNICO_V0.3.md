@@ -42,3 +42,11 @@ La CI aggiunta controlla anche che i due pinout DIP abbiano ogni pin dichiarato 
 **V0.3 = primo circuito candidato a livello di pin, con rischi documentati, non PCB funzionante.** **NO FAB / NO TX**.
 
 **V0.4**: confermare presenza e disponibilità di U401, sviluppare VCO THT con transistor/varicap e buffer di clock, calcolare loop filter e stabilità con modelli/parametri verificati, progettare selezione N/lock/mute e alimentazione, quindi creare uno schematico KiCad nativo coerente, senza forzare un ERC PASS quando mancano parti.
+
+## Esito GitHub Actions V0.3 verificato dopo integrazione
+
+- Run: [42807584674](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42807584674)
+- Commit verificato: `c73b918acc4d1852b58e590ea84657ab52c0ef89` sul branch `main`.
+- Job `static-regression`: **SUCCESS**. Passi `Baseline V0.1 structural tests`, `V0.2 channel plan and candidate PLL arithmetic tests` e `V0.3 PLL pinout and candidate THT core static checks` tutti **SUCCESS**.
+- Esito dichiarato delle suite: **12 V0.1 + 24 V0.2 + 32 V0.3 = 68 test software**, tutte le tre suite eseguite senza errori da GitHub Actions.
+- **NON ESEGUITI**: validazione circuitale SPICE, KiCad ERC/DRC, EM, laboratorio, qualifica alimentazioni, prototipo, TX. **NO FAB / NO TX**.
