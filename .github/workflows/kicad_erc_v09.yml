@@ -15,8 +15,12 @@ jobs:
       - name: Install native KiCad CLI for ERC
         run: |
           sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
           kicad-cli version
+          kicad-cli sch erc --help | head -15
       - name: Confirm committed schematic matches deterministic generator
         run: |
           if [ -f 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch ]; then
