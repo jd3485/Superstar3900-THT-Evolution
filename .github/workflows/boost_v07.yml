@@ -1,0 +1,28 @@
+name: V0.7 behavioral VTUNE boost bench (NOT hardware qualification)
+on:
+  push:
+    branches: ["feature/v0.7-vtune-boost-tht", main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  boost-behavior:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ngspice
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ngspice
+          ngspice --version
+      - name: Run analog-switching behavioral boost at three input voltages
+        run: python3 -B 03_Verifiche/V0.7/run_boost_v07.py
+      - name: Upload observations and source decks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v07-behavioral-boost-bench-not-qualified
+          path: 03_Verifiche/V0.7/ngspice_results/
+          if-no-files-found: warn
