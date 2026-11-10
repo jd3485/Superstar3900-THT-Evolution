@@ -158,7 +158,12 @@
     "v08_boost_regression_main_run_id": 42843501213,
     "v08_driver_main_run_id": 42843501144,
     "v09_pdout_spice": "SIX_TRANSIENTS_THREE_STATE_SURROGATE_ONLY_NOT_VENDOR",
-    "v09_pdout_run_id": 42851241908
+    "v09_pdout_run_id": 42851241908,
+    "v09_regression_main_run_id": 42852994951,
+    "v09_pfd_surrogate_main_run_id": 42852997335,
+    "v09_vco_regression_main_run_id": 42852994921,
+    "v09_boost_regression_main_run_id": 42852994798,
+    "v09_driver_regression_main_run_id": 42852995032
   },
-  "repository_publication": "V0_9_PENDING_PR_CI"
+  "repository_publication": "MAIN_V0_9_INTEGRATED_CI_VERIFIED"
 }

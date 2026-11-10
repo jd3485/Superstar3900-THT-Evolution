@@ -1,3 +1,5 @@
+# V0.9 INTEGRATA IN MAIN — PR #6, 254/254 Python PASS e 4 workflow ngspice SUCCESS; ultimi run 42852994951, 42852997335, 42852994921, 42852994798, 42852995032. Modelli surrogati, NO FAB / NO TX. Una PR CAD #5 separata non è approvata.
+
 # CONTINUITÀ ATTUALE — V0.9 (10 novembre 2026)
 
 **Repository autonoma THT:** `jd3485/Superstar3900-THT-Evolution`; fonte di verità HEAD `main`, controllare PR e Actions e rileggere protocollo/README/Stato/Decisioni/rapporto V0.9. Non toccare il repository SMD. Ogni versione aggiunge solo file nuovi o modificati, nessuna rigenerazione ZIP o azzeramento storico.

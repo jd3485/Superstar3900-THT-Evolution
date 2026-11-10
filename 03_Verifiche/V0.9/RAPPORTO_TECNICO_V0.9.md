@@ -34,3 +34,14 @@ Workflow [42851241908](https://github.com/jd3485/Superstar3900-THT-Evolution/act
 **Non eseguiti:** modelli vendor ML145151/LM358, PLL closed loop, KiCad ERC/DRC nativi, Bode e KiCad PCB, prove di laboratorio EMC e hardware. Non fabbricare PCBWay e non abilitare TX. Prossimo rilascio: compensazione reale e CAD.
 
 Fonte primaria: https://lansdale.com/datasheets/ML145151_ML145152_ML145155_ML145156_ML145157_ML145158_revA.pdf
+
+## V0.9 integrata in main — CI verificata (10 novembre 2026)
+
+- PR [#6](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/6) **MERGED**, commit di merge `b835579ca2acafb6d8bf5d7a51992a36facdc574`.
+- [Software regressioni](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42852994951): **SUCCESS** — V0.1..V0.9 **254 controlli Python** (226 storici + 28 V0.9).
+- [PDout tre-stati ngspice](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42852997335): **SUCCESS** — 6 casi di sorgente surrogate UP/DOWN/HOLD, non macro-modello PFD.
+- [VCO V0.6 ngspice](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42852994921): **SUCCESS** — prova su modello RF sintetico storico.
+- [Boost V0.7 ngspice](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42852994798): **SUCCESS** — switch/PWM ideali, non MC34063.
+- [Driver V0.8 ngspice](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42852995032): **SUCCESS** — opamp idealizzato, non LM358 reale.
+- **ATTENZIONE:** un'altra [PR #5](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/5) dedicata a CAD KiCad V0.9 risulta ancora separata: le sue precedenti prove ERC sono fallite e **non sono un'autorizzazione alla fabbricazione**. Prima di modificare o integrare tale PR verificare HEAD, risultati e assenza di conflitti. Non confondere la V0.9 validata in main per modello surrogato con un foglio KiCad completo.
+- **NON ESEGUITI/QUALIFICATI:** modello vero ML145151/LM358, PLL in anello chiuso, stabilità, KiCad ERC/DRC del modulo definitivo, hardware, EMC e PCBWay. **NO FAB / NO TX**.
