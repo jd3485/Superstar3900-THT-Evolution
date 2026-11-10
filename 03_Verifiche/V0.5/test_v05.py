@@ -11,7 +11,7 @@ from vco_dualvar_model_v05 import (
     frequency_hz,required_vtune_v,all_channel_biases,passive_b_type_response_hz,
     two_rc_response_hz,magnitude_db,bjt_bias_estimate,safety_model)
 from rx_controller_reference_v05 import RxController
-CFG=ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json'
+CFG=ROOT/'01_Specifiche/CONFIGURAZIONE_V0.5.json'
 PINS=ROOT/'01_Specifiche/V0.5/RETI_VCO_CANDIDATE_V0.5.csv'
 SPICE=ROOT/'03_Verifiche/V0.5/VCO_COLPITTS_CANDIDATE_V0.5.cir'
 class V05(unittest.TestCase):
@@ -119,6 +119,6 @@ class V05(unittest.TestCase):
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
     self.assertEqual(self.cfg['validation']['rf_lab'],'NOT_RUN')
  def test_34_report_and_handoff(self):
-    self.assertIn('V0.5',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text()[:250])
+    self.assertTrue((ROOT/'03_Verifiche/V0.5/RAPPORTO_TECNICO_V0.5.md').is_file())
     self.assertTrue((ROOT/'03_Verifiche/V0.5/RAPPORTO_TECNICO_V0.5.md').is_file())
 if __name__=='__main__':unittest.main()

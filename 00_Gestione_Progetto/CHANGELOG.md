@@ -1,3 +1,15 @@
+# V0.6 — 10 novembre 2026 — Prima simulazione elettrica VCO e variante correttiva THT
+
+- Eseguito il VCO V0.5 in vero ngspice 45.2; scoperto **RF FAIL**: frequenza quasi bloccata 38,306..38,350MHz e forward bias BB204G +0,5V.
+- Eseguiti sweep C/L/emitter/VCC con ngspice: 36 varianti iniziali/108 transitori, 6 valori L/18, 8 punti nuovo Colpitts, 14 prove seed/ramp, 16 varianti power-ramp/80, più verifica selezionata/5 e originale/3. Le prove servono al modello, non alla qualificazione fisica.
+- Catturata dipendenza da condizioni iniziali artificiali UIC; introdotto startup VCC0→5V, analisi di tensioni diodo e misura frequenza da 200 fronti.
+- Variante **B** L166nH, C470pF, R1,2kΩ, VCC5V, VTUNE8–15V: 5 punti modello monotoni e inversi, f36,048..39,196MHz. **NON certificata per produzione**.
+- Aprono nuovi rischi: VTUNE 15V > 13,8V, approvvigionamento varicap, rumore fase, effettivo tank, modello vendor/temperatura, KiCad ERC/DRC.
+- Aggiornati rapporti, script, misure, BOM delta e istruzioni ripresa; aggiunta suite statica V0.6 alle regressioni precedenti.
+- **NO FAB / NO TX**.
+
+---
+
 # V0.5 — 10 novembre 2026 — VCO circuitale THT e controllo RX
 
 - Progettato circuito candidato Colpitts con Q501/Q502 TO-92, D501 doppio varicap BB204G, induttore, rete di bias, capacitori RF e buffer.

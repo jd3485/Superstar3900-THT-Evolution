@@ -1,3 +1,23 @@
+# Stato corrente — V0.6 (10 novembre 2026)
+
+| Blocco | Stato ed evidenza |
+|---|---|
+| 270 RX / PLL divisione | V0.2 numericamente PASS, non provato in RF |
+| PLL classico U401/U402 | Componenti THT candidati, sourcing ML145151 non chiuso |
+| VCO V0.5 | **RESPINTO DA ngspice** (varicap avanti, accordo 44kHz) |
+| VCO candidata B V0.6 | **MODELLO PASS su 5 punti con avvio VCC da zero**: L166nH, C470pF, R1.2k, VCC5V, VTUNE8-15V, f36,048..39,196MHz |
+| Varicap | Nessuna conduzione diretta nei 5 punti del modello, VR inversa max 17,75V; BB204G NOS non qualificato |
+| Supply VTUNE | **BLOCCANTE**: 15V non ottenibili direttamente da rail radio nominale 13,8V, circuito driver/boost non progettato |
+| Loop PLL, fasi, clock | **NON VALIDATI**: spur, margine fase, lock, buffer prescaler |
+| Prova SPICE | **ESEGUITA** con modelli generici; studi multi-run, esiti reali documentati; non vendor models |
+| KiCad | Soltanto sottoschema U402 V0.4; ERC/DRC e PCB **NON ESEGUITI** |
+| PCBWay / assembly | PCB nude solo dopo validazione; saldatura THT interna; nessun ordine |
+| TX / FAB | **NO TX / NO FAB** |
+
+**Prossima V0.7:** risolvere generazione VTUNE, modelli affidabili, tolleranze/temperatura, filtro PLL, buffer RF e KiCad; nessun rilascio producibile.
+
+---
+
 # Stato corrente V0.5 — 10 novembre 2026
 
 | Modulo | Evidenza reale |

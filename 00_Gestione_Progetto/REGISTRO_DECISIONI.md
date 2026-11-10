@@ -1,3 +1,14 @@
+# Decisioni e misure V0.6 — 10 novembre 2026
+
+- **DT-045 (EVIDENZA ELETTRICA):** ngspice 45.2 transitorio VCO V0.5: a VTUNE 3,2..7,5 V f=38,306..38,350 MHz, diodo BB204G avanti +0,51..+0,54 V. V0.5 **RESPINTO come circuito di sintonia valido**; revisioni storiche lasciate intatte.
+- **DT-046 (METODO):** simulazione RF deve includere sweep di tensione e avvio senza condizioni iniziali artificiali, non solo formule LC, né singola oscillazione a una frequenza. Le prime combinazioni UIC a 9V per VCC5V non qualificano il progetto.
+- **DT-047 (CANDIDATA B, NON APPROVAZIONE ACQUISTO):** VCC5 V, R503 1,2kΩ, C504 470pF, L501=166nH effettivi, doppio BB204G, due BJT THT 2N3904; 5 prove ngspice ramp VCC zero e VTUNE8/9/10/12/15V, f36,04773..39,19647MHz, A-K max sempre negativo e VR inversa max17,74675V. **PASS LIMITATO AL MODELLO IN 5 PUNTI**, non prova 270 frequenze, tolleranze o hardware.
+- **DT-048 (NUOVO VINCOLO):** VTUNE desiderata fino15V > alimentazione nominale13,8V; obbligatorio circuito analogico THT a basso rumore o nuova topologia a tensione inferiore. LM358 a12V V0.5 non idoneo automaticamente a erogare15V; nessun acquisto/PCB.
+- **DT-049 (GESTIONE):** V0.6 congela `CONFIGURAZIONE_V0.5.json` per preservare 34 test storici, riporta esiti SPICE, script di prova e report senza cancellare originali o forzare RF PASS. La CI statica deve mantenere le suite cumulativamente.
+- **DT-050 (SICUREZZA):** RX modellata, TX hardware disattivata. Simulazione non autorizza ordini di PCBWay, emissione o costruzione. **NO FAB / NO TX.**
+
+---
+
 # Decisioni V0.5 — 10 novembre 2026
 
 - **DT-038 CANDIDATA:** passaggio da *una giunzione BB204G + 220nH* (studio V0.4) a *due giunzioni BB204G in parallelo + 150nH* per ridurre VTUNE richiesta. Fisico: D501 pin1/3 anodi al nodo VAR_A, pin2 catodo a VTUNE_RAIL; C504 blocca DC fra tank e diodi. Non garantisce copertura senza taratura.

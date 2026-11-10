@@ -1,0 +1,10 @@
+id,ambito,criticita,gravita,stato,azione
+RT-027,VCO,V05 varicap in diretta e f quasi bloccata,CRITICA,CHIUSO_RESPINTO_V05,Non ripristinare la netlist V05 per PCB
+RT-028,VCO,Avvio seed UIC diverso da reale ramp VCC,CRITICA,APERTA,Qualificare startup sul modello completo e rail VTUNE
+RT-029,VCO,Modelli diode e BJT generici non datasheet proprietario,ALTA,APERTA,Acquisire vendor models o caratterizzazione hardware quando autorizzato
+RT-030,VCO,Induttanza richiesta circa166nH THT regolabile con Q/SRF da convalidare,ALTA,APERTA,Selezionare bobina e testare tolleranze temperatura
+RT-031,VCO,Riserva sul reverse diodo minima 0.447V a VTUNE8 nel modello,ALTA,APERTA,Ampliare margine usando LC o bias piu alto
+RT-032,POWER,VTUNE fino15V maggiore di 13.8V nominali,CRITICA,APERTA,Studio boost silenzioso THT oppure VCO tensione ridotta
+RT-033,PLL,Non esiste loop filter compensato ne stadio VTUNE e prescaler verificato,CRITICA,APERTA,Calcolo PLL reale con Kvco e phase margin
+RT-034,RF,Componenti BB204G legacy autenticita stock non verificati,ALTA,APERTA,Individuare alternativa THT e MPN reperibili
+RT-035,CAD,KiCad ERC DRC e PCB per VCO mancanti,CRITICA,APERTA,Trasferire netlist in schematico KiCad ed eseguire verifiche native

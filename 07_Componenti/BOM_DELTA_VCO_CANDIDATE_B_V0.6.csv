@@ -1,0 +1,8 @@
+reference,quantity,component_candidate,package_tht,status,change_from_v05
+Q501;Q502,2,2N3904-AP,TO-92,CANDIDATO_GIA_PRESENTE,Varia alimentazione VCO da9V a5V e bias correnti da verificare
+D501,1,BB204G doppio varicap,TO-92_LEGACY,CANDIDATO_LEGACY,Entrambi diodi in parallelo su VAR_A/VTUNE come V05
+R503,1,1.2kohm,Axial_THT,CANDIDATO_SIMULATO_SOLTANTO,Da330ohm a1200ohm
+C504,1,470pF C0G,Radial_THT,CANDIDATO_SIMULATO_SOLTANTO,Da1nF a470pF
+L501,1,166nH effettivi regolabile,RF_coil_THT_TBD,MPN_DA_DEFINIRE,Da150nH a166nH; Q SRF tolleranza da verificare
+VCC_RF,1,5V regolati da progettare,Supply_THT,NON_DESIGNATO,Da9V a5V
+VTUNE_DRIVER,1,8-15V analogici ultra-low-noise,Driver_THT_TBD,BLOCCANTE,Richiede tensione sopra13.8V e regolazione da PLL 5V

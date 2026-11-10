@@ -1,3 +1,17 @@
+# STATO ATTUALE — V0.6 (10 novembre 2026)
+
+**Prima verifica ngspice reale.** Il circuito Colpitts della V0.5 è stato **RESPINTO**: a VTUNE 3,2–7,5 V oscilla solo a 38,306–38,350 MHz e polarizza in diretta i varicap (+0,51..+0,54 V). Sono stati provati modelli e avvii diversi per evitare falsi positivi.
+
+**Nuova CANDIDATA B, solo modello SPICE:** VCO THT Q501/Q502 2N3904 + BB204G TO-92 doppio, VCC=5V, R503=1,2kΩ, C504=470pF, L501 effettiva 166nH candidata (bobina regolabile da scegliere), VTUNE=8–15V. Con avvio da zero senza UIC, ngspice rileva **36,04773–39,19647 MHz** nei cinque punti, A−K sempre negativo, VR picco massimo nel modello 17,75V. La finestra contiene LO 36,310–39,000MHz, **ma non prova tutti i 270 canali né il comportamento fisico**.
+
+**Bloccanti:** VTUNE fino a 15V supera alimentazione 13,8V; serve architettura THT silenziosa per il driver/rail o riduzione della tensione richiesta. Varicap BB204G legacy, modelli SPICE sintetici, VCO non integrato KiCad, nessun ERC/DRC, controllo lock/filtro PLL non validati. **NO FAB / NO TX.**
+
+Aprire `03_Verifiche/V0.6/RAPPORTO_TECNICO_V0.6.md`, `03_Verifiche/V0.6/MISURE_SPICE_V0.6.json`, `03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir`, `01_Specifiche/V0.6/VCO_SIMULAZIONE_E_CORREZIONI_V0.6.md`.
+
+**Prossima V0.7:** affinamento componenti e tolleranze, driver VTUNE, startup completo, loop PLL, buffer prescaler/LO e primo circuito CAD completo. Ogni revisione è cumulativa su GitHub, progetto indipendente, PCBWay solo PCB nude e saldatura interna.
+
+---
+
 # STATO ATTUALE — V0.5 (10 novembre 2026)
 
 **Sviluppo concreto VCO:** primo circuito a componenti THT con Q501/Q502 2N3904-AP (Colpitts + emitter follower), D501 BB204G (due varicap in parallelo con polarità corrette), L501 150nH, R/C di bias, disaccoppiamenti e prima **netlist SPICE non ancora eseguita**. Modello C(V) e accordo nominale di 270 canali ora ≈3,13–6,95V, con **Cfixed_eff 61pF ASSUNTA**, non misura. I margini di tolleranza non sono certificati.

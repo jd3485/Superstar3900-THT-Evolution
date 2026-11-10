@@ -1,0 +1,130 @@
+{
+  "revision": "V0.6",
+  "date": "2026-11-10",
+  "simulator": "ngspice 45.2 / GitHub Actions Ubuntu runner",
+  "electrical_model": "UNVERIFIED generic 2N3904 and BB204G approximation, not vendor model",
+  "historical_v05_rejected": {
+    "run_url": "https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42820065706",
+    "bias_v": [
+      3.2,
+      5,
+      7.5
+    ],
+    "frequency_mhz": [
+      38.3061,
+      38.31858,
+      38.35018
+    ],
+    "max_diode_forward_v": [
+      0.53747,
+      0.5314,
+      0.51412
+    ],
+    "status": "FAIL_FORWARD_BIAS_AND_TUNING_RANGE"
+  },
+  "exploration": {
+    "coarse": {
+      "run_id": 42820553687,
+      "variants": 36,
+      "ngspice_runs": 108,
+      "partial_reverse_bias_variants": 6,
+      "limitation": "artificial initial conditions not qualifying"
+    },
+    "refinement": {
+      "run_id": 42820988515,
+      "variants": 6,
+      "ngspice_runs": 18
+    },
+    "startup_comparison": {
+      "run_id": 42821612508,
+      "ngspice_runs": 14,
+      "result": "seeded and real-supply-ramp differ, false positive risk"
+    },
+    "ramp_scan": {
+      "run_id": 42821991921,
+      "variants": 16,
+      "ngspice_runs": 80,
+      "safe_and_cover_screened_model": 4
+    }
+  },
+  "candidateB": {
+    "source": "03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir",
+    "nominal": {
+      "supply_v": 5,
+      "r_emitter_ohm": 1200,
+      "c_block_pf": 470,
+      "l_nh": 166
+    },
+    "power_on_start": "VCC 0->5V in 100ns; no UIC; no artificial .ic",
+    "vtune_v": [
+      8,
+      9,
+      10,
+      12,
+      15
+    ],
+    "frequency_mhz": [
+      36.04773,
+      36.80801,
+      37.39017,
+      38.26433,
+      39.19647
+    ],
+    "max_anode_minus_cathode_v": [
+      -0.4469,
+      -1.355,
+      -2.2906,
+      -4.1928,
+      -7.0936
+    ],
+    "coverage_band_mhz": [
+      36.31,
+      39
+    ],
+    "model_screen": "PASS_SAMPLED_POWERRAMP_ONLY",
+    "reproduction_run_id": 42822739779,
+    "not_qualified": [
+      "tolerances",
+      "start-up across temperatures",
+      "vendor SPICE model",
+      "PLL loop phase margin",
+      "RF output loading",
+      "KiCad ERC DRC",
+      "actual BJT/varactor sourcing",
+      "harmonics/phase noise",
+      "VTUNE rail sourcing",
+      "physical RF bench"
+    ],
+    "max_reverse_voltage_v": [
+      10.01986,
+      11.2453,
+      12.40106,
+      14.59204,
+      17.74675
+    ],
+    "tank_vpp": [
+      10.5578,
+      10.6876,
+      10.7728,
+      10.8798,
+      10.9741
+    ],
+    "buffer_vpp": [
+      3.3215,
+      3.3849,
+      3.4362,
+      3.4982,
+      3.5576
+    ],
+    "peak_reverse_within_datasheet_30v_at_sampled_points": true,
+    "sampled_model_coverage": true,
+    "validation_run_url": "https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42822739779"
+  },
+  "gates": {
+    "hardware_validated": false,
+    "kicad_erc": "NOT_RUN",
+    "kicad_drc": "NOT_RUN",
+    "fabrication_authorized": false,
+    "tx_authorized": false
+  }
+}
