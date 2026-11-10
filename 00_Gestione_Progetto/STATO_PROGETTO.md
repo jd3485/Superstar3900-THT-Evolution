@@ -1,3 +1,10 @@
+# V1.6 — alimentazione THT 5V connessa nel master KiCad a cinque fogli (baseline elettrica V0.9 preservata)
+- `04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch`: root KiCad9 + 4 child reali; U601 L7805CV alimenta elettricamente tre rami isolati R611/R612/R613 per PLL U401/U402, VCO Colpitts e buffer LO U520. `GND` unita via wire root.
+- [KiCad9 run 42918087055](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42918087055): **ERC nativo 0 violazioni**, netlist **52 reti** = 50 originali V1.4 + 6 V1.5 − 4 unioni intenzionali; tutte le partizioni dei pin conservate, SVG 5 pagine, rigenerazione bit-per-bit PASS. Corretto un `PWR_FLAG` GND solo-ERC ridondante senza waivers.
+- **NON QUALIFICATA** la regolazione 5V in carico, correnti, termica (4/12 scenari analitici a rischio nella V1.5), protezione input 13.8V, boost 20V, powergood/mute e PLL/VCO RF. Questa è una gerarchia **parziale RX**, non una PCB né una radio completa. **NO FAB / NO TX**.
+
+---
+
 # V1.5 CAD 5V THT — nuovo sottoblocco AUTONOMO verificato con KiCad 9, NON integrato nel master V1.4
 - `04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch` con U601 L7805CV TO-220, D601 anti-scarica, condensatori e tre rami RC per PLL/VCO/buffer.
 - [GitHub KiCad run 42909924401](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42909924401): **ERC 0 violazioni**, netlist **6/6 reti PASS**, rigenerazione deterministic, export simboli/SVG e screening termico.
