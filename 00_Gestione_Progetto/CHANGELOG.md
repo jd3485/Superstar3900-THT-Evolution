@@ -1,3 +1,10 @@
+# V1.3 — gerarchia KiCad RX PLL a 3 pagine nativa, 10 novembre 2026
+- Root + child PLL digitale + child filtro/LM358 THT. PDout e GND ora passano su sheet pins e HLabels reali, senza scorciatoie global-label; sorgenti precedenti V1.0/V1.1/V1.2 inalterate.
+- [KiCad9 native CI run 42884939754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42884939754): ERC **0 violazioni**, export SVG **3 fogli**, **33/33 reti**, **tutta la partizione dei pin identica al master piatto V1.2**, verificati due sheetpath diversi; generazione bit-for-bit riproducibile.
+- Non completo master radio, nessun VCO/buffer/supply/MCU collegato, nessun PCB, lock RF e fisico NON RUN. NO FAB / NO TX.
+
+---
+
 # V1.2 — integrazione elettrica reale del PLL, 10 novembre 2026
 - Nuovo master **parziale piatto** KiCad A2 che riunisce CAD-01/02: U401, U402, R901/C901, LM358N U803, quarzo e connettori; nodi PDout e GND condivisi. **33 componenti/simboli THT** nel nuovo foglio (inclusi connettori/flag provvisori).
 - Native KiCad9 ERC **0 violazioni**, 33 reti e 28 gruppi pin-net verificati; U401 pin4 e R901 pin1 effettivamente nella stessa rete KiCad (run 42878584174). Generatore deterministico e librerie locali senza cambi ai precedenti file.

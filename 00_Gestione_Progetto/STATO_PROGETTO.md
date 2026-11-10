@@ -1,3 +1,9 @@
+# V1.3 — gerarchia KiCad9 RX PLL verificata: 3 pagine, ERC 0 violazioni, 33/33 reti con partizioni di tutti i pin identiche alla V1.2, U401 e U803 su sheetpath distinti. [CI native run 42884939754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42884939754). Il VCO e la PCB restano non integrati. NO FAB / NO TX.
+
+**CAD-14 resta incompleto:** soltanto il sottosistema RX PLL ha due child reali, non il master completo dell'intera radio; mancano VCO, buffer, supply e controller. Parti fisiche solo THT; nessun gate RF o fabbricazione.
+
+---
+
 # V1.2 — INTEGRAZIONE CAD-01/CAD-02 NATIVA, VERIFICATA
 
 Primo file unico schematico KiCad U401/U402/LM358, con `PLL_PDOUT_3STATE` in comune (U401/4 → R901/1). GitHub Actions KiCad 9 [run 42878584174](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42878584174): **ERC nativo 0 violazioni**, **33 reti reali esportate**, **28 gruppi pin-net con controlli automatici PASS**, export SVG e rigenerazione deterministica PASS. Verifiche software e ngspice storiche anche PASS su branch; **non** PLL chiuso, master gerarchico, PCB o prova RF. NO FAB / NO TX.
