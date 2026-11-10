@@ -116,7 +116,8 @@ for ref,value,net1,net2,x,y in conn:
 for ref,x,y,net in [('PWR901',95.25,156.21,'VANA20_FILT'),('PWR902',134.62,156.21,'GND')]:
     elements.append(symbol_inst('ExternalPowerFlag',ref,'EXTERNAL_SUPPLY_ASSUMED','',x,y,[1],noboard=True))
     elements.append(wire_label(net,x-5.08,y,-1,ref+'-1'))
-elements.append(f'(text {q("V1.0 CAD-FIRST RX ONLY: ML145151 PDout pin4 THREE-STATE is EXTERNAL. PD_FILTER resistor/cap are CANDIDATES, NOT COMPENSATED PLL.\nExternal +20V and GND power flags only DECLARE supplied ports for partial ERC.\nC805 is DNI because VCO candidate already has C505 100nF on VTUNE.\nNo native schematic for U401, power converter, VCO here. NO FAB / NO TX.")} (at 145 180 0) {effects(1.2)} (uuid {q(uid("notice"))}))')
+NOTICE_TEXT="V1.0 CAD-FIRST RX ONLY: ML145151 PDout pin4 THREE-STATE is EXTERNAL. PD_FILTER resistor/cap are CANDIDATES, NOT COMPENSATED PLL.\nExternal +20V and GND power flags only DECLARE supplied ports for partial ERC.\nC805 is DNI because VCO candidate already has C505 100nF on VTUNE.\nNo native schematic for U401, power converter, VCO here. NO FAB / NO TX."
+elements.append(f'(text {q(NOTICE_TEXT)} (at 145 180 0) {effects(1.2)} (uuid {q(uid("notice"))}))')
 elements.append('(sheet_instances (path "/" (page "1")))')
 elements.append('(embedded_fonts no)')
 # Include project-local custom symbol library, not merely cached lib symbols.
