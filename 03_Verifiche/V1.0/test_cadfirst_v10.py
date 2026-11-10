@@ -10,7 +10,8 @@ class CADFirst(unittest.TestCase):
     cls.lib=(V10/"THT_V10.kicad_sym").read_text()
     cls.generator=(V10/"genera_pll_filter_v10.py").read_text()
     cls.policy=(ROOT/"00_Gestione_Progetto/METODO_CAD_FIRST_V1.0.md").read_text()
-    cls.coverage=list(csv.DictReader((ROOT/"00_Gestione_Progetto/MATRICE_COPERTURA_CAD_V1.0.csv").open()))
+    with (ROOT/"00_Gestione_Progetto/MATRICE_COPERTURA_CAD_V1.0.csv").open(newline="",encoding="utf-8") as f:
+        cls.coverage=list(csv.DictReader(f))
     cls.wf=(ROOT/".github/workflows/cad_native_v10.yml").read_text()
  def test_01_real_kicad_sexpr(self):self.assertTrue(self.s.startswith("(kicad_sch (version 20250114)"))
  def test_02_compatible_symbol_library_version(self):self.assertIn("(kicad_symbol_lib (version 20241209)",self.lib)
