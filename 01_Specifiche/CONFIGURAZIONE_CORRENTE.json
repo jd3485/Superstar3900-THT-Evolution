@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.4",
+  "revision": "V0.5",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -59,19 +59,26 @@
     "reference_crystal_suitable_for_final_ssb": false,
     "pll_core_pinmap_count": 42,
     "lo_buffer_status": "SN74AC14N_CANDIDATE_NOT_CIRCUITED",
-    "vco_status": "IDEAL_VARACTOR_LC_STUDY_BB204G_NO_CIRCUIT",
-    "loop_filter_status": "TYPE_B_RC_ANALYTIC_ONLY_NOT_STABILITY_VERIFIED",
+    "vco_status": "CANDIDATE_COLPITTS_SPICE_DECK_NOT_RUN",
+    "loop_filter_status": "V04_RIPPLE_WEAK_V05_TWORC_UNSTABLE_NOT_ASSESSED",
     "pll_n_controller_status": "NOT_DESIGNED",
     "vco_varactor_candidate": "BB204G TO-92 legacy, supply not qualified",
-    "vco_inductance_nh_candidate": 220,
-    "vco_effective_fixed_capacitance_pf_assumed": 57.5,
+    "vco_inductance_nh_candidate": 150,
+    "vco_effective_fixed_capacitance_pf_assumed": 61,
     "loop_filter_candidate": {
       "r1_ohm": 2200,
       "r2_ohm": 10000,
       "c_f": 1e-7
     },
     "channel_controller_candidate": "PIC18F47Q43-I/P PDIP40",
-    "controller_firmware_status": "NOT_DESIGNED"
+    "controller_firmware_status": "NOT_DESIGNED",
+    "vco_dual_varactor_candidate": "BB204G_TO92_two_junctions_parallel_historical",
+    "vco_model_vtune_v_nominal": [
+      3.1271,
+      6.9542
+    ],
+    "vco_tolerances_qualified": false,
+    "channel_controller_model": "RX_FAIL_CLOSED_PYTHON_NOT_FIRMWARE"
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -90,7 +97,8 @@
     "hardware_prototypes": 0,
     "kicad_schematic_file_present": true,
     "kicad_schematic_scope": "U402_PRESCALER_ONLY_UNCHECKED",
-    "kicad_gui_open": "NOT_RUN"
+    "kicad_gui_open": "NOT_RUN",
+    "spice_deck_written": true
   },
-  "repository_publication": "MAIN_V0_4"
+  "repository_publication": "MAIN_V0_5_CANDIDATE"
 }

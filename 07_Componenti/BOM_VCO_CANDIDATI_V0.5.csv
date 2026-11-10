@@ -1,0 +1,24 @@
+reference,quantity,mpn_or_value,producer,tht_package,status,note
+Q501;Q502,2,2N3904-AP,MCC,TO-92,CANDIDATO,E-B-C pins 1-2-3; model not vendor-verified
+D501,1,BB204G,Philips legacy,TO-92,LEGACY_NOS_BLOCKING,1 A1 2 common cathode 3 A2; source and authenticity open
+L501,1,150nH (TBD),TBD,THT,NOT_SELECTED,Q SRF tolerances must be checked
+C502,1,68pF C0G,TBD,Radial_THT,CANDIDATE,feedback collector emitter
+C503,1,220pF C0G,TBD,Radial_THT,CANDIDATE,feedback emitter GND
+C504,1,1nF C0G,TBD,Radial_THT,CANDIDATE,varicap DC block
+C505;C500,2,100nF,TBD,Radial_THT,CANDIDATE,VTUNE and RF power decoupling
+C500B,1,10uF >=16V,TBD,Radial_THT,CANDIDATE,V9 bulk
+C506,1,2.2pF C0G,TBD,Radial_THT,CANDIDATE,oscillator -> output buffer weak coupling
+C507,1,100pF C0G,TBD,Radial_THT,CANDIDATE,buffer AC output
+C501,1,1nF C0G,TBD,Radial_THT,CANDIDATE,RF grounding base
+C508,1,stray/trimmer approx 5pF,TBD,THT,PLACEHOLDER,C_fixed_eff 61pF not physically established
+R501,1,33kohm,TBD,Axial_THT,CANDIDATE,Q501 base pullup 9V
+R502,1,10kohm,TBD,Axial_THT,CANDIDATE,Q501 base pulldown
+R503,1,330ohm,TBD,Axial_THT,CANDIDATE,Q501 emitter
+R505,1,100kohm,TBD,Axial_THT,CANDIDATE,Varactor anode return
+R506,1,47kohm,TBD,Axial_THT,CANDIDATE,Q502 base pullup
+R507,1,22kohm,TBD,Axial_THT,CANDIDATE,Q502 base pulldown
+R508,1,470ohm,TBD,Axial_THT,CANDIDATE,Q502 emitter
+U602,1,LM358N,Texas Instruments,PDIP8,STUDY_ONLY_NOT_NETLISTED,active Vtune buffer from 12V rail; loop stability not validated
+R601;R602,2,10kohm,TBD,Axial_THT,STUDY_ONLY,RC input network
+C601,1,10nF,TBD,Radial_THT,STUDY_ONLY,RC first pole
+C602,1,100nF,TBD,Radial_THT,STUDY_ONLY,RC second pole

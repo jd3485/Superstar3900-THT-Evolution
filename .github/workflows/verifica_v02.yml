@@ -1,4 +1,4 @@
-name: THT radio - V0.1 V0.2 V0.3 V0.4 software regressions (NO FAB NO TX)
+name: THT radio - V0.1 V0.2 V0.3 V0.4 V0.5 software regressions (NO FAB NO TX)
 on:
   push:
     branches: [main]
@@ -21,3 +21,5 @@ jobs:
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.3 -p 'test_*.py' -v
       - name: V0.4 VCO analytic and partial KiCad native-file static checks
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.4 -p 'test_*.py' -v
+      - name: V0.5 dual-varactor and RX fail-closed static bench models
+        run: python3 -B -m unittest discover -s 03_Verifiche/V0.5 -p 'test_*.py' -v

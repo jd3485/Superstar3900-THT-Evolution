@@ -1,3 +1,15 @@
+# Decisioni V0.5 — 10 novembre 2026
+
+- **DT-038 CANDIDATA:** passaggio da *una giunzione BB204G + 220nH* (studio V0.4) a *due giunzioni BB204G in parallelo + 150nH* per ridurre VTUNE richiesta. Fisico: D501 pin1/3 anodi al nodo VAR_A, pin2 catodo a VTUNE_RAIL; C504 blocca DC fra tank e diodi. Non garantisce copertura senza taratura.
+- **DT-039 CANDIDATA:** primo circuito oscillatore Colpitts Q501 2N3904-AP (E1/B2/C3) con feedback C502=68p C503=220p, bias 33k/10k/330Ω; buffer emitter follower Q502 E1/B2/C3 con accoppiamento debole 2,2p. SPICE scritto, **NON ESEGUITO**.
+- **DT-040 EVIDENZA ANALITICA:** VCO model L150nH, C_fixed_eff 61pF assunta (capacità feedback+dispositivo+PCB+trimmer), varicap model non ufficiale, 270 Vtune nominali 3,13..6,95V. **Non certificata tolleranza**.
+- **DT-041 CORREZIONE PROGETTUALE:** vecchia rete PLL 2.2k/10k/100n dà solo -1,73dB a 5kHz nel modello. Un 2 poli RC candidate dà -41,43dB ma **non certifica stabilità, lock o ripple del PLL**. Necessita Kphase/Kvco/margine.
+- **DT-042 CANDIDATA:** serve driver di tensione attivo THT (LM358N PDIP8 su rail ~12V) per generare Vtune fino a circa 7V a partire da PDout 0..5V; non è ancora nel circuito SPICE, dunque non approvato.
+- **DT-043 CONTROLLO RX:** modello software di mute prima del cambio N e di sblocco solo dopo lock/ref/power/code stabili. MCU PIC18F47Q43-I/P PDIP40 futuro, **non firmware compilabile**. TX fisicamente bloccato.
+- **DT-044 REGRESSIONE:** congelare `CONFIGURAZIONE_V0.4.json`, test V0.4 leggono lo snapshot; `CONFIGURAZIONE_CORRENTE.json` sale a V0.5. Mantenerlo stabile nelle future chat.
+
+---
+
 # Decisioni V0.4 — 10 novembre 2026
 
 - **DT-031 (CANDIDATO VCO, non circuito approvato):** D501 `BB204G` Philips varactor doppio TO-92 storico come possibile tuning; L_eff=220nH e C_fixed_eff=57.5pF; una sola giunzione equivalente nel modello, non definito utilizzo terminale del secondo diodo. Fattibilità solo analitica; stock storico non garantito.

@@ -1,3 +1,17 @@
+# STATO ATTUALE — V0.5 (10 novembre 2026)
+
+**Sviluppo concreto VCO:** primo circuito a componenti THT con Q501/Q502 2N3904-AP (Colpitts + emitter follower), D501 BB204G (due varicap in parallelo con polarità corrette), L501 150nH, R/C di bias, disaccoppiamenti e prima **netlist SPICE non ancora eseguita**. Modello C(V) e accordo nominale di 270 canali ora ≈3,13–6,95V, con **Cfixed_eff 61pF ASSUNTA**, non misura. I margini di tolleranza non sono certificati.
+
+**Correzione importante:** il filtro candidato della V0.4 attenua il tono PFD 5kHz solo −1,73dB nel modello ideale. Confrontato con filtro due poli −41,43dB, **NON qualificato per stabilità PLL**. Un driver THT +12V tipo LM358N è solo candidato: la tensione PLL PDout 5V non può generare direttamente ~7V.
+
+**Controllo RX:** riferimento Python di cambio canale con mute fail-closed, CH9, lock/ref/power validi e 270 canali, mai TX. Non è firmware PIC programmabile.
+
+File: `01_Specifiche/V0.5/VCO_COLPITTS_THT_V0.5.md`, `03_Verifiche/V0.5/VCO_COLPITTS_CANDIDATE_V0.5.cir`, `02_Piano_Frequenze/V0.5/vco_dualvar_model_v05.py`, `03_Verifiche/V0.5/RAPPORTO_TECNICO_V0.5.md`.
+
+**Stato:** SPICE non eseguito, KiCad VCO non disegnato, ERC/DRC e prototipi NON ESEGUITI, NO FAB / NO TX. Prossima V0.6: eseguire e correggere SPICE, margini PLL, poi schema KiCad reale.
+
+---
+
 # STATO ATTUALE — V0.4, 10 novembre 2026
 
 **Nuovo:** studio analitico del VCO THT (varactor BB204G storico TO-92, L220nH e capacità totale teorica) e primo **sottoschema nativo `.kicad_sch`** del divisore RX U402 TC74AC74P(F) DIP14, completo di simboli locali e quattro connettori THT. **Non è ancora un circuito PLL completo né un file verificato dall'app KiCad:** ERC/DRC/SPICE/hardware NON ESEGUITI. Scelta controller semplice PIC18F47Q43-I/P PDIP40 come candidato, senza firmware/pinout finali.

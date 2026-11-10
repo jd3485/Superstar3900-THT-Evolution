@@ -13,7 +13,7 @@ from vco_tuning_v04 import (
 SCH=ROOT/'04_KiCad/V0.4/PLL_PRESCALER_RX_V0.4.kicad_sch'
 LIB=ROOT/'04_KiCad/V0.4/THT_V04.kicad_sym'
 TABLE=ROOT/'04_KiCad/V0.4/sym-lib-table'
-CFG=ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json'
+CFG=ROOT/'01_Specifiche/CONFIGURAZIONE_V0.4.json'
 def balanced(text):
     depth=0;quoted=False;esc=False
     for char in text:

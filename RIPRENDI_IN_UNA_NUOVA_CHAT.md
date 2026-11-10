@@ -1,3 +1,19 @@
+# CONTINUITÀ ATTUALE — V0.5 (10 novembre 2026)
+
+**Repository GitHub privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. **Fonte di verità:** HEAD di `main`, non memoria di chat o progetto SMD. All'inizio di ogni chat controllare main, tag, PR, CI; leggere questo handoff, README, protocollo, stato, registro decisioni e ultimo rapporto V0.5.
+
+Requisiti immutati: CB tradizionale 100% THT, 270 posizioni RX su A-F, AM/FM/USB/LSB/CW, accordatore manuale con bypass, PCBWay fabbrica solo PCB nude, saldatura interna; esclusi DSP evoluto, PLL RF moderno, Dual Watch, CTCSS/DCS, VOX, tuner automatico. **NO FAB / NO TX.**
+
+**Progressione:** V0.2 tabella 270 RX e PLL math; V0.3 U401 ML145151YP DIP28 + U402 TC74AC74P DIP14 pin-net e quarzo 10.240MHz; V0.4 primo file KiCad nativo solo prescaler (NON verificato in KiCad), studio un varicap; **V0.5 primo circuito SPICE candidato Colpitts con Q501/Q502 2N3904 TO-92, doppio BB204G TO-92 parallelo e buffer analogico**. L=150nH e Cfixed_eff≈61pF ASSUNTA, tuning nominale ≈3,13–6,95V; modello varicap NON vendor. Correzione filtro V0.4 -1,73dB a 5kHz, confronto passivo due poli -41,43dB che NON è certificato stabile in loop; driver LM358N a 12V candidato ma non progettato.
+
+**File da aprire:** `01_Specifiche/V0.5/VCO_COLPITTS_THT_V0.5.md`, `03_Verifiche/V0.5/VCO_COLPITTS_CANDIDATE_V0.5.cir`, `02_Piano_Frequenze/V0.5/vco_dualvar_model_v05.py`, `08_Firmware_Prototipi/V0.5/rx_controller_reference_v05.py`, `03_Verifiche/V0.5/RAPPORTO_TECNICO_V0.5.md`.
+
+**Prossima V0.6:** eseguire SPICE vero, registrare convergenza/frequenza/swing, correggere startup e componente/fit quando necessario, modellare filtro/phase margin, cercare varicap THT realmente acquistabile, poi KiCad CAD completo. Il PIC PDIP40 resta un candidato; modello Python NON è firmware XC8. NON affermare SPICE o ERC/DRC eseguiti senza report veri.
+
+**Versionamento:** aggiornare solo file nuovi e modificati, non rigenerare ZIP. Mantenere snapshot delle configurazioni V0.1..V0.5, CI regressiva e storia; **non modificare né sincronizzare progetto SMD**.
+
+---
+
 # Esito CI confermato V0.4: 102/102 test software PASS (4 suite), run 42810567923; rimangono NON ESEGUITI KiCad ERC/DRC, SPICE e hardware.
 
 # CONTINUITÀ ATTUALE — V0.4 (10 novembre 2026)
