@@ -27,3 +27,10 @@
 
 **VERDETTO:** V0.2 = baseline matematica e analisi di fattibilità. **NO FAB / NO TX.**
 **Prossima V0.3:** scelta e disegno circuitale THT del PLL con componenti reali/part numbers verificati, senza liberare TX.
+
+
+## GitHub Actions verificata dopo integrazione
+- **Run ID**: [42803142196](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42803142196)
+- **Commit testato**: `7da67271bc9c33416b695053c4e9d9ed1f1f60b2` (V0.2).
+- **Job `static-regression`**: `success`; verificati i passi `Baseline V0.1 structural tests` e `V0.2 channel plan and candidate PLL arithmetic tests`, entrambi `success`.
+- Si tratta **solo** di test Python riproducibili. KiCad, SPICE, hardware e TX rimangono **NON ESEGUITI**.
