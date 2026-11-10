@@ -1,0 +1,26 @@
+* V0.7 BEHAVIORAL BOOST EXPERIMENT - NOT MC34063 transistor-level simulation
+* Ideal clocked switch, ideal comparator, generic diode and L/C parts.
+* DO NOT infer actual IC switching performance or RF-quiet 18V rail.
+.title V0.7 THT 11-15.5Vin to 24V approximate boost, RX-only
+.param V_SOURCE=11.0
+.param I_LOAD=0.015
+VIN SRC 0 PWL(0 0 1m {V_SOURCE})
+R_SOURCE SRC VIN_FILT 0.2
+CIN VIN_FILT 0 47u
+RSC VIN_FILT VIN_L 1
+L701 VIN_L SW_NODE 470u
+S701 SW_NODE 0 GATE 0 S_POWER
+.model S_POWER SW(Ron=0.8 Roff=1e9 Vt=2.5 Vh=0.1)
+D701 SW_NODE BOOST D_SCH
+.model D_SCH D(Is=1e-7 N=1.15 Rs=0.1 Cjo=150p Vj=.6)
+CBOOST BOOST 0 47u
+R_LOAD BOOST 0 {24/I_LOAD}
+VCLK CLK 0 PULSE(0 5 1.1m 0.1u 0.1u 13.5u 25u)
+* Generic behavioral threshold gating; NO MC34063 internal state/control
+BGATE GATE 0 V=V(CLK)/(1+exp((V(BOOST)-24)/0.15))
+.tran 2u 100m 0 1u
+.measure tran avg_boost AVG v(BOOST) FROM=80m TO=100m
+.measure tran min_boost MIN v(BOOST) FROM=80m TO=100m
+.measure tran max_boost MAX v(BOOST) FROM=80m TO=100m
+.measure tran avg_input AVG v(VIN_FILT) FROM=80m TO=100m
+.end

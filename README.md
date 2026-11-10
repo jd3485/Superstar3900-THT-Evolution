@@ -1,3 +1,15 @@
+# STATO CORRENTE — V0.7 (10 novembre 2026)
+
+**Alimentazione analogica VTUNE THT — PROGETTO PRELIMINARE**: U701 ST MC34063ABN DIP8 (boost dalla linea11–15,5V protetta a circa24V) più U702 TI LM317 TO-220 (linea~18,287V) e rete RC 10Ω/100µF per alimentare un futuro driver analogico PLL. Pin-net **11 pin su 11**, BOM THT e calcoli di duty, Ipk, partitori e margini. **La rete non è ancora disegnata in schematico KiCad nativo, né qualificata con componenti reali.**
+
+**Tre veri ngspice su un MODELLO COMPORTAMENTALE IDEALE**, NON su MC34063/LM317 fisici: media Vboost23,9967V @11V, 24,0096V @13,8V e24,0221V @15,5V; proprietà del modello, non un prodotto RF-low-noise. Limiti: margine Ipk a11V appena24mA nel calcolo tipico; switching EMI non misurata; drive ad alta tensione può non arrivare a15V nel worst case. **No PLL chiuso, NO FAB / NO TX.**
+
+**VCO V0.6 candidata B invariata:** L166nH, 2×2N3904, doppio BB204G TO-92, C470pF, R1,2kΩ, +5V RF; 5 punti SPICE con avvio realistico 36,048–39,196MHz, ma modelli vendor non qualificati. Per la nuova chat leggere `RIPRENDI_IN_UNA_NUOVA_CHAT.md`.
+
+File nuovi: `01_Specifiche/V0.7/ALIMENTAZIONE_VTUNE_THT_V0.7.md`, `04_KiCad/V0.7/`, `03_Verifiche/V0.7/RAPPORTO_TECNICO_V0.7.md`, `03_Verifiche/V0.7/MISURE_BOOST_V0.7.json`. **Prossima V0.8:** circuito VTUNE/PLL dinamico e alimentazione fisicamente qualificabile, poi CAD KiCad/ERC.
+
+---
+
 # STATO ATTUALE — V0.6 (10 novembre 2026)
 
 **Prima verifica ngspice reale.** Il circuito Colpitts della V0.5 è stato **RESPINTO**: a VTUNE 3,2–7,5 V oscilla solo a 38,306–38,350 MHz e polarizza in diretta i varicap (+0,51..+0,54 V). Sono stati provati modelli e avvii diversi per evitare falsi positivi.

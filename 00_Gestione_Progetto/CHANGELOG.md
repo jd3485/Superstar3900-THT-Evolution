@@ -1,3 +1,13 @@
+# V0.7 — 10 novembre 2026 — Sorgente VTUNE THT 24V + 18V candidata
+
+- MC34063ABN DIP8 boost e LM317 TO-220 lineare, pin-net11/11, 16 passivi candidati, BOM THT, scheda tecnica e rischi.
+- Calcoli ripple e tolleranze, Ipk e duty, source Vin11–15,5V, target Vboost~24V, Vreg nominale18,287V, filtro RC10Ω/100µF. **Valori non certificati**.
+- Prima simulazione ngspice comportamentale con ideal switch/comparator a tre tensioni, uscite circa24V. Modelli IC reali non eseguiti, rumore RF ignoto.
+- Nuovo rischio bloccante: Rsc1Ω+L470µH lascia appena24mA di margine nel calcolo tipico; uscita opamp potenzialmente insufficiente per VTUNE15V. V0.8 dedicata a modelli reali, driver PLL e filtri.
+- Snapshot configurazione V0.6, nuova suite statica, rapporto e handoff cumulativi; KiCad/ERC/DRC e PCB non eseguiti. **NO FAB / NO TX.**
+
+---
+
 # V0.6 — 10 novembre 2026 — Prima simulazione elettrica VCO e variante correttiva THT
 
 - Eseguito il VCO V0.5 in vero ngspice 45.2; scoperto **RF FAIL**: frequenza quasi bloccata 38,306..38,350MHz e forward bias BB204G +0,5V.

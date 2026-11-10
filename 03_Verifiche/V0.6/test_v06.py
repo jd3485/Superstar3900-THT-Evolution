@@ -4,7 +4,7 @@ SPICE runs are separate GitHub Actions jobs; these tests do NOT simulate RF.
 import json,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-CONFIG=ROOT/'01_Specifiche/CONFIGURAZIONE_CORRENTE.json'
+CONFIG=ROOT/'01_Specifiche/CONFIGURAZIONE_V0.6.json'
 DATA=ROOT/'03_Verifiche/V0.6/MISURE_SPICE_V0.6.json'
 class V06(unittest.TestCase):
  @classmethod

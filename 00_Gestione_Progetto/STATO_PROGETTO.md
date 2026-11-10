@@ -1,3 +1,24 @@
+# Stato progetto V0.7 — 10 novembre 2026
+
+| Sezione | Stato reale |
+|---|---|
+| Piano frequenze RX | 270 posizioni con matematica testata, non RF |
+| PLL e divisore U401/U402 | Candidati DIP, schema digitale parziale V0.4, sourcing U401 non chiuso |
+| VCO | Candidata B V0.6 passa 5 punti ngspice con modelli sintetici; VTUNE8–15V richiesta |
+| BOOST VTUNE V0.7 | **MC34063ABN DIP8 candidato**, calcoli e pin-net 8/8, switch NON simulato con vero dispositivo |
+| Regolatore V0.7 | **LM317T TO-220 candidato**, 3/3 pin, R=240/3240 ->18,287V nominali |
+| SPICE boost | 3 transienti reali **su modello ideale PWM/interruttore**, alimentazioni11/13,8/15,5V, circa24V in uscita: NON test reale MC34063 |
+| Criticità Ipk | a Vin11V I_L ON≈0,306A e soglia typ0,33A, margine24mA; possibile limite in CCM |
+| Criticità opamp | 18V rail può essere insufficiente per 15V VTUNE a temperature/carico worst case, driver NON definito |
+| Isolamento rumore RF | RC solo ideale 10Ω/100µF; compatibilità EMI/phase noise non misurata |
+| KiCad booster e PLL | No schematico integrato, ERC/DRC **NON ESEGUITI** |
+| PCB / hardware | 0 PCB, 0 prototipi; nessuna fabbricazione |
+| TX / FAB | **NO FAB / NO TX** |
+
+**Prossima V0.8:** macro-modelli vendor, sizing di convertitore e rail/driver, prova EMI, netlist/PCB KiCad verificabile. Progetto autonomo, THT, PCBWay solo schede nude.
+
+---
+
 # Stato corrente — V0.6 (10 novembre 2026)
 
 | Blocco | Stato ed evidenza |
