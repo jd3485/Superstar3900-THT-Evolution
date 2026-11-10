@@ -34,3 +34,6 @@ Nessun modellamento delle soglie dinamiche Schmitt, jitter, inverter CMOS, separ
 
 ## Secondo gate: ERC 0 / verifier power flag da correggere
 Nel run [42892009967](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892009967) il KiCad9 **ERC è passato con 0 violazioni su 4 fogli** dopo il fix del filo GND. I test di connessione hanno segnalato soltanto l'assenza in netlist dei riferimenti ausiliari PWR520/PWR521 (`in_bom no`, `on_board no`): è il normale export del tool. Il verificatore deve controllare i componenti reali su VCC_VCO5 e VCC_BUF5 senza inventare pin PWR_FLAG; la validazione del driver power resta a carico dell'ERC senza waivers. **Riesecuzione richiesta per dichiarare PASS PIN-NET.**
+
+## Correzione sintassi ngspice 42
+Il primo workflow SPICE (run [42892344790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892344790)) ha eseguito il transient ma **non** prodotto la misura `MAX v(VAR_A,VTUNE_RAIL)` perché `.measure` su ngspice42 non riconosce questa forma a due nodi. Inserita una sonda ideale controllata `E_VAK_MON` con uscita `V(VAR_A)-V(VTUNE_RAIL)`, e misura su un singolo nodo `VAR_AK_MON`: circuito VCO non alterato. Prima di validare lo screening, rieseguire i quattro punti.

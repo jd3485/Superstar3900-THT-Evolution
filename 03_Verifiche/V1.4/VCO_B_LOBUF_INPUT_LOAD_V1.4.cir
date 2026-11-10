@@ -59,7 +59,9 @@ D_AC14_LOWER 0 LO_BUF_INPUT DBUFCLAMP
 .measure tran min_out MIN v(LO1_ANALOG_OUT) FROM=15u TO=25u
 .measure tran v14_buf_high MAX v(LO_BUF_INPUT) FROM=25u TO=40u
 .measure tran v14_buf_low MIN v(LO_BUF_INPUT) FROM=25u TO=40u
-.measure tran v14_varactor_a_minus_k_max MAX v(VAR_A,VTUNE_RAIL) FROM=25u TO=40u
+* Ideal high-impedance differential voltage probe (SPICE42-compatible): A1/K varactor
+E_VAK_MON VAR_AK_MON 0 VAR_A VTUNE_RAIL 1
+.measure tran v14_varactor_a_minus_k_max MAX v(VAR_AK_MON) FROM=25u TO=40u
 .measure tran v14_analog_lo_high MAX v(LO1_ANALOG_OUT) FROM=25u TO=40u
 .measure tran v14_analog_lo_low MIN v(LO1_ANALOG_OUT) FROM=25u TO=40u
 .end
