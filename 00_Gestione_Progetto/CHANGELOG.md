@@ -1,3 +1,11 @@
+# V1.4 — primo foglio VCO e buffer LO THT REALMENTE inseriti nella gerarchia, 10 novembre 2026
+- Quattro schemi KiCad9 editabili; nuovo sottosistema con Q501/Q502 TO-92, BB204G catodo comune pin2, L501 166nH modello con footprint volutamente vuoto e U520 SN74AC14N DIP14 con due inverter, bias R510/R511/R512 e ingresso AC-coupled C510. 37 nuove istanze; rail VCO5/BUF5 esterne distinte.
+- [KiCad9 CI 42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874): ERC **0 violazioni**, **50 reti**, tutte le **33 reti legacy conservate senza spezzature/corti**, connessi R805→D501 pin2 VTUNE e U520→U402 pin3 LO; simboli esportati e pagine SVG native. Corrette la giunzione GND e la falsa aspettativa di PWR_FLAG in netlist senza sconti ERC.
+- [ngspice CI 42892783098](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892783098): 4 transienti candidato VCO B con ingresso analogico stimato del buffer (NON modello vendor/digitale AC14). Diodi in inversa ai quattro punti, minimo A−K = **−0,376121 V** a VTUNE 8V, segnale modellato al buffer ~1,39–3,99V. **Non test di oscillazione con CMOS attivo, lock, phase noise o maturità RF.**
+- Storico V0.9 e CAD V1.0–V1.3 invariati, repository SMD indipendente intatta; nessuna PCB, nessun DRC, BOM/coil MPN incompleti, nessun ordine, NO FAB / NO TX.
+
+---
+
 # V1.3 — gerarchia KiCad RX PLL a 3 pagine nativa, 10 novembre 2026
 - Root + child PLL digitale + child filtro/LM358 THT. PDout e GND ora passano su sheet pins e HLabels reali, senza scorciatoie global-label; sorgenti precedenti V1.0/V1.1/V1.2 inalterate.
 - [KiCad9 native CI run 42884939754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42884939754): ERC **0 violazioni**, export SVG **3 fogli**, **33/33 reti**, **tutta la partizione dei pin identica al master piatto V1.2**, verificati due sheetpath diversi; generazione bit-for-bit riproducibile.

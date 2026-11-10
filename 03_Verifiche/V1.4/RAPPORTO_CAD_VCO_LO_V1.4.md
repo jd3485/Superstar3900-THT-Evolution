@@ -22,7 +22,7 @@ L501 ancora SENZA MPN/footprint certificato, BB204G legacy sourcing/lead pitch/s
 
 ## Validazione CAD
 `.github/workflows/cad_native_v14.yml` verifica rigenerazione deterministica, export simboli THT, ERC dei quattro fogli, netlist native old/new con conservazione di TUTTI i gruppi pin-net legacy e 15 gruppi candidati nuovi (con distinzione necessaria delle alimentazioni), SVG di 4 pagine e artefatti.
-**In attesa del risultato runner prima di dichiarare il PASS.**
+**KiCad9 gate PASS** sul run [42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874): 0 ERC, 50 reti, tutte le 33 reti legacy conservate, driver VTUNE e clock LO collegati. **Solo cablaggio, NON qualifica RF.**
 
 ## Errore ERC V1.4 intercettato e corretto
 Primo run [42891325528](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42891325528) = **FAIL CAD**: due violazioni KiCad9, `pin_not_connected` sul pin GND del foglio filtro e `power_pin_not_driven` U803 pin4. Il problema è la linea GND legacy non divisa nel punto di diramazione x154,94 mm / y87,63 mm. Aggiornati sia il master sia il generatore riproducibile: spezzata fisicamente la linea esistente in due segmenti, tenendo il junction e il nuovo ramo verso VCO. **ERC da rieseguire prima di dichiarare PASS**.
@@ -37,3 +37,10 @@ Nel run [42892009967](https://github.com/jd3485/Superstar3900-THT-Evolution/acti
 
 ## Correzione sintassi ngspice 42
 Il primo workflow SPICE (run [42892344790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892344790)) ha eseguito il transient ma **non** prodotto la misura `MAX v(VAR_A,VTUNE_RAIL)` perché `.measure` su ngspice42 non riconosce questa forma a due nodi. Inserita una sonda ideale controllata `E_VAK_MON` con uscita `V(VAR_A)-V(VTUNE_RAIL)`, e misura su un singolo nodo `VAR_AK_MON`: circuito VCO non alterato. Prima di validare lo screening, rieseguire i quattro punti.
+
+## Gate V1.4 effettivamente conclusi — quadro finale
+- [Native KiCad9 run 42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874): **SUCCESS**, 0 violazioni ERC su quattro pagine, 50 reti nella netlist, 33/33 reti V1.3 preservate senza corti, 3 child separati, controllo BB204G pins1/2/3 e AC14 inputs/clock PASS, esportazione SVG e rigenerazione deterministica PASS.
+- [ngspice run 42892783098](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892783098): **SUCCESS come simulazione eseguita**, ma limitata a un modello **analogico stimato** del carico dell'ingresso AC14; VCTRL = 8/10/12/15 V. Misurato max di A−K del varicap: **−0,376121 V a 8V, −2,194727 V a 10V, −4,122102 V a 12V, −7,029617 V a 15V**. Peggior margine inverso: **0,376121 V**.
+- Ingresso Schmitt nel modello analogico passivo: a VTUNE 8 V oscilla 1,394–3,862 V; a VTUNE 15 V oscilla 1,385–3,993 V. NON è garanzia di soglie/rate digitali.
+- **NOT_RUN:** simulazione VCO con macro-modello TI AC14 e carico reale del circuito RX, lock/phase margin, frequenza d'uscita digitale, noise/jitter/EMC/tolleranze, scelta fisica L501 e supply, verifica PCB DRC. **NO FAB / NO TX**.
+- Le sezioni storiche qui sopra descrivono incidenti di validazione già **Risolti**; non rappresentano il verdetto corrente.

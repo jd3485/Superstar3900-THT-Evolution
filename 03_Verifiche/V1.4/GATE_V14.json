@@ -1,0 +1,32 @@
+{
+  "revision": "V1.4",
+  "project": "Superstar3900-THT-Evolution",
+  "kicad_native_run_id": 42892782874,
+  "kicad_erc_violations": 0,
+  "actual_nets": 50,
+  "baseline_V13_nets": 33,
+  "baseline_pin_groups_preserved": true,
+  "VCO_VTUNE_cathode_pin2": true,
+  "LO1_CMOS_buffer_to_U402_pin3": true,
+  "BB204G_pinmap": "A1=1 commonK=2 A2=3",
+  "supplemental_ngspice_run_id": 42892783098,
+  "ngspice_points_vtune_v": [
+    8,
+    10,
+    12,
+    15
+  ],
+  "min_reverse_bias_v_model": 0.376121,
+  "schmitt_input_analog_voltage_range_v_model": [
+    1.385297,
+    3.993394
+  ],
+  "AC14_digital_behavior": "NOT_SIMULATED",
+  "closed_PLL_lock": "NOT_RUN",
+  "phase_noise": "NOT_RUN",
+  "RF_hardware": "NOT_RUN",
+  "coil_L501_footprint": "UNSELECTED",
+  "PCB_DRC": "NOT_RUN",
+  "fab_authorized": false,
+  "tx_authorized": false
+}

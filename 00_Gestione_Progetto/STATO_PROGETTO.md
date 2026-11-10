@@ -1,3 +1,9 @@
+# V1.4 — VCO Colpitts THT e SN74AC14N su 4 fogli KiCad9: ERC 0, 50 reti native, 33 reti legacy non alterate, collegamenti VTUNE→D501/2 e U520→U402/3 PASS ([KiCad 42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874)). ngspice con ingresso analogico caricato 4 punti eseguito ([42892783098](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892783098)); margine minimo inverso varicap 0,376 V: **VCO/buffer/PLL NON qualificati RF**, coil e PCB incompleti. NO FAB / NO TX.
+
+**PASS CAD V1.4, NON RF:** 37 nuove istanze THT fisiche/prova/flag; BB204G pin1+3 anodi e pin2 catodo; alimentazioni VCC_VCO5 e VCC_BUF5 provvisorie, separate. Quarto foglio nativo integrato in gerarchia, ma radio nel suo insieme ancora senza RX mixer/IF/audio/power/fanout e senza PCB. Coil L501 senza MPN e footprint; SMD separata e intatta. **NO FAB / NO TX**.
+
+---
+
 # V1.3 — gerarchia KiCad9 RX PLL verificata: 3 pagine, ERC 0 violazioni, 33/33 reti con partizioni di tutti i pin identiche alla V1.2, U401 e U803 su sheetpath distinti. [CI native run 42884939754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42884939754). Il VCO e la PCB restano non integrati. NO FAB / NO TX.
 
 **CAD-14 resta incompleto:** soltanto il sottosistema RX PLL ha due child reali, non il master completo dell'intera radio; mancano VCO, buffer, supply e controller. Parti fisiche solo THT; nessun gate RF o fabbricazione.
