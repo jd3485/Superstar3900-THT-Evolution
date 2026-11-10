@@ -42,8 +42,10 @@ group("Q501 emitter", {("Q501","1"),("R503","1"),("C502","2"),("C503","1")})
 group("Q502 base", {("Q502","2"),("R506","2"),("R507","1"),("C506","2")})
 group("Q502 emitter", {("Q502","1"),("R508","1"),("C507","1")})
 group("analog LO output", {("C507","2"),("C510","1"),("R509","1"),("J523","1")})
-vco5=group("external VCO supply", {("J520","1"),("Q502","3"),("L501","1"),("R501","1"),("R506","1"),("PWR520","1")})
-buf5=group("external buffer supply", {("J521","1"),("U520","14"),("C511","1"),("R510","1"),("PWR521","1")})
+## KiCad exports no-BOM/no-board PWR_FLAG symbols only into ERC, not into the component netlist.
+## Supply-driver checks are therefore enforced by native zero-error ERC, not by PWR references here.
+vco5=group("external VCO supply", {("J520","1"),("Q502","3"),("L501","1"),("R501","1"),("R506","1")})
+buf5=group("external buffer supply", {("J521","1"),("U520","14"),("C511","1"),("R510","1")})
 for a,b in [(vco5,buf5),(vco5,tune),(buf5,tune),(clock,buf5),(clock,gnd)]:
     if a==b:raise AssertionError("Forbidden short between VCO, BUF, VTUNE, LO and GND")
 for pin in [("U520",str(x)) for x in (5,9,11,13)]:
