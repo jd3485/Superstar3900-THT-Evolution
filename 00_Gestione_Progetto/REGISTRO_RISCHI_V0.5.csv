@@ -1,0 +1,9 @@
+id,settore,problema,gravita,stato,azione_per_chiusura
+RT-019,VCO,Varicap BB204G storico e non garantito per acquisto affidabile,ALTA,OPEN,Qualificare fonte o alternativa THT
+RT-020,VCO,La formula LC trascura Cjc e Q/ESR/SRF di bobina e varicap,CRITICA,OPEN,Modello SPICE validato e misure
+RT-021,VCO,Curve C3/C30 non dimostrano C(V) nel range 3-8V a 37MHz,ALTA,OPEN,Confrontare curve Philips e misure di capacità
+RT-022,PLL,Driver 5V PDout non copre Vtune fino a ~7V,ALTA,OPEN,Progettare driver attivo THT con swing e rumore verificati
+RT-023,PLL,Vecchio RC attenua 5kHz soltanto -1.73dB,ALTA,OPEN,Riprogettare loop con KVCO KPD e verifica di stabilità
+RT-024,PLL,Due poli RC migliorano reiezione ma possono rendere loop instabile,CRITICA,OPEN,Modello dinamico con margine di fase e tempi lock
+RT-025,RF,Oscillatore 2N3904 e buffer non simulati/verificati in circuito reale,ALTA,OPEN,Eseguire SPICE e validare guadagno e ampiezza
+RT-026,PCB,KiCad ERC DRC e footprint transistor e varicap non validati,ALTA,OPEN,Schemi nativi e review pinout

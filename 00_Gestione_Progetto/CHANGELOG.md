@@ -1,3 +1,14 @@
+# V0.5 — 10 novembre 2026 — VCO circuitale THT e controllo RX
+
+- Progettato circuito candidato Colpitts con Q501/Q502 TO-92, D501 doppio varicap BB204G, induttore, rete di bias, capacitori RF e buffer.
+- Aggiunta netlist ngspice **non ancora eseguita** con transistor e varicap approssimati, e matrice CSV pin/connessioni.
+- Modello numerico del tuning nominale e risultati di reiezione del filtro: evidenziata carenza -1,73dB dello stadio PLL V0.4 e tradeoff stabilità del filtro a due poli -41,43dB.
+- Introdotto controller RX di riferimento fail-closed con CH9, 270 N, tempo di qualificazione lock, nessuna TX, ma non compilabile su PIC.
+- BOM e rischi, report V0.5 e 34 test software aggiuntivi; mantenuti integralmente file e test delle V0.1–0.4.
+- Nessun ERC/DRC, SPICE eseguito, hardware, PCB o ordine PCBWay; **NO FAB / NO TX**.
+
+---
+
 # V0.4 — 10 novembre 2026 — VCO analitico e primo CAD digitale THT
 
 - Primo **sottoschema KiCad S-expression `.kicad_sch`** di U402 prescaler con simboli locali e quattro header THT. File generato e controllato staticamente; **non aperto in KiCad e non validato con ERC**.

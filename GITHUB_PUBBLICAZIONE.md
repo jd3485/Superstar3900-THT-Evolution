@@ -1,3 +1,9 @@
+# Gestione cumulativa V0.5
+
+V0.5 modifica soltanto file nuovi e registri correnti, più la regressione V0.4 ora riferita a una fotografia `CONFIGURAZIONE_V0.4.json` immutabile. Conservare storici, CI e handoff GitHub; **mai rigenerare ZIP completi a ogni revisione**. I test Python NON sono SPICE/ KiCad ERC né prove hardware, e nessun risultato automatico autorizza TX o produzione.
+
+---
+
 # Nota GitHub V0.4
 
 La fonte è `main` cumulativo; si aggiungono i nuovi file V0.4 e si aggiornano solo i registri attivi, la configurazione corrente, la suite regressiva V0.3 (per leggere lo snapshot) e il workflow. Le configurazioni storiche V0.1, V0.2 e V0.3 rimangono immutabili. Nessun ZIP per ogni revisione. Per scaricare l'intero progetto alla V0.4 usare l'archivio del commit `main` verificato; eventuali tag v0.4 devono essere **verificati creati** prima di dichiararli disponibili. Nessun ordine PCB o TX.

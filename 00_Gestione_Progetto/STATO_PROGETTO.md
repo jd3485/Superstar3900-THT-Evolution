@@ -1,3 +1,22 @@
+# Stato corrente V0.5 — 10 novembre 2026
+
+| Modulo | Evidenza reale |
+|---|---|
+| Piano RX | 270 frequenze/ALFA V0.2, controlli aritmetici |
+| PLL U401/U402 | ML145151YP PDIP28 e TC74AC74P DIP14 candidati; approvvigionamento U401 non verificato |
+| VCO | **Netlist SPICE scritta** Q501/Q502 2N3904-AP TO-92 + BB204G TO-92 con due giunzioni, L150nH, C feedback e bias |
+| Accordo ideale | Curva C(V) fitted, 270 parole N, Vtune nominale 3,13–6,95 V **non garantita** |
+| Filtro PLL | Rete V0.4 attenuazione 5kHz -1,73dB; rete a due poli studio -41,43dB; **loop NON stabilizzato** |
+| Controllo N | Simulatore logico Python di RX mute fail-closed e CH9, non firmware PIC compilato |
+| KiCad | Prescaler .kicad_sch V0.4 presente, VCO non integrato; apertura/ ERC/ DRC **NOT_RUN** |
+| SPICE RF | Deck completo candidato; esecuzione simulator **NOT_RUN** |
+| PCB/prototipo | 0 PCB, 0 Gerber, 0 prototipi |
+| Produzione e TX | **NO FAB / NO TX** |
+
+**Bloccanti:** strumenti SPICE e CAD effettivamente eseguibili, modello varicap autentico a 37MHz, sourcing BB204G legacy, margini di loop e riferimento SSB, alimentazioni e protezioni, schema KiCad integrato. **Prossima V0.6:** simulazione circuitale vera, correzioni e CAD.
+
+---
+
 # Stato progetto corrente — V0.4 (10 novembre 2026)
 
 | Modulo | Stato reale |
