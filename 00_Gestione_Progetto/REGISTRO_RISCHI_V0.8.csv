@@ -1,0 +1,11 @@
+id,dominio,rischio,gravita,stato,misura_correttiva
+RT-046,POWER,V07 Rsc1ohm non soddisfa soglia MC34063 minima250mV con L470uH,ALTA,CORRETTO_SOLO_SU_CARTA,Proposto Rsc0.47ohm e test worst case dispositivi
+RT-047,POWER,27V boost con modello f40kHz non validata Ct470pF ne carichi/ESR,CRITICA,OPEN,Simulatore modello IC vero variando Vin Iout temperatura
+RT-048,POWER,LM317 precarico insufficiente se loop di controllo assorbe quasi zero,ALTA,MITIGATO_SU_CARTA,Precarico R7132.4k 0.5W con dissipazione verificata su hardware
+RT-049,RF,Induttore RLB0914-471KL THT non schermato puo introdurre disturbi nel VCO,CRITICA,OPEN,Distanza schermatura misure EMI layout
+RT-050,POWER,Valore di tensione LM358 a15V non garantito per headroom alto,CRITICA,OPEN,Modello vendor LM358 e test variazioni di carico temperatura
+RT-051,PLL,PD_FILTER non collegato a reale PDout e Filtro loop compensato assente,CRITICA,OPEN,Progettare CP/PD filtro e stabilita di fase
+RT-052,POWER,SB160 60V non certificato per overshoot su switching node,MEDIA,OPEN,Simulare picchi e pin ratings con device/diodo reali
+RT-053,CAD,Nessun KiCad integrato completo e ERC DRC non eseguiti,CRITICA,OPEN,Trasferire netlist verificabile in .kicad_sch eseguire ERC
+RT-054,PCB,Nessuna alimentazione powergood mute HW o protezione reverse/picchi,CRITICA,OPEN,Disegnare e testare interblocchi
+RT-055,RF,VCO e riferimento SSB con componenti legacy non qualificati,CRITICA,OPEN,Verificare sourcing varicap TCXO e margini temperatura

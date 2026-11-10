@@ -1,3 +1,17 @@
+# Decisioni V0.8 — 10 novembre 2026
+
+- **DT-058 STUDY:** incrementare target boost a **27V** con U701 MC34063ABN DIP8, Rsc0,47Ω THT e L701 470µH; soglia MC34063 ST 250/300/350mV min/typ/max, a Vin11V deltaI stimata0,331A e soglia minima0,532A, margine _solo da corrente zero_0,201A. **Non prova comportamento CCM/timing Ct**.
+- **DT-059 STUDY:** D701 Schottky Vishay **SB160-E3/54 60V 1A DO41**, sostituisce 1N5819 40V candidato, nuovo margine nominale ma switching overshoot da verificare.
+- **DT-060 STUDY:** L701 Bourns **RLB0914-471KL** THT 470µH, Irms560mA typ, Isat1A typ, DCR1,3Ω max; NON schermato, disturbo RF e dissipazione da validare.
+- **DT-061 STUDY:** U702 LM317T TO220 con R710240Ω e R7113570Ω ->20,022V tipici, precarico R7132400Ω 0,5W per soddisfare10mA minimo in ipotesi conservativa. Verificare spesa termica, temperatura, dropout e protezione cap ADJ.
+- **DT-062 STUDY:** U803 LM358N PDIP8, non-inverting ×4 con Rf30k e Rg10k, input `PD_FILTER` esterna 2–3,75V, uscita VTUNE8–15V in modello, second amp terminato. Non è phase detector né PLL funzionante.
+- **DT-063 EVIDENCE:** run ngspice del driver con modello ideale limitato da output rail−headroom, 6 transitori. Headroom3V output14,996V a PD3,75V; headroom4,3V output14,747V (**FAIL obiettivo**). Nessuna simulazione del LM358 fisico.
+- **DT-064 WARNING:** CT470pF non implica f40kHz reale; l'oscillatore MC34063 e corrente sense non sono verificati; 27V SMPS può interferire con la radio.
+- **DT-065 HISTORY:** congelare `CONFIGURAZIONE_V0.7.json` e puntare vecchia regressione V0.7 allo snapshot, aggiornarne solo l'asserzione fragile della posizione dell'handoff; config corrente a V0.8. Preservare V0.1–V0.7 cumulativamente.
+- **DT-066 GATE:** nessun PCB, ERC/DRC, apparecchio o TX autorizzati; **NO FAB / NO TX**.
+
+---
+
 # Decisioni V0.7 — 10 novembre 2026
 
 - **DT-051 (PROPOSTA BOOST THT):** per superare il fabbisogno VTUNE fino15V da 13,8V, adottare architettura **ST MC34063ABN DIP8 boost~24V**, solo candidata per studio; pin 1–8 secondo datasheet ST. Nessun MC34063 realmente simulato.

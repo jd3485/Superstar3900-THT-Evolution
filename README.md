@@ -1,3 +1,15 @@
+# STATO CORRENTE — V0.8 (10 novembre 2026)
+
+**Nuovo circuito candidato interamente THT per l'alimentazione e il pilotaggio VTUNE:** U701 MC34063ABN PDIP8 con target27V e corrente di soglia ricalcolata (Rsc0,47Ω, L470µH Bourns RLB0914-471KL candidata); D701 Vishay SB160 60V assiale; U702 LM317T TO220 a circa20,022V con precarico R7132,4kΩ0,5W per minimo carico; U803 LM358N PDIP8 in configurazione non invertente ×4 da **PD_FILTER** a VTUNE. **19 pin IC / 22 passivi documentati**, BOM25 righe.
+
+**ngspice** ha eseguito 6 test del **driver IDEALE, non dell'LM358 reale**. Per PD_FILTER2/2,5/3,75V -> VTUNE~8/10/15V con rail19,05V e headroom assunta3V. Caso headroom4,3V: VTUNE soltanto14,75V (**FAIL margine**). I dati non validano PLL closed-loop, rumore o regolazione reale MC34063 e LM317.
+
+**Nessun nuovo schematico KiCad integrato, ERC/DRC e prototipo NON ESEGUITI.** Nessuna BOM/PCB fabbricabile, NO FAB / NO TX.
+
+Documenti: `01_Specifiche/V0.8/VTUNE_POWER_DRIVER_THT_V0.8.md`, `03_Verifiche/V0.8/RAPPORTO_TECNICO_V0.8.md`, `03_Verifiche/V0.8/VTUNE_DRIVER_BEHAVIORAL_V0.8.cir`, `04_KiCad/V0.8/`. Prossima V0.9: simulazione reale componenti dove reperibili, timing Ct, anello PLL, protezioni e CAD.
+
+---
+
 # STATO CORRENTE — V0.7 (10 novembre 2026)
 
 **Alimentazione analogica VTUNE THT — PROGETTO PRELIMINARE**: U701 ST MC34063ABN DIP8 (boost dalla linea11–15,5V protetta a circa24V) più U702 TI LM317 TO-220 (linea~18,287V) e rete RC 10Ω/100µF per alimentare un futuro driver analogico PLL. Pin-net **11 pin su 11**, BOM THT e calcoli di duty, Ipk, partitori e margini. **La rete non è ancora disegnata in schematico KiCad nativo, né qualificata con componenti reali.**

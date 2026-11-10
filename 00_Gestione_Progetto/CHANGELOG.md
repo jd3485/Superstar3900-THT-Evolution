@@ -1,3 +1,13 @@
+# V0.8 — 10 novembre 2026 — correzione margini alimentazione e driver THT
+
+- V0.7 boost24/rail18.3/Rsc1ohm superata come idea ma non dimensionata: nuova proposta boost27V, Rsc0,47Ω e L470µH con soglia minima ST250mV, rettificatore SB160 DO41 60V.
+- LM317T impostato a20,022V nominali, aggiunto R7132,4kΩ0,5W di precarico per minimo carico; calcoli su tensioni e watt.
+- LM358N PDIP8 driver a guadagno4 da input filtrato PD_FILTER a VTUNE; 19 pin IC, 22 passivi, BOM25 componenti THT candidate.
+- **6 simulazioni ngspice** del modello opamp ideale clamp: output8/10/15V nominali nel modello, ma caso rail headroom peggiore raggiunge solo14,75V (**non qualificato**). Nessuna vera simulazione MC34063/LM317/LM358.
+- Snapshot storico V0.7, test regressivi, rapporto, rischi, documenti di ripresa e CI aggiornati. Nessuno schematico KiCad integrato/ERC/DRC o PCB; **NO FAB / NO TX**.
+
+---
+
 # V0.7 — 10 novembre 2026 — Sorgente VTUNE THT 24V + 18V candidata
 
 - MC34063ABN DIP8 boost e LM317 TO-220 lineare, pin-net11/11, 16 passivi candidati, BOM THT, scheda tecnica e rischi.
