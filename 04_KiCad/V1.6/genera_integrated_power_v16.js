@@ -76,7 +76,7 @@ function integrate(v){
   return true;
  });
  if(nRemoved!==3)throw Error("V1.6 expected to remove exactly one redundant external ground PWR_FLAG and isolated stub");
- p5="(kicad_sch\\n"+cleaned.join("\\n")+"\\n)\\n";
+ p5="(kicad_sch\n"+cleaned.join("\n")+"\n)\n";
  p5=p5.replace("NOT IN MASTER. NO FAB / NO TX.","IN MASTER V1.6 WITH UNQUALIFIED INPUT. NO FAB / NO TX.");
  const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))\n (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT 5V power"))\n)\n';
  return {root:"(kicad_sch\n"+root.join("\n")+"\n)\n",digital:digi,analog:ana,vco:vc,power:p5,table};
