@@ -1,0 +1,42 @@
+name: V0.9 Native KiCad ERC on isolated PLL loop driver (NO FAB NO TX)
+on:
+  push:
+    branches: ["feature/v0.9-pll-tristate-kicad-erc", main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  kicad-pll-loop-erc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native KiCad CLI for ERC
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Confirm committed schematic matches deterministic generator
+        run: |
+          sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.before"
+          python3 04_KiCad/V0.9/genera_pll_loop_v09.py
+          sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.after"
+          cmp "$RUNNER_TEMP/sch.before" "$RUNNER_TEMP/sch.after"
+      - name: Run native KiCad ERC only for V0.9 partial loop
+        shell: bash
+        run: |
+          mkdir -p 03_Verifiche/V0.9/kicad_results
+          set +e
+          kicad-cli sch erc --exit-code-violations --output 03_Verifiche/V0.9/kicad_results/erc_v09.rpt 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch
+          result=$?
+          echo "KICAD_ERC_EXIT_CODE=$result"
+          cat 03_Verifiche/V0.9/kicad_results/erc_v09.rpt || true
+          exit $result
+      - name: Upload native KiCad ERC logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v09-partial-kicad-erc-not-a-pcb-validation
+          path: 03_Verifiche/V0.9/kicad_results/
+          if-no-files-found: warn
