@@ -52,6 +52,8 @@ jobs:
         run: |
           kicad-cli sch export netlist --output 03_Verifiche/V1.0/kicad_results/pll_filter.net 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch
           test -s 03_Verifiche/V1.0/kicad_results/pll_filter.net
+      - name: Assert actual KiCad netlist wiring matches real pins
+        run: python3 -B 03_Verifiche/V1.0/verify_kicad_netlist_v10.py 03_Verifiche/V1.0/kicad_results/pll_filter.net
       - name: Export schematic SVG from native KiCad
         run: |
           mkdir -p 03_Verifiche/V1.0/kicad_results/svg
