@@ -1,6 +1,6 @@
 block_id,subsystem,schematic_on_main_before_v10,physical_cad_after_pilot,analysis_evidence,hardware_lab,pcb_state,next_cad_task
 CAD-01,PLL PDout filter and LM358 driver,NO,PARTIAL_CANDIDATE_ONLY,SPICE_surrogate_V09_and_driver_V08,NOT_RUN,NOT_STARTED,Native ERC and netlist then integrate U401
-CAD-02,PLL programmable dividers prescaler reference,PARTIAL_V04,PARTIAL_V04,Static_PLL_frequency_plan,NOT_RUN,NOT_STARTED,Merge U401 schematic and prescaler symbols with validated pinouts
+CAD-02,PLL programmable dividers prescaler reference,PARTIAL_V04,CANDIDATE_V11_U401_U402_XTAL,NATIVE_ERC_NETLIST_PENDING,NOT_RUN,NOT_STARTED,Integrate CAD01 and CAD02 in master schematic
 CAD-03,VCO RF local oscillator buffer,NO,NO,Ngspice_model_candidate_B_V06,NOT_RUN,NOT_STARTED,Build VCO native schema and correct RF buffer VTUNE source
 CAD-04,Power 13.8V 5V and 20V THT supply,NO,NO,Ideal_switching_and_headroom,NOT_RUN,NOT_STARTED,Device_level_schematic_ERC_ripple_EMI
 CAD-05,Antenna manual tuner and mechanical bypass,NO,NO,Architecture_only,NOT_RUN,NOT_STARTED,LC_tuner_and_relay_switch_mechanics
