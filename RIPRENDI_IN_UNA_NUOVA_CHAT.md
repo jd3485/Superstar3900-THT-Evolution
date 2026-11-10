@@ -1,3 +1,5 @@
+# V0.6 INTEGRATA IN MAIN — CI software 157/157 PASS, run 42823693863; CI ngspice PASS (esecuzione modelli), run 42823693786; PR #2 integrata. RF hardware NON qualificata, NO FAB / NO TX.
+
 # CONTINUITÀ ATTUALE — V0.6 (10/11/2026)
 
 **Repository privata e indipendente:** `jd3485/Superstar3900-THT-Evolution`, fonte di verità `main`. Al riavvio controllare HEAD, PR, tag e CI, poi questo handoff, README, protocollo, stato, decisioni e ultimo rapporto. **NON usare il progetto SMD come dipendenza.**

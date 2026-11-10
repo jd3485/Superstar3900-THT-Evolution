@@ -111,7 +111,9 @@
     "kicad_schematic_scope": "U402_PRESCALER_ONLY_UNCHECKED",
     "kicad_gui_open": "NOT_RUN",
     "spice_deck_written": true,
-    "spice_run_id": 42822739779
+    "spice_run_id": 42822739779,
+    "spice_main_ci_run_id": 42823693786,
+    "software_regression_main_ci_run_id": 42823693863
   },
-  "repository_publication": "MAIN_V0_6_PENDING_MERGE"
+  "repository_publication": "MAIN_V0_6_INTEGRATED"
 }
