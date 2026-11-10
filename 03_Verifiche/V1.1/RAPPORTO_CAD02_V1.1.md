@@ -8,6 +8,9 @@ Data 10 novembre 2026. Si applica il metodo CAD-first del progetto THT, indipend
 - X401 HC-49/U 10,240MHz, C403/C404=22pF, C401/C405=100nF, C402=10uF, RC reset R403=10k/C406=100nF **solo candidati**, da qualificare; niente supervisore reale.
 - RA2/RA1/RA0 = HIGH/LOW/HIGH per R2048; T/R=HIGH per ricezione senza offset; N12/N13=GND. Flip flop U402 secondario ingressi definiti, uscite NC.
 
+## Correzioni da CI
+Eseguita correzione allineamento grid nativo KiCad 1,27 mm (pin, fili, labels, NC) e aggiunti J407–J409 come interfacce di osservazione per phiR, phiV, fV; resta da verificare il nuovo ERC e la netlist.
+
 ## Limiti e gates
 Gli alimentatori, il clock LO CMOS, la codifica N, i driver/buffer RF e il filtro analogico V1.0 sono **interfacce esterne**: non è ancora uno schema master gerarchico collegato, né un PLL chiuso. Il filtro R901=22k/C901=100n della V1.0 resta variante non qualificata rispetto V0.9 10k/47k e 1uF.
 
