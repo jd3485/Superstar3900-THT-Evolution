@@ -12,6 +12,10 @@ jobs:
     timeout-minutes: 27
     steps:
       - uses: actions/checkout@v4
+      - name: Deterministic KiCad 9 migration from unchanged V1.6 CAD
+        run: |
+          node --check 04_KiCad/V1.7/genera_gerarchia_input_v17.js
+          node 04_KiCad/V1.7/genera_gerarchia_input_v17.js --check
       - name: Install KiCad 9 native
         run: |
           sudo apt-get update -qq
