@@ -1,3 +1,5 @@
+# Esito CI confermato V0.4: 102/102 test software PASS (4 suite), run 42810567923; rimangono NON ESEGUITI KiCad ERC/DRC, SPICE e hardware.
+
 # CONTINUITÀ ATTUALE — V0.4 (10 novembre 2026)
 
 **Repository autonoma privata:** `jd3485/Superstar3900-THT-Evolution`. Verificare **HEAD di main**, PR, tag, CI; leggere README, questo handoff, protocollo continuità, registro decisioni e ultimo rapporto tecnico V0.4. **Mai copiare automaticamente parti dalla repository SMD.**

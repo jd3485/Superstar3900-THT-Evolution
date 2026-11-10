@@ -33,3 +33,10 @@
 Priorità: consolidare **un VCO fisico con pinout transistor e varicap**, stadio buffer/limitatore e loop compensato con parametri, avviare progetto U401/MCU e verificare i sottoschemi in KiCad nativo (ERC se ambiente disponibile). Fare controlli con sorgenti/datasheet, senza dichiarare fabbricabile ciò che ancora non è stato validato.
 
 **GATE:** NO FAB / NO TX.
+
+## Esecuzione GitHub Actions effettivamente verificata
+
+- **Run [42810567923](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42810567923)**, commit testato `68c8975d44a447f595269bd0eb3718602ffe2f68`, branch `main`.
+- Job `static-regression`: **SUCCESS**; le suite V0.1 (12), V0.2 (24), V0.3 (32) e V0.4 (34) sono state eseguite con **successo**, per **102 test software** complessivi.
+- Le verifiche riguardano solo dati/funzioni Python e struttura del file S-expression KiCad. **NON ESEGUITI**: apertura in KiCad GUI, ERC/DRC reali, SPICE, hardware, EMI, produzione o TX.
+- Nella prima run V0.4 era fallito un test storico per il riferimento alla configurazione corrente anziché allo snapshot storico: ora corretto con `CONFIGURAZIONE_V0.2.json`; la regressione V0.3 è riferita a `CONFIGURAZIONE_V0.3.json`. La run definitiva è interamente verde.
