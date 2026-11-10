@@ -30,7 +30,12 @@ jobs:
           python3 04_KiCad/V0.9/genera_pll_loop_v09.py
           sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.after"
           if [ -f "$RUNNER_TEMP/sch.before" ]; then
-            cmp "$RUNNER_TEMP/sch.before" "$RUNNER_TEMP/sch.after"
+            if ! cmp -s "$RUNNER_TEMP/sch.before" "$RUNNER_TEMP/sch.after"; then
+              echo "Generator changed committed file"
+              if [ "$GITHUB_EVENT_NAME" != "push" ] || [ "$GITHUB_REF" != "refs/heads/feature/v0.9-pll-tristate-kicad-erc" ]; then
+                exit 1
+              fi
+            fi
           fi
       - name: Commit generated draft schematic on feature branch (ERC still pending)
         if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.9-pll-tristate-kicad-erc'

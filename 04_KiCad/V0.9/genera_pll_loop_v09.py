@@ -18,7 +18,7 @@ def uid(s):
         IDS[s]=f'3d86fc80-36d7-4d76-a243-{len(IDS)+2:012d}'
     return IDS[s]
 def q(s):
-    return '"'+str(s).replace('\\','\\\\').replace('"','\\"')+'"'
+    return '"'+str(s).replace('\\','\\\\').replace('"','\\"').replace('\n','\\n')+'"'
 def effects(size=1.0):
     return f'(effects (font (size {size} {size})))'
 def prop(name,value,x,y,hide=False):
@@ -94,7 +94,7 @@ libs=[
             '(rectangle (start -2.54 2.54) (end 2.54 -2.54) (stroke (width 0.254) (type default)) (fill (type none)))',True)
 ]
 elements=[
- '(kicad_sch (version 20250114) (generator "tht_v09_generator")',
+ '(kicad_sch (version 20250114) (generator "tht_v09_generator") (generator_version "9.0")',
  f'(uuid {q(ROOT_UUID)})',
  '(paper "A3")',
  '(lib_symbols '+'\n'.join(libs)+')',
@@ -118,6 +118,8 @@ for ref,x,y,net in [('PWR901',95,156,'VANA20_FILT'),('PWR902',135,156,'GND')]:
     elements.append(symbol_inst('ExternalPowerFlag',ref,'EXTERNAL_SUPPLY_ASSUMED','',x,y,[1],noboard=True))
     elements.append(wire_label(net,x-5.08,y,-1,ref+'-1'))
 elements.append(f'(text {q("V0.9 RX ONLY: ML145151 PDout pin4 THREE-STATE is EXTERNAL. PD_FILTER resistor/cap are CANDIDATES, NOT COMPENSATED PLL.\nExternal +20V and GND power flags only DECLARE supplied ports for partial ERC.\nC805 is DNI because VCO candidate already has C505 100nF on VTUNE.\nNo native schematic for U401, power converter, VCO here. NO FAB / NO TX.")} (at 145 180 0) {effects(1.2)} (uuid {q(uid("notice"))}))')
+elements.append('(sheet_instances (path "/" (page "1")))')
+elements.append('(embedded_fonts no)')
 elements.append(')')
 src='\n'.join(elements)+'\n'
 OUT.parent.mkdir(parents=True,exist_ok=True)
