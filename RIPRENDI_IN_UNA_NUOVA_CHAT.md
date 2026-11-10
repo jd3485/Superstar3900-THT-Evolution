@@ -1,3 +1,5 @@
+# CI V0.5 verificata: 136/136 controlli Python PASS su main, run 42815442825 (PR #1 integrata). SPICE ed ERC/DRC ancora NON ESEGUITI. NO FAB / NO TX.
+
 # CONTINUITÀ ATTUALE — V0.5 (10 novembre 2026)
 
 **Repository GitHub privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. **Fonte di verità:** HEAD di `main`, non memoria di chat o progetto SMD. All'inizio di ogni chat controllare main, tag, PR, CI; leggere questo handoff, README, protocollo, stato, registro decisioni e ultimo rapporto V0.5.
