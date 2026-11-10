@@ -1,3 +1,5 @@
+# Aggiornamento pilot V1.0: schema KiCad filtro/LM358 realmente ERC **PASS 0 violazioni** e **8 reti pin-to-net PASS** sul solo foglio isolato, run 42858721761; 272 regressioni Python PASS sul branch. Nessuna PCB, U401/VCO restano esterni, produzione non autorizzata.
+
 # STATO CAD-FIRST V1.0 (pilot, senza salto di qualifica elettrica V0.9)
 
 Vero file KiCad gerarchico ancora NON COMPLETO. Nuovo foglio THT filtro/LM358 in `04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch`, libreria locale e sorgente riproducibile; **ERC e netlist nativi solo con evidenza CI verde**, non assumere pass. PCB KiCad ancora assente. La **PR #5 CAD preesistente è dirty e non qualificata**; file ripresi in un branch distinto senza modificarla. Stato radio RX attuale rimane ~15% schematico con margine ampio, PCB produzione 0%. Compilare `MATRICE_COPERTURA_CAD_V1.0.csv` ogni incremento.

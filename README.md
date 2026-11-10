@@ -1,3 +1,5 @@
+# **V1.0 CAD-first pilot: KIcad9 ERC reale 0 violazioni, 8 net esportate e verificate pin-per-pin, 272 test software PASS sul branch.** Non è la radio completa. Leggere il report V1.0. **NO FAB / NO TX**.
+
 # NUOVA POLITICA DI PROGETTAZIONE — CAD-FIRST V1.0 (pilot, V0.9 elettrica resta riferimento)
 
 Da ora il risultato prioritario è lo **schema completo KiCad nativo** e la **PCB THT unica quando praticabile**, con calcoli, SPICE, firmware, test e BOM in parallelo. Avviato il primo sottoschema **PDout/LM358 filtrato**, derivato dal lavoro CAD non integrato della PR #5, con artefatti veri in `04_KiCad/V1.0/`. È un *isolated CAD study*, non PLL reale o circuito da fabbricare. Le sue R901=22k e C901=100n sono una **variante non qualificata** differente dal precedente modello V0.9 R10k/47k e C1µF.
