@@ -1,0 +1,58 @@
+name: V1.7 KiCad9 six-sheet 13V8 fused input Schottky TVS CAD gate
+on:
+  push:
+    branches: [main, "feature/v1.7-fused-reverse-tvs-input-kicad"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-13v8-input:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad 9 native
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register all five preserved local THT symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V1.7").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Export native safety component symbol library
+        run: |
+          mkdir -p 03_Verifiche/V1.7/native_results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V1.7/native_results/symbols/ 04_KiCad/V1.7/THT_V17.kicad_sym
+      - name: Strict full 6-page KiCad ERC with zero waivers
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.7/native_results/erc.json 04_KiCad/V1.7/PLL_RX_HIERARCHICAL_MASTER_V1.7.kicad_sch
+      - name: Export both native KiCad netlists and all component pin partition asserts
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.7/native_results/baseline_v16.net 04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.7/native_results/integrated_v17.net 04_KiCad/V1.7/PLL_RX_HIERARCHICAL_MASTER_V1.7.kicad_sch
+          python3 -B 03_Verifiche/V1.7/verify_input_protection_native_v17.py 03_Verifiche/V1.7/native_results/baseline_v16.net 03_Verifiche/V1.7/native_results/integrated_v17.net
+      - name: Export all six real KiCad schematic pages
+        run: |
+          mkdir -p 03_Verifiche/V1.7/native_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.7/native_results/svg/ 04_KiCad/V1.7/PLL_RX_HIERARCHICAL_MASTER_V1.7.kicad_sch
+          test "$(find 03_Verifiche/V1.7/native_results/svg -type f -name '*.svg' | wc -l)" -ge 6
+      - name: Record conservative normal-range / TVS screening (NOT hardware)
+        run: |
+          python3 -B 03_Verifiche/V1.7/screen_input_protection_v17.py
+          cp 03_Verifiche/V1.7/input_protection_screen_v17.json 03_Verifiche/V1.7/native_results/
+      - name: Always preserve failing and passing KiCad diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v17-THT-13v8-protection-six-native-sheets-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.7/native_results/
+          if-no-files-found: warn
