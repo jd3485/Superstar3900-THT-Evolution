@@ -12,3 +12,7 @@
 10. **Obiettivo PCB:** una PCB principale integrata è la preferenza di progetto. La necessità tecnica di schede separate o componenti meccanici su telaio va motivata e approvata prima di cambiare l'obiettivo.
 11. **Sicurezza:** nessuna trasmissione RF e nessun prototipo dichiarato operativo o sicuro senza verifica hardware, protezioni, requisiti normativi e autorizzazioni pertinenti. Interblocchi progettuali fail-closed.
 12. **Manifest:** ciascun `MANIFEST_SHA256_Vx.y.csv` è legato alla sua specifica baseline/versione; non confrontare il manifest storico di un tag con il `main` di revisioni successive.
+
+## Aggiornamento vincolante CAD-first — 2026-11-10
+
+Per ogni prossima revisione leggere e applicare **`00_Gestione_Progetto/METODO_CAD_FIRST_V1.0.md`**. Priorità al **vero progetto KiCad gerarchico completo**, senza sacrificare SPICE, firmware, componenti THT, BOM e test. Ogni revisione documenta un delta CAD oppure un impedimento verificabile, preserva i vecchi file e distingue ERC del singolo blocco da ERC/DRC globale. **NO FAB / NO TX**.

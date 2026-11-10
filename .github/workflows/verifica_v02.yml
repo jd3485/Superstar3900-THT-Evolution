@@ -1,7 +1,7 @@
-name: THT radio - V0.1 V0.2 V0.3 V0.4 V0.5 V0.6 V0.7 V0.8 V0.9 software regressions (NO FAB NO TX)
+name: THT radio - V0.1 V0.2 V0.3 V0.4 V0.5 V0.6 V0.7 V0.8 V0.9 + V1.0 CAD-first software regressions (NO FAB NO TX)
 on:
   push:
-    branches: [main, "feature/v0.9-pll-tristate-filter"]
+    branches: [main, "feature/v0.9-pll-tristate-filter", "feature/v1.0-cad-first-toplevel"]
   pull_request:
 permissions:
   contents: read
@@ -31,3 +31,5 @@ jobs:
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.8 -p 'test_*.py' -v
       - name: V0.9 three-state phase detector filter consistency 28 tests
         run: python3 -B -m unittest discover -s 03_Verifiche/V0.9 -p 'test_*.py' -v
+      - name: V1.0 CAD-first structural and continuity checks (18 tests)
+        run: python3 -B -m unittest discover -s 03_Verifiche/V1.0 -p 'test_*.py' -v

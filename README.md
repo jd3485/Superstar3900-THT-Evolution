@@ -1,3 +1,15 @@
+# **V1.0 CAD-first pilot: KIcad9 ERC reale 0 violazioni, 8 net esportate e verificate pin-per-pin, 272 test software PASS sul branch.** Non è la radio completa. Leggere il report V1.0. **NO FAB / NO TX**.
+
+# NUOVA POLITICA DI PROGETTAZIONE — CAD-FIRST V1.0 (pilot, V0.9 elettrica resta riferimento)
+
+Da ora il risultato prioritario è lo **schema completo KiCad nativo** e la **PCB THT unica quando praticabile**, con calcoli, SPICE, firmware, test e BOM in parallelo. Avviato il primo sottoschema **PDout/LM358 filtrato**, derivato dal lavoro CAD non integrato della PR #5, con artefatti veri in `04_KiCad/V1.0/`. È un *isolated CAD study*, non PLL reale o circuito da fabbricare. Le sue R901=22k e C901=100n sono una **variante non qualificata** differente dal precedente modello V0.9 R10k/47k e C1µF.
+
+**Stato nativo KiCad ERC:** controllare la run del workflow `cad_native_v10.yml` prima di riportare PASS. **Non esiste ancora un PCB .kicad_pcb integrato**. `NO FAB / NO TX`.
+
+Procedura obbligatoria: [`METODO_CAD_FIRST_V1.0.md`](00_Gestione_Progetto/METODO_CAD_FIRST_V1.0.md), [`MATRICE_COPERTURA_CAD_V1.0.csv`](00_Gestione_Progetto/MATRICE_COPERTURA_CAD_V1.0.csv).
+
+---
+
 # STATO CORRENTE — V0.9 (10 novembre 2026)
 
 **Nuovo passo elettrico:** il phase detector A del PLL THT `U401 ML145151YP` usa `PDout pin4` a tre stati `+5V / GND / HIGH-Z`. La V0.8 aveva progettato il driver LM358N partendo da `PD_FILTER` senza definire come fosse generato. Nella V0.9 abbiamo creato il primo sottoblocco filtro RC THT **R90110k/47k + C9011µF**, con prova ngspice di impulsi positivi, negativi e alta impedenza. Risultati di sei vere transienti con **switch surrogati ideali**, non con il ML145151 fisico.
