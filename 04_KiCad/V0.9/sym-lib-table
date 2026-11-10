@@ -1,1 +1,3 @@
-(sym_lib_table\n (lib (name "THT_V09") (type "KiCad") (uri "${KIPRJMOD}/THT_V09.kicad_sym") (options "") (descr "THT V0.9 project-local custom symbols"))\n)\n
+(sym_lib_table
+ (lib (name "THT_V09") (type "KiCad") (uri "${KIPRJMOD}/THT_V09.kicad_sym") (options "") (descr "THT V0.9 project-local custom symbols"))
+)
