@@ -1,3 +1,9 @@
+# V1.2 — INTEGRAZIONE CAD-01/CAD-02 CANDIDATA, SOLO BRANCH
+
+Primo file unico schematico KiCad di U401/U402/LM358, con `PLL_PDOUT_3STATE` in comune (U401/4 → R901/1). NON ancora verificato nativamente. Schema piatto incompleto, VCO e supply esterni, nessun PLL stabile e PCB non iniziata. NO FAB / NO TX.
+
+---
+
 # V1.1 CAD-02 su branch, non ancora su main
 
 Disegnato U401/U402 con quarzo e pin reali in nuovo schema KiCad; run GitHub Actions 42870145756 SUCCESS: KiCad9.0.9 ERC 0 violazioni, 22 reti pin-net validate, SVG e generatore PASS. Sottoblocco isolato soltanto. Master/PCB non presenti. NO FAB / NO TX.
