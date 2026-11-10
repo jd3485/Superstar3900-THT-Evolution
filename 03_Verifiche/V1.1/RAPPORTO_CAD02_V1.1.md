@@ -21,3 +21,11 @@ Gli alimentatori, il clock LO CMOS, la codifica N, i driver/buffer RF e il filtr
 - Toshiba TC74AC74P pinout: https://toshiba.semicon-storage.com/info/docget.jsp?did=3156&prodName=TC74AC74P
 
 **Prossimo CAD-03:** prima integrare CAD-01 e CAD-02 in un master collegato, poi VCO e alimentatore, mantenendo simulazioni, firmware, BOM e test in parallelo.
+
+## Esito effettivo delle GitHub Actions sul branch — CAD-02 verificato
+- Run [42870145756](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42870145756): **SUCCESS**, KiCad **9.0.9**.
+- Artifact `v11-cad02-rx-core-NO-FAB-NO-TX`: `erc.json` con **0 violazioni** (verificato su report), symbol export e SVG native KiCad riusciti.
+- `cad02_netlist_evidence.json`: **PASS_NETLIST_RX_CORE_ONLY**, **22 reti** controllate con coppie ref/pin effettivamente estratte dalla netlist KiCad; U401↔U402 /2, PLL PDout, oscillatore, 12 segnali N, alimentazione e testpoint.
+- Test storici Python V0.1–V1.0 e 4 workflow SPICE V0.6–V0.9: SUCCESS per lo stesso commit (run 42870146025 e run di simulatori sul commit 8c5f5ad).
+- Anche il vecchio sottoblocco V1.0 KiCad è SUCCESS sullo stesso commit (run 42870145769).
+- Restano **NON PROVATI**: PLL chiuso e stabilità, periferiche reali, simulazioni vendor, radio completa, ERC master, PCB DRC, hardware/RF/EMC. Nessun acquisto/fab/TX autorizzati.

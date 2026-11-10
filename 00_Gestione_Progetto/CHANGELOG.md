@@ -1,3 +1,11 @@
+# V1.1 CAD-02 — 10 novembre 2026
+- Sottoblocco KiCad 9 del PLL U401 ML145151YP/U402 TC74AC74P, quarzo, filtro di reset solo candidato, connettori e decoupling THT.
+- Generatore Node deterministico, libreria locale, ERC e netlist native KiCad, 22 reti pin-per-pin PASS e zero violazioni ERC (run 42870145756). Nessuna deroga THT.
+- Tutti i regressivi storici e quattro simulatori ngspice verdi sul commit branch. Nessuno schema master o PCB, nessun loop PLL chiuso qualificato. NO FAB / NO TX.
+- Mandato operativo per sviluppare autonomamente anche schema/PCB senza sacrificare simulazioni, firmware, BOM, datasheet e verifiche.
+
+---
+
 # CAD-FIRST V1.0 pilot — 2026-11-10
 
 - Adottata la filosofia **CAD-first rigorosa**, senza smettere di simulare, modellare, sviluppare firmware, selezionare componenti e documentare.
