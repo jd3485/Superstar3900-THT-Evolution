@@ -1,0 +1,59 @@
+name: V1.6 KiCad9 five-sheet PLL, VCO and 5V rail real integration
+on:
+  push:
+    branches: [main, "feature/v1.6-integrated-5v-hierarchical-rx-pll"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-integrated-five-sheets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad9 native CAD tools
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Deterministic five-sheet KiCad regeneration from V1.4 and V1.5
+        run: |
+          cp -a 04_KiCad/V1.6 "$RUNNER_TEMP/native-v16-original"
+          node 04_KiCad/V1.6/genera_integrated_power_v16.js
+          for f in PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch PLL_CORE_DIGITAL_V1.6.kicad_sch PD_FILTER_DRIVER_V1.6.kicad_sch VCO_RX_AND_LOBUF_V1.6.kicad_sch POWER5_DISTRIBUTION_V1.6.kicad_sch sym-lib-table; do
+            cmp "$RUNNER_TEMP/native-v16-original/$f" "04_KiCad/V1.6/$f"
+          done
+      - name: Register 4 THT local native symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V1.6").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Strict native KiCad ERC of root with all 4 child sheets
+        run: |
+          mkdir -p 03_Verifiche/V1.6/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.6/kicad_results/erc.json 04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch
+      - name: Export 3 KiCad netlists and enforce exhaustive pin net partition invariants
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.6/kicad_results/v14_baseline.net 04_KiCad/V1.4/PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.6/kicad_results/v15_baseline.net 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.6/kicad_results/v16_integrated.net 04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch
+          python3 -B 03_Verifiche/V1.6/verify_integrated_power_v16.py 03_Verifiche/V1.6/kicad_results/v14_baseline.net 03_Verifiche/V1.6/kicad_results/v15_baseline.net 03_Verifiche/V1.6/kicad_results/v16_integrated.net
+      - name: Export KiCad SVG for root and four actual child sheets
+        run: |
+          mkdir -p 03_Verifiche/V1.6/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.6/kicad_results/svg/ 04_KiCad/V1.6/PLL_RX_HIERARCHICAL_MASTER_V1.6.kicad_sch
+          test "$(find 03_Verifiche/V1.6/kicad_results/svg -name '*.svg' -type f | wc -l)" -ge 5
+      - name: Preserve evidence and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v16-five-native-THT-sheets-integrated-5V-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.6/kicad_results/
+          if-no-files-found: warn
