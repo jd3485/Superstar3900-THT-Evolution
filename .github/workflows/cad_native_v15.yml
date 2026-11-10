@@ -1,0 +1,62 @@
+name: V1.5 native KiCad9 THT 5V regulator and RF distribution candidate
+on:
+  push:
+    branches: [main, "feature/v1.5-tht-5v-distribution-cad"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-5v-supply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native KiCad 9 CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Deterministically regenerate native schematic and symbols
+        run: |
+          cp 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch "$RUNNER_TEMP/a.sch"
+          cp 04_KiCad/V1.5/THT_V15.kicad_sym "$RUNNER_TEMP/a.sym"
+          cp 04_KiCad/V1.5/sym-lib-table "$RUNNER_TEMP/a.table"
+          node 04_KiCad/V1.5/genera_power5_v15.js
+          cmp "$RUNNER_TEMP/a.sch" 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch
+          cmp "$RUNNER_TEMP/a.sym" 04_KiCad/V1.5/THT_V15.kicad_sym
+          cmp "$RUNNER_TEMP/a.table" 04_KiCad/V1.5/sym-lib-table
+      - name: Register local regulator and THT libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          d=(Path.cwd()/"04_KiCad/V1.5").resolve()
+          t=(d/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(d))
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text(t)
+          PY
+      - name: Native KiCad symbol parse and ERC, no suppressed violations
+        run: |
+          mkdir -p 03_Verifiche/V1.5/results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V1.5/results/symbols/ 04_KiCad/V1.5/THT_V15.kicad_sym
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.5/results/erc.json 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch
+      - name: Export pin netlist and assert six real power nets
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.5/results/power5.net 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch
+          python3 -B 03_Verifiche/V1.5/verify_power5_native_v15.py 03_Verifiche/V1.5/results/power5.net
+      - name: Render native schematic and analytic heat/branch budget
+        run: |
+          mkdir -p 03_Verifiche/V1.5/results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.5/results/svg/ 04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch
+          python3 -B 03_Verifiche/V1.5/screen_power5_thermal_v15.py
+          cp 03_Verifiche/V1.5/v15_power_budget.json 03_Verifiche/V1.5/results/
+      - name: Always retain native CAD proof or failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v15-native-THT-5V-power-PILOT-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.5/results/
+          if-no-files-found: warn
