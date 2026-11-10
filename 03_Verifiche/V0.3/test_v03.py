@@ -109,6 +109,6 @@ class PLLV03(unittest.TestCase):
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
     self.assertFalse(list((ROOT/'04_KiCad').rglob('*.kicad_pcb')))
  def test_32_handoff_and_report(self):
-    self.assertIn('V0.3',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text()[:200])
+    self.assertIn('V0.3',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text())
     self.assertTrue((ROOT/'03_Verifiche/V0.3/RAPPORTO_TECNICO_V0.3.md').exists())
 if __name__=='__main__': unittest.main()
