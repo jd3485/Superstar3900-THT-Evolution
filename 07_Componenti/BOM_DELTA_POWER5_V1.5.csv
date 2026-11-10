@@ -1,0 +1,12 @@
+reference,quantity,component,package,value,status,qualification
+U601,1,ST L7805CV,TO-220-3 vertical,5V linear regulator,PINOUT_FROM_ST_DATASHEET,UNQUALIFIED_THERMAL
+D601,1,1N4007,DO-41 THT,reverse discharge path output-to-input,CANDIDATE,NO
+C600,1,ceramic radial THT,disc P2.5mm,330nF 50V,CANDIDATE,NO
+C601,1,electrolytic radial THT,D6.3mm P2.5mm,47uF 35V,CANDIDATE_ESR_AND_FOOTPRINT,NO
+C602,1,ceramic radial THT,disc P2.5mm,100nF 25V,CANDIDATE,NO
+C603,1,electrolytic radial THT,D6.3mm P2.5mm,47uF 16V,CANDIDATE_ESR_AND_FOOTPRINT,NO
+R611;R612;R613,3,axial through-hole resistor,DIN0207 0.25W,1 ohm,LOAD_DROP_NOT_QUALIFIED,NO
+C611;C612;C613,3,electrolytic radial THT,D6.3mm P2.5mm,10uF 16V,PACKAGE_PROVISIONAL,NO
+C614;C615;C616,3,ceramic radial THT,disc P2.5mm,100nF 25V,PACKAGE_PROVISIONAL,NO
+J601;J602;J603;J604;J605,5,THT two pin header,P2.54mm,bench power input outputs and probes,TEMPORARY_NOT_PRODUCTION,NO
+PWR601;PWR602,2,schematic ERC-only power flag,NO_BOARD,external supply/ground flags,NOT_A_COMPONENT,NO

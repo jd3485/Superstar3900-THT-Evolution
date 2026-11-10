@@ -1,3 +1,9 @@
+# V1.5 CAD 5V THT (baseline elettrica V0.9 preservata) — nuovo sottoblocco AUTONOMO verificato con KiCad 9, NON integrato nel master V1.4
+- `04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch` con U601 L7805CV TO-220, D601 anti-scarica, condensatori e tre rami RC per PLL/VCO/buffer.
+- [GitHub KiCad run 42909924401](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42909924401): **ERC 0 violazioni**, netlist **6/6 reti PASS**, rigenerazione deterministic, export simboli/SVG e screening termico.
+- Budget puramente analitico: 12 scenari VIN/carico, **4 segnalati termicamente a rischio** con ipotesi 50°C ambiente e RθJA 50°C/W. Né assorbimenti reali né dissipatore sono definiti. NON è una qualifica termica o RF.
+- La protezione 13,8 V a monte NON è progettata e la sezione 20 V VTUNE NON è integrata. File V1.4 preservati. **NO FAB / NO TX**.
+
 # V1.4 PASS CAD (baseline elettrica V0.9 invariata) — master RX PLL GERARCHICO A 4 FOGLI: 04_KiCad/V1.4/PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch, foglio VCO Colpitts B e condizionatore LO SN74AC14N THT integrati. KiCad9 run 42892782874 ERC0, 50 reti, 33 legacy preservate, VTUNE→D501/2 e U520→U402/3 PASS. ngspice input analogico buffer run42892783098 4 punti 8–15V, min reverse 0.376V. VCO/AC14 non RF qualificati, L501 166nH MPN/footprint irrisolto, supply esterne, nessun PCB. NO FAB / NO TX.
 
 # V1.3 PASS — baseline V0.9 preservata; master gerarchico RX PLL in 04_KiCad/V1.3/ con root e due child THT. KiCad9 run 42884939754: ERC 0 violazioni, 3 pagine SVG, equivalenza integrale pin-net 33/33 rispetto a V1.2. U401 PDout pin4 ↔ R901 pin1; GND tra child. È solo RX PLL parziale, VCO/PCB assenti. NO FAB / NO TX.

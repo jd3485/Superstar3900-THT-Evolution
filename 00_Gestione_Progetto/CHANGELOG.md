@@ -1,3 +1,11 @@
+# V1.5 CAD 5V THT — nuovo sottoblocco AUTONOMO verificato con KiCad 9, NON integrato nel master V1.4
+- `04_KiCad/V1.5/THT_5V_POWER_DISTRIBUTION_V1.5.kicad_sch` con U601 L7805CV TO-220, D601 anti-scarica, condensatori e tre rami RC per PLL/VCO/buffer.
+- [GitHub KiCad run 42909924401](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42909924401): **ERC 0 violazioni**, netlist **6/6 reti PASS**, rigenerazione deterministic, export simboli/SVG e screening termico.
+- Budget puramente analitico: 12 scenari VIN/carico, **4 segnalati termicamente a rischio** con ipotesi 50°C ambiente e RθJA 50°C/W. Né assorbimenti reali né dissipatore sono definiti. NON è una qualifica termica o RF.
+- La protezione 13,8 V a monte NON è progettata e la sezione 20 V VTUNE NON è integrata. File V1.4 preservati. **NO FAB / NO TX**.
+
+---
+
 # V1.4 — primo foglio VCO e buffer LO THT REALMENTE inseriti nella gerarchia, 10 novembre 2026
 - Quattro schemi KiCad9 editabili; nuovo sottosistema con Q501/Q502 TO-92, BB204G catodo comune pin2, L501 166nH modello con footprint volutamente vuoto e U520 SN74AC14N DIP14 con due inverter, bias R510/R511/R512 e ingresso AC-coupled C510. 37 nuove istanze; rail VCO5/BUF5 esterne distinte.
 - [KiCad9 CI 42892782874](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42892782874): ERC **0 violazioni**, **50 reti**, tutte le **33 reti legacy conservate senza spezzature/corti**, connessi R805→D501 pin2 VTUNE e U520→U402 pin3 LO; simboli esportati e pagine SVG native. Corrette la giunzione GND e la falsa aspettativa di PWR_FLAG in netlist senza sconti ERC.
