@@ -1,0 +1,5 @@
+(sym_lib_table
+ (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT original analog"))
+ (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT original PLL"))
+ (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/THT_V14.kicad_sym") (options "") (descr "THT VCO candidate BB204G + AC14 pin verified"))
+)

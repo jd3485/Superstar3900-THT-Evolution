@@ -1,7 +1,7 @@
 block_id,subsystem,schematic_on_main_before_v10,physical_cad_after_pilot,analysis_evidence,hardware_lab,pcb_state,next_cad_task
-CAD-01,PLL PDout filter and LM358 driver,NO,PARTIAL_CANDIDATE_ONLY,SPICE_surrogate_V09_and_driver_V08,NOT_RUN,NOT_STARTED,Native ERC and netlist then integrate U401
+CAD-01,PLL PDout filter and LM358 driver,NO,INTEGRATED_WITH_VCO_CAD_ONLY_V14,Native_KiCad9_ERC0_and_VTUNE_D501_2_pin_net_run42892782874,NOT_RUN,NOT_STARTED,Simulate_full_loop_PDout_tristate_and_LM358_headroom
 CAD-02,PLL programmable dividers prescaler reference,PARTIAL_V04,ERC_PASS_SUBBLOCK_V11_U401_U402_XTAL,KiCad9_ERC_0_violations_22_netlist_checks_run_42870145756,NOT_RUN,NOT_STARTED,Integrate CAD01 and CAD02 in master schematic
-CAD-03,VCO RF local oscillator buffer,NO,NO,Ngspice_model_candidate_B_V06,NOT_RUN,NOT_STARTED,Build VCO native schema and correct RF buffer VTUNE source
+CAD-03,VCO RF local oscillator buffer,NO,ERC_PASS_4TH_SHEET_V14_UNQUALIFIED_RF,KiCad9_ERC0_50nets_33legacy_preserved_run42892782874_ngspice_loaded_four_points_run42892783098,NOT_RUN,NOT_STARTED,Verify_vendor_CV_loop_lock_SN74AC14_thresholds_and_source_RF_inductor
 CAD-04,Power 13.8V 5V and 20V THT supply,NO,NO,Ideal_switching_and_headroom,NOT_RUN,NOT_STARTED,Device_level_schematic_ERC_ripple_EMI
 CAD-05,Antenna manual tuner and mechanical bypass,NO,NO,Architecture_only,NOT_RUN,NOT_STARTED,LC_tuner_and_relay_switch_mechanics
 CAD-06,RF input ESD attenuation and preselector,NO,NO,Architecture_only,NOT_RUN,NOT_STARTED,RF_input_and_tuned_filters
@@ -12,4 +12,4 @@ CAD-10,SSB USB LSB CW oscillators and product detector,NO,NO,Architecture_only,N
 CAD-11,Audio amplifier volume squelch metering,NO,NO,Requirements_only,NOT_RUN,NOT_STARTED,Audio_power_and_AGC
 CAD-12,PIC THT bands channel selection and firmware,NO,NO,270_channel_logic_static_tests,NOT_RUN,NOT_STARTED,PIC_native_schematic_and_firmware
 CAD-13,Front panel connectors mechanical I_O,NO,NO,Functional_requirements,NOT_RUN,NOT_STARTED,Front_panel_dimensions_keypad_bands
-CAD-14,Master hierarchical KiCad and production PCB,NO,ERC_PASS_RX_PLL_3_SHEET_ONLY_V13,KiCad9_ERC_0_and_all_pin_partitions_33_of_33_equal_run_42884939754,NOT_RUN,NOT_STARTED,Integrate_THT_VCO_LO_buffer_supply_N_control_and_rest_of_radio_then_PCB
+CAD-14,Master hierarchical KiCad and production PCB,NO,ERC_PASS_RX_PLL_4_SHEETS_V14_NOT_RADIO_MASTER,KiCad9_ERC0_50_net_groups_33_legacy_preserved_run42892782874,NOT_RUN,NOT_STARTED,Integrate_power_N_controller_RX_IF_audio_antenna_then_native_routed_PCB

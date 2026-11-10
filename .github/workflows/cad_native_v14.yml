@@ -1,0 +1,63 @@
+name: V1.4 native KiCad9 4-sheet THT VCO-B and AC14 clock buffer candidate
+on:
+  push:
+    branches: [main, "feature/v1.4-tht-vco-lo-buffer-cad"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-vco:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad9 CAD tools (not hardware tests)
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Verify bit-for-bit deterministic native schematics and local libraries
+        run: |
+          cp -a 04_KiCad/V1.4 "$RUNNER_TEMP/v14-original"
+          node 04_KiCad/V1.4/genera_vco_lo_v14.js
+          for f in PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch PLL_CORE_DIGITAL_V1.4.kicad_sch PD_FILTER_DRIVER_V1.4.kicad_sch VCO_RX_AND_LOBUF_V1.4.kicad_sch THT_V14.kicad_sym sym-lib-table; do
+            cmp "$RUNNER_TEMP/v14-original/$f" "04_KiCad/V1.4/$f"
+          done
+      - name: Install original and custom symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V1.4").resolve()
+          src=(p/"sym-lib-table").read_text()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text(src.replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Export new custom symbols with native KiCad
+        run: |
+          mkdir -p 03_Verifiche/V1.4/kicad_results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V1.4/kicad_results/symbols/ 04_KiCad/V1.4/THT_V14.kicad_sym
+      - name: Native KiCad ERC on complete FOUR-SHEET RX PLL candidate
+        run: |
+          mkdir -p 03_Verifiche/V1.4/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.4/kicad_results/erc.json 04_KiCad/V1.4/PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch
+      - name: Native netlists on V1.3 and V1.4 and exhaustive cross-block pin assertions
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.4/kicad_results/reference_v13.net 04_KiCad/V1.3/PLL_RX_HIERARCHICAL_MASTER_V1.3.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.4/kicad_results/v14_vco_buffer.net 04_KiCad/V1.4/PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch
+          python3 -B 03_Verifiche/V1.4/verify_vco_lo_native_v14.py 03_Verifiche/V1.4/kicad_results/reference_v13.net 03_Verifiche/V1.4/kicad_results/v14_vco_buffer.net
+      - name: Export actual four native schematic page SVG files
+        run: |
+          mkdir -p 03_Verifiche/V1.4/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.4/kicad_results/svg/ 04_KiCad/V1.4/PLL_RX_HIERARCHICAL_MASTER_V1.4.kicad_sch
+          test "$(find 03_Verifiche/V1.4/kicad_results/svg -name '*.svg' | wc -l)" -ge 4
+      - name: Upload CAD evidence or failed ERC diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v14-THT-Colpitts-B-LO-buffer-CAD-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.4/kicad_results/
+          if-no-files-found: warn
