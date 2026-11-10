@@ -1,6 +1,6 @@
-# V1.2 — INTEGRAZIONE CAD-01/CAD-02 CANDIDATA, SOLO BRANCH
+# V1.2 — INTEGRAZIONE CAD-01/CAD-02 NATIVA, VERIFICATA
 
-Primo file unico schematico KiCad di U401/U402/LM358, con `PLL_PDOUT_3STATE` in comune (U401/4 → R901/1). NON ancora verificato nativamente. Schema piatto incompleto, VCO e supply esterni, nessun PLL stabile e PCB non iniziata. NO FAB / NO TX.
+Primo file unico schematico KiCad U401/U402/LM358, con `PLL_PDOUT_3STATE` in comune (U401/4 → R901/1). GitHub Actions KiCad 9 [run 42878584174](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42878584174): **ERC nativo 0 violazioni**, **33 reti reali esportate**, **28 gruppi pin-net con controlli automatici PASS**, export SVG e rigenerazione deterministica PASS. Verifiche software e ngspice storiche anche PASS su branch; **non** PLL chiuso, master gerarchico, PCB o prova RF. NO FAB / NO TX.
 
 ---
 
