@@ -51,7 +51,17 @@ jobs:
       - name: Register project THT custom symbols in KiCad 9 global library table
         run: |
           mkdir -p "$HOME/.config/kicad/9.0"
-          cp 04_KiCad/V0.9/sym-lib-table "$HOME/.config/kicad/9.0/sym-lib-table"
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path("04_KiCad/V0.9/sym-lib-table").read_text()
+          # KiCad CLI without a full *.kicad_pro may resolve KIPRJMOD to "/".
+          # Use an explicit absolute path in the ephemeral runner GLOBAL table.
+          absolute=str((Path.cwd()/"04_KiCad/V0.9").resolve())
+          source=source.replace('${KIPRJMOD}',absolute)
+          target=Path.home()/".config/kicad/9.0/sym-lib-table"
+          target.write_text(source,encoding="utf-8")
+          print(target.read_text())
+          PY
           echo "Registered THT_V09 custom symbol library for native ERC"
           cat "$HOME/.config/kicad/9.0/sym-lib-table"
       - name: Run native KiCad ERC only for V0.9 partial loop
