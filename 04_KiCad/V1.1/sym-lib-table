@@ -1,0 +1,3 @@
+(sym_lib_table
+ (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/THT_V11.kicad_sym") (options "") (descr "THT core RX PLL"))
+)

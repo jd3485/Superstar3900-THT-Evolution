@@ -31,3 +31,13 @@ Un unico **progetto KiCad elettrico completo**, con sezioni RF/IF/PLL/audio/alim
 - **CAD-07**: schema master gerarchico, netlist e ERC integrati, PCB principale, posizionamento e routing, DRC, revisione e produzione *solo dopo gate*.
 
 **La priorità CAD non elimina calcoli, firmware, SPICE, BOM, test e documentazione: significa che ogni revisione deve contribuire visibilmente all'artefatto elettronico completo.**
+
+## Mandato operativo autonomo THT — V1.1 (2026-11-10)
+
+- **Responsabilità di sviluppo:** procedere autonomamente, revisione dopo revisione, dal progetto nativo KiCad agli schemi integrati e alla PCB principale, senza fermarsi per chiedere conferma su ogni singolo componente, valore preliminare, scelta di layout o test riproducibile. Le scelte tecniche reversibili devono essere motivate e versionate.
+- **Doppio avanzamento obbligatorio:** ad ogni passaggio ottenere, ove realizzabile, un incremento concreto `.kicad_sch` oppure `.kicad_pcb` (pin/reti/footprint/posizionamento/piste), **insieme** a simulazioni, firmware THT, analisi di tolleranza/temperatura/rumore, validazione di datasheet, BOM, script e test pertinenti. Non spacciare documenti o test software per avanzamento fisico CAD.
+- **Critica tecnica prima dei numeri di revisione:** se un elemento non può essere schematizzato correttamente, annotare la dipendenza e risolvere prima un altro blocco CAD autonomo. Non aumentare artificialmente le versioni.
+- **Requisiti rigidi:** solo THT e progetto separato dalla versione SMD; un solo PCB principale ove tecnicamente praticabile; PCBWay esclusivamente PCB nude, montaggio e saldatura interni.
+- **Qualifica progressiva:** prima sottoblocchi verificati con KiCad ERC/netlist, poi master gerarchico con ERC totale, quindi PCB piazzata/sbrogliata e DRC, revisione RF/EMI/termica, DFM, collaudo prototipo. Un PASS del sottoblocco non è un PASS della radio.
+- **Quando coinvolgere il committente:** modifiche funzionali fondamentali, compromessi irreversibili, deroga THT, eventuale cambio da una a più PCB, acquisti/produzione e attivazioni RF. Nessun acquisto, ordine o TX viene autorizzato implicitamente.
+- **Regola di pubblicazione:** conservare gli artefatti e le versioni storiche, aprire PR, verificare CI e integrare in main solo una revisione coerente; documentare PASS/FAIL/NOT_RUN separatamente. Non toccare il progetto SMD.

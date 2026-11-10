@@ -1,3 +1,9 @@
+# V1.1 CAD-02 su branch, non ancora su main
+
+Disegnato U401/U402 con quarzo e pin reali in nuovo schema KiCad; run GitHub Actions 42870145756 SUCCESS: KiCad9.0.9 ERC 0 violazioni, 22 reti pin-net validate, SVG e generatore PASS. Sottoblocco isolato soltanto. Master/PCB non presenti. NO FAB / NO TX.
+
+---
+
 # Aggiornamento pilot V1.0: schema KiCad filtro/LM358 realmente ERC **PASS 0 violazioni** e **8 reti pin-to-net PASS** sul solo foglio isolato, run 42858721761; 272 regressioni Python PASS sul branch. Nessuna PCB, U401/VCO restano esterni, produzione non autorizzata.
 
 # STATO CAD-FIRST V1.0 (pilot, senza salto di qualifica elettrica V0.9)

@@ -1,3 +1,5 @@
+# V0.9 baseline elettrica / V1.1 CAD-02 branch feature/v1.1-cad02-pll-core: schematico KiCad nucleo PLL U401/U402, quarzo, netlist gate, CON VALIDAZIONE CAD-02 NATIVA: KiCad9 ERC 0 violazioni, netlist 22 reti PASS (run 42870145756), ma non PLL completo né PCB. Leggere rapporto 03_Verifiche/V1.1/RAPPORTO_CAD02_V1.1.md. Non merge senza verifica CI, NO FAB / NO TX.
+
 # CAD-FIRST V1.0 — confermata KiCad 9 native ERC PASS 0 violazioni e 8 reti validate da netlist, run 42858721761; 272 controlli statici PASS run 42858721619; stato elettrico V0.9, schema PCB master ancora NON ESEGUITO. **NO FAB / NO TX**.
 
 # DAL 10 NOV 2026: CAD-FIRST V1.0 PILOT — priorità a schemi elettrici `.kicad_sch` / PCB `.kicad_pcb` veri, senza rinunciare a test, simulazioni, firmware e BOM. **Fonte elettrica V0.9**, corrente sviluppo CAD V1.0. Leggere `00_Gestione_Progetto/METODO_CAD_FIRST_V1.0.md`; primo studio in `04_KiCad/V1.0/`, con R90122k C901100n ancora NON QUALIFICATI e non coincidenti con filtro V0.9. Verificare GitHub Actions CAD native per ERC prima di dichiarare successo. PR #5 CAD storico separato **non integrare se ERC FAIL/merge conflict**. Nessuna fabbricazione: NO FAB / NO TX.

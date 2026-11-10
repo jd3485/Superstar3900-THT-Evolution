@@ -1,0 +1,60 @@
+name: V1.1 CAD-02 - native KiCad PLL core RX
+on:
+  push:
+    branches: [main, "feature/v1.1-cad02-pll-core"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  kicad-native-cad02:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad 9 CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Verify deterministic CAD generator
+        run: |
+          cp 04_KiCad/V1.1/PLL_CORE_RX_CAD_V1.1.kicad_sch "$RUNNER_TEMP/a.sch"
+          cp 04_KiCad/V1.1/THT_V11.kicad_sym "$RUNNER_TEMP/a.sym"
+          cp 04_KiCad/V1.1/sym-lib-table "$RUNNER_TEMP/a.table"
+          node 04_KiCad/V1.1/genera_pll_core_v11.js
+          cmp "$RUNNER_TEMP/a.sch" 04_KiCad/V1.1/PLL_CORE_RX_CAD_V1.1.kicad_sch
+          cmp "$RUNNER_TEMP/a.sym" 04_KiCad/V1.1/THT_V11.kicad_sym
+          cmp "$RUNNER_TEMP/a.table" 04_KiCad/V1.1/sym-lib-table
+      - name: Register THT local symbols
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path.cwd()/"04_KiCad/V1.1"
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p.resolve())))
+          PY
+      - name: Native symbol parse and export
+        run: |
+          mkdir -p 03_Verifiche/V1.1/kicad_results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V1.1/kicad_results/symbols/ 04_KiCad/V1.1/THT_V11.kicad_sym
+      - name: Native schematic ERC and pin-to-net verification
+        run: |
+          mkdir -p 03_Verifiche/V1.1/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.1/kicad_results/erc.json 04_KiCad/V1.1/PLL_CORE_RX_CAD_V1.1.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.1/kicad_results/pll_core.net 04_KiCad/V1.1/PLL_CORE_RX_CAD_V1.1.kicad_sch
+          python3 -B 03_Verifiche/V1.1/verify_kicad_netlist_v11.py 03_Verifiche/V1.1/kicad_results/pll_core.net
+      - name: Native SVG schematic
+        run: |
+          mkdir -p 03_Verifiche/V1.1/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.1/kicad_results/svg/ 04_KiCad/V1.1/PLL_CORE_RX_CAD_V1.1.kicad_sch
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v11-cad02-rx-core-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.1/kicad_results/
+          if-no-files-found: warn
