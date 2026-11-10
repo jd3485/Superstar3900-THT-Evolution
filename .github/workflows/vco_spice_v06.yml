@@ -21,6 +21,10 @@ jobs:
         run: python3 -B 03_Verifiche/V0.6/run_spice_v06.py
       - name: Explore candidate RF oscillators and record failures
         run: python3 -B 03_Verifiche/V0.6/explore_vco_v06.py
+      - name: Refine candidate inductance for frequency range
+        run: python3 -B 03_Verifiche/V0.6/refine_vco_v06.py
+      - name: Check reworked VCO at eight bias points
+        run: python3 -B 03_Verifiche/V0.6/run_reworked_v06.py
       - name: Upload data and logs (not hardware qualification)
         uses: actions/upload-artifact@v4
         if: always()
