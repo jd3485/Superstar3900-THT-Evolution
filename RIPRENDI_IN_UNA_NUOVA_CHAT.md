@@ -1,3 +1,7 @@
+# DAL 10 NOV 2026: CAD-FIRST V1.0 PILOT — priorità a schemi elettrici `.kicad_sch` / PCB `.kicad_pcb` veri, senza rinunciare a test, simulazioni, firmware e BOM. **Fonte elettrica V0.9**, corrente sviluppo CAD V1.0. Leggere `00_Gestione_Progetto/METODO_CAD_FIRST_V1.0.md`; primo studio in `04_KiCad/V1.0/`, con R90122k C901100n ancora NON QUALIFICATI e non coincidenti con filtro V0.9. Verificare GitHub Actions CAD native per ERC prima di dichiarare successo. PR #5 CAD storico separato **non integrare se ERC FAIL/merge conflict**. Nessuna fabbricazione: NO FAB / NO TX.
+
+---
+
 # V0.9 INTEGRATA IN MAIN — PR #6, 254/254 Python PASS e 4 workflow ngspice SUCCESS; ultimi run 42852994951, 42852997335, 42852994921, 42852994798, 42852995032. Modelli surrogati, NO FAB / NO TX. Una PR CAD #5 separata non è approvata.
 
 # CONTINUITÀ ATTUALE — V0.9 (10 novembre 2026)

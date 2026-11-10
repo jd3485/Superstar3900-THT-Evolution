@@ -1,3 +1,12 @@
+# CAD-FIRST V1.0 pilot — 2026-11-10
+
+- Adottata la filosofia **CAD-first rigorosa**, senza smettere di simulare, modellare, sviluppare firmware, selezionare componenti e documentare.
+- Recuperato schematico nativo THT parziale della PR #5 su nuovo percorso V1.0, con libreria versionata, generatore deterministico e GitHub Actions `kicad-cli` per verifica reale di simboli/ ERC / netlist / export SVG.
+- Mantenuta PR #5 separata non approvata; nessun file V0.1–V0.9 eliminato. Completa matrice 14 blocchi fino al PCB master.
+- **NO FAB / NO TX**, elettronica V0.9 e suoi test preservati.
+
+---
+
 # V0.9 — 10 novembre 2026 — filtro phase detector tri-state e primo simulatore vero
 
 - Dimostrato da datasheet che `PDout` ML145151YP pin4 emette impulsi positivi/negativi ed è high-Z in lock, richiede filtro RC di mantenimento verso ingresso LM358 V0.8.

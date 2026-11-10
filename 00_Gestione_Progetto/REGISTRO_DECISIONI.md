@@ -1,3 +1,12 @@
+# DECISIONI DI PROCESSO CAD-FIRST — 2026-11-10
+
+- **DT-073**: priorità al **vero KiCad** (schema gerarchico master + schede PCB) incrementale, con SPICE, firmware, test, sourcing e BOM **indispensabili in parallelo**. Definizione di fatto e gate in `METODO_CAD_FIRST_V1.0.md`.
+- **DT-074**: recupero selettivo del CAD della PR #5 senza integrare PR fallita/dirty; creare circuito sperimentale in `04_KiCad/V1.0/`, libreria simboli KiCad9 compatibile e CI `kicad-cli` reale; nessuna pretesa di ERC prima della CI.
+- **DT-075**: valore **R90122k/C901100n** ereditato da PR #5 è solo un'alternativa CAD sperimentale e non sostituisce **R10k/47k C1µF** del modello V0.9 né costituisce compensazione PLL validata. Nessuna approvazione acquisto e nessuna PCB da fabbricare.
+- **DT-076**: prerequisiti di progetto completo restano THT-only, RX, manual LC tuner con bypass, 270 posizioni, priorità CH9 e ALFA; NO FAB / NO TX. Marcatura tecnica separata per ERC singolo foglio vs ERC radio integrata.
+
+---
+
 # Registro decisioni V0.9 — 10 novembre 2026
 
 - **DT-067 CORREZIONE FATTO DOCUMENTATO:** `U401 ML145151YP` `PDout` pin4 è **tre-stati**: impulsi positivi se fV inferiore a fR, impulsi negativi se fV superiore a fR, alta impedenza in coincidenza di fase/frequenza. Il filtro V0.8 `PD_FILTER` non può assumere DC dalla sola logica senza stadio passivo. Fonte Lansdale.
