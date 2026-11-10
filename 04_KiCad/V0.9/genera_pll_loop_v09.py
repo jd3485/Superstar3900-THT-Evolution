@@ -7,14 +7,16 @@ Lansdale ML145151 pin4 PDout tri-state and TI LM358N PDIP8 package.
 Usage: python3 04_KiCad/V0.9/genera_pll_loop_v09.py
 """
 from pathlib import Path
-import uuid
 
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch'
 DOC='PLL_LOOP_RX_PARTIAL_V0.9'
 ROOT_UUID='3d86fc80-36d7-4d76-a243-000000000001'
+IDS={}
 def uid(s):
-    return str(uuid.uuid5(uuid.UUID(ROOT_UUID),s))
+    if s not in IDS:
+        IDS[s]=f'3d86fc80-36d7-4d76-a243-{len(IDS)+2:012d}'
+    return IDS[s]
 def q(s):
     return '"'+str(s).replace('\\','\\\\').replace('"','\\"')+'"'
 def effects(size=1.0):
@@ -26,12 +28,12 @@ def pin(num,name,kind,x,y,angle):
 def lib_symbol(name,ref,value,footprint,pin_lines,rect=None,noboard=False):
     x='(in_bom '+('no' if noboard else 'yes')+') (on_board '+('no' if noboard else 'yes')+')'
     draw=rect or '(rectangle (start -7.62 12.7) (end 7.62 -12.7) (stroke (width 0.254) (type default)) (fill (type background)))'
-    return f'(symbol {q("THT_V09:"+name)} (pin_numbers (hide yes)) (pin_names (offset 0.76)) {x}\n'+
+    return (f'(symbol {q("THT_V09:"+name)} (pin_numbers (hide yes)) (pin_names (offset 0.76)) {x}\n'+
       f'(property "Reference" {q(ref)} (at 0 17.78 0) {effects()})\n'+
       f'(property "Value" {q(value)} (at 0 -17.78 0) {effects()})\n'+
       f'(property "Footprint" {q(footprint)} (at 0 0 0) (effects (font (size 1 1)) (hide yes)))\n'+
       f'(symbol {q(name+"_0_1")} {draw})\n'+
-      f'(symbol {q(name+"_1_1")} '+ '\n'.join(pin_lines)+'))'
+      f'(symbol {q(name+"_1_1")} '+ '\n'.join(pin_lines)+'))')
 def symbol_inst(name,ref,value,footprint,x,y,pinnos,dnp=False,noboard=False):
     sy=f'(symbol (lib_id {q("THT_V09:"+name)}) (at {x} {y} 0) (unit 1)\n'
     sy+='(in_bom '+('no' if noboard else 'yes')+') (on_board '+('no' if noboard else 'yes')+') (dnp '+('yes' if dnp else 'no')+') '

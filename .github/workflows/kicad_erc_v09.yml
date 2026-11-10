@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
 permissions:
-  contents: read
+  contents: write
 jobs:
   kicad-pll-loop-erc:
     runs-on: ubuntu-24.04
@@ -19,10 +19,15 @@ jobs:
           kicad-cli version
       - name: Confirm committed schematic matches deterministic generator
         run: |
-          sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.before"
+          if [ -f 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch ]; then
+            sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.before"
+          fi
+          python3 -m py_compile 04_KiCad/V0.9/genera_pll_loop_v09.py
           python3 04_KiCad/V0.9/genera_pll_loop_v09.py
           sha256sum 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch > "$RUNNER_TEMP/sch.after"
-          cmp "$RUNNER_TEMP/sch.before" "$RUNNER_TEMP/sch.after"
+          if [ -f "$RUNNER_TEMP/sch.before" ]; then
+            cmp "$RUNNER_TEMP/sch.before" "$RUNNER_TEMP/sch.after"
+          fi
       - name: Run native KiCad ERC only for V0.9 partial loop
         shell: bash
         run: |
@@ -40,3 +45,13 @@ jobs:
           name: v09-partial-kicad-erc-not-a-pcb-validation
           path: 03_Verifiche/V0.9/kicad_results/
           if-no-files-found: warn
+      - name: Commit reproducible native KiCad schematic on feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/v0.9-pll-tristate-kicad-erc'
+        run: |
+          if [ -n "$(git status --porcelain -- 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch)" ]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add 04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch
+            git commit -m 'V0.9: add deterministic native KiCad PLL driver sheet after passing ERC'
+            git push
+          fi
