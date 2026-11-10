@@ -1,3 +1,9 @@
+# Pubblicazione cumulativa V0.6
+
+V0.6 è una revisione di progettazione/verifica e non un PCB. Mantenere tutti i file delle V0.1..V0.5: il circuito V0.5 fallito resta versionato come prova storica, il nuovo candidato B ha file distinti e misure collegate alla run GitHub. `main` è l'albero cumulativo; PR/test prima del merge, modifica solo percorsi interessati, nessun nuovo ZIP caricato. Le configurazioni V0.1..V0.5 sono snapshot; il file CORRENTE è V0.6. Eventuali tag non dichiarati se non creati e verificati.
+
+---
+
 # Gestione cumulativa V0.5
 
 V0.5 modifica soltanto file nuovi e registri correnti, più la regressione V0.4 ora riferita a una fotografia `CONFIGURAZIONE_V0.4.json` immutabile. Conservare storici, CI e handoff GitHub; **mai rigenerare ZIP completi a ogni revisione**. I test Python NON sono SPICE/ KiCad ERC né prove hardware, e nessun risultato automatico autorizza TX o produzione.

@@ -1,3 +1,21 @@
+# CONTINUITÀ ATTUALE — V0.6 (10/11/2026)
+
+**Repository privata e indipendente:** `jd3485/Superstar3900-THT-Evolution`, fonte di verità `main`. Al riavvio controllare HEAD, PR, tag e CI, poi questo handoff, README, protocollo, stato, decisioni e ultimo rapporto. **NON usare il progetto SMD come dipendenza.**
+
+**Novità V0.6:** veri transienti **ngspice**. VCO V0.5 dichiarato **RF FAIL**: VTUNE 3,2/5/7,5 V dà 38,306/38,319/38,350 MHz e diodi avanti ~0,5V. Un primo esploratore generava falsi positivi usando condizioni iniziali UIC inadatte: rilevato e corretto con prove di alimentazione **0→5V in 100ns senza .ic/uic**.
+
+**Candidata B soltanto per sviluppi successivi:** Q501/Q502 2N3904 THT, D501 doppio BB204G TO-92, L501=166nH candidata da tarare, C504=470pF, R503=1,2kΩ, alimentazione oscillatore5V, VTUNE 8..15V. Modello ngspice con avvio alimentazione: 5 punti monotoni 36,048–39,196MHz, inversa varicap rispettata, VR max17,75V. Non validato con SPICE ufficiale dei produttori né misure; **8–15V VTUNE comporta un nuovo vincolo di generazione tensione maggiore di 13,8V**.
+
+**File indispensabili:** `01_Specifiche/V0.6/VCO_SIMULAZIONE_E_CORREZIONI_V0.6.md`, `03_Verifiche/V0.6/RAPPORTO_TECNICO_V0.6.md`, `03_Verifiche/V0.6/MISURE_SPICE_V0.6.json`, `03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir`, `03_Verifiche/V0.6/run_selected_v06.py`, `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md`.
+
+**Non fatto:** schematico KiCad VCO completo, KiCad ERC/DRC, simulazione PLL chiuso e rumore di fase, driver VTUNE/circuito di generazione fino a15V, sourcing affidabile BB204G, tutte le misure reali, PCB e TX. **NO FAB / NO TX.**
+
+**Prossima V0.7:** consolidare VCO con modelli vendor e tolleranze/taratura, correggere se necessario la gamma VTUNE, progettare alimentazione/driver THT e circuito controllo PLL, verificare KiCad nativo e preparare RF front-end quando il sintetizzatore è affidabile.
+
+**GitHub:** ogni «continua» modifica solo nuove parti e registri, mantiene vecchie baseline/snapshot, CI e storia. Nessuno ZIP da ricompilare; sull'ultimo main verificare tutti i test, non leggere una vecchia email FAIL come stato corrente.
+
+---
+
 # CI V0.5 verificata: 136/136 controlli Python PASS su main, run 42815442825 (PR #1 integrata). SPICE ed ERC/DRC ancora NON ESEGUITI. NO FAB / NO TX.
 
 # CONTINUITÀ ATTUALE — V0.5 (10 novembre 2026)

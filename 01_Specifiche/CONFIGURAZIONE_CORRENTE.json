@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.5",
+  "revision": "V0.6",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -59,7 +59,7 @@
     "reference_crystal_suitable_for_final_ssb": false,
     "pll_core_pinmap_count": 42,
     "lo_buffer_status": "SN74AC14N_CANDIDATE_NOT_CIRCUITED",
-    "vco_status": "CANDIDATE_COLPITTS_SPICE_DECK_NOT_RUN",
+    "vco_status": "V05_SPICE_EXECUTED_REJECTED_V06_MULTIVARIANT_UNQUALIFIED",
     "loop_filter_status": "V04_RIPPLE_WEAK_V05_TWORC_UNSTABLE_NOT_ASSESSED",
     "pll_n_controller_status": "NOT_DESIGNED",
     "vco_varactor_candidate": "BB204G TO-92 legacy, supply not qualified",
@@ -78,7 +78,19 @@
       6.9542
     ],
     "vco_tolerances_qualified": false,
-    "channel_controller_model": "RX_FAIL_CLOSED_PYTHON_NOT_FIRMWARE"
+    "channel_controller_model": "RX_FAIL_CLOSED_PYTHON_NOT_FIRMWARE",
+    "vco_candidate_supply_v": 5,
+    "vco_candidate_emitter_ohms": 1200,
+    "vco_candidate_blocking_cap_pf": 470,
+    "vco_candidate_inductor_nh_preliminary": 166,
+    "vco_design_gate": "MODEL_SAMPLED_PASS_REALISTIC_STARTUP_VENDOR_UNQUALIFIED",
+    "reference_vendor_device_models_qualified": false,
+    "vco_bias_window_v_model_sampled": [
+      8,
+      15
+    ],
+    "vco_candidate_source": "03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir",
+    "vco_candidate_quality": "MODEL_ONLY_FIVE_VTUNE_POINTS"
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -92,13 +104,14 @@
     "schematic_complete": false,
     "kicad_erc": "NOT_RUN",
     "kicad_drc": "NOT_RUN",
-    "spice": "NOT_RUN",
+    "spice": "EXECUTED_NGSPICE_SAMPLE_SUCCESS_VENDOR_UNQUALIFIED",
     "rf_lab": "NOT_RUN",
     "hardware_prototypes": 0,
     "kicad_schematic_file_present": true,
     "kicad_schematic_scope": "U402_PRESCALER_ONLY_UNCHECKED",
     "kicad_gui_open": "NOT_RUN",
-    "spice_deck_written": true
+    "spice_deck_written": true,
+    "spice_run_id": 42822739779
   },
-  "repository_publication": "MAIN_V0_5_CANDIDATE"
+  "repository_publication": "MAIN_V0_6_PENDING_MERGE"
 }
