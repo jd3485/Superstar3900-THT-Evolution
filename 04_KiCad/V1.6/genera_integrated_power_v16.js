@@ -65,7 +65,19 @@ function integrate(v){
  ps=ps.replace(`(uuid "${OLDPOWER}")`,`(uuid "${POWER}")`);
  ps=ps.replace('(sheet_instances (path "/" (page "1")))',`(sheet_instances (path "/${ROOT}/${POWER}" (page "5")))`);
  if(ps.includes('(project "THT_5V_POWER_DISTRIBUTION_V1.5"')||ps.includes(`(path "/${OLDPOWER}"`))throw Error("Old standalone instance remains");
- const p5=convert(ps,["+5V_PLL","VCC_VCO5","VCC_BUF5","GND"]);
+ let p5=convert(ps,["+5V_PLL","VCC_VCO5","VCC_BUF5","GND"]);
+ // Source V1.5 had an ERC-only EXTERNAL GND PWR_FLAG. In the now integrated circuit,
+ // PWR402 is the existing verified global ground driver. Do NOT permit duplicate power-output drivers.
+ const drop=childForms(p5);let nRemoved=0;
+ const cleaned=drop.filter(f=>{
+  if(f.startsWith("(symbol ")&&f.includes('(property "Reference" "PWR602"')){nRemoved++;return false;}
+  if(f.startsWith("(wire ")&&f.includes("(xy 53.34 187.96)")&&f.includes("(xy 48.26 187.96)")){nRemoved++;return false;}
+  if(f.startsWith('(label "GND"')&&f.includes('(at 48.26 187.96 0)')){nRemoved++;return false;}
+  return true;
+ });
+ if(nRemoved!==3)throw Error("V1.6 expected to remove exactly one redundant external ground PWR_FLAG and isolated stub");
+ p5="(kicad_sch\\n"+cleaned.join("\\n")+"\\n)\\n";
+ p5=p5.replace("NOT IN MASTER. NO FAB / NO TX.","IN MASTER V1.6 WITH UNQUALIFIED INPUT. NO FAB / NO TX.");
  const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))\n (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT 5V power"))\n)\n';
  return {root:"(kicad_sch\n"+root.join("\n")+"\n)\n",digital:digi,analog:ana,vco:vc,power:p5,table};
 }
