@@ -26,3 +26,8 @@ L501 ancora SENZA MPN/footprint certificato, BB204G legacy sourcing/lead pitch/s
 
 ## Errore ERC V1.4 intercettato e corretto
 Primo run [42891325528](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42891325528) = **FAIL CAD**: due violazioni KiCad9, `pin_not_connected` sul pin GND del foglio filtro e `power_pin_not_driven` U803 pin4. Il problema è la linea GND legacy non divisa nel punto di diramazione x154,94 mm / y87,63 mm. Aggiornati sia il master sia il generatore riproducibile: spezzata fisicamente la linea esistente in due segmenti, tenendo il junction e il nuovo ramo verso VCO. **ERC da rieseguire prima di dichiarare PASS**.
+
+## V1.4 simulazione parallela, NON modello vendor/AC14
+`VCO_B_LOBUF_INPUT_LOAD_V1.4.cir` deriva dal deck reale V0.6 candidata B, aggiungendo l'effettiva polarizzazione passiva dell'input buffer R510/511/512 e C510. Per l'**ingresso Schmitt soltanto**, C=5p e i clamp D generici sono **ipotesi di carico e protezione**, non equivalenti al macro-modello TI. Run ngspice automatizzato ai punti VTUNE 8,10,12,15 V con misure di swing e massimo A−K del varicap, pubblicando JSON e log anche in caso di insuccesso; è consentito un risultato di screening elettrico FAIL senza nasconderlo.
+
+Nessun modellamento delle soglie dinamiche Schmitt, jitter, inverter CMOS, separazione alimentazione, phase margin o lock. La CI deve registrare execution PASS distinto da RF validation NOT_RUN. **NO FAB / NO TX.**

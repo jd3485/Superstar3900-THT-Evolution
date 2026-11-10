@@ -1,0 +1,65 @@
+* V0.6 CANDIDATE B - 166 nH, R503 1.2k, C504 470p, 5V supply startup PWL
+* default VTUNE 8V (model working window 8-15V), not vendor-qualified
+* NO FAB NO TX. No PLL lock, no final buffer or reference oscillator in this deck.
+* V0.6 REWORKED: Vcc 5V, emitter 1200ohm, DC-block 470pF, L=168nH
+* Chosen by coarse ngspice parameter study; NOT vendor model or qualified design
+* RX ONLY - NO FAB NO TX
+* THIS IS NOT A VALIDATED MANUFACTURER MODEL OR A PRODUCTION DESIGN
+* All board components THT. Q models generic approximate; varactor fit 3/30V only.
+.title Superstar 3900 THT Evolution - RX only Colpitts VCO candidate
+.param VCTRL=8.0
+VCC V9 0 PWL(0 0 100n 5)
+VVTUNE VTUNE_RAIL 0 DC {VCTRL}
+C500 V9 0 100n
+C500B V9 0 10u
+R501 V9 BASE1 33k
+R502 BASE1 0 10k
+C501 BASE1 0 1n
+Q501 TANK BASE1 EMIT1 QGEN3904
+R503 EMIT1 0 1200
+L501 V9 TANK 166n
+C502 TANK EMIT1 68p
+C503 EMIT1 0 220p
+* Stray+trimmer+transistor Cjc: parasitics here are NOT characterized
+C508 TANK 0 5p
+C504 TANK VAR_A 470p
+R505 VAR_A 0 100k
+D501A VAR_A VTUNE_RAIL DBB204GFIT
+D501B VAR_A VTUNE_RAIL DBB204GFIT
+C505 VTUNE_RAIL 0 100n
+C506 TANK BASE2 2.2p
+R506 V9 BASE2 47k
+R507 BASE2 0 22k
+Q502 V9 BASE2 EMIT2 QGEN3904
+R508 EMIT2 0 470
+C507 EMIT2 LO1_ANALOG_OUT 100p
+R509 LO1_ANALOG_OUT 0 1Meg
+* V1.4 partial analog interface load, ASSUMED AC14 input cap and generic protection diodes.
+* This deck does NOT model Schmitt switching, jitter, input overdrive tolerance, digital LO frequency, or PLL lock.
+VBUF VCC_BUF5 0 DC 5
+C510 LO1_ANALOG_OUT LO_BUF_INPUT 100p
+R510 VCC_BUF5 LO_BUF_BIAS 47k
+R511 LO_BUF_BIAS 0 47k
+R512 LO_BUF_BIAS LO_BUF_INPUT 100k
+C_AC14_ASSUMED LO_BUF_INPUT 0 5p
+D_AC14_UPPER LO_BUF_INPUT VCC_BUF5 DBUFCLAMP
+D_AC14_LOWER 0 LO_BUF_INPUT DBUFCLAMP
+.model DBUFCLAMP D(IS=1e-12 RS=1 CJO=2p)
+
+* GP model, approximate 2N3904; NOT an official MCC device model
+.model QGEN3904 NPN (IS=6e-15 BF=180 VAF=100 IKF=0.05 CJE=8p CJC=3p TF=350p)
+* Fit BB204G 36.5pF @3V and 14pF @30V using VJ=0.8V.
+* This does NOT model lot tolerances, package inductance, tempco or RF Q.
+.model DBB204GFIT D (IS=1e-12 RS=0.4 CJO=74.504229p VJ=0.8 M=0.4579444)
+.options reltol=0.001 abstol=1e-12
+.tran 0.5n 40u 0 0.5n
+.measure tran max_tank MAX v(TANK) FROM=25u TO=40u
+.measure tran min_tank MIN v(TANK) FROM=15u TO=25u
+.measure tran max_out MAX v(LO1_ANALOG_OUT) FROM=15u TO=25u
+.measure tran min_out MIN v(LO1_ANALOG_OUT) FROM=15u TO=25u
+.measure tran v14_buf_high MAX v(LO_BUF_INPUT) FROM=25u TO=40u
+.measure tran v14_buf_low MIN v(LO_BUF_INPUT) FROM=25u TO=40u
+.measure tran v14_varactor_a_minus_k_max MAX v(VAR_A,VTUNE_RAIL) FROM=25u TO=40u
+.measure tran v14_analog_lo_high MAX v(LO1_ANALOG_OUT) FROM=25u TO=40u
+.measure tran v14_analog_lo_low MIN v(LO1_ANALOG_OUT) FROM=25u TO=40u
+.end
