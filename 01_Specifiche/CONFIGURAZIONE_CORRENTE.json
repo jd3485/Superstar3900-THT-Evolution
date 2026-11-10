@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.6",
+  "revision": "V0.7",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -90,7 +90,18 @@
       15
     ],
     "vco_candidate_source": "03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir",
-    "vco_candidate_quality": "MODEL_ONLY_FIVE_VTUNE_POINTS"
+    "vco_candidate_quality": "MODEL_ONLY_FIVE_VTUNE_POINTS",
+    "vtune_required_model_v": [
+      8,
+      15
+    ],
+    "vtune_supply_architecture_candidate": "ST_MC34063ABN_DIP8_BOOST24_TI_LM317_TO220_18V_BEHAVIORAL_ONLY",
+    "vtune_supply_design_status": "PINNET_AND_BEHAVIORAL_SPICE_NOT_QUALIFIED",
+    "vtune_boost_target_v": 24,
+    "vtune_regulator_nominal_v": 18.287,
+    "vtune_driver_status": "NOT_DESIGNED_HIGH_SIDE_MARGIN_BLOCKER",
+    "vtune_powergood_status": "NOT_DESIGNED",
+    "boost_device_vendor_model_verified": false
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -113,7 +124,10 @@
     "spice_deck_written": true,
     "spice_run_id": 42822739779,
     "spice_main_ci_run_id": 42823693786,
-    "software_regression_main_ci_run_id": 42823693863
+    "software_regression_main_ci_run_id": 42823693863,
+    "vtune_boost_spice": "BEHAVIORAL_IDEAL_SWITCH_ONLY",
+    "vtune_boost_spice_run_id": 42827358481,
+    "vtune_power_schematic_complete": false
   },
-  "repository_publication": "MAIN_V0_6_INTEGRATED"
+  "repository_publication": "V0_7_PENDING_CI"
 }

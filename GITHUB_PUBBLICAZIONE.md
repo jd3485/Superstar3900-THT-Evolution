@@ -1,3 +1,9 @@
+# Continuità cumulativa V0.7
+
+`main` resta la fonte di verità. I file V0.7 sono aggiunti/aggiornati senza rimuovere V0.1..V0.6, e CONFIGURAZIONE_V0.6.json fissa la baseline dei controlli storici. Il nuovo deck BOOST_THT_BEHAVIORAL_V0.7.cir **NON** è un simulatore fisico MC34063/LM317; con il workflow sono evidenziati i limiti. Verificare PR/CI prima del merge. Non generare ZIP integralmente ogni revisione: GitHub tiene l'insieme completo. **NO FAB / NO TX.**
+
+---
+
 # Pubblicazione cumulativa V0.6
 
 V0.6 è una revisione di progettazione/verifica e non un PCB. Mantenere tutti i file delle V0.1..V0.5: il circuito V0.5 fallito resta versionato come prova storica, il nuovo candidato B ha file distinti e misure collegate alla run GitHub. `main` è l'albero cumulativo; PR/test prima del merge, modifica solo percorsi interessati, nessun nuovo ZIP caricato. Le configurazioni V0.1..V0.5 sono snapshot; il file CORRENTE è V0.6. Eventuali tag non dichiarati se non creati e verificati.

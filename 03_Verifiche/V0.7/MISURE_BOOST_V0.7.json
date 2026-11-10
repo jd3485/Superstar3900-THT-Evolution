@@ -1,0 +1,38 @@
+{
+  "revision": "V0.7",
+  "date": "2026-11-10",
+  "simulator": "ngspice 45.2 GitHub Actions",
+  "run_url": "https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42827358481",
+  "circuit": "03_Verifiche/V0.7/BOOST_THT_BEHAVIORAL_V0.7.cir",
+  "explicit_limitation": "BEHAVIORAL IDEAL SWITCH MODEL, NOT ST MC34063 NOR LM317 PHYSICAL DEVICE",
+  "vin_v": [
+    11,
+    13.8,
+    15.5
+  ],
+  "boost_average_v": [
+    23.9967,
+    24.0096,
+    24.0221
+  ],
+  "boost_min_v": [
+    23.9799,
+    23.9799,
+    23.98
+  ],
+  "boost_max_v": [
+    24.0152,
+    24.0466,
+    24.0775
+  ],
+  "load_a_design": 0.015,
+  "regulator_noise_ripple_qualified": false,
+  "boost_device_validated": false,
+  "regulator_device_validated": false,
+  "physical_vtune_driver_implemented": false,
+  "kicad_erc": "NOT_RUN",
+  "kicad_drc": "NOT_RUN",
+  "hardware_validated": false,
+  "fab_authorized": false,
+  "tx_authorized": false
+}

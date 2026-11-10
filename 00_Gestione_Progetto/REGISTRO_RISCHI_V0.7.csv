@@ -1,0 +1,11 @@
+id,settore,criticita,gravita,stato,mitigazione
+RT-036,POWER,VTUNE 15V > tensione nominale radio13.8V,CRITICA,TOPOL_APERTA,Boost THT+LDO solo candidati; niente PCB
+RT-037,EMI,Commutazione booster disturba RF PLL e BFO,CRITICA,OPEN,PCB RF partition; filtro e misura spettri su hardware
+RT-038,POWER,Corrente L470uH al VIN minimo vicino al limite Ipk 0.33A,ALTA,OPEN,Analisi MC34063 dispositivo CCM/tolleranze e Isat
+RT-039,POWER,Modello ngspice ideal switch NON simula MC34063 o LM317,CRITICA,OPEN,Modelli vendor/transienti e power loss
+RT-040,POWER,Regolatore LM317 può perdere margine dropout con boost min e ripple,ALTA,OPEN,Calcolare peggiore combinazione reale dei rails
+RT-041,POWER,Driver LM358N high swing incerto per arrivare a VTUNE15V,CRITICA,OPEN,Opamp THT adatto o rail più alto / ridurre VTUNE
+RT-042,POWER,Condensatore ADJ LM317 richiede diodi di protezione esterni,MEDIA,OPEN,Progettare protezione secondo datasheet
+RT-043,POWER,Fusibile TVS reverse polarity/rail GOOD non progettati,ALTA,OPEN,Protezione e mute hardware fail closed
+RT-044,CAD,Nessun schematico KiCad alimentazione/loop e ERC DRC non eseguiti,ALTA,OPEN,Schemi nativi e test elettronici
+RT-045,RF,Induttore booster L701 470uH Isat SRF DCR e MPN non selezionati,ALTA,OPEN,Qualificare induttore THT e margini termici

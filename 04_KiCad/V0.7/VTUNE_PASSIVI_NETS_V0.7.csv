@@ -1,0 +1,17 @@
+ref,value_package,net_A,net_B,technology,notes
+R701,1ohm 0.5W axial,VIN_FILT,VIN_SENSE,THT,Sense peak rough: verify CCM and thermal
+L701,470uH axial or radial,VIN_SENSE,SW_NODE,THT,Isat>=0.5A DC resistance and SRF not qualified
+D701,1N5819 DO-41 A-K,SW_NODE,VBOOST24,THT,Anode SW_NODE cathode VBOOST24; confirm marking
+C700,47uF 25V radial,VIN_FILT,GND,THT,Input electrolytic
+C700B,100nF 50V radial ceramic,VIN_FILT,GND,THT,IC bypass
+C701,47uF 35V radial,VBOOST24,GND,THT,Output electrolytic ESR unqualified
+C702,470pF ceramic,CT_NODE,GND,THT,40kHz assumed not verified for this Ct
+R702,21.8kohm axial,VBOOST24,BOOST_FB,THT,1% resistor candidate
+R703,1.2kohm axial,BOOST_FB,GND,THT,1% resistor candidate
+C710,10uF 35V radial,VBOOST24,GND,THT,LM317 input local
+R710,240ohm axial,VREG18_RAW,ADJ18,THT,LM317 R1 ~5.2mA
+R711,3.24kohm axial,ADJ18,GND,THT,LM317 set target ~18.29V
+C711,10uF 25V radial,ADJ18,GND,THT,PSRR bypass protection diodes NOT designed
+C713,10uF 25V radial,VREG18_RAW,GND,THT,LM317 output capacitor
+R712,10ohm axial,VREG18_RAW,VANA18_FILT,THT,RC isolation max 15mA load assumes 0.15V drop
+C712,100uF 25V radial,VANA18_FILT,GND,THT,RC output; ripple/ESR not characterized

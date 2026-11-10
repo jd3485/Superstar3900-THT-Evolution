@@ -1,3 +1,23 @@
+# CONTINUITÀ ATTUALE — V0.7 (10 novembre 2026)
+
+**Repository privata autonoma:** `jd3485/Superstar3900-THT-Evolution`. Prima di fare qualsiasi lavoro rileggere HEAD `main`, PR, Actions, README, questo file, protocollo, registro decisioni e ultimo rapporto V0.7. Non usare né modificare `Superstar3900-SMD-Evolution`.
+
+**Scopo invariato:** Superstar 3900 ricreata con tecnologia **esclusivamente THT**, RX A–F (270 posizioni), AM/FM/USB/LSB/CW, PLL tradizionale, tuner manuale con bypass, CH9; nessun DSP avanzato, VOX, Dual Watch, CTCSS/DCS o PLL moderno; PCBWay solo PCB nude, saldatura nostra. **NO FAB / NO TX.**
+
+V0.6 aveva trovato la **candidata B VCO** con vero ngspice: Q501/Q502 2N3904 TO-92, BB204G storico TO-92, L166nH effettiva, C470pF, R1,2kΩ, VCC5V, VTUNE8–15V e modello di frequenza in 5 punti 36,04773–39,19647MHz, diodi inversi. NON vendor models né hardware; V0.5 precedente rimane respinta e archiviata.
+
+**V0.7 risolve solo a livello di TOPologia il problema 15V >13,8V**: elevatore THT ST MC34063ABN DIP8 da Vin11–15,5V ipotizzati a24V, poi TI LM317T TO-220 18,287V, RC 10Ω/100µF. Pin-net di tutti gli 11 pin, passivi e BOM. L701 470µH, sense R7011Ω con margine picco bassissimo24mA a11V; switching40kHz è ASSUNTO, non misurato sul vero U701. **NON sono ancora progettati driver PLL→VTUNE, isolamento EMI RF certificato, protezione e powergood hardwired, né schemi KiCad nativi del booster.**
+
+**Evidenza V0.7:** 3 transitori ngspice con ideale switch e comparator danno Vboost circa24V per ingresso11/13,8/15,5V; run 42827358481. La reale dinamica MC34063 e LM317 non è stata simulata, nessuna misura reale effettuata. La linea +18V non garantisce ancora 15V in uscita all'opamp, specie alle tolleranze worst case.
+
+**Leggere:** `01_Specifiche/V0.7/ALIMENTAZIONE_VTUNE_THT_V0.7.md`, `03_Verifiche/V0.7/RAPPORTO_TECNICO_V0.7.md`, `03_Verifiche/V0.7/MISURE_BOOST_V0.7.json`, `04_KiCad/V0.7/`, `02_Piano_Frequenze/V0.7/vtune_power_design_v07.py`. Verificare CI prima di affermare PASS delle nuove regressioni. Ultimo V0.6 main già aveva157/157 software PASS, ngspice VCO solo modello.
+
+**Prossima V0.8:** compensare la criticità L/Ipk con un vero modello di switching, modellare tensione/PSRR/rumore, definire driver analogico THT per phase detector e VTUNE con headroom, protezioni e mute fail-closed, e trasferire schematici completi in KiCad; niente PCB prima di ERC/DRC, BOM autentica e RF/EMC.
+
+**Storicizzazione:** ogni `continua` aggiunge soltanto modifiche cumulative in GitHub, configura snapshot revisioni V0.1–V0.7 e CI regressiva. Niente ricreazione ZIP, nessuna dipendenza da chat precedente. **NO FAB / NO TX.**
+
+---
+
 # V0.6 INTEGRATA IN MAIN — CI software 157/157 PASS, run 42823693863; CI ngspice PASS (esecuzione modelli), run 42823693786; PR #2 integrata. RF hardware NON qualificata, NO FAB / NO TX.
 
 # CONTINUITÀ ATTUALE — V0.6 (10/11/2026)

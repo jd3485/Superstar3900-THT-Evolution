@@ -1,3 +1,15 @@
+# Decisioni V0.7 — 10 novembre 2026
+
+- **DT-051 (PROPOSTA BOOST THT):** per superare il fabbisogno VTUNE fino15V da 13,8V, adottare architettura **ST MC34063ABN DIP8 boost~24V**, solo candidata per studio; pin 1–8 secondo datasheet ST. Nessun MC34063 realmente simulato.
+- **DT-052 (REGOLAZIONE):** dopo booster utilizzare **LM317 TO-220** regolatore ~18,287V con R240Ω/3,24kΩ, pin ADJ1 VOUT/TAB2 VIN3, e RC isolamento 10Ω/100µF. Tab a VOUT, non massa. Protezioni input/ADJ/output ancora aperte.
+- **DT-053 (PRE-DIMENSIONAMENTO):** booster L470µH Rsc1Ω, fsw target40kHz (non certificata), Rfb21,8k/1,2k e 1N5819 assiale DO-41. A VIN11V salto corrente ideale0,3056A, soglia sense typ0,33A: **margine solo24,4mA**, non approvare per PCB.
+- **DT-054 (SIMULAZIONE LIMITATA):** run ngspice 42827358481 è **vero ngspice su switch/comparatore IDEALI** a Vin11/13,8/15,5V (~24V). Non equivale al MC34063, LM317, EMC, phase noise o elettronica reali. Non marchiare circuito RF PASS.
+- **DT-055 (DRIVER VTUNE APERTO):** LM358N DIP8 e uscita15V non garantite con rail minimo17,4V e headroom2–3V; non collegare booster a VTUNE, servono driver analogico/loop PLL/POWER GOOD progettati e verificati.
+- **DT-056 (STORICO CUMULATIVO):** congelare CONFIGURAZIONE_V0.6.json, test V0.6 leggono il proprio snapshot, V0.7 in CONFIGURAZIONE_CORRENTE.json. Preservare prove V0.5 RF FAIL e V0.6 candidata solo nel modello.
+- **DT-057 (GATES):** nessun componente SMD, no PCBWay finché KiCad/ERC/DRC e prototipi non validati; nessun TX. **NO FAB / NO TX.**
+
+---
+
 # Decisioni e misure V0.6 — 10 novembre 2026
 
 - **DT-045 (EVIDENZA ELETTRICA):** ngspice 45.2 transitorio VCO V0.5: a VTUNE 3,2..7,5 V f=38,306..38,350 MHz, diodo BB204G avanti +0,51..+0,54 V. V0.5 **RESPINTO come circuito di sintonia valido**; revisioni storiche lasciate intatte.

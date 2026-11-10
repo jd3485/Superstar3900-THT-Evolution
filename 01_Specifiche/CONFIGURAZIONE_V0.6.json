@@ -1,0 +1,119 @@
+{
+  "name": "Superstar 3900 THT Evolution",
+  "slug": "Superstar3900-THT-Evolution",
+  "revision": "V0.6",
+  "date": "2026-11-10",
+  "independent_project": true,
+  "build": {
+    "technology": "THT_ONLY",
+    "allow_smd_components": false,
+    "allow_smd_to_dip_adapters": false,
+    "board_fabricator": "PCBWay",
+    "board_order_type": "BARE_PCB_ONLY",
+    "assembly": "IN_HOUSE",
+    "preferred_main_board_count": 1
+  },
+  "radio": {
+    "bands": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "normal_positions_per_band": 40,
+    "alpha_positions_per_band": 5,
+    "total_rx_positions": 270,
+    "rx_modes": [
+      "AM",
+      "FM",
+      "USB",
+      "LSB",
+      "CW"
+    ],
+    "channel_9_priority": true,
+    "physical_alpha_control": true,
+    "manual_tuner": true,
+    "tuner_bypass": true,
+    "frequency_table_status": "NUMERIC_RX_CANDIDATE_VERIFIED",
+    "first_if_hz_candidate": 10695000,
+    "second_if_hz_candidate": 455000,
+    "pll_approach": "TRADITIONAL_THT_CANDIDATE",
+    "tx_authorized": false,
+    "fabrication_authorized": false,
+    "lo1_min_hz_candidate": 36310000,
+    "lo1_max_hz_candidate": 39000000,
+    "pll_reference_hz_candidate": 10240000,
+    "pll_reference_divider_candidate": 2048,
+    "pll_fixed_prescaler_candidate": 2,
+    "pll_f_pfd_hz_candidate": 5000,
+    "pll_n_range_candidate": [
+      3631,
+      3900
+    ],
+    "pll_component_selection_status": "PINNET_CANDIDATE_ML145151YP_PURCHASE_BLOCKED",
+    "pll_primary_candidate": "ML145151YP",
+    "pll_div2_candidate": "TC74AC74P(F)",
+    "reference_crystal_candidate": "HC-49/U-S10240000ABJB",
+    "reference_crystal_suitable_for_final_ssb": false,
+    "pll_core_pinmap_count": 42,
+    "lo_buffer_status": "SN74AC14N_CANDIDATE_NOT_CIRCUITED",
+    "vco_status": "V05_SPICE_EXECUTED_REJECTED_V06_MULTIVARIANT_UNQUALIFIED",
+    "loop_filter_status": "V04_RIPPLE_WEAK_V05_TWORC_UNSTABLE_NOT_ASSESSED",
+    "pll_n_controller_status": "NOT_DESIGNED",
+    "vco_varactor_candidate": "BB204G TO-92 legacy, supply not qualified",
+    "vco_inductance_nh_candidate": 150,
+    "vco_effective_fixed_capacitance_pf_assumed": 61,
+    "loop_filter_candidate": {
+      "r1_ohm": 2200,
+      "r2_ohm": 10000,
+      "c_f": 1e-7
+    },
+    "channel_controller_candidate": "PIC18F47Q43-I/P PDIP40",
+    "controller_firmware_status": "NOT_DESIGNED",
+    "vco_dual_varactor_candidate": "BB204G_TO92_two_junctions_parallel_historical",
+    "vco_model_vtune_v_nominal": [
+      3.1271,
+      6.9542
+    ],
+    "vco_tolerances_qualified": false,
+    "channel_controller_model": "RX_FAIL_CLOSED_PYTHON_NOT_FIRMWARE",
+    "vco_candidate_supply_v": 5,
+    "vco_candidate_emitter_ohms": 1200,
+    "vco_candidate_blocking_cap_pf": 470,
+    "vco_candidate_inductor_nh_preliminary": 166,
+    "vco_design_gate": "MODEL_SAMPLED_PASS_REALISTIC_STARTUP_VENDOR_UNQUALIFIED",
+    "reference_vendor_device_models_qualified": false,
+    "vco_bias_window_v_model_sampled": [
+      8,
+      15
+    ],
+    "vco_candidate_source": "03_Verifiche/V0.6/VCO_COLPITTS_CANDIDATE_B_V0.6.cir",
+    "vco_candidate_quality": "MODEL_ONLY_FIVE_VTUNE_POINTS"
+  },
+  "excluded_features": [
+    "advanced_audio_dsp",
+    "modern_integrated_rf_pll",
+    "dual_watch",
+    "ctcss_dcs",
+    "vox",
+    "automatic_antenna_tuner"
+  ],
+  "validation": {
+    "schematic_complete": false,
+    "kicad_erc": "NOT_RUN",
+    "kicad_drc": "NOT_RUN",
+    "spice": "EXECUTED_NGSPICE_SAMPLE_SUCCESS_VENDOR_UNQUALIFIED",
+    "rf_lab": "NOT_RUN",
+    "hardware_prototypes": 0,
+    "kicad_schematic_file_present": true,
+    "kicad_schematic_scope": "U402_PRESCALER_ONLY_UNCHECKED",
+    "kicad_gui_open": "NOT_RUN",
+    "spice_deck_written": true,
+    "spice_run_id": 42822739779,
+    "spice_main_ci_run_id": 42823693786,
+    "software_regression_main_ci_run_id": 42823693863
+  },
+  "repository_publication": "MAIN_V0_6_INTEGRATED"
+}
