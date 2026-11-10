@@ -1,3 +1,23 @@
+# CONTINUITÀ ATTUALE — V0.9 (10 novembre 2026)
+
+**Repository privata autonoma:** `jd3485/Superstar3900-THT-Evolution`; rileggere HEAD `main`, PR/CI, README, protocollo `00_Gestione_Progetto/PROTOCOLLO_CONTINUITA_MAIN.md`, decisioni, rapporto `03_Verifiche/V0.9/RAPPORTO_TECNICO_V0.9.md`. Nessuna dipendenza né modifica al progetto SMD, **revisioni cumulative e non ZIP ricreati**.
+
+**Obiettivo radio:** ricreazione THT Superstar3900, 270 RX, A–F, AM/FM/USB/LSB/CW, PLL tradizionale, manual ATU+bypass, PCBWay sole PCB nude, assembly interno, nessun DSP audio avanzato/dual watch/CTCSS DCS/VOX/sintesi RF PLL moderna. **NO FAB / NO TX**.
+
+**Stato precedente:** V0.6 VCO candidata B Colpitts a 166nH, BB204G legacy e due 2N3904 TO-92, modello SPICE non vendor 36,048..39,196MHz a VTUNE8..15V, no misure hardware. V0.7 prima supply ipotetica booster MC34063 a24V e LM31718V, V0.8 revisionata a27V boost,20,022V regolata con precarico, LM358N PDIP8 gain4 e sei simulazioni di driver **comportamentale ideale**; nessun MC34063/LM317/LM358 macro-model vendor validato.
+
+**NOVITÀ V0.9:** datasheet ML145151 storico: `PDout` **pin4 THREE STATE** (up/down pulses, high-Z su lock), `LD` pin28 solo indicazione aggancio. Filtro candidato R90122kΩ C901100nF fra PDout e PD_FILTER, opamp U803 gain4, C805 output VTUNE marcato DNI perché VCO già possiede C505100nF. L'analisi piccoli segnali fornisce ζ≈0,33–0,53 su4 tratti VCO misurati SOLO in SPICE; R/C NON sono compensazione definitiva, nessun tempo di lock fisico provato. Simulazione ngspice tri-state ideale 3 correnti leakage0/20/100nA: con20nA hold15ms, drift VTUNE ≈−12mV; a100nA ≈−60mV. Non circuito ML145151 reale né PLL chiuso.
+
+**Primo sheet nativo KiCad PARZIALE:** `04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch`, `04_KiCad/V0.9/genera_pll_loop_v09.py`, libreria custom locale `THT_V09.kicad_sym`, `sym-lib-table`. Foglio isolato U803, R/C e connettori J901–J903. `J904` LD è ancora solo interfaccia **documentata, non disegnata nel sheet** perché non è implementato monitor/mute. CI KiCad9 ERC nativo da leggere prima di dichiarare risultato, eventuali errori da correggere su branch. Non ERC intera radio.
+
+**Tutte le limitazioni:** no U401/U402/VCO/boost integrati in CAD, layout e DRC assenti, nessun lock/phase noise/hardware, sourcing BB204G e ML145151 legacy aperto, alimentazione e mute da progettare. NO FAB / NO TX.
+
+**File di ripresa:** `01_Specifiche/V0.9/PLL_TRISTATE_LOOP_THT_V0.9.md`, `03_Verifiche/V0.9/RAPPORTO_TECNICO_V0.9.md`, `02_Piano_Frequenze/V0.9/pll_loop_model_v09.py`, `03_Verifiche/V0.9/PLL_TRISTATE_HOLD_V0.9.cir`, `04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch`.
+
+**V0.10:** progettare PLL chiuso con stabilità, condensatori e opamp reali e LD+POWERGOOD+MUTE hardware, portare U401/U402/VCO in CAD integrato, ERC completo e DRC futuro, ricontrollare in GH all'avvio di una nuova chat.
+
+---
+
 # V0.8 INTEGRATA IN MAIN — 226/226 test software PASS; 3 simulazioni ngspice workflow PASS (solo modelli non vendor). PR #4 MERGED. CI su main 42843501500, 42843501265, 42843501213, 42843501144. **NO FAB / NO TX**.
 
 # CONTINUITÀ ATTUALE — V0.8 (10 novembre 2026)

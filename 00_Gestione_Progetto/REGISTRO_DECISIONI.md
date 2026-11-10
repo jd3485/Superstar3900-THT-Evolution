@@ -1,3 +1,15 @@
+# Decisioni tecniche V0.9 — 10 novembre 2026
+
+- **DT-067 (datasheet):** ML145151YP pin4 PDout è uscita TRE STATI; impulsi Up/Down e HIGH-Z in lock. Pin28 LD è indicatore lock da filtrare/qualificare, non un segnale powergood. Riconosciuto il rischio progettuale di considerare il phase-detector un DAC/DC diretto.
+- **DT-068 (CANDIDATA NON COMPENSATA):** R90122kΩ C901100nF THT tra PDout e PD_FILTER, LM358N U803 PDIP8 gain4, R805220Ω verso VTUNE. C805100nF marcato DNI per non duplicare C505 VCO. R/C variano smorzamento small-signal ζ≈0,33–0,53 e non sono approvati.
+- **DT-069 (MODELLO):** Kphi ideal =VDD/(4π), N_total=LO/5kHz include U402/2; KVCO ottenuto da soli5 punti non vendor V0.6, non da misure. Stime small signal non validano PLL lock su salti largo segnale.
+- **DT-070 (NGSPICE):** modello astratto phase-detector con switch Up/Down + hold e leak0/20/100nA. Modello eseguito: 20nA dà −12mV su VTUNE per hold15ms, 100nA −60mV; non corrisponde a specifiche vendor né al comportamento in lock reale.
+- **DT-071 (CAD):** primo file KiCad nativo parziale U803 e filtro, con simboli THT custom deterministici e connettori esterni. Nessun ERC su radio completa; KiCad CLI ERC da interpretare sul foglio isolato solamente. J904 segnale LD rimane da implementare nel sottosistema mute, non connesso al foglio V0.9.
+- **DT-072 (PROCESSO):** congelare CONFIGURAZIONE_V0.8.json e adattare solo fixture storica V0.8, preservare regressione V0.1–V0.8 e aggiungere 33 test V0.9, stage CI PR.
+- **DT-073 (GATE):** NO FAB / NO TX anche con ERC parziale verde; mancano BOM completa, powergood, VCO/PLL/SUPPLY integrate, EMI e misure RF.
+
+---
+
 # Decisioni V0.8 — 10 novembre 2026
 
 - **DT-058 STUDY:** incrementare target boost a **27V** con U701 MC34063ABN DIP8, Rsc0,47Ω THT e L701 470µH; soglia MC34063 ST 250/300/350mV min/typ/max, a Vin11V deltaI stimata0,331A e soglia minima0,532A, margine _solo da corrente zero_0,201A. **Non prova comportamento CCM/timing Ct**.

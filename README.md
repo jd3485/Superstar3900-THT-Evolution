@@ -1,3 +1,15 @@
+# STATO ATTUALE — V0.9 (10 novembre 2026)
+
+**PDOUT DEL PLL A TRE STATI, NON UNA SORGENTE DI TENSIONE DC:** ML145151YP PDout pin4 fornisce impulsi positivi/negativi in fase di correzione ed è alta impedenza in lock; LD pin28 non può essere trattato come un interblocco RX senza qualificazione temporale. Progettata la prima interfaccia con R901=22kΩ/C901=100nF THT, LM358N PDIP8 già studiato a guadagno4, C805 marcato **DNI** per non duplicare C505 VTUNE del VCO. **NON È UN PLL COMPENSATO**.
+
+**Nuove prove:** modellazione di piccolo segnale su 4 tratti KVCO V0.6, smorzamento ideale ζ≈0,33–0,53 (potenziale sovraelongazione). Eseguite 3 transienti ngspice con phase-detector a tre stati IDEALE e perdite ASSUNTE 0/20/100nA, effettiva deriva VTUNE fino60mV su15ms alla condizione 100nA; non vero PLL né circuito vendor.
+
+**CAD:** primo schema nativo parziale `04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch` e generatore riproducibile, KiCad9 native ERC eseguito sul foglio isolato; verificare ultimo rapporto CI prima di dichiarare PASS. Mancano U401/U402 e VCO nello stesso sheet, driver alimentatore reale, ERC completo radio e layout/DRC.
+
+**GATE:** progetto PCBWay ancora non pronto. No prove hardware, NO FAB / NO TX. Prossima V0.10: loop PLL compensato e sorgente boost realistica, interblocchi mute/LD e CAD integrato.
+
+---
+
 # STATO CORRENTE — V0.8 (10 novembre 2026)
 
 **Nuovo circuito candidato interamente THT per l'alimentazione e il pilotaggio VTUNE:** U701 MC34063ABN PDIP8 con target27V e corrente di soglia ricalcolata (Rsc0,47Ω, L470µH Bourns RLB0914-471KL candidata); D701 Vishay SB160 60V assiale; U702 LM317T TO220 a circa20,022V con precarico R7132,4kΩ0,5W per minimo carico; U803 LM358N PDIP8 in configurazione non invertente ×4 da **PD_FILTER** a VTUNE. **19 pin IC / 22 passivi documentati**, BOM25 righe.

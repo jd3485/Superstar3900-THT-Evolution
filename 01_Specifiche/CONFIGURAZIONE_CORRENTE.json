@@ -1,7 +1,7 @@
 {
   "name": "Superstar 3900 THT Evolution",
   "slug": "Superstar3900-THT-Evolution",
-  "revision": "V0.8",
+  "revision": "V0.9",
   "date": "2026-11-10",
   "independent_project": true,
   "build": {
@@ -106,7 +106,16 @@
     "vtune_boost_inductor_candidate": "Bourns RLB0914-471KL 470uH THT not EMI-qualified",
     "vtune_boost_diode_candidate": "Vishay SB160-E3/54 DO-41 60V",
     "vtune_lm317_bleeder_candidate": "2.4kohm 0.5W THT",
-    "vtune_driver_candidate": "LM358N PDIP8 non-inverting x4"
+    "vtune_driver_candidate": "LM358N PDIP8 non-inverting x4",
+    "pll_phase_detector_out": "ML145151YP_pin4_tristate_UP_DOWN_HIGH_Z",
+    "pll_lock_detect_pin": "ML145151YP_pin28_LD_NEEDS_FILTER",
+    "pll_loop_filter_candidate": "R901_22kohm_C901_100nF_NOT_COMPENSATED",
+    "pll_loop_filter_qualified": false,
+    "pll_loop_actual_lock_verified": false,
+    "pll_kvco_model_source": "03_Verifiche/V0.6/MISURE_SPICE_V0.6.json",
+    "pll_driver_candidate": "LM358N_DIP8_x4_R80330k_R80410k",
+    "pll_c805_disposition": "DNI_avoid_duplicate_VCO_C505",
+    "pll_phase_margin_qualified": false
   },
   "excluded_features": [
     "advanced_audio_dsp",
@@ -124,7 +133,7 @@
     "rf_lab": "NOT_RUN",
     "hardware_prototypes": 0,
     "kicad_schematic_file_present": true,
-    "kicad_schematic_scope": "U402_PRESCALER_ONLY_UNCHECKED",
+    "kicad_schematic_scope": "U803_LM358_PLUS_PASSIVE_LOOP_ONLY_NOT_U401_U402_VCO",
     "kicad_gui_open": "NOT_RUN",
     "spice_deck_written": true,
     "spice_run_id": 42822739779,
@@ -141,7 +150,11 @@
     "v08_software_main_run_id": 42843501500,
     "v08_vco_regression_main_run_id": 42843501265,
     "v08_boost_regression_main_run_id": 42843501213,
-    "v08_driver_main_run_id": 42843501144
+    "v08_driver_main_run_id": 42843501144,
+    "v09_tristate_model": "NGSPICE_3_CASES_IDEAL_SWITCH_NO_REAL_PLL",
+    "v09_tristate_run_id": 42850578020,
+    "kicad_full_radio_erc": "NOT_RUN",
+    "kicad_partial_erc": "PENDING_NATIVE_CI_VERIFICATION"
   },
-  "repository_publication": "MAIN_V0_8_INTEGRATED_CI_VERIFIED"
+  "repository_publication": "V0_9_PENDING_PR_CI"
 }

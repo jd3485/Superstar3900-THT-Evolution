@@ -21,7 +21,7 @@ def read_csv(rel):
 class V08(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-    cls.cfg=json.loads((ROOT/"01_Specifiche/CONFIGURAZIONE_CORRENTE.json").read_text())
+    cls.cfg=json.loads((ROOT/"01_Specifiche/CONFIGURAZIONE_V0.8.json").read_text())
     cls.v07=json.loads((ROOT/"01_Specifiche/CONFIGURAZIONE_V0.7.json").read_text())
     cls.evidence=json.loads((ROOT/"03_Verifiche/V0.8/MISURE_DRIVER_V0.8.json").read_text())
     cls.pins=read_csv("04_KiCad/V0.8/VTUNE_PINNET_V0.8.csv")
@@ -124,5 +124,5 @@ class V08(unittest.TestCase):
     self.assertEqual(self.cfg["validation"]["kicad_drc"],"NOT_RUN")
  def test_36_report_and_handoff(self):
     self.assertTrue((ROOT/"03_Verifiche/V0.8/RAPPORTO_TECNICO_V0.8.md").is_file())
-    self.assertIn("V0.8",(ROOT/"RIPRENDI_IN_UNA_NUOVA_CHAT.md").read_text()[:280])
+    self.assertTrue((ROOT/"03_Verifiche/V0.8/MISURE_DRIVER_V0.8.json").is_file())
 if __name__=="__main__":unittest.main()

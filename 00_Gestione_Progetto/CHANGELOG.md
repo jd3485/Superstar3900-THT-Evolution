@@ -1,3 +1,13 @@
+# V0.9 — 10 novembre 2026 — Phase detector a tre stati e primo CAD KiCad
+
+- Accertato che il ML145151 pin4 PDout ha uscita a tre stati e pin28 LD per lock indicator. Nuovo candidato filtro THT R22k/C100n, driver LM358 gain4. C805 DNI per evitare duplicazione con C505 VCO.
+- Analizzato KVCO in quattro tratti dalle misure SPICE V0.6 e ideal small-signal PLL, riscontrato smorzamento modesto ζ≈0,33–0,53; non affermato aggancio PLL.
+- Eseguite tre transienti reali ngspice su un **modello a switch ideali** di correzione e hold high impedance con leakage0/20/100nA, deriva −12mV VTUNE a20nA per15ms.
+- Creato primo schematico nativo KiCad **limitato a una sezione** con generator Python riproducibile, libreria THT custom e workflow KiCad9 ERC. Nessun KiCad ERC completo o layout/DRC.
+- Aggiornate risk logs, specifiche, test, handoff e baseline cumulativi, nessuna modifica a SMD repo. **NO FAB / NO TX**.
+
+---
+
 # V0.8 — 10 novembre 2026 — correzione margini alimentazione e driver THT
 
 - V0.7 boost24/rail18.3/Rsc1ohm superata come idea ma non dimensionata: nuova proposta boost27V, Rsc0,47Ω e L470µH con soglia minima ST250mV, rettificatore SB160 DO41 60V.

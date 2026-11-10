@@ -1,3 +1,9 @@
+# Protocollo GitHub V0.9 cumulativo
+
+Ogni nuova versione si integra in `main` solo dopo PR e tutte le verifiche. V0.9 aggiunge progetto PLL PDout three-state, test ngspice hold, vero sottoschema KiCad nativo e suite V0.9 senza rimuovere revisioni storiche V0.1..V0.8. La configurazione V0.8 viene congelata come `CONFIGURAZIONE_V0.8.json`. Il file `RIPRENDI_IN_UNA_NUOVA_CHAT.md` documenta la nuova baseline. Nessun ZIP da ricompilare; progetto SMD indipendente intatto. NO FAB / NO TX.
+
+---
+
 # Versionamento cumulativo V0.8
 
 `main` è fonte di verità. V0.8 viene integrata con PR/CI dopo revisione; nessun file V0.1–V0.7 rimosso. I file `CONFIGURAZIONE_V0.7.json` / `CONFIGURAZIONE_CORRENTE.json` mantengono la tracciabilità delle suite. BOM V0.8, pin-net, diagrammi, dataset ngspice, test e rapporto sono aggiunti senza ricreare archivi ZIP, e il progetto SMD indipendente resta intatto.

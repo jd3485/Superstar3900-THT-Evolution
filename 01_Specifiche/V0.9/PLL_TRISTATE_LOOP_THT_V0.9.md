@@ -25,7 +25,7 @@ PD_FILTER --> U803 LM358N PDIP8 pin3 noninvertente, gain4 stimato
                                                 C505 100nF nel VCO
 +20V analogica filtrata VANA20_FILT -> U803 pin8, GND pin4.
 U803 B: pin5=GND, pin6/7 uniti come follower inutilizzato.
-U401 LD (pin28) -> J904 / PLL_LD_RAW; **NESSUN circuito di hard-mute ancora disegnato**.
+U401 LD (pin28) -> (J904 previsto, non ancora presente nel CAD) / PLL_LD_RAW; **NESSUN circuito di hard-mute ancora disegnato**.
 ```
 
 **Decisione:** C805=100nF della V0.8 viene posta **DNI** nel sottoschema KiCad V0.9: il VCO candidata B ha già C505=100nF su VTUNE_RAIL; due capacità in parallelo o layout improprio altererebbero la dinamica del loop. Andrà verificata la posizione fisica e l'impedenza di alimentazione di entrambi i sistemi.
@@ -53,9 +53,9 @@ Modello `02_Piano_Frequenze/V0.9/pll_loop_model_v09.py`:
 
 ## 4. Primo sottoschema KiCad nativo — ambito strettamente limitato
 
-File: `04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch`, generato in modo deterministico da `04_KiCad/V0.9/genera_pll_loop_v09.py`. Contiene U803 DIP8 con tutti gli 8 pin visibili, R901/C901, R803/R804/R805, C805 (DNI), C803 decoupling, quattro connettori THT d'interfaccia, due flag esterni di alimentazione. Simboli personalizzati sono **incorporati** nel file, così non richiedono libreria esterna per aprirsi; footprint standard THT proposti.
+File: `04_KiCad/V0.9/PLL_LOOP_RX_PARTIAL_V0.9.kicad_sch`, generato in modo deterministico da `04_KiCad/V0.9/genera_pll_loop_v09.py`. Contiene U803 DIP8 con tutti gli 8 pin visibili, R901/C901, R803/R804/R805, C805 (DNI), C803 decoupling, tre connettori THT d'interfaccia, due flag esterni di alimentazione. Simboli personalizzati sono **incorporati** nel file, così non richiedono libreria esterna per aprirsi; footprint standard THT proposti.
 
-I flag esterni **non dimostrano** che VANA20_FILT sia davvero presente né che la scheda sia sicura: sono soltanto dichiarazioni di alimentazione a monte per l'ERC sul sottoschema parziale. J901 riceve PDout e GND, J902 +20V e GND, J903 VTUNE e GND, J904 LD e GND; nessuno di questi connettori è approvato come connettore definitivo della PCB finale.
+I flag esterni **non dimostrano** che VANA20_FILT sia davvero presente né che la scheda sia sicura: sono soltanto dichiarazioni di alimentazione a monte per l'ERC sul sottoschema parziale. J901 riceve PDout e GND, J902 +20V e GND, J903 VTUNE e GND, J904 LD e GND sono pianificati per il futuro sottosistema mute, NON nello schematico V0.9; nessuno di questi connettori è approvato come connettore definitivo della PCB finale.
 
 **Cosa manca dal foglio:** U401/U402 in CAD integrato, sintesi/clock digitale, tutti i 270 canali, alimentatore boost/LM317 vero, VCO Q501/502 e mixer, VANA20 realmente filtrata, monitor LD/hard-mute, layout RF, distanze di isolamento, DRC.
 

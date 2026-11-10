@@ -1,3 +1,23 @@
+# Stato corrente V0.9 — 10 novembre 2026
+
+| Sezione | Stato realmente documentato |
+|---|---|
+| RX frequenze | piano numerico 270 posizioni, non hardware |
+| ML145151 traditional PLL | PDout pin4 three-state e LD pin28 verificati da datasheet; U401 CAD integrato non esiste |
+| Filtro candidato | R90122k/C901100n, NOT COMPENSATED; f pole72Hz e ζ small-signal ~0,33–0,53 |
+| LM358N driver | U803 PDIP8 gain4, output isolato R220, C805 DNI; nessun dispositivo macro vendor |
+| VCO | candidata B V0.6, analog SPICE non vendor, no RF hardware |
+| Supply 27/20V | candidata V0.8 solo calcoli e modelli ideali, EMI/temperatura incognite |
+| NGSPICE V0.9 | tri-state ideale positivo/hold/negativo, perdite0/20/100nA, vera esecuzione del modello; NO PLL CLOSED LOOP |
+| KiCad V0.9 | **Primo CAD nativo parziale** U803/filter + supply/PDout/VTUNE connector; ERC esclusivamente locale, verificare report GH |
+| KiCad completo | NON ESEGUITO; U401/U402/VCO e alimentazione non integrati |
+| Layout/DRC e RF hardware | NON ESEGUITI, nessuna PCB, 0 prototipi |
+| produzione/TX | **NO FAB / NO TX** |
+
+Prossima V0.10: filtro compensato e modelli vendor, powergood/mute, KiCad multi-section, dati RF e gate di fabbricazione.
+
+---
+
 # Stato attuale V0.8 — 10 novembre 2026
 
 | Blocco | Stato |
