@@ -1,0 +1,58 @@
+name: V1.2 CAD-01 CAD-02 native KiCad integrated RX PLL pilot
+on:
+  push:
+    branches: [main, "feature/v1.2-pll-filter-master-cad"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  integrated-kicad:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad 9 native tools
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Prove determinism from both integrated source schematics
+        run: |
+          cp 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch "$RUNNER_TEMP/old.sch"
+          cp 04_KiCad/V1.2/sym-lib-table "$RUNNER_TEMP/old.table"
+          node 04_KiCad/V1.2/genera_master_rx_v12.js
+          cmp "$RUNNER_TEMP/old.sch" 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch
+          cmp "$RUNNER_TEMP/old.table" 04_KiCad/V1.2/sym-lib-table
+      - name: Install local native symbols in the CI KiCad settings
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path("04_KiCad/V1.2/sym-lib-table").read_text()
+          p=(Path.cwd()/"04_KiCad/V1.2").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text(src.replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Real KiCad ERC of the partially integrated RX schematic
+        run: |
+          mkdir -p 03_Verifiche/V1.2/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.2/kicad_results/erc.json 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch
+      - name: Native netlist and cross-block PIN-NET gate
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.2/kicad_results/pll_master_partial.net 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch
+          python3 -B 03_Verifiche/V1.2/verify_integrated_netlist_v12.py 03_Verifiche/V1.2/kicad_results/pll_master_partial.net
+      - name: Export KiCad SVG for actual review
+        run: |
+          mkdir -p 03_Verifiche/V1.2/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.2/kicad_results/svg/ 04_KiCad/V1.2/PLL_RX_MASTER_CAD_V1.2.kicad_sch
+          test -n "$(find 03_Verifiche/V1.2/kicad_results/svg -name '*.svg' -print -quit)"
+      - name: Publish diagnostic evidence, including on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v12-native-integrated-pll-rx-PARTIAL-NO-FAB-NO-TX
+          path: 03_Verifiche/V1.2/kicad_results/
+          if-no-files-found: warn

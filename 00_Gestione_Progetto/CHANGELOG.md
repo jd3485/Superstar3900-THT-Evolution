@@ -1,3 +1,11 @@
+# V1.2 — integrazione elettrica reale del PLL, 10 novembre 2026
+- Nuovo master **parziale piatto** KiCad A2 che riunisce CAD-01/02: U401, U402, R901/C901, LM358N U803, quarzo e connettori; nodi PDout e GND condivisi. **33 componenti/simboli THT** nel nuovo foglio (inclusi connettori/flag provvisori).
+- Native KiCad9 ERC **0 violazioni**, 33 reti e 28 gruppi pin-net verificati; U401 pin4 e R901 pin1 effettivamente nella stessa rete KiCad (run 42878584174). Generatore deterministico e librerie locali senza cambi ai precedenti file.
+- Risolti 41 avvisi di griglia ERC iniziali: posizionamento corretto su griglia 1,27mm. Simulazioni e regressioni storiche preservate.
+- **Non** master gerarchico, PLL chiuso o PCB fabbricabile, VCO/supply/controllo ancora esterni. NO FAB / NO TX.
+
+---
+
 # V1.1 CAD-02 — 10 novembre 2026
 - Sottoblocco KiCad 9 del PLL U401 ML145151YP/U402 TC74AC74P, quarzo, filtro di reset solo candidato, connettori e decoupling THT.
 - Generatore Node deterministico, libreria locale, ERC e netlist native KiCad, 22 reti pin-per-pin PASS e zero violazioni ERC (run 42870145756). Nessuna deroga THT.

@@ -1,3 +1,5 @@
+# V1.2 CAD FIRST — primo foglio KiCad integrato PLL U401/U402 + filtro RC/LM358: ERC 0 violazioni, 33 reti e 28 gruppi pin-net verificati in [Actions 42878584174](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42878584174). Schema elettrico parziale PIATTO, non radio completa o PCB. NO FAB / NO TX.
+
 # V1.1 CAD-02 — vero PLL digitale RX THT U401/U402 + quarzo in KiCad 9; ERC nativo 0 violazioni, netlist 22 reti verificate sul sottoblocco (run 42870145756). Non è PLL completo, non è PCB. NO FAB / NO TX.
 
 # **V1.0 CAD-first pilot: KIcad9 ERC reale 0 violazioni, 8 net esportate e verificate pin-per-pin, 272 test software PASS sul branch.** Non è la radio completa. Leggere il report V1.0. **NO FAB / NO TX**.
