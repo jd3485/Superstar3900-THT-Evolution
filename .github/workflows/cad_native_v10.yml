@@ -1,0 +1,66 @@
+name: V1.0 CAD-FIRST — native KiCad 9 symbol parse / schematic ERC and netlist
+on:
+  push:
+    branches: [main, "feature/v1.0-cad-first-toplevel"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-kicad-schematic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad 9 CLI and libraries
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Regenerate schematic, symbols and library table deterministically
+        run: |
+          cp 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch "$RUNNER_TEMP/original.sch"
+          cp 04_KiCad/V1.0/THT_V10.kicad_sym "$RUNNER_TEMP/original.sym"
+          cp 04_KiCad/V1.0/sym-lib-table "$RUNNER_TEMP/original.table"
+          python3 04_KiCad/V1.0/genera_pll_filter_v10.py
+          cmp "$RUNNER_TEMP/original.sch" 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch
+          cmp "$RUNNER_TEMP/original.sym" 04_KiCad/V1.0/THT_V10.kicad_sym
+          cmp "$RUNNER_TEMP/original.table" 04_KiCad/V1.0/sym-lib-table
+      - name: Register project local symbols for CLI (no project file yet)
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path("04_KiCad/V1.0/sym-lib-table").read_text()
+          full=str((Path.cwd()/"04_KiCad/V1.0").resolve())
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text(src.replace("${KIPRJMOD}", full))
+          PY
+      - name: Prove symbol library is readable by native KiCad 9
+        run: |
+          mkdir -p 03_Verifiche/V1.0/kicad_results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V1.0/kicad_results/symbols/ 04_KiCad/V1.0/THT_V10.kicad_sym
+          test -n "$(find 03_Verifiche/V1.0/kicad_results/symbols -name '*.svg' -print -quit)"
+      - name: Run actual native ERC without waivers
+        run: |
+          mkdir -p 03_Verifiche/V1.0/kicad_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.0/kicad_results/erc.json 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch
+          cat 03_Verifiche/V1.0/kicad_results/erc.json
+      - name: Export netlist from native schematic
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.0/kicad_results/pll_filter.net 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch
+          test -s 03_Verifiche/V1.0/kicad_results/pll_filter.net
+      - name: Export schematic SVG from native KiCad
+        run: |
+          mkdir -p 03_Verifiche/V1.0/kicad_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.0/kicad_results/svg/ 04_KiCad/V1.0/PLL_FILTER_DRIVER_CAD_V1.0.kicad_sch
+          test -n "$(find 03_Verifiche/V1.0/kicad_results/svg -name '*.svg' -print -quit)"
+      - name: Upload immutable CAD checking evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v10-partial-cad-native-kicad-erc-netlist-svg-NOT-FAB
+          path: 03_Verifiche/V1.0/kicad_results/
+          if-no-files-found: warn
