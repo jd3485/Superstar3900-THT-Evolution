@@ -1,0 +1,26 @@
+reference,quantity,mpn_or_value,THT_package,footprint_proposed,net_function,qualification_status
+U911,1,ST MC34063ABN,DIP-8,Package_DIP:DIP-8_W7.62mm,Stepup boost driver 1.25V reference,PILOT_NOT_VENDOR_SIMULATED
+U912,1,onsemi LM317T,TO-220-3,Package_TO_SOT_THT:TO-220-3_Vertical,28V boost to 20V analog TAB_OUTPUT_PIN2,NOT_THERMAL_OR_DROPOUT_QUALIFIED
+L920,1,Bourns RLB0914-681KL 680uH ±10%,radial THT,,Switching inductor 0.49A Irms typ / 0.9A Isat typ,FOOTPRINT_MISSING_AND_RF_UNQUALIFIED
+D920,1,Vishay 1N5819,DO-41,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,Boost rectifier anode2 SW cathode1 BOOST28,REVERSE_TRANSIENT_NOT_TESTED
+D921,1,1N4007,DO-41,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,LM317 output2 anode to input3 cathode,PART_NOT_FIXED
+D922,1,1N4007,DO-41,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,LM317 ADJ1 anode to OUTPUT2 cathode,PART_NOT_FIXED
+R920,1,1ohm 0.5W THT,axial,Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal,MC34063 Ipk nominal0.3A,PEAK_LIMIT_CORNERS_UNTESTED
+R921,1,180ohm THT,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,MC34063 pin8 driver collector bias,PULSE_POWER_UNQUALIFIED
+R922,1,47kohm 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,BOOST28 to feedback,PILOT_ONLY
+R923,1,2.2kohm 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,Feedback to GND,PILOT_ONLY
+R924,1,240ohm 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,LM317 OUT to ADJUST,PILOT_ONLY
+R925,1,3.57kohm 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,LM317 adjust to GND,PILOT_ONLY
+R926,1,10ohm 0.5W,axial,Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal,Output RC filtered analog,power_RF_COUPLING_UNTESTED
+R927,1,2.2kohm 0.5W,axial,Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal,LM317 minimum load candidate at20V,THERMAL_DERATING_UNTESTED
+C920,1,100uF 25V,radial electrolytic,Capacitor_THT:CP_Radial_D8.0mm_P3.50mm,Protected input decoupling,MPN_MISSING
+C921,1,100nF 50V,disc ceramic,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,Protected input HF decoupling,MPN_MISSING
+C922,1,1.5nF 50V,disc ceramic,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,MC34063 oscillator CT,MPN_TEMP_COEFF_UNQUALIFIED
+C923,1,330uF 50V,radial electrolytic,Capacitor_THT:CP_Radial_D12.5mm_P5.00mm,Boost28 storage capacitor,MPN_ESR_RIPPLE_NOT_SELECTED
+C924,1,100nF 50V,disc ceramic,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,Boost28 HF capacitor,MPN_MISSING
+C925,1,10uF 50V,radial electrolytic,Capacitor_THT:CP_Radial_D5.0mm_P2.00mm,LM317 input decoupling,MPN_MISSING
+C926,1,10uF 35V,radial electrolytic,Capacitor_THT:CP_Radial_D5.0mm_P2.00mm,LM317 output reservoir,MPN_MISSING
+C927,1,10uF 35V,radial electrolytic,Capacitor_THT:CP_Radial_D5.0mm_P2.00mm,LM317 ADJUST capacitor,MPN_MISSING
+C928,1,100uF 35V,radial electrolytic,Capacitor_THT:CP_Radial_D8.0mm_P3.50mm,Analog filtered VTUNE20 reservoir,MPN_MISSING
+C929,1,100nF 50V,disc ceramic,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,Analog VTUNE20 HF bypass,MPN_MISSING
+PWR920,1,ERC symbol only,no board,,Marks diode-driven boost as source for ERC,NOT_HARDWARE

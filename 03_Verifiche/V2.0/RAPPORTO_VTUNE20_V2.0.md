@@ -1,0 +1,25 @@
+# V2.0 — settimo foglio nativo KiCad9: boost 28 V e linea VTUNE 20 V THT, candidato non qualificato
+
+## Risultato fisico di CAD, senza fingere prove
+Il master `04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch` contiene **sette** pagine gerarchiche reali. Il nuovo child `POWER20_VTUNE_BOOST_LDO_V2.0.kicad_sch` riceve `+13V8_PROTECTED` a valle del blocco V1.9 D701/Q801, riceve GND e presenta un output `VANA20_FILT`. Quest'ultimo è cablato nella radice al **pin gerarchico della pagina PD_FILTER_DRIVER**, collegato alla rete preesistente che alimenta **U803 LM358 pin8**. Il pin 7 del LM358 resta GND? **NO**: non attribuire pin funzionali senza netlist, l'unico vincolo nuovo è pin8 di alimentazione LM358, verificato elettricamente. Nessun collegamento originale precedente viene spostato.
+
+## Circuito candidato, tutti componenti THT
+`U911 ST MC34063ABN PDIP8`: pin1 SW_COLLECTOR a `SW20_NODE`; pin2 emitter su GND; pin3 C922 timing 1.5nF a GND; pin4 GND; pin5 feedback `BOOST_FB`; pin6 VCC `+13V8_PROTECTED`; pin7 Ipk a `BOOST_SENSE` (dopo R920 1Ω); pin8 driver collector attraverso R921 180Ω allo stesso `BOOST_SENSE`. `L920 Bourns RLB0914-681KL` 680µH THT da `BOOST_SENSE` a `SW20_NODE`; `D920 Vishay 1N5819` **anodo2** `SW20_NODE`, **catodo1** `VBOOST28`. C920 100µ/25V e C921 100n/50V in ingresso; C923 330µ/50V e C924 100n/50V sul boost. R922=47kΩ verso boost, R923=2,2kΩ verso GND, per `1,25×(1+47k/2,2k)≈27,95V` **ideali**.
+
+`U912 LM317T TO-220`: **pin1=ADJUST, pin2=OUTPUT e TAB METALLICO, pin3=INPUT**; pin3 prende `VBOOST28`, pin2 eroga `VREG20_RAW`. R924 240Ω output→adjust e R925 3,57kΩ adjust→GND; considerando Iadj idealizzato 50µA, il setpoint stimato è `~20,022 V` **non garantiti**. C925 10µ/50V input, C926 10µ/35V output, C927 10µ/35V adjust, `D921 1N4007` anodo2 output→catodo1 input, `D922 1N4007` anodo2 adjust→catodo1 output; sono i percorsi di scarica candidati del produttore. `R927` 2,2kΩ/0,5W da VREG20_RAW a GND impone carico addizionale `~9,1mA` e si somma a `~5,2mA` del resistore programmatore per il carico minimo ipotetico del regolatore: funzione da qualificare. `R926` 10Ω /0,5W a `VANA20_FILT` e `C928` 100µ/35V + C929 100n/50V a GND filtrano la rail del driver analogico.
+
+## Fonti primarie ed elementi che NON costituiscono certificazione
+- [ST MC34063ABN DIP8](https://www.st.com/en/power-management/mc34063ab.html) e [datasheet ST](https://www.st.com/resource/en/datasheet/mc34063ab.pdf): pin1 SWC, pin2 SWE, pin3 CT, pin4 GND, pin5 COMP, pin6 VCC, pin7 IPK, pin8 DRC; riferimento ~1,25 V, limite di corrente via Rsc. Valori 170µH/.22Ω dell'esempio standard **non** sono intercambiabili senza ricalcoli con 680µH/1Ω.
+- [Bourns RLB0914](https://www.bourns.com/data/global/pdfs/rlb.pdf): MPN RLB0914-681KL, **680µH ±10%**, 1,6Ω DCR max, **Irms tipica 0,49 A**, **Isat tipica 0,9 A**, bobina THT *non schermata*, eventuale accoppiamento RF particolarmente critico. **FOOTPRINT L920 NON SELEZIONATO**, va verificata la geometria dei terminali, fori e keepout meccanici.
+- [onsemi LM317T](https://www.onsemi.com/download/data-sheet/pdf/lm317t-d.pdf): pin1 ADJ, pin2 OUTPUT (TAB), pin3 INPUT; carico minimo e dropout da verificare a temperatura e corrente effettivi.
+- [TI LM317 application](https://www.ti.com/lit/ds/symlink/lm317.pdf): protezione da scarica condensatore uscita e ADJ mediante diodi appositi; risposta a ripple di commutazione e stabilità reale non simulata.
+- [Vishay 1N5819](https://www.vishay.com/docs/88525/1n5817.pdf): diodo DO-41 **VRRM 40V**; il nodo di boost ~28 V ha margine statico limitato da overshoot / transienti; corrente/temperatura e energia commutata reali non validate.
+
+## Limiti di sicurezza, RF e fabbricazione
+1. **Non esiste prova dell'effettiva regolazione a 20 V**: i calcoli di duty/Ipeak e IAdj sono ideali, nessun modello vendor MC34063ABN/LM317 né transitorio di startup. L'uscita analogica potrebbe raggiungere una tensione differente, instabile o rumorosa; il VCO e la rete PLL potrebbero non agganciare.
+2. Il progetto THT include bobina non schermata e convertitore switching a frequenza non sincronizzata con RF: fondamentale dimostrare assenza di spur e rumore di fase, misurare `VANA20_FILT` e la tensione VTUNE a banda opportuna; applicare regole di layout separate per loop ad alta corrente / feedback / VCO.
+3. LM317 pin2 e TAB sono **a +20V**, NON GND: richiede isolatore termico se condiviso con dissipatore/telaio, verifiche creepage e BOM meccanica.
+4. F701/D702 input **non coordinati e privi di footprint qualificato**, OVP V1.9 non è veicolo-safe (LM393 limite 36V), il carico reale U803 non è misurato, manca mute/powergood; restano assenti RF mixer/IF/audio/control e PCB.
+5. Elettrolitici e resistori: alcuni footprint geometrici sono solo candidati, MPN preciso dei condensatori ancora TBD, L920 footprint vuoto; no produzione né DRC o Gerber.
+
+**Stato: CAD-only THT pilot, ERC e netlist da verificare con CI sul branch. NO FAB / NO TX.**
