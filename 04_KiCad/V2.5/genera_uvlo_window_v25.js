@@ -31,7 +31,7 @@ const transform=function transform(name,raw){
    result=once(result,"VISHAY_PR01000103301JR500_3K3_1W","VISHAY_PR01000101801JR500_1K8_1W");
    const add=makeR("R1012","YAGEO_MFR-25FBF52-36K_36K_1PCT",300.99,100,"FUSED_RAW","UVLO_SENSE")
              +makeR("R1013","YAGEO_MFR-25FBF52-10K_10K_1PCT",337.82,200,"UVLO_SENSE","GND")
-             +`(text "V2.5 UVLO candidate: U801B + input pin5 UVLO_SENSE, minus pin6 VREF2V5, OC out pin7 wired AND with U801A pin1 CMP_OUT. R1012=36k raw upper, R1013=10k GND lower, nominal low threshold ~11.5V. R1001=1k8 increases TL431 reference bias. UNVERIFIED startup, faults, hysteresis, thermal and manufacturer models. NO FAB / NO TX." (at 20.32 411.48 0) (effects (font (size 1 1))) (uuid "b025cbd1-faae-4e37-bf25-000000000003"))
+             +`(text "V2.5 UVLO: U801 pin5 UVLO_SENSE, pin7 CMP_OUT; R1012 36k, R1013 10k, R1001 1k8. CANDIDATE ONLY. NO FAB / NO TX." (at 20.32 411.48 0) (effects (font (size 1 1))) (uuid "b025cbd1-faae-4e37-bf25-000000000003"))
 `;
    result=once(result,"(embedded_fonts no)",add+"(embedded_fonts no)");
  }
