@@ -56,8 +56,16 @@ def load_steps(name:str) -> list[tuple[str,str|None]]:
         if "uses" in st:
             assert st["uses"] in ALLOWED_USES and "run" not in st, (name,st)
             continue
-        assert "run" in st and not st.get("if"), f"Unexpected conditional run step {name}: {st}"
+        assert "run" in st, f"Missing original run step {name}: {st}"
         seen_run+=1
+        condition=st.get("if")
+        if condition:
+            assert name=="vco_spice_v06.yml" and condition=="github.event_name == 'workflow_dispatch'", (name,condition)
+            # Original five v06 exploratory steps were push-only, never part of PR checks.
+            # Keep explicitly executable for manual full-run and standalone dispatch.
+            if os.getenv("ENABLE_HISTORICAL_EXPLORATORY")!="true":
+                commands.append((st.get("name","v06 exploratory"),None))
+                continue
         cmd=st["run"]
         assert isinstance(cmd,str) and cmd.strip(),(name,st)
         commands.append((st.get("name","Unnamed legacy step"),normalized_command(cmd)))

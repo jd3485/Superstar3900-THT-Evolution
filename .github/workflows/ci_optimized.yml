@@ -3,6 +3,12 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      include_v06_exploration:
+        description: Run historical experimental V0.6 SPICE explorations manually
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -38,6 +44,8 @@ jobs:
     container:
       image: kicad/kicad@sha256:e638b79b0321f29395a5b783e94bb9f3c73303e8da15da27b8f5cb4b67a37729
       options: --user 0:0
+    env:
+      ENABLE_HISTORICAL_EXPLORATORY: ${{ inputs.include_v06_exploration && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@v4
       - name: Install ONLY missing runtime tools; KiCad9 already in signed official image

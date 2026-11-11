@@ -10,7 +10,7 @@
     even documentation-only (to preserve handoff continuity).
   - **Full:** for electrical, script, YAML, library, BOM, layout, testing or
     unrecognized changes, a single job in the **official KiCad9 Docker image**
-    executes **all 19 remaining historical workflows' original run steps in
+    executes **all 19 remaining historical workflows' original PR-applicable run steps in
     order**, including actual native KiCad9 ERC, netlists, footprint SVG,
     partition audits, screenings and ngspice. Only repeated bootstrap
     installation steps and per-workflow checkout/upload steps are deduplicated.
@@ -46,3 +46,9 @@ The optimized runner extracts each `run` step and executes its shell text
 under `bash -e -o pipefail`. Any changed legacy step count or a new unknown
 workflow fails the manifest. Manually inspect evidence for status and technical
 correctness. No tests silently classified as success.
+
+The five V0.6 exploratory steps formerly restricted to a historical feature
+push were **not** part of PR checks. They now run on standalone V0.6
+`workflow_dispatch`, and on manual optimized full dispatch when
+`include_v06_exploration=true`; normal PR runs retain their original
+conditional skip. The script asserts exactly these five conditional steps.
