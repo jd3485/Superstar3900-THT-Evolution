@@ -15,6 +15,7 @@ jobs:
           node --check 04_KiCad/V2.5/genera_uvlo_window_v25.js
           node 04_KiCad/V2.5/genera_uvlo_window_v25.js --check
           python3 -B 03_Verifiche/V2.5/screen_window_uvlo_v25.py
+          python3 -B 03_Verifiche/V2.5/audit_interazione_ovp_uvlo_v25.py
       - name: Install native KiCad9
         run: |
           sudo apt-get update -qq
