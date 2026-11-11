@@ -153,7 +153,7 @@ ${ps.map(p=>`(pin "${p[0]}" (uuid "${uuid()}"))`).join("\n")}
  const symtab=src[6].replaceAll('${KIPRJMOD}/../V1.8/THT_V18.kicad_sym','${KIPRJMOD}/../V1.8/THT_V18.kicad_sym')
  + " "; // updated below: remove final closing and add V20 entry.
  const tab=src[6].trimEnd().replace(/\)\s*$/,' (lib (name "THT_V20") (type "KiCad") (uri "${KIPRJMOD}/THT_V20.kicad_sym") (options "") (descr "MC34063ABN DIP8 boost and LM317 THT VTUNE rail"))\n)\n');
- return {root,core:migrate(src[1]),pd,vco:migrate(src[3]),power5:migrate(src[4]),input:migrate(src[5]),power20:child,library,symtab:tab};
+ return {root,core:migrate(src[1]),pd,vco:migrate(src[3]).replaceAll("C500B","C509"),power5:migrate(src[4]),input:migrate(src[5]),power20:child,library,symtab:tab};
 }
 const repo=path.resolve(__dirname,"../..");
 const sources=["04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch","04_KiCad/V1.9/PLL_CORE_DIGITAL_V1.9.kicad_sch","04_KiCad/V1.9/PD_FILTER_DRIVER_V1.9.kicad_sch","04_KiCad/V1.9/VCO_RX_AND_LOBUF_V1.9.kicad_sch","04_KiCad/V1.9/POWER5_DISTRIBUTION_V1.9.kicad_sch","04_KiCad/V1.9/INPUT_FUSE_REVERSE_TVS_OVP_V1.9.kicad_sch","04_KiCad/V1.9/sym-lib-table"];

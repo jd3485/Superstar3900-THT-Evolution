@@ -5,6 +5,7 @@
 - **Limitazioni / NO FAB / NO TX:** nessun modello vendor MC34063/LM317, nessuna misura hardware di 20V, footprint **L920 non selezionato**, condensatori senza MPN/esr, boost spur e accoppiamento PLL/IF ignoti, 13V8 protetto non qualificato su batteria/veicolo, F701/D702 e L501 footprint mancanti, powergood/mute, RF/IF/audio/controller/PCB non completati. Non alimentare da veicolo/batteria.
 
 **Sequenza prossima V2.1:** bloccare BOM+footprint magnetici e diodi, prove / modelli realistic startup boost / 20V e rumore, completare il core del PLL e powergood, poi integrare RF input/preselector/mixer/IF/audio/controller THT. La PCB rimane fase finale subordinata a schemi completi e verifiche.
+- **Rischio EDA risolto nella V2.0 solo:** riferimento legacy VCO `C500B` (non standard) normalizzato in `C509` tramite generatore riproducibile. Nessuna modifica a piedini, connessioni o files storici; il confronto netlist V1.9→V2.0 applica esplicitamente questa sola rinumerazione. 
 
 ---
 

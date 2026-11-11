@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """KiCad9 proof of an ACTUAL connected seven-sheet RX PLL power20 supply, NOT functional regulation.
-All baseline V1.9 physical pin partitions MUST remain identical. No fabrication claims.
+All baseline V1.9 physical pin partitions preserved with C500B=>C509 refdes-only normalization. No fabrication claims.
 """
-import json,runpy,sys
+import json,runpy,sys,re
 from pathlib import Path
 repo=Path(__file__).resolve().parents[2]
 read=runpy.run_path(str(repo/"03_Verifiche/V1.0/verify_kicad_netlist_v10.py"))["read_nets"]
@@ -16,12 +16,18 @@ for name,members in actual.items():
   pinnet[pin]=name
 previous={}
 for name,members in baseline.items():
- final={pinnet.get(p) for p in members}
+ # Single documented pure reference-normalization, no PCB net or pin change.
+ normalized={("C509",pin) if ref=="C500B" else (ref,pin) for ref,pin in members}
+ final={pinnet.get(p) for p in normalized}
  if len(final)!=1 or None in final:
   raise AssertionError(f"PREVIOUS V1.9 physical pin group SPLIT/LOST {name} -> {final}")
  group=next(iter(final))
  if group in previous:raise AssertionError(f"SHORT between baseline {name} and {previous[group]}")
  previous[group]=name
+if any(not re.fullmatch(r"[A-Z]+[0-9]+",ref) for ref,_ in pinnet):
+ raise AssertionError("KiCad component with nonstandard reference, including legacy C500B")
+if any(p[0]=="C500B" for p in pinnet) or ("C509","1") not in pinnet:
+ raise AssertionError("C500B->C509 reference-only normalization not applied")
 def same(label,*pins):
  names={pinnet.get(p) for p in pins}
  if len(names)!=1 or None in names:raise AssertionError(f"{label} pins do not share one net: {pins} -> {names}")
@@ -81,7 +87,7 @@ if "PWR920" not in sch or "BOOST_SOURCE_KICAD_ERC_ONLY_NOT_HARDWARE" not in sch:
 if any(p[0]=="PWR920" for p in pinnet):
  raise AssertionError("ERC-only fake power flag must not enter physical BOM/netlist")
 out={"status":"PASS_NATIVE_SEVEN_SHEET_VTUNE20_TOPOLOGY_ONLY","previous_v19_nets":len(baseline),
-"v20_native_nets":len(actual),"all_original_v19_physical_pin_groups_preserved":True,
+"v20_native_nets":len(actual),"all_original_v19_physical_pin_groups_preserved_after_C500B_to_C509_refdes_normalization":True,"reference_syntax_all_valid":True,
 "MC34063ABN":"U911 DIP8 P1-SW P2-GND P3-CT P4-GND P5-FB P6-VCC P7-Ipk P8-Driver",
 "LM317T":"U912 TO220 P1-Adjust P2-Output_and_metal_tab P3-Input",
 "power_path":"V1.9 Q801 -> D701 cathode -> MC34063 -> boost diode -> LM317 -> R926 -> LM358 pin8",

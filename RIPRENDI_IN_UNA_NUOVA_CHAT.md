@@ -3,6 +3,7 @@
 - **Evidenza KiCad9 concreta:** [run 42986863110](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42986863110) ha completato **ERC0**, **72 gruppi netlist V2.0 rispetto a 64 V1.9**, tutte le precedenti partizioni-pin identiche, 7 pagine SVG e generatore 9 file PASS. Lo script DC ha inizialmente fermato l'esecuzione per una classificazione del margine corrente troppo rigida; la correzione distingue condizioni **vicine** al limite teorico da vere violazioni. I CI del commit finale restano da concludere.
 - **Nessuna PCB:** il progetto reale della scheda THT, il routing, DRC e prototipo sono **NON INIZIATI**. [Piano PCB RF THT V2.0](00_Gestione_Progetto/PIANO_PCB_RF_THT_V2.0.md) rende obbligatori MPN/footprint/ritorni RF, verifica boost EMI e revisione indipendente prima di qualsiasi Gerber.
 - **Limitazioni / NO FAB / NO TX:** nessun modello vendor MC34063/LM317, nessuna misura hardware di 20V, footprint **L920 non selezionato**, condensatori senza MPN/esr, boost spur e accoppiamento PLL/IF ignoti, 13V8 protetto non qualificato su batteria/veicolo, F701/D702 e L501 footprint mancanti, powergood/mute, RF/IF/audio/controller/PCB non completati. Non alimentare da veicolo/batteria.
+- **Rischio EDA risolto nella V2.0 solo:** riferimento legacy VCO `C500B` (non standard) normalizzato in `C509` tramite generatore riproducibile. Nessuna modifica a piedini, connessioni o files storici; il confronto netlist V1.9→V2.0 applica esplicitamente questa sola rinumerazione. 
 
 ---
 
