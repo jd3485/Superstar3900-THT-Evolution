@@ -1,9 +1,7 @@
 name: V0.6 experimental ngspice RX VCO (NO FAB NO TX)
 on:
-  push:
-    branches: [main, "feature/v0.6-spice-validation"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

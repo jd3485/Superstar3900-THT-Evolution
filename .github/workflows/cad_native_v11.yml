@@ -1,9 +1,7 @@
 name: V1.1 CAD-02 - native KiCad PLL core RX
 on:
-  push:
-    branches: [main, "feature/v1.1-cad02-pll-core"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

@@ -7,6 +7,38 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+
+## Ottimizzazione dei controlli GitHub Actions, distinta dallo stato elettrico
+
+La revisione CAD realmente integrata resta **V2.3** (PR #26,
+commit tecnico `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`).
+Nell'intervento infrastrutturale successivo sono stati identificati
+**20 workflow legacy** auto-attivati su ogni PR e su push main, di cui
+**14 native KiCad9** con download indipendente via PPA Launchpad,
+**5 simulazione ngspice**, **1 regressioni Python V0.1–V1.0**.
+Questo moltiplicava consumi e fallimenti di rete (issue #29).
+
+Policy disponibile nel nuovo `.github/workflows/ci_optimized.yml` e
+[ci/CI_COST_OPTIMIZATION.md](../ci/CI_COST_OPTIMIZATION.md):
+- nessun push main automatico o invocazione di venti suite distinte;
+- regressioni Python sulla PR, anche se solo documentale;
+- per qualunque modifica non documentale, **tutte** le 19 suite storiche
+  KiCad/ngspice eseguite in un solo job dentro il container KiCad 9.0.9
+  ufficiale, digest pinned e pilota ERC0 [43054348749](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43054348749);
+- 20 workflow originali restano invocabili manualmente e i loro singoli
+  step di verifica sono eseguiti fedelmente dal runner aggregato;
+- gate unico MUST PASS su SHA finale prima di ogni integrazione tecnica;
+  nessuna inferenza di DRC PCB senza PCB.
+**Avvertenza:** i file documentano la policy ma la piena migrazione si considera
+realizzata solo dopo esito CI e merge confermato della relativa PR su main.
+
+**Lavoro tecnico ancora OPEN**: [PR #28 V2.4](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/28)
+(candidato guardia LM393/R1011/D806 non integrato, ERC e netlist native
+V2.4 da ripetere con runner funzionante), [issue #27](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/27)
+(guasti, UVLO, power-good/mute fail-closed non qualificati), [issue #29](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/29)
+(storico PPA Launchpad); issue #19 e #21 RF/termica.
+Non cambiare il conto/budget Github. **NO FAB / NO TX**.
+
 ## Ultima revisione realmente integrata — V2.3
 
 | Campo | Ultimo stato accertato |

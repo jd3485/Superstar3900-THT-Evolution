@@ -1,9 +1,7 @@
 name: V2.2 native KiCad9 7-sheet L920 Bourns radial THT candidate and netlist preservation
 on:
-  push:
-    branches: [main, "feature/v2.2-bourns-L920-radial-tht"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

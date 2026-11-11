@@ -1,9 +1,7 @@
 name: V1.5 native KiCad9 THT 5V regulator and RF distribution candidate
 on:
-  push:
-    branches: [main, "feature/v1.5-tht-5v-distribution-cad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

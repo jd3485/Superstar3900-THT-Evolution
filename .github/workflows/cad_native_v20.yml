@@ -1,9 +1,7 @@
 name: V2.0 genuine KiCad9 7-sheet THT MC34063ABN boost LM317 VTUNE rail
 on:
-  push:
-    branches: [main, "feature/v2.0-seven-sheet-tht-vtune20-boost-ldo"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
