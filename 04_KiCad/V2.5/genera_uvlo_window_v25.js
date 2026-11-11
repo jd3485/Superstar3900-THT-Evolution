@@ -24,7 +24,12 @@ const makeR=function makeR(ref,value,y,idx,leftLabel,rightLabel){
 const transform=function transform(name,raw){
  let result=raw.replaceAll('"PLL_RX_HIERARCHICAL_MASTER_V2.4"','"PLL_RX_HIERARCHICAL_MASTER_V2.5"').replaceAll("_V2.4.kicad_sch","_V2.5.kicad_sch");
  if(name==="INPUT_FUSE_REVERSE_TVS_OVP"){
-   result=once(result,'(label "GND" (at 309.88 172.72 0)','(label "UVLO_SENSE" (at 309.88 172.72 0)');
+   result=once(result,'(wire (pts (xy 314.96 172.72) (xy 309.88 172.72)) (stroke (width 0) (type default)) (uuid "af18bcd1-faae-4e37-bf18-000000000028"))',`(wire (pts (xy 314.96 172.72) (xy 300.99 172.72)) (stroke (width 0) (type default)) (uuid "af18bcd1-faae-4e37-bf18-000000000028"))
+(wire (pts (xy 300.99 172.72) (xy 300.99 269.24)) (stroke (width 0) (type default)) (uuid "b025cbd1-faae-4e37-bf25-000000000306"))
+(wire (pts (xy 300.99 269.24) (xy 355.6 269.24)) (stroke (width 0) (type default)) (uuid "b025cbd1-faae-4e37-bf25-000000000307"))
+(wire (pts (xy 355.6 269.24) (xy 355.6 300.99)) (stroke (width 0) (type default)) (uuid "b025cbd1-faae-4e37-bf25-000000000308"))
+(wire (pts (xy 355.6 300.99) (xy 345.44 300.99)) (stroke (width 0) (type default)) (uuid "b025cbd1-faae-4e37-bf25-000000000309"))`);
+   result=once(result,'(label "GND" (at 309.88 172.72 0) (effects (font (size 1 1))) (uuid "af18bcd1-faae-4e37-bf18-000000000029"))','');
    result=once(result,'(no_connect (at 345.44 172.72) (uuid "af18bcd1-faae-4e37-bf18-000000000034"))',
 `(wire (pts (xy 345.44 172.72) (xy 350.52 172.72)) (stroke (width 0) (type default)) (uuid "b025cbd1-faae-4e37-bf25-000000000001"))
 (label "CMP_OUT" (at 350.52 172.72 0) (effects (font (size 1 1))) (uuid "b025cbd1-faae-4e37-bf25-000000000002"))`);

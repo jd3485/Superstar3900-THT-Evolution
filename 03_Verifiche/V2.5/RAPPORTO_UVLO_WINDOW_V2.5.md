@@ -26,3 +26,7 @@ A failed-open TL431 can raise reference above the LM393 valid input common-mode 
 ## CAD gate for this draft
 
 Use cost-optimized CI on final HEAD. New workflow `.github/workflows/cad_native_v25.yml` is **manual only** and its native commands also run within `ci/full_regressions.py`; verify generator bit-exact, genuine 7-sheet KiCad9 ERC0, real V2.4->V2.5 native pin-net comparison (only U801/5 and U801/7 moved; 2 new resistors, R1001 value changed), 133/133 THT footprint fields, 7 SVG, and all historical regressions. **No PCB/DRC exists**. Do NOT merge PR #28 as safety-qualified. NO FAB / NO TX / NO BATTERY / NO VEHICLE.
+
+## Correzione connettività in seguito a primo ERC native V2.5
+
+La prima CI su SHA `d3a18be701566997607ef9f25c5c7ff79373abc3` [run 43064042192](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43064042192) ha dato **ERC FAIL**: etichetta UVLO_SENSE inizialmente non connessa e ingresso U801 pin5 non pilotato. Si è aggiunto un collegamento elettrico reale **pin5 U801 -> nodo R1012 pin2** tramite percorso di fili KiCad (non soltanto labels), mantenendo l'etichetta UVLO sul nodo R1012/R1013. Il generatore riproducibile conserva la stessa modifica. Ripetere ERC, netlist e pin partition sulla nuova HEAD; non classificare la precedente CI come PASS. Nessun waiver né PWR_FLAG aggiunto.
