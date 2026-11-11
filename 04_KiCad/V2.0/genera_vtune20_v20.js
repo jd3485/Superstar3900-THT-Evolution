@@ -99,10 +99,10 @@ ${ps.map(p=>`(pin "${p[0]}" (uuid "${uuid()}"))`).join("\n")}
  ["C929","100n_50V_ANALOG",fpCapCer,"VANA20_FILT","GND"]
  ];
  cs.forEach((c,i)=>place("C_AXIAL_THT",c[0],c[1],c[2],i<5?200.66:254,44.45+(i%5)*43.18,two,[c[3],c[4]]));
- place("L_RADIAL_THT","L920","BOURNS_RLB0914-681KL_680uH_490mA_THT_FOOTPRINT_TBD","",120.65,201.93,two,["BOOST_SENSE","SW20_NODE"]);
- place("D_SCHOTTKY_1N5819","D920","VISHAY_1N5819_A2_SWITCH_K1_BOOST",fpDiode,149.86,201.93,dia,["VBOOST28","SW20_NODE"]);
- place("D_1N4007","D921","1N4007_LM317_OUT_A2_IN_K1",fpDiode,281.94,201.93,dia,["VBOOST28","VREG20_RAW"]);
- place("D_1N4007","D922","1N4007_LM317_ADJ_A2_OUT_K1",fpDiode,281.94,241.3,dia,["VREG20_RAW","ADJ20"]);
+ place("L_RADIAL_THT","L920","680uH_RLB0914_681KL","",120.65,201.93,two,["BOOST_SENSE","SW20_NODE"]);
+ place("D_SCHOTTKY_1N5819","D920","1N5819_BOOST",fpDiode,149.86,201.93,dia,["VBOOST28","SW20_NODE"]);
+ place("D_1N4007","D921","1N4007_OUT_IN",fpDiode,281.94,201.93,dia,["VBOOST28","VREG20_RAW"]);
+ place("D_1N4007","D922","1N4007_ADJ_OUT",fpDiode,281.94,241.3,dia,["VREG20_RAW","ADJ20"]);
  place("PWR_FLAG_ERC","PWR920","BOOST_SOURCE_KICAD_ERC_ONLY_NOT_HARDWARE","",331.47,254,flag,["VBOOST28"],false);
  // hierarchy wires are independent from local functional labels and pin stubs
  ins.push(`(hierarchical_label "+13V8_PROTECTED" (shape passive) (at 43.18 50.8 0) ${eff} (uuid "${uuid()}"))`);
@@ -111,7 +111,7 @@ ${ps.map(p=>`(pin "${p[0]}" (uuid "${uuid()}"))`).join("\n")}
  wire(43.18,63.5,50.8,63.5);label("GND",50.8,63.5);
  ins.push(`(hierarchical_label "VANA20_FILT" (shape passive) (at 391.16 76.2 180) ${eff} (uuid "${uuid()}"))`);
  wire(383.54,76.2,391.16,76.2);label("VANA20_FILT",383.54,76.2);
- ins.push(`(text "V2.0 THT PILOT ONLY: MC34063ABN DIP8 boost ~28V -> LM317T TO220 ~20V -> R926/C928 analog filter.\\nInput +13V8_PROTECTED is from V1.9 Q801 power cut-off; no vehicle/long transient qualification.\\nU911 p1 switch, p2 GND, p3 CT, p4 GND, p5 FB, p6 VCC, p7 Ipk, p8 driver collector.\\nU912 p1 ADJ, p2 OUTPUT/TAB (not GND), p3 INPUT. R927 explicit min-load candidate.\\nL920 680uH Bourns THT footprint UNSELECTED; switching EMI/RF coupling, saturation, current, boot,\\nboost/317 dropout and protection diode polarities NOT proven by vendor model or hardware. NO FAB / NO TX." (at 45.72 281.94 0) ${eff} (uuid "${uuid()}"))`);
+ ins.push(`(text "V2.0 THT PILOT ONLY: MC34063ABN DIP8 boost ~28V -> LM317T TO220 ~20V -> R926/C928 analog filter.\\nInput +13V8_PROTECTED is from V1.9 Q801 power cut-off; no vehicle/long transient qualification.\\nU911 p1 switch, p2 GND, p3 CT, p4 GND, p5 FB, p6 VCC, p7 Ipk, p8 driver collector.\\nU912 p1 ADJ, p2 OUTPUT/TAB (not GND), p3 INPUT. R927 explicit min-load candidate.\\nL920 680uH Bourns THT footprint UNSELECTED; switching EMI/RF coupling, saturation, current, boot,\\nboost/317 dropout and protection diode polarities NOT proven by vendor model or hardware. NO FAB / NO TX." (at 199.39 304.8 0) ${eff} (uuid "${uuid()}"))`);
  child+=ins.join("\n")+
  `\n(sheet_instances (path "/${ROOT}/${SHEET}" (page "7")))\n(embedded_fonts no)\n)\n`;
  // convert inherited native KiCad 9 6-sheet baseline without modifying sources
