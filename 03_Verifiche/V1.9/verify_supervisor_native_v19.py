@@ -36,9 +36,9 @@ expected_new_refs={"D804","D805","PWR802"}
 assert not old_refs&expected_new_refs,"New references collide with prior design"
 raw=net("Raw supply",("J701","1"),("F701","1"))
 fused=net("Fused raw domain",("F701","2"),("D702","1"),("Q801","3"),("D803","1"),
- ("R1008","1"),("PWR801","1"),("D804","2"))
+ ("R1008","1"),("D804","2"))
 ctrl=net("Reverse-isolated control supply",("D804","1"),("D805","1"),
- ("U801","8"),("R1001","1"),("R1002","1"),("PWR802","1"))
+ ("U801","8"),("R1001","1"),("R1002","1"))
 gnd=net("Shared GND",("D805","2"),("D702","2"),("U601","2"),("U801","4"),
  ("J701","2"),("U401","2"))
 ovp=net("PMOS downstream path",("Q801","2"),("D701","2"))
@@ -54,12 +54,14 @@ lo=net("LO 5V branch",("R613","2"),("U520","14"))
 assert len({raw,fused,ctrl,gnd,ovp,protected,vref,sense,gate,five,pll,vco,lo})==13,"Power short"
 for ref in ("D804","D805"):
  assert sum(p[0]==ref for p in where)==2,f"{ref} pin connectivity"
-assert sum(p[0]=="PWR802" for p in where)==1
+assert not any(p[0]=="PWR802" for p in where),"ERC-only PWR802 must not enter the board netlist"
 assert net("Original VTUNE link",("D501","2"),("R805","2"))
 assert net("Original LO buffered clock",("U402","3"),("R513","2"))
 no=where.get(("U801","7"))
 assert no and no.startswith("unconnected-") and new[no]=={("U801","7")},"U801/7 isolated NC missing"
 sch=(root/"04_KiCad/V1.9/INPUT_FUSE_REVERSE_TVS_OVP_V1.9.kicad_sch").read_text()
+if '(property "Reference" "PWR802"' not in sch or '(property "Value" "ERC_ONLY_PROTECTED_SUPERVISOR_VCC"' not in sch:
+ raise AssertionError("PWR802 ERC annotation missing from schematic")
 needle='(property "Footprint" "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" (at 254 242.57 0)'
 if needle not in sch or 'VISHAY_PR01000103301JR500_3K3_1W' not in sch:
  raise AssertionError("R1001 physical 1W Vishay PR01 or footprint missing")
