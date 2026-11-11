@@ -96,7 +96,7 @@ function buildV18(s){
  result=result.replace('(sheet_instances (path',instance.join("\n")+'\n(sheet_instances (path');
  result=result.replace("V1.7: F701 candidate","V1.8: F701 candidate");
  const ren=x=>x.replaceAll('(project "'+OLD+'"','(project "'+NAME+'"');
- let newRoot=ren(root).replaceAll("_V1.7.kicad_sch","_V1.8.kicad_sch").replace("V1.7 SIX SHEETS","V1.8 SIX SHEETS");
+ let newRoot=ren(root).replaceAll("_V1.7.kicad_sch","_V1.8.kicad_sch").replace("INPUT_FUSE_REVERSE_TVS_V1.8.kicad_sch","INPUT_FUSE_REVERSE_TVS_OVP_V1.8.kicad_sch").replace("V1.7 SIX SHEETS","V1.8 SIX SHEETS");
  const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))\n (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT power"))\n (lib (name "THT_V17") (type "KiCad") (uri "${KIPRJMOD}/../V1.7/THT_V17.kicad_sym") (options "") (descr "THT fuse and TVS"))\n (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431BCLP IRF9540N OVP pilot"))\n)\n';
  return {root:newRoot,digital:ren(core),filter:ren(filter),vco:ren(vco),power:ren(power),input:result,lib:library,table};
 }

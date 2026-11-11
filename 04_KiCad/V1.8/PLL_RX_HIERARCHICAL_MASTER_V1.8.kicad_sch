@@ -77,7 +77,7 @@
 (junction (at 154.94 254) (diameter 0) (color 0 0 0 0) (uuid "9e17bcd1-faae-4e37-bf17-000000000206"))
 (sheet (at 43.18 208.28) (size 86.36 71.12) (stroke (width 0.1524) (type solid)) (fill (color 0 0 0 0.0000)) (uuid "9e17bcd1-faae-4e37-bf17-000000000006")
  (property "Sheetname" "FUSED_13V8_INPUT" (at 43.18 207.01 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
- (property "Sheetfile" "INPUT_FUSE_REVERSE_TVS_V1.8.kicad_sch" (at 43.18 280.67 0) (effects (font (size 1.27 1.27)) (justify left top)))
+ (property "Sheetfile" "INPUT_FUSE_REVERSE_TVS_OVP_V1.8.kicad_sch" (at 43.18 280.67 0) (effects (font (size 1.27 1.27)) (justify left top)))
  (pin "+13V8_PROTECTED" passive (at 129.54 228.6 0) (uuid "9e17bcd1-faae-4e37-bf17-000000000207") (effects (font (size 1.27 1.27)) (justify right)))
  (pin "GND" passive (at 129.54 254 0) (uuid "9e17bcd1-faae-4e37-bf17-000000000208") (effects (font (size 1.27 1.27)) (justify right)))
  (instances (project "PLL_RX_HIERARCHICAL_MASTER_V1.8" (path "/7b14bcd1-faae-4e37-bf14-000000000001" (page "6")))))
