@@ -53,6 +53,11 @@ jobs:
         run: |
           python3 -B 03_Verifiche/V1.8/screen_ovp_v18.py
           cp 03_Verifiche/V1.8/screen_v18.json 03_Verifiche/V1.8/native_results/
+      - name: IDEALIZED ngspice high-side OVP steps (NOT vendor or hardware test)
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ngspice
+          ngspice -b -o 03_Verifiche/V1.8/native_results/behavioral_ngspice.log 03_Verifiche/V1.8/OVP_IDEAL_BEHAVIORAL_V1.8.cir
+          python3 -B 03_Verifiche/V1.8/verify_behavioral_ovp_v18.py 03_Verifiche/V1.8/native_results/behavioral_ngspice.log
       - name: Retain KiCad proof or failure
         if: always()
         uses: actions/upload-artifact@v4
