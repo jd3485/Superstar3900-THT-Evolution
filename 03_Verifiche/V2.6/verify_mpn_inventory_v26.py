@@ -15,7 +15,7 @@ def main():
         for m in PATTERN.finditer(content):
             lib,ref,value,foot=m.groups()
             assert not ref.startswith("#"),ref
-            assert "THT" in foot or "DIP" in foot or "TO-" in foot,(ref,foot)
+            assert foot and not re.search(r"(^|:)Package_[^:]*SMD",foot),(ref,foot)
             found.append((ref,sheet,lib,value,foot))
     assert len(found)==138,len(found)
     assert len({x[0] for x in found})==138
