@@ -63,7 +63,7 @@ jobs:
           retention-days: 3
           if-no-files-found: warn
   gate:
-    name: Required CI gate: real checks passed, no ERC/DRC waiver
+    name: "Required CI gate: real checks passed, no ERC/DRC waiver"
     needs: [fast, full]
     if: always()
     runs-on: ubuntu-24.04
