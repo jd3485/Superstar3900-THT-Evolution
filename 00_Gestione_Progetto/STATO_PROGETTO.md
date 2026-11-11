@@ -1,3 +1,17 @@
+# Superstar 3900 THT Evolution — CAD V2.6 su main (11 novembre 2026)
+
+**Ultima revisione CAD integrata: V2.6**, PR [#28](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/28) fusa nel commit `998e619ed35af13a51b03ff58cd570e22cc877c5`. Nuovo master [KiCad 9 V2.6](../04_KiCad/V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch): sette fogli RX/PLL/VCO/VTUNE e protezione di alimentazione, con 138 componenti THT dotati di footprint. V2.4 e V2.5 rimangono in cartelle storiche.
+
+**Verifiche reali:** sul final head PR `3e3f904358f7a0e4b384a2ecf9964076a1d8a896`, [GitHub Actions 43076650377](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43076650377) **3/3 PASS**, KiCad9 **ERC 0**, generator bit-exact, confronto netlist **73→76** gruppi (solo U801/7 e Q802/1 modificati nella V2.6), **138/138** footprint THT e sette SVG. Verifiche Python/ngspice legacy superate. Nessuna PCB completa, nessun layout, nessun DRC di scheda.
+
+**Modifica V2.6:** la UVLO ha uscita e retroazione indipendenti dall'OVP; Q803 2N3904 e R1014–R1017 realizzano un interblocco candidato a due transistor in serie. I risultati CAD non dimostrano che la protezione sia sicura in presenza di guasti.
+
+**Problemi ancora aperti:** [#27 sicurezza e guasti](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/27), [#19 L501 VCO](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/19), [#21 L920 boost](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/21), [#29 infrastruttura Actions storica](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/29). Mancano front-end RF, mixer/IF, demodulazione, audio e controlli della radio completa. Richiesti modelli vendor, verifica VGS del MOSFET su guasti e transitori, reverse, common-mode, TL431, power-good/mute e prove indipendenti.
+
+**VINCOLI: NO FAB / NO GERBER DI PRODUZIONE / NO TX / NON COLLEGARE A BATTERIA O VEICOLO.** La V2.6 è una baseline CAD candidata, non hardware qualificato.
+
+---
+
 # V2.0 — sette fogli KiCad9: alimentazione VTUNE20 THT fisicamente integrata (baseline V0.9 preservata)
 - **Novità CAD reale:** master `04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch`, settimo child `POWER20_VTUNE_BOOST_LDO_V2.0.kicad_sch`. U911 **ST MC34063ABN PDIP8** con boost candidata ~27,95V, **L920 Bourns RLB0914-681KL 680µH THT**, U912 **onsemi LM317T TO220** regola ~20,02V ideali, C/R filtro dopo LM317, `VANA20_FILT` collegata *tramite gerarchia reale* al pad **U803 pin8** del filtro PLL. D921/D922 scarica condensatori LDO, tab U912 è VOUT e non GND; tutte le reti V1.9 RX/5V/PLL/VCO restano inalterate.
 - **Evidenza KiCad9 concreta:** [run 42986863110](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42986863110) ha completato **ERC0**, **72 gruppi netlist V2.0 rispetto a 64 V1.9**, tutte le precedenti partizioni-pin identiche, 7 pagine SVG e generatore 9 file PASS. Lo script DC ha inizialmente fermato l'esecuzione per una classificazione del margine corrente troppo rigida; la correzione distingue condizioni **vicine** al limite teorico da vere violazioni. I CI del commit finale restano da concludere.
