@@ -1,0 +1,59 @@
+name: V1.9 KiCad9 six-sheet THT OVP supervisor reverse rail and R1001 1W native CAD
+on:
+  push:
+    branches: [main, "feature/v1.9-tht-ovp-supervisor-reverse-guard-and-r1001-1w"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-v19-reverse-guard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deterministic reconstruction of all seven V1.9 KiCad files from preserved V1.8
+        run: |
+          node --check 04_KiCad/V1.9/genera_supervisore_v19.js
+          node 04_KiCad/V1.9/genera_supervisore_v19.js --check
+      - name: Install actual KiCad9 native CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register all THT KiCad symbol libraries including original V1.8
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V1.9").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: ERC entire six-sheet hierarchy with zero severity suppressions
+        run: |
+          mkdir -p 03_Verifiche/V1.9/native_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V1.9/native_results/erc.json 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
+      - name: Export two native netlists and assert original V1.8 pin partitions
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V1.9/native_results/v18_baseline.net 04_KiCad/V1.8/PLL_RX_HIERARCHICAL_MASTER_V1.8.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V1.9/native_results/v19_reverse_guard.net 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
+          python3 -B 03_Verifiche/V1.9/verify_supervisor_native_v19.py 03_Verifiche/V1.9/native_results/v18_baseline.net 03_Verifiche/V1.9/native_results/v19_reverse_guard.net
+      - name: Export all six native KiCad schematic SVG pages
+        run: |
+          mkdir -p 03_Verifiche/V1.9/native_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V1.9/native_results/svg/ 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
+          test "$(find 03_Verifiche/V1.9/native_results/svg -type f -name '*.svg' | wc -l)" -ge 6
+      - name: DC stress screening and input-diode threshold effects are NOT real hardware tests
+        run: |
+          python3 -B 03_Verifiche/V1.9/screen_supervisor_v19.py
+          cp 03_Verifiche/V1.9/v19_stress_screen.json 03_Verifiche/V1.9/native_results/
+      - name: Preserve KiCad evidence even if failing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v19-THT-KiCad-supervisor-reverse-guard-NOT-SAFETY-QUALIFIED
+          path: 03_Verifiche/V1.9/native_results/
+          if-no-files-found: warn

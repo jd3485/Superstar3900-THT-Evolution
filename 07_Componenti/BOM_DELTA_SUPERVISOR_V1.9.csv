@@ -1,0 +1,5 @@
+reference,quantity,mpn_candidate,package_tHT,footprint,operation_and_rating,vendor_source,qualification
+D804,1,Vishay 1N5819-E3/54,DO-41 axial,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,1A 40V Schottky FUSED_RAW A2 to OVP_CTL_VCC K1,https://www.vishay.com/docs/88525/1n5817.pdf,NO_FAILSAFE_OR_REVERSE_BATTERY_QUALIFICATION
+D805,1,Vishay 1N5819-E3/54,DO-41 axial,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,1A 40V Schottky GND A2 to OVP_CTL_VCC K1 for reverse leakage clamp,https://www.vishay.com/docs/88525/1n5817.pdf,NO_TEMPERATURE_REVERSE_LEAKAGE_TEST
+R1001,1,Vishay PR01000103301JR500,axial THT,Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal,3k3 1W 5pct high-power reference feed,https://www.vishay.com/docs/28729/pr010203.pdf,DERATING_AND_BOARD_ASSEMBLY_NOT_TESTED
+PWR802,1,KiCad schematic PWR_FLAG,NOT_BOARD,,power_output ERC marker on OVP_CTL_VCC,KiCad ERC,SCHEMATIC_ONLY
