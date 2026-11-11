@@ -1,0 +1,47 @@
+name: Infra pilot official KiCad9 Docker CLI (NO FAB NO TX)
+on:
+  push:
+    branches:
+      - infra/actions-cost-optimization-kicad9
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  container-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    container:
+      image: kicad/kicad:9.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm official KiCad CLI 9.0 native in prebuilt image
+        run: |
+          set -eux
+          command -v kicad-cli
+          kicad-cli version | grep -E '^9\.0\.'
+          python3 --version
+          cat /etc/os-release | head -n 3
+      - name: Debian signed packages for local scripting and existing ngspice tests
+        run: |
+          apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends nodejs python3-yaml ngspice git
+          node --version
+          python3 -c 'import yaml;print("pyyaml="+yaml.__version__)'
+          ngspice --version | head -n 3
+      - name: Re-run real seven-sheet KiCad9 baseline ERC in container
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0" /tmp/tht-native
+          python3 - <<'PY'
+          from pathlib import Path
+          root=(Path.cwd()/"04_KiCad/V2.3").resolve()
+          d=Path.home()/".config/kicad/9.0"
+          (d/"sym-lib-table").write_text((root/"sym-lib-table").read_text().replace("${KIPRJMOD}",str(root)))
+          PY
+          kicad-cli sch erc --exit-code-violations --format json --output /tmp/tht-native/erc.json 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+      - name: Lightweight baseline evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-kicad9-docker-pilot-erc-no-fab-tx
+          path: /tmp/tht-native/erc.json
+          if-no-files-found: warn
