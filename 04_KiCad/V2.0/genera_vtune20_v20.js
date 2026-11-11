@@ -68,7 +68,7 @@ ${ps.map(p=>`(pin "${p[0]}" (uuid "${uuid()}"))`).join("\n")}
    wire(px,py,edge,py);label(nets[i],edge,py);
   }
  }
- const coords=[65,99,133,167,201,235,269]; // component rows
+ const coords=[63.5,99.06,132.08,167.64,201.93,236.22,269.24]; // component rows
  place("MC34063ABN_DIP8","U911","ST_MC34063ABN_DIP8_STEUP_28V","Package_DIP:DIP-8_W7.62mm",149.86,114.3,pinsMC,
  ["SW20_NODE","GND","BOOST_CT","GND","BOOST_FB","+13V8_PROTECTED","BOOST_SENSE","DRIVER_BIAS"]);
  place("LM317T_TO220","U912","ONSEMI_LM317T_20V_ADJ_OUT2_TAB","Package_TO_SOT_THT:TO-220-3_Vertical",281.94,114.3,pinsLM,
