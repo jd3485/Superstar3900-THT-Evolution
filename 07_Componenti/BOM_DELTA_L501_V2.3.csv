@@ -1,0 +1,2 @@
+Reference,MPN,Nominal_L_nH,Adjust_min_nH,Adjust_max_nH,Footprint,Status,Unqualified_gate
+L501,Coilcraft 150-05J08L,165,137,193,THT_V23:Inductor_Coilcraft_150-05J08L_Uni7_Tunable_THT,CANDIDATE_ONLY,"RF Q at 36-39MHz; VCO KVCO phase noise pull range; real mounting and EMI"
