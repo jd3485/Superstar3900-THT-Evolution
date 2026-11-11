@@ -4,5 +4,5 @@
  (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))
  (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT power"))
  (lib (name "THT_V17") (type "KiCad") (uri "${KIPRJMOD}/../V1.7/THT_V17.kicad_sym") (options "") (descr "THT fuse and TVS"))
- (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431CLP IRF9540N OVP pilot"))
+ (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431BCLP IRF9540N OVP pilot"))
 )
