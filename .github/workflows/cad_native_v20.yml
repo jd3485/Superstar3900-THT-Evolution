@@ -53,6 +53,9 @@ jobs:
         run: |
           python3 -B 03_Verifiche/V2.0/screen_vtune20_v20.py
           cp 03_Verifiche/V2.0/screen_v20.json 03_Verifiche/V2.0/native_results/
+      - name: Audit every new native CAD component against all THT BOM footprints, report manufacturing blockers
+        run: |
+          python3 -B 03_Verifiche/V2.0/audit_tth_bom_v20.py
       - name: Archive real native results on PASS or failure
         if: always()
         uses: actions/upload-artifact@v4
