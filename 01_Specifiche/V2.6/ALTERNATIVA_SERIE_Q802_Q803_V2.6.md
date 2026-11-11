@@ -1,5 +1,7 @@
 # V2.6 — Analisi di interblocco OVP/UVLO con due 2N3904 in serie (CANDIDATA)
 
+**Precisazione successiva alla PR #31 (audit D803):** D803 onsemi 1N4742A 12 V / 1 W è già collegato al gate/source Q801 in V2.6. L'avvertimento teorico di |VGS| >20 V a VIN 48 V per il solo partitore R1008/R1009 corrisponde al **guasto D803 aperto**. L'audit nativo [43081722718](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43081722718) verifica l'orientamento reale del diodo. Il suo comportamento reale a pochi mA e i transitori restano non qualificati. Consultare `03_Verifiche/V2.6/RAPPORTO_D803_GATE_CLAMP.md`. **Non dedurre un via libera a 48 V.**
+
 La V2.5 collega entrambe le uscite LM393 su CMP_OUT e condivide la retroazione OVP R1005. La prima alternativa V2.6 D807 Schottky rischia di portare il livello LOW troppo in alto per la base Q802: **non adottarla senza verifica.**
 
 ## Seconda topologia da valutare nel prossimo schema KiCad

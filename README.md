@@ -1,5 +1,11 @@
 # Superstar 3900 THT Evolution — CAD V2.6 su main (11 novembre 2026)
 
+## Ultima verifica elettrica del CAD V2.6: D803 (11 novembre 2026)
+
+La [PR #31](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/31) è integrata su main (merge `0d28a2c38c785d92421c7b99aec4a039a3962c12`). La [CI 43081722718](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43081722718) **3/3 PASS** ha verificato sulla netlist KiCad9 nativa che lo Zener D803 (onsemi 1N4742A 12V THT), già presente, è collegato correttamente tra source e gate di Q801, con 76 reti invariate. Nuovo audit Python di 486 scenari illustrativi: la precedente segnalazione |VGS| >20V a 48V vale **per D803 aperto**, non per un dispositivo sano con clamp ideale. La Vz nominale è specificata a 21mA, ben sopra i ~3mA ipotizzati: il clamp reale non è qualificato. [Rapporto tecnico](03_Verifiche/V2.6/RAPPORTO_D803_GATE_CLAMP.md). Nessuna modifica allo schema o ai componenti, nessuna autorizzazione hardware. Issue #27 ancora OPEN.
+
+---
+
 **Ultima revisione CAD integrata: V2.6**, PR [#28](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/28) fusa nel commit `998e619ed35af13a51b03ff58cd570e22cc877c5`. Nuovo master [KiCad 9 V2.6](04_KiCad/V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch): sette fogli RX/PLL/VCO/VTUNE e protezione di alimentazione, con 138 componenti THT dotati di footprint. V2.4 e V2.5 rimangono in cartelle storiche.
 
 **Verifiche reali:** sul final head PR `3e3f904358f7a0e4b384a2ecf9964076a1d8a896`, [GitHub Actions 43076650377](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43076650377) **3/3 PASS**, KiCad9 **ERC 0**, generator bit-exact, confronto netlist **73→76** gruppi (solo U801/7 e Q802/1 modificati nella V2.6), **138/138** footprint THT e sette SVG. Verifiche Python/ngspice legacy superate. Nessuna PCB completa, nessun layout, nessun DRC di scheda.

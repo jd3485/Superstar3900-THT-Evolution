@@ -1,5 +1,7 @@
 # V2.6 — Revisione candidata con sette schemi nativi KiCad 9
 
+**Precisazione successiva alla PR #31 (audit D803):** D803 onsemi 1N4742A 12 V / 1 W è già collegato al gate/source Q801 in V2.6. L'avvertimento teorico di |VGS| >20 V a VIN 48 V per il solo partitore R1008/R1009 corrisponde al **guasto D803 aperto**. L'audit nativo [43081722718](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43081722718) verifica l'orientamento reale del diodo. Il suo comportamento reale a pochi mA e i transitori restano non qualificati. Consultare `03_Verifiche/V2.6/RAPPORTO_D803_GATE_CLAMP.md`. **Non dedurre un via libera a 48 V.**
+
 Questa revisione deriva dalla V2.5 e preserva le revisioni precedenti. Master `04_KiCad/V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch`. **La V2.6 non è qualificata e non autorizza fabbricazione.**
 
 ## Circuito modificato
