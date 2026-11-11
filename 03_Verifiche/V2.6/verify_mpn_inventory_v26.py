@@ -48,12 +48,15 @@ def main():
     allowed={"ATTIVO_CONFERMATO","DA_VERIFICARE","CONFLITTO_FONTI","EOL_NRND"}
     assert all(r["manufacturer_lifecycle"] in allowed for r in rows)
     confirmed={r["reference"] for r in rows if r["manufacturer_lifecycle"]=="ATTIVO_CONFERMATO"}
-    assert confirmed=={"Q801","U802"},confirmed
+    assert confirmed=={"Q801","U802","U520","U601","U911","D806"},confirmed
     assert all(r["mpn_exact_confirmed"]=="SI" and r["official_source"].startswith("https://")
                for r in rows if r["manufacturer_lifecycle"]=="ATTIVO_CONFERMATO")
     assert all(r["mpn_exact_confirmed"]=="NO"
                for r in rows if r["manufacturer_lifecycle"]!="ATTIVO_CONFERMATO")
-    assert next(r for r in rows if r["reference"]=="U911")["manufacturer_lifecycle"]=="CONFLITTO_FONTI"
-    print("PASS_V26_138_REAL_THT_PARTS_WITH_OEM_EVIDENCE_NO_ERC_FLAGS_IN_BOM")
+    import sys
+    if "--release" in sys.argv:
+        unresolved=[r["reference"] for r in rows if r["manufacturer_lifecycle"]!="ATTIVO_CONFERMATO"]
+        assert not unresolved, f"BOM_RELEASE_BLOCKED: {len(unresolved)} refs need active manufacturer MPN: {unresolved}"
+    print("PASS_V26_CAD_INVENTORY_INTEGRITY_ONLY_BOM_RELEASE_BLOCKED_132")
 if __name__=="__main__":
     main()
