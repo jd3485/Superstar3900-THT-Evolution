@@ -53,6 +53,7 @@ jobs:
           python3 -B 03_Verifiche/V2.6/verify_kicad_v26.py 03_Verifiche/V2.6/native_results/v25_baseline.net 03_Verifiche/V2.6/native_results/v26_uvlo.net
           python3 -B 03_Verifiche/V2.6/audit_r1011_d806_thermal_fault.py 03_Verifiche/V2.6/native_results/v26_uvlo.net
           python3 -B 03_Verifiche/V2.6/screen_ctl_rail_bias_v26.py 03_Verifiche/V2.6/native_results/v26_uvlo.net
+          python3 -B 03_Verifiche/V2.6/audit_q802_q803_single_fault_v26.py 03_Verifiche/V2.6/native_results/v26_uvlo.net
           python3 -B 03_Verifiche/V2.6/audit_d803_gate_clamp_v26.py 03_Verifiche/V2.6/native_results/v26_uvlo.net
       - name: Export all seven native KiCad9 schematic SVG pages
         run: |
