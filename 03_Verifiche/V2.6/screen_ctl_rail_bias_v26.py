@@ -62,8 +62,7 @@ def main():
     assert all(x[3] for x in normal[36.])
     assert all(x[1]>.0004 for group in normal.values() for x in group),"Assumed TL431 bias meets 0.4mA"
     assert all(x[0]<36 for x in failed[48.]),"This *specific* healthy-TL431 open-D806 envelope"
-    assert any(x[0]>36 for p in cases if p[0]==48. for x in
-        [(p[0]-p[1]-p[2]*p[5])]),"Dual fault TL431 reference OPEN can expose U801"
+    assert max(p[0]-p[1]-p[2]*p[5] for p in cases if p[0]==48.)>36., "Dual fault TL431 reference OPEN can expose U801"
     native=None if args.math_only else check_netlist(args.native_netlist)
     def rng(rows,index,factor=1.):
         return [round(min(x[index] for x in rows)*factor,3),
