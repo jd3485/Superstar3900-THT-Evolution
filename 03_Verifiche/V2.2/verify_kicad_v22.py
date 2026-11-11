@@ -50,7 +50,7 @@ assert '(fp_circle (center 0 0) (end 4.6 0)' in s
 assert '(fp_circle (center 0 0) (end 5.2 0)' in s
 assert '(attr through_hole)' in s
 assert 1.0-0.65>=0.30 and (2.0-1.0)/2>=0.45
-assert (5.0+0.8)-(5.0-0.8)==1.6
+assert abs(((5.0+0.8)-(5.0-0.8))-1.6)<1e-10
 report={"gate":"PASS_V22_NATIVE_PIN_NET_AND_THROUGH_HOLE_FOOTPRINT_METADATA",
         "nets_V21":len(before),"nets_V22":len(after),"all_pin_net_partitions_equal":True,
         "physical_references":len(seen),"footprints_assigned":sum(bool(p) for p in seen.values()),
