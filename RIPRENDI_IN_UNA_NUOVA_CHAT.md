@@ -1,3 +1,17 @@
+# Handoff THT — aggiornamento verificato 11 novembre 2026
+
+**Baseline storica V0.9 preservata** senza modifiche a modelli, test e revisioni precedenti; le versioni KiCad successive aggiungono solo modifiche verificate. NO FAB / NO TX.
+
+**Fonte canonica al prossimo avvio:** [WORK_STATO_CORRENTE.md](00_Gestione_Progetto/WORK_STATO_CORRENTE.md) su `main` + [AGENTS.md](AGENTS.md). Confermare sempre le evidenze live.
+
+**Ultima revisione CAD EFFETTIVAMENTE MERGED:** **V2.3, PR #26**, main commit tecnico `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`. Nella stessa sessione integrate V2.1 PR20 `b7b475e05b7279f2944fbfa6ea50d38680f874c4` e V2.2 PR24 `30328084e72339f3909e618ff37162e8f31827d4`. KiCad9 V2.3 native [run 43012377058](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43012377058) PASS ERC0/72 partizioni/7 SVG/129 riferimenti con footprint campo compilato. **20/20 workflow PR final head V2.3 PASS.**
+
+**NON È UNA PCB COMPLETA**: resta un sottosistema RX PLL; l'induttore L501 Coilcraft 150-05J08L è candidato THT NON qualificato RF, come L920 Bourns (termica e EMI non verificate), F701/D702 e catena OVP oltre 36V LM393. Sono assenti powergood/mute fail-closed, RF/IF/audio/controller, PCB, DRC, Gerber, hardware. Issue #19/#21 restano aperte; #22 quota Actions risolto/chiuso, CI ora utilizzabile. NO FAB / NO TX, non collegare batteria/veicolo.
+
+**Prossimo intervento tecnico:** stress e protezione upstream LM393 e gate durante transitori/reverse/overvoltage, power-good/mute fail-closed, poi sicurezza alimentazioni/valori MPN e RF front end; modifiche native KiCad + verifiche gate reali PR prima di merge.
+
+---
+
 # V2.0 — sette fogli KiCad9: alimentazione VTUNE20 THT fisicamente integrata (baseline V0.9 preservata)
 - **Novità CAD reale:** master `04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch`, settimo child `POWER20_VTUNE_BOOST_LDO_V2.0.kicad_sch`. U911 **ST MC34063ABN PDIP8** con boost candidata ~27,95V, **L920 Bourns RLB0914-681KL 680µH THT**, U912 **onsemi LM317T TO220** regola ~20,02V ideali, C/R filtro dopo LM317, `VANA20_FILT` collegata *tramite gerarchia reale* al pad **U803 pin8** del filtro PLL. D921/D922 scarica condensatori LDO, tab U912 è VOUT e non GND; tutte le reti V1.9 RX/5V/PLL/VCO restano inalterate.
 - **Evidenza KiCad9 concreta:** [run 42986863110](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42986863110) ha completato **ERC0**, **72 gruppi netlist V2.0 rispetto a 64 V1.9**, tutte le precedenti partizioni-pin identiche, 7 pagine SVG e generatore 9 file PASS. Lo script DC ha inizialmente fermato l'esecuzione per una classificazione del margine corrente troppo rigida; la correzione distingue condizioni **vicine** al limite teorico da vere violazioni. I CI del commit finale restano da concludere.
