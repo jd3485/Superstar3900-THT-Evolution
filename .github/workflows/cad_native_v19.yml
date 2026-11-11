@@ -1,9 +1,7 @@
 name: V1.9 KiCad9 six-sheet THT OVP supervisor reverse rail and R1001 1W native CAD
 on:
-  push:
-    branches: [main, "feature/v1.9-tht-ovp-supervisor-reverse-guard-and-r1001-1w"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

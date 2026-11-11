@@ -1,9 +1,7 @@
 name: V1.3 genuine KiCad9 PLL RX hierarchy and full native pin-net equivalence
 on:
-  push:
-    branches: [main, "feature/v1.3-kicad-native-hierarchy-pll-rx"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

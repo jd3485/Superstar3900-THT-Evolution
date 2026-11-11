@@ -1,9 +1,7 @@
 name: V0.9 three-state PDout passive filter ngspice (NO PLL qualification)
 on:
-  push:
-    branches: [main, "feature/v0.9-pll-tristate-filter"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

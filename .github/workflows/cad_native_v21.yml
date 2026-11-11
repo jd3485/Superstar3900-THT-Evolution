@@ -1,9 +1,7 @@
 name: V2.1 native KiCad9 seven-sheet VTUNE20 plus manufacturer dimensioned F701 D702 THT footprints
 on:
-  push:
-    branches: [main, "feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

@@ -1,9 +1,7 @@
 name: V1.4 native KiCad9 4-sheet THT VCO-B and AC14 clock buffer candidate
 on:
-  push:
-    branches: [main, "feature/v1.4-tht-vco-lo-buffer-cad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

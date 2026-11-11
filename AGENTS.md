@@ -54,3 +54,31 @@ Dentro un Progetto ChatGPT con le istruzioni condivise predisposte, è sufficien
 > Riprendi il progetto THT jd3485/Superstar3900-THT-Evolution. Leggi AGENTS.md e 00_Gestione_Progetto/WORK_STATO_CORRENTE.md dal ramo main; verifica PR e CI aggiornate. Procedi in autonomia con più revisioni vere KiCad, verifiche e PR, merge soltanto dopo gate verdi, e aggiorna l'handoff. NO FAB / NO TX.
 
 Non inventare di aver letto GitHub se non è disponibile.
+
+## Politica permanente per ottimizzazione GitHub Actions (11 novembre 2026)
+
+**ChatGPT diagnostica, progetta e corregge; GitHub conserva; Actions verifica.**
+Eseguire prima verifiche locali quando gli strumenti sono realmente disponibili,
+senza dichiarare un test non eseguito. **Non usare Actions per ripetere la
+stessa installazione nativa in decine di job paralleli**.
+
+La CI ufficiale è `.github/workflows/ci_optimized.yml`: dieci suite
+unitarie storiche Python veloci su ogni PR, comprese le modifiche ai documenti;
+per ogni modifica elettrica, KiCad, BOM, test, workflow, o file non riconosciuto,
+un'unica esecuzione FULL nel container KiCad9 ufficiale immobilizzato a digest
+deve eseguire tutti i 19 workflow storici originali (step di test reali).
+I 20 workflow legacy rimangono disponibili con `workflow_dispatch` per
+diagnosi indipendente, ma non partono più automaticamente per PR/push.
+La CI FULL salta **solo** installazioni duplicate e upload/checkout già
+centralizzati: non ERC, pin-net, footprint, ngspice, script né regressioni.
+Ogni merge tecnico richiede gate `Required CI gate` verde sullo SHA finale
+e audit di log/evidenze; `skipped` è valido per FULL **solo** su diff
+esclusivamente documentale rilevato dal controllo scope.
+Nuovi workflow non inventariati bloccano la FULL.
+
+Documentazione operativa: [ci/CI_COST_OPTIMIZATION.md](ci/CI_COST_OPTIMIZATION.md).
+Nessun accesso al budget, fatturazione o regole di branch-protection viene
+modificato senza consenso esplicito; in caso di status required legacy
+irraggiungibile, non forzare merge. Nessun downgrade KiCad9 e nessun ERC waiver.
+Il contenuto di questa sezione non costituisce una prova di release hardware.
+**NO FAB / NO TX / no batteria/veicolo**.

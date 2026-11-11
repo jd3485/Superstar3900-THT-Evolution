@@ -1,9 +1,7 @@
 name: V1.8 native KiCad9 six-sheet THT continuous OVP high-side cutoff prototype
 on:
-  push:
-    branches: [main, "feature/v1.8-tht-continuous-ovp-cutoff-cad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

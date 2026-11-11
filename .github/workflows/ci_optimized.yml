@@ -1,0 +1,93 @@
+name: THT verified CI cost optimized (10 fast suites + all 19 historical suites)
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      include_v06_exploration:
+        description: Run historical experimental V0.6 SPICE explorations manually
+        type: boolean
+        required: false
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: tht-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  fast:
+    name: Fast unit regressions and verified change scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    outputs:
+      full: ${{ steps.scope.outputs.full }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Scope selftest; compare true PR base/head
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 -B ci/ci_scope.py --selftest
+          python3 -B ci/ci_scope.py
+      - name: Execute all ten historical Python unit suites on every PR
+        run: python3 -B ci/fast_regressions.py
+  full:
+    name: Native KiCad9 ERC netlists footprints ngspice and all archived suites
+    needs: fast
+    if: ${{ needs.fast.outputs.full == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    container:
+      image: kicad/kicad@sha256:e638b79b0321f29395a5b783e94bb9f3c73303e8da15da27b8f5cb4b67a37729
+      options: --user 0:0
+    env:
+      ENABLE_HISTORICAL_EXPLORATORY: ${{ inputs.include_v06_exploration && 'true' || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ONLY missing runtime tools; KiCad9 already in signed official image
+        run: |
+          apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends nodejs python3-yaml ngspice git
+          kicad-cli version | grep -E '^9\.0\.'
+          node --version
+          python3 -c 'import yaml;print(yaml.__version__)'
+          ngspice --version | head -n 3
+      - name: Verify all original workflow step manifests and run ALL legacy suites
+        shell: bash
+        run: |
+          python3 -B ci/full_regressions.py
+      - name: Archive actual native evidence or failure; short retention, no fabrication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tht-full-regression-native-kicad9-no-fab-no-tx
+          path: |
+            03_Verifiche/V2.3/native_results/
+            03_Verifiche/V2.4/native_results/
+          retention-days: 3
+          if-no-files-found: warn
+  gate:
+    name: "Required CI gate: real checks passed, no ERC/DRC waiver"
+    needs: [fast, full]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    env:
+      FAST_STATUS: ${{ needs.fast.result }}
+      FULL_STATUS: ${{ needs.full.result }}
+      FULL_REQUIRED: ${{ needs.fast.outputs.full }}
+    steps:
+      - name: Enforce fast PASS and native PASS for every non-documentary change
+        run: |
+          test "$FAST_STATUS" = "success"
+          if [ "$FULL_REQUIRED" = "true" ]; then
+            test "$FULL_STATUS" = "success"
+          else
+            test "$FULL_REQUIRED" = "false"
+            test "$FULL_STATUS" = "skipped"
+          fi
+          echo "PASS_REQUIRED_CI_GATE (full_required=$FULL_REQUIRED)"

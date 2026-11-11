@@ -1,9 +1,7 @@
 name: V0.8 VTUNE high-rail THT driver behavioral ngspice (NO FAB NO TX)
 on:
-  push:
-    branches: ["feature/v0.8-vtune-headroom-pll-driver", main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
