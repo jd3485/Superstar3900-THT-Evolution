@@ -28,7 +28,7 @@ function buildV18(s){
  const flag=[["1","PWR","power_out",-5.08,0]];
  const libs=[
  sym("LM393N_DIP8","U","Package_DIP:DIP-8_W7.62mm",lm,10.16,22.86),
- sym("TL431CLP_TO92","U","Package_TO_SOT_THT:TO-92_Inline",ref,7.62,10.16),
+ sym("TL431BCLP_TO92","U","Package_TO_SOT_THT:TO-92_Inline",ref,7.62,10.16),
  sym("IRF9540NPBF_TO220","Q","Package_TO_SOT_THT:TO-220-3_Vertical",pmos,7.62,12.7),
  sym("2N3904_TO92","Q","Package_TO_SOT_THT:TO-92_Inline",npn,7.62,10.16),
  sym("1N4742A_ZENER12","D",diodefp,zener,5.08,3.81),
@@ -67,7 +67,7 @@ function buildV18(s){
  place("LM393N_DIP8","U801","LM393N_DIP8_DUAL","Package_DIP:DIP-8_W7.62mm",330.2,167.64,["1","2","3","4","5","6","7","8"]);
  connectPins(330.2,167.64,lm,["CMP_OUT","SENSE_RAW","CMP_PLUS","GND","GND","VREF2V5",null,"FUSED_RAW"]);
  instance.push(`(no_connect (at 345.44 172.72) (uuid "${uid()}"))`);
- place("TL431CLP_TO92","U802","TI_TL431CLP_TO92","Package_TO_SOT_THT:TO-92_Inline",459.74,109.22,["1","2","3"]);
+ place("TL431BCLP_TO92","U802","TI_TL431BCLP_TO92","Package_TO_SOT_THT:TO-92_Inline",459.74,109.22,["1","2","3"]);
  connectPins(459.74,109.22,ref,["VREF2V5","GND","VREF2V5"]);
  place("2N3904_TO92","Q802","ON_SEMI_2N3904_TO92","Package_TO_SOT_THT:TO-92_Inline",458.47,205.74,["1","2","3"]);
  connectPins(458.47,205.74,npn,["GND","Q_BASE","GATE_SINK"]);
@@ -75,7 +75,7 @@ function buildV18(s){
  connectPins(515.62,71.12,zener,["FUSED_RAW","PFET_GATE"]);
  const resistors=[
  ["R801","3k3_0p5W","FUSED_RAW","VREF2V5"],
- ["R802","54k9_1pct","FUSED_RAW","SENSE_RAW"],
+ ["R802","56k2_1pct","FUSED_RAW","SENSE_RAW"],
  ["R803","10k_1pct","SENSE_RAW","GND"],
  ["R804","100k_1pct","VREF2V5","CMP_PLUS"],
  ["R805","1Meg_HYST","CMP_OUT","CMP_PLUS"],
@@ -92,12 +92,12 @@ function buildV18(s){
  }
  place("POWER_FLAG_ERC","PWR801","FUSED_DC_EXTERNAL_SOURCE_ERC","",553.72,147.32,["1"],false);
  connectPins(553.72,147.32,flag,["FUSED_RAW"]);
- instance.push(`(text "V1.8 OVP CANDIDATE: IRF9540N P-CH high-side source FUSED_RAW / drain OVP_SWITCHED -> D701 ANODE2.\\nLM393N (U801) uses TL431CLP 2.5V (U802) and 54k9/10k divider. R804=100k R805=1Meg nominal hysteresis.\\nQ802 pulls gate low only when VREF valid and comparator releases; R808 gate-source defaults OFF.\\nD803 1N4742A 12V clamps |VGS|. Threshold nominal approx 16.2V rising / 14.75V falling, NO vendor/load model proof.\\nLM393 raw input must stay within MAX 36V; continuous high-voltage and source energy still unsafe. NO FAB / NO TX." (at 203.2 402.59 0) ${eff} (uuid "${uid()}"))`);
+ instance.push(`(text "V1.8 OVP CANDIDATE: IRF9540N P-CH high-side source FUSED_RAW / drain OVP_SWITCHED -> D701 ANODE2.\\nLM393N (U801) uses TL431BCLP 2.5V (U802) and 56k2/10k divider. R804=100k R805=1Meg nominal hysteresis.\\nQ802 pulls gate low only when VREF valid and comparator releases; R808 gate-source defaults OFF.\\nD803 1N4742A 12V clamps |VGS|. Threshold nominal approx 16.52V rising / 15.02V falling, NO vendor/load model proof.\\nLM393 raw input must stay within MAX 36V; continuous high-voltage and source energy still unsafe. NO FAB / NO TX." (at 203.2 402.59 0) ${eff} (uuid "${uid()}"))`);
  result=result.replace('(sheet_instances (path',instance.join("\n")+'\n(sheet_instances (path');
  result=result.replace("V1.7: F701 candidate","V1.8: F701 candidate");
  const ren=x=>x.replaceAll('(project "'+OLD+'"','(project "'+NAME+'"');
  let newRoot=ren(root).replaceAll("_V1.7.kicad_sch","_V1.8.kicad_sch").replace("V1.7 SIX SHEETS","V1.8 SIX SHEETS");
- const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))\n (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT power"))\n (lib (name "THT_V17") (type "KiCad") (uri "${KIPRJMOD}/../V1.7/THT_V17.kicad_sym") (options "") (descr "THT fuse and TVS"))\n (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431CLP IRF9540N OVP pilot"))\n)\n';
+ const table='(sym_lib_table\n (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))\n (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))\n (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))\n (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT power"))\n (lib (name "THT_V17") (type "KiCad") (uri "${KIPRJMOD}/../V1.7/THT_V17.kicad_sym") (options "") (descr "THT fuse and TVS"))\n (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431BCLP IRF9540N OVP pilot"))\n)\n';
  return {root:newRoot,digital:ren(core),filter:ren(filter),vco:ren(vco),power:ren(power),input:result,lib:library,table};
 }
 const repo=path.resolve(__dirname,"../..");
