@@ -3,14 +3,26 @@
 # NO FAB / NO TX; does not touch THT electrical design.
 set -Eeuo pipefail
 readonly KEY_FPR='FDA854F61C4D0D9572BB95E5245D5502FAD7A805'
-readonly KEY_URL="https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY_FPR}"
+# Alternate HTTPS keyservers; only the exact pinned key fingerprint is accepted.
+readonly KEY_URL_PRIMARY="https://keys.openpgp.org/vks/v1/by-fingerprint/${KEY_FPR}"
+readonly KEY_URL_SECONDARY="https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY_FPR}"
 readonly PPA_URL="https://ppa.launchpadcontent.net/kicad/kicad-9.0-releases/ubuntu/"
 readonly KEYRING="/usr/share/keyrings/kicad9-ppa-keyring.gpg"
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
 sudo apt-get update -qq
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ca-certificates curl gnupg
-curl --retry 3 --retry-all-errors --retry-delay 3 --connect-timeout 15 --max-time 90 --fail --show-error --silent --location "${KEY_URL}" --output "${tmpdir}/key.asc"
+fetched=0
+for key_url in "${KEY_URL_PRIMARY}" "${KEY_URL_SECONDARY}"; do
+  if curl --retry 1 --retry-all-errors --retry-delay 2 --connect-timeout 12 --max-time 45 --fail --show-error --silent --location "${key_url}" --output "${tmpdir}/key.asc"; then
+    fetched=1
+    break
+  fi
+done
+if [[ "${fetched}" != "1" ]]; then
+  echo "FATAL: signing key could not be fetched from HTTPS keyservers; NO verification bypass" >&2
+  exit 2
+fi
 actual="$(gpg --batch --show-keys --with-colons "${tmpdir}/key.asc" | awk -F: '$1=="fpr"{print toupper($10);exit}')"
 if [[ "${actual}" != "${KEY_FPR}" ]]; then
   echo "FATAL: PPA signing key fingerprint mismatch: ${actual}" >&2
