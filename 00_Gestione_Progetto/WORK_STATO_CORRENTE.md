@@ -8,6 +8,18 @@ SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
 
+## STOP V2.7 — Audit produttivo obbligatorio di TUTTI i 138 THT (12 novembre 2026)
+
+**Richiesta vincolante dell'utente:** prima di ulteriori revisioni elettroniche, essere certi che TUTTI i componenti siano **effettivamente fabbricati attualmente**, con **MPN/footprint 100% THT** e fonti **ufficiali dei produttori**, non scorte NOS o semplice presenza di un datasheet. Questo requisito prevale sulle precedenti priorita di progettare subito la doppia protezione.
+
+**PR #41 MERGED:** merge `8c45a1f1e9c3deb0dbf665bc90895d0bb3eee4a2` e [Actions #43119368514](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43119368514) **3/3 PASS** sul head tecnico `694924f02b3971894507290786009472857d7f50`. Inventario aggiornato `03_Verifiche/V2.6/INVENTARIO_MPN_V26.csv`; [rapporto gate produttivo](../../03_Verifiche/V2.6/RAPPORTO_GATE_PRODUZIONE_138_THT.md). **6/138 MPN esatti attivi confermati** con pagine OEM: Q801 IRF9540NPBF, U802 TL431BCLP, U520 SN74AC14N, U601 L7805CV, U911 MC34063ABN, D806 Diotec 1N5352B (lead-free No/esenzione RoHS 7(a)-I). **132/138 NON VERIFICATI**, non significa EOL. Stato produttivo non è qualifica elettrica/termica. Vecchio conflitto U911 ST tra categoria e tabella prodotto: riga esatta MC34063ABN indicata active in volume production sul sito ST.
+
+**Nuovo gate di rilascio:** `python3 03_Verifiche/V2.6/verify_mpn_inventory_v26.py --release` DEVE RIFIUTARE BOM mentre anche una sola posizione non è OEM ACTIVE; la CI ordinaria verifica solo integrita CAD e NON approva produzione. [Issue #42 — BLOCCANTE BOM](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/42) creato per tracciare la certificazione. Priorita assolute: ML145151YP Lansdale produzione esatta, L501 Coilcraft 150-05J08L produzione, L920 Bourns, 45 resistori/42 condensatori/22 connettori/1 quarzo con MPN non generici, associare pinout e suffix per U801/U803/U912, risolvere C805 DNI. Su Coilcraft 150-05J08L sito OEM riporta configurazione non acquistabile online: non scambiare per EOL senza conferma. Lansdale afferma fabbricazione aftermarket come attivita generale ma non garantisce specifico ML145151YP senza risposta puntuale.
+
+**STOP nuova V2.7 circuitale, RF/IF/audio e PCB** finche il vincolo produttivo non è risolto. La PCB-FRONT futura richiedera audit separato. Ultimo KiCad MAIN reale V2.6, 7 fogli, 138 componenti THT, 76 reti; ADR-001 due PCB / frontalino Evolution / S-meter analogico confermati. Issue #27 sicurezza OVP/UVLO resta aperta. **NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
 ## PR #39 MERGED — RETTIFICA BOM FISICA E PRIMA QUALIFICA LIFECYCLE (12 novembre 2026)
 
 **Merge commit:** `70857c04468930a6cc53accad9c225b1728be45c`. [PR #39](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/39) MERGED. [GitHub Actions #43118083104](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43118083104): **3/3 PASS** sul commit tecnico `ac0a8b6e1eef5bb1d4b848f222248222201d8e30`, incluso test rapido e KiCad9/regressioni legacy reali.
