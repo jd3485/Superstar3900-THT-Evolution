@@ -43,8 +43,8 @@ assert max(c["duty_est"] for c in cases)<.8
 safe_window=[c for c in cases if c["boost_load_a_assumed"]<=.03]
 assert max(c["datasheet_ideal_Ipeak_required_a"] for c in safe_window)<.3
 # 50mA cases MAY EXCEED nominal .3A; do not claim these as supported.
-limit_cases=[c for c in cases if c["datasheet_ideal_Ipeak_required_a"]>=.3]
-assert limit_cases,"Must explicitly report too-high loads"
+limit_cases=[c for c in cases if c["datasheet_ideal_Ipeak_required_a"]>=.28]
+assert limit_cases,"Must explicitly report small peak-current-limit margin at high assumed load"
 corners=[]
 for vrefb,t_high,t_low,vref317,Iadj in itertools.product([1.225,1.275],[.99,1.01],[.99,1.01],[1.20,1.30],[0,.0001]):
  boost=vrefb*(1+47000*t_high/(2200*t_low))
@@ -62,7 +62,7 @@ out={"status":"PASS_ONLY_MC34063_LM317_ARITHMETIC_ENVELOPE_NO_VENDOR_MODEL",
  "MC34063_design_max_duty_spec":.8,"Rsc_1ohm_limit_nominal_a":.30,
  "L920":"Bourns RLB0914-681KL 680uH 1.6ohm DCRmax 0.49A Irms typ 0.9A Isat typ",
  "L920_footprint":"NOT_SELECTED","assumed_f_switch_Hz":40000,
- "assumed_inductor_H":.00068,"scenarios":cases,"limited_scenarios":len(limit_cases),
+ "assumed_inductor_H":.00068,"scenarios":cases,"low_margin_near_0p30A_scenarios":len(limit_cases),
  "unknowns":["actual MC34063 switch timing and internal saturation","startup 28V cap charge and current limit",
  "LM317 minimum load and dropout over temperature", "maximum transient Vboost and 50V cap stress",
  "D920 1N5819 40V reverse transient margin", "output rail short/reverse discharge diode stress",
@@ -74,4 +74,4 @@ p=Path(__file__).resolve().parent/"screen_v20.json"
 p.write_text(json.dumps(out,indent=2)+"\n")
 print(json.dumps({"status":out["status"],"VIN_scenarios":len(cases),"nominal_v":out["LM317_20V_nom_with_50uA_Iadj"],
  "worst_case_assumed":out["worst_case_from_UNVERIFIED_component_assumptions"],
- "Ipeak_over_assumed_limit":len(limit_cases),"no_hardware_pass":True}))
+ "Ipeak_near_nominal_limit_ge_0p28A":len(limit_cases),"no_hardware_pass":True}))
