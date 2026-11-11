@@ -42,7 +42,12 @@ jobs:
       - name: Export actual KiCad netlists and prove every V1.9 original pin-net partition is unchanged
         run: |
           kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v19_baseline.net 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
-          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v20_vtune20.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          set -o pipefail
+          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v20_vtune20.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch 2>&1 | tee 03_Verifiche/V2.0/native_results/v20_annotation_export.log
+          if grep -qi "schematic has annotation errors" 03_Verifiche/V2.0/native_results/v20_annotation_export.log; then
+            echo "New V2.0 schematic still has annotation errors; refusing PCB handoff"
+            exit 1
+          fi
           python3 -B 03_Verifiche/V2.0/verify_vtune20_native_v20.py 03_Verifiche/V2.0/native_results/v19_baseline.net 03_Verifiche/V2.0/native_results/v20_vtune20.net
       - name: Export 7 native KiCad9 schematic SVG pages
         run: |
