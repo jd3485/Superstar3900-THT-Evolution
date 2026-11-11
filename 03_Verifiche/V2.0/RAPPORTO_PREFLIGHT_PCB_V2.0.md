@@ -22,3 +22,6 @@ Il passo orizzontale **12,70mm** è una scelta preliminare per la piegatura dei 
 5. **Pre-release:** schemi/ERC0, PCB/DRC0 e parità elettrica 100%, test di banco, derating BOM, design review indipendente, stress EMI/termici, controlli meccanici e checklist assembly. Tutti gli oggetti non verificati bloccheranno il release.
 
 **NO FAB / NO TX**, non collegare a batteria/veicolo; la sola copertura di impronte non cambia il fatto che la **PCB radio completa è ancora 0% layout/autorouting**.
+
+## Audit indipendente del CAD totale
+Lo script `03_Verifiche/V2.0/audit_all_components_v20.py` analizza il `.net` esportato nativamente da KiCad9, costruisce l'inventario di tutti i reference designator, verifica i due footprint nuovi nell'archivio reale, blocca assegnazioni esplicitamente SMD, elenca i componenti con footprint ancora vuoto e produce `native_results/v20_component_footprint_coverage.json`. Il test **passa solamente se il rapporto è veritiero**, senza fingere che il resto della radio sia completo. I componenti privi di footprint restano blocchi per la fabbricazione.

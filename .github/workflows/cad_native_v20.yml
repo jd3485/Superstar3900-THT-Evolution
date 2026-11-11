@@ -56,6 +56,9 @@ jobs:
           kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v19.net 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
           kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v20.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
           python3 -B 03_Verifiche/V2.0/verify_prepcb_native_v20.py 03_Verifiche/V2.0/native_results/v19.net 03_Verifiche/V2.0/native_results/v20.net
+      - name: Independent native KiCad9 all-component footprint coverage and THT-only audit
+        run: |
+          python3 -B 03_Verifiche/V2.0/audit_all_components_v20.py 03_Verifiche/V2.0/native_results/v20.net
       - name: Native KiCad9 six-sheet electrical SVG
         run: |
           mkdir -p 03_Verifiche/V2.0/native_results/schematic
