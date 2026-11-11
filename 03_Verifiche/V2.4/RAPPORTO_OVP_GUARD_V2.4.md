@@ -3,7 +3,7 @@
 Baseline: V2.3 realmente integrata (PR26). **Sette fogli KiCad9 nativi** V2.4.
 Modifiche elettriche intenzionali su INPUT_FUSE_REVERSE_TVS_OVP soltanto:
 - **D804 K1** da `OVP_CTL_VCC` a nuovo `OVP_PRECLAMP`.
-- **R1011** Vishay `PR02000206800JR500` 680Ω/2W 5% assiale tra `OVP_PRECLAMP` e `OVP_CTL_VCC`; footprint THT DIN0411 L11.9/D4.5/pitch15.24 candidato.
+- **R1011** Vishay `PR02000206800JR500` 680Ω/2W 5% assiale tra `OVP_PRECLAMP` e `OVP_CTL_VCC`; footprint THT KiCad DIN0414 L11.9/D4.5/pitch15.24 candidato, corpo conservativamente più grande della PR02 10.0 × Ø3.9 mm: verificare forma terminali, foratura e montaggio sul campione.
 - **D806** onsemi `1N4744A` zener 15V 1W DO-41, **catodo pin1 a OVP_CTL_VCC**, anodo pin2 a GND. Compatibilità ingombro, derating e energia richiedono prototipo.
 - **R1002 pin1** da `OVP_CTL_VCC` a **FUSED_RAW**, per far sì che il sensore OVP misuri ancora VIN effettivo e non la nuova alimentazione limitata. R1002 pin2 resta `SENSE_RAW`. Non bypassa fusibile/TVS.
 - U801, U802, Q801, Q802, D803 e tutte le altre reti/gate legacy restano INALTERATE. Questa revisione non rivendica powergood/mute fail-closed.

@@ -39,7 +39,7 @@ for comp in h["child"](tree,"components")[1:]:
 assert len(parts)==131,len(parts)
 assert all(parts.values()),[k for k,v in parts.items() if not v]
 assert parts["D806"]=="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
-assert parts["R1011"]=="Resistor_THT:R_Axial_DIN0411_L11.9mm_D4.5mm_P15.24mm_Horizontal"
+assert parts["R1011"]=="Resistor_THT:R_Axial_DIN0414_L11.9mm_D4.5mm_P15.24mm_Horizontal"
 assert parts["L501"].startswith("THT_V23:") and parts["L920"].startswith("THT_V22:")
 assert all("SMD" not in f for f in parts.values())
 report={"gate":"PASS_V24_NATIVE_73_PINNET_MIGRATION","old_nets":len(old),"new_nets":len(new),"unchanged_partitions_exact_except_documented_pins":True,"component_fields":len(parts),"assigned_footprint_fields":sum(bool(f) for f in parts.values()),"R1011_D806_THT_metadata_candidate":True,"LAB_AND_HARDWARE_QUALIFIED":False,"NO_FAB":True,"NO_TX":True,"PCB_DRC":"NOT_APPLICABLE_NO_PCB"}

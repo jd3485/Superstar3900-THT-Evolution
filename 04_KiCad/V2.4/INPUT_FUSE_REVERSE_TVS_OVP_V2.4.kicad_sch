@@ -403,7 +403,7 @@
 (symbol (lib_id "THT_V18:R_1P_THT") (at 279.4 104.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "a024cbd1-faae-4e37-bf24-000000000001")
 (property "Reference" "R1011" (at 279.4 90.17 0) (effects (font (size 1 1))))
 (property "Value" "VISHAY_PR02000206800JR500_680R_2W_CAND" (at 279.4 118.11 0) (effects (font (size 1 1))))
-(property "Footprint" "Resistor_THT:R_Axial_DIN0411_L11.9mm_D4.5mm_P15.24mm_Horizontal" (at 279.4 104.14 0) (effects (font (size 1 1)) (hide yes)))
+(property "Footprint" "Resistor_THT:R_Axial_DIN0414_L11.9mm_D4.5mm_P15.24mm_Horizontal" (at 279.4 104.14 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "a024cbd1-faae-4e37-bf24-000000000002"))
 (pin "2" (uuid "a024cbd1-faae-4e37-bf24-000000000003"))
 (instances (project "PLL_RX_HIERARCHICAL_MASTER_V2.4" (path "/7b14bcd1-faae-4e37-bf14-000000000001/9e17bcd1-faae-4e37-bf17-000000000006" (reference "R1011") (unit 1)))))
