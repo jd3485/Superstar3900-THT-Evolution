@@ -41,7 +41,7 @@
   **NO FAB / NO TX / NO BATTERY / VEHICLE**, no change to SMD repository.
 
 ## Rollout caution
-The old 20 workflows are the source of truth for all original test commands.
+The old 22 workflows are the source of truth for all original test commands.
 The optimized runner extracts each `run` step and executes its shell text
 under `bash -e -o pipefail`. Any changed legacy step count or a new unknown
 workflow fails the manifest. Manually inspect evidence for status and technical
@@ -58,3 +58,7 @@ V2.4 adds `cad_native_v24.yml` as the 20th native/SPICE workflow in
 the ten-suite Python workflow. The original V2.4 KiCad gate is not skipped;
 its 6 original `run` steps (minus only KiCad installation) are executed
 by the common container for each changed-CAD PR.
+
+
+## 2026-11-11 update for V2.5 candidate (PR #28 DRAFT)
+The historical workflow set now includes a V2.5 manual KiCad9 workflow. The consolidated runner tracks **21 native/SPICE** workflows plus the same historical Python regression workflow, and the single automatic PR gate continues to execute all native tests only once in its pinned KiCad9 container. No parallel installation fan-out is reintroduced. The new V2.5 native ERC/netlist/7 SVG and PVT screen must pass on the new final HEAD. Previous V2.4 PASS does not transfer. No PCB or safety qualification. NO FAB/NO TX.
