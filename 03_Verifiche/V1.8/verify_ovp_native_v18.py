@@ -8,7 +8,7 @@ repo=Path(__file__).resolve().parents[2]
 read=runpy.run_path(str(repo/"03_Verifiche/V1.0/verify_kicad_netlist_v10.py"))["read_nets"]
 old=read(Path(sys.argv[1]));new=read(Path(sys.argv[2]))
 if len(old)!=54:raise AssertionError(f"V1.7 baseline expected 54 native nets: {len(old)}")
-if len(new)!=62:raise AssertionError(f"V1.8 expected 62 native nets: {len(new)}")
+if len(new)!=63:raise AssertionError(f"V1.8 expected 63 native net groups (62 connected plus U801/7 NC): {len(new)}")
 where={}
 for net,members in new.items():
  for pin in members:
@@ -48,20 +48,22 @@ vco=group("VCO 5V branch",("R612","2"),("L501","1"))
 lo=group("LO buffer 5V branch",("R613","2"),("U520","14"))
 allgroups={raw,fused,sw,prot,gnd,sense,vref,positive,cmpout,qbase,gateSink,gate,five,pll,vco,lo}
 if len(allgroups)!=16:raise AssertionError("Unexpected OVP/reverse/shunt rail short")
-if ("U801","7") in where:raise AssertionError("Unused LM393 channel B output must be NC")
+unused=where.get(("U801","7"))
+if not unused or not unused.startswith("unconnected-") or new[unused]!={("U801","7")}:
+ raise AssertionError(f"Unused LM393 channel B OUT pin7 must be isolated explicit NC, got {unused}")
 group("Legacy VTUNE unaffected",("R805","2"),("D501","2"))
 group("Legacy LO buffered clock unaffected",("U402","3"),("R513","2"))
 oldrefs={p[0] for m in old.values() for p in m}
 newrefs={"Q801","Q802","U801","U802","D803"}|{f"R{n}" for n in range(1001,1011)}
 if newrefs & oldrefs:raise AssertionError("V1.8 duplicate refdes: "+repr(sorted(newrefs&oldrefs)))
-for ref,num in [("Q801",3),("Q802",3),("U801",7),("U802",3),("D803",2)]+[(f"R{n}",2) for n in range(1001,1011)]:
+for ref,num in [("Q801",3),("Q802",3),("U801",8),("U802",3),("D803",2)]+[(f"R{n}",2) for n in range(1001,1011)]:
  count=sum(x[0]==ref for x in where)
  if count!=num:raise AssertionError(f"{ref} expected {num} connected pins, got {count}")
 evidence={"status":"PASS_V18_REAL_KICAD9_OVP_CAD_TOPOLOGY_ONLY",
-"previous_54_net_groups":len(old),"new_62_net_groups":len(new),
+"previous_54_net_groups":len(old),"new_63_net_groups_including_one_explicit_no_connect":len(new),
 "legacy_pin_groups_preserved_except_D701_anode2":True,"no_refdes_collision":True,
 "IRF9540N_PINMAP":"Q801 gate1 drain2 source3","TL431BCLP_PINMAP":"U802 cathode1 anode2 REF3",
-"LM393N_PINMAP":"U801 OUT_A1 IN-A2 IN+A3 GND4 IN+B5 IN-B6 OUT_B7_NC VCC8",
+"LM393N_PINMAP":"U801 OUT_A1 IN-A2 IN+A3 GND4 IN+B5 IN-B6 OUT_B7_NC VCC8","explicit_U801_pin7_isolated":True,
 "ZENER":"D803 cathode1 on FUSED_RAW and anode2 on PMOS gate",
 "high_side_isolation":"Q801 D2 -> D701 A2 on OVP_SWITCHED",
 "continuous_ovp_status":"CIRCUIT_TOPOLOGY_CANDIDATE_ONLY","VREF_startup":"NOT_VALIDATED",
