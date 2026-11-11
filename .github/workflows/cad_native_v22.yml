@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, "feature/v2.2-bourns-L920-radial-tht"]
   pull_request:
-    branches: [main, "feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints"]
+    branches: [main]
 permissions:
   contents: read
 jobs:
