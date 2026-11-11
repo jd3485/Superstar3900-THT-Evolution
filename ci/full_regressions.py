@@ -64,7 +64,7 @@ def load_steps(name:str) -> list[tuple[str,str|None]]:
             # Original five v06 exploratory steps were push-only, never part of PR checks.
             # Keep explicitly executable for manual full-run and standalone dispatch.
             if os.getenv("ENABLE_HISTORICAL_EXPLORATORY")!="true":
-                commands.append((st.get("name","v06 exploratory"),None))
+                commands.append((st.get("name","v06 exploratory"),"__ORIGINAL_PR_CONDITION_FALSE__"))
                 continue
         cmd=st["run"]
         assert isinstance(cmd,str) and cmd.strip(),(name,st)
@@ -85,7 +85,8 @@ def main()->None:
     total=sum(len(st) for st in compiled.values())
     assert total==sum(RUN_COUNTS.values())
     print("CI_FULL_MANIFEST_VERIFIED",{"workflows":len(compiled),"legacy_run_steps":total,
-         "plus_fast_suites":10,"deduplicated_install_steps":sum(c is None for steps in compiled.values() for _,c in steps)},flush=True)
+         "plus_fast_suites":10,"deduplicated_install_steps":sum(c is None for steps in compiled.values() for _,c in steps),
+         "original_v06_conditional_skips":sum(c=="__ORIGINAL_PR_CONDITION_FALSE__" for steps in compiled.values() for _,c in steps)},flush=True)
     if "--audit-only" in sys.argv: return
     v=subprocess.run(["kicad-cli","version"],capture_output=True,text=True,check=True).stdout.strip()
     assert re.match(r"^9\.0\.\d+",v), "Wrong KiCad CLI version: "+v
@@ -97,6 +98,9 @@ def main()->None:
         for label,cmd in steps:
             if cmd is None:
                 print("DEDUPED_INSTALL_ONLY",name,label,flush=True)
+                continue
+            if cmd=="__ORIGINAL_PR_CONDITION_FALSE__":
+                print("ORIGINAL_PR_CONDITION_FALSE",name,label,flush=True)
                 continue
             print("RUN_REAL_LEGACY_STEP",name,label,flush=True)
             subprocess.run(["bash","-e","-o","pipefail","-c",cmd],cwd=ROOT,
