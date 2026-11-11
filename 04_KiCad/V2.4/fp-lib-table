@@ -1,0 +1,5 @@
+(fp_lib_table
+ (lib (name "THT_V21") (type "KiCad") (uri "${KIPRJMOD}/../V2.1/THT_V21.pretty") (options "") (descr "V2.1 F701 D702 axial THT"))
+ (lib (name "THT_V22") (type "KiCad") (uri "${KIPRJMOD}/../V2.2/THT_V22.pretty") (options "") (descr "V2.2 L920 Bourns radial THT"))
+ (lib (name "THT_V23") (type "KiCad") (uri "${KIPRJMOD}/THT_V23.pretty") (options "") (descr "V2.3 L501 Coilcraft Uni7 tunable THT candidate"))
+)

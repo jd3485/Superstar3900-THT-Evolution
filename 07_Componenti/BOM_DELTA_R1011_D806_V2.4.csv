@@ -1,0 +1,4 @@
+Reference,MPN,Value,Package,Footprint,Status,Unqualified
+R1011,Vishay PR02000206800JR500,680R 2W 5pct,PR02 axial,Resistor_THT:R_Axial_DIN0411_L11.9mm_D4.5mm_P15.24mm_Horizontal,CANDIDATE,"Fault sustained energy thermal / source impedance"
+D806,onsemi 1N4744A,15V 1W 5pct,DO41 axial,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,CANDIDATE,"Zener knee dynamic temperature pulse and surge"
+R1002,unchanged,56k2 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,NET_REWIRED,"Pin1 now senses FUSED_RAW before series rail drop"
