@@ -1,5 +1,7 @@
 # Handoff THT — aggiornamento verificato 11 novembre 2026
 
+**Baseline storica V0.9 preservata** senza modifiche a modelli, test e revisioni precedenti; le versioni KiCad successive aggiungono solo modifiche verificate. NO FAB / NO TX.
+
 **Fonte canonica al prossimo avvio:** [WORK_STATO_CORRENTE.md](00_Gestione_Progetto/WORK_STATO_CORRENTE.md) su `main` + [AGENTS.md](AGENTS.md). Confermare sempre le evidenze live.
 
 **Ultima revisione CAD EFFETTIVAMENTE MERGED:** **V2.3, PR #26**, main commit tecnico `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`. Nella stessa sessione integrate V2.1 PR20 `b7b475e05b7279f2944fbfa6ea50d38680f874c4` e V2.2 PR24 `30328084e72339f3909e618ff37162e8f31827d4`. KiCad9 V2.3 native [run 43012377058](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43012377058) PASS ERC0/72 partizioni/7 SVG/129 riferimenti con footprint campo compilato. **20/20 workflow PR final head V2.3 PASS.**
