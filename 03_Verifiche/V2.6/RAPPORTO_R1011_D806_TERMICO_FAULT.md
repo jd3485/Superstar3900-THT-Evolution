@@ -11,6 +11,8 @@ D804 1N5819 anodo/pin2 FUSED_RAW, catodo/pin1 OVP_PRECLAMP; R1011 Vishay PR03 82
 - Vishay 1N5819 ha **VRRM=40 V**; esposizione effettiva a 48 V inversi non provata senza il fault-path completo (D702/TVS/fusibile), ma non è lecito assumere un margine >40 V.
 - TI LM393-N ha **Vs max=36 V**: Zener aperto e altri guasti al controller rail restano bloccanti.
 
+[Studio complementare con corrente LM393 assunta e carico R1001/TL431 idealizzato](RAPPORTO_BIAS_LM393_TL431_V26.md): D806 è normalmente spento a 13,8 V e un solo guasto D806 aperto, con TL431 sano, non implica automaticamente >36 V. Distinguere i guasti combinati.
+
 ## Screening numerico riproducibile — esempi, NON corner vendor garantiti
 Assunzioni: VIN 13,8/16,5/24/36/48 V; VF=0,2/0,4/0,7 V; R1011=779/820/861 Ω (5%); diodo ideale con VZ=14,2/15/15,8 V; ambiente 70/110/125/140/150 °C. Si assume *tutta* la corrente di R1011 al diodo, senza carico LM393/TL431 e senza curva I-V reale.
 
