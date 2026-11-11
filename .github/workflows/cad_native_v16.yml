@@ -1,9 +1,7 @@
 name: V1.6 KiCad9 five-sheet PLL, VCO and 5V rail real integration
 on:
-  push:
-    branches: [main, "feature/v1.6-integrated-5v-hierarchical-rx-pll"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

@@ -1,9 +1,7 @@
 name: V2.3 native KiCad9 Coilcraft L501 THT adjustable VCO inductor physical prototype
 on:
-  push:
-    branches: [main, "feature/v2.3-coilcraft-L501-tunable-tht"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

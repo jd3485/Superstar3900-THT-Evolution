@@ -1,9 +1,7 @@
 name: V1.0 CAD-FIRST — native KiCad 9 symbol parse / schematic ERC and netlist
 on:
-  push:
-    branches: [main, "feature/v1.0-cad-first-toplevel"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

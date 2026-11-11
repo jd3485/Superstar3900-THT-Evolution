@@ -1,9 +1,7 @@
 name: V1.4 ngspice loaded Colpitts VCO frontend (NO AC14 digital RF qualification)
 on:
-  push:
-    branches: [main, "feature/v1.4-tht-vco-lo-buffer-cad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

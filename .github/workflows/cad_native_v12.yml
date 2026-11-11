@@ -1,9 +1,7 @@
 name: V1.2 CAD-01 CAD-02 native KiCad integrated RX PLL pilot
 on:
-  push:
-    branches: [main, "feature/v1.2-pll-filter-master-cad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

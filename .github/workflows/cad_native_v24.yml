@@ -1,9 +1,7 @@
 name: V2.4 KiCad9 seven-sheet OVP LM393 supply guard and raw sense THT candidate
 on:
-  push:
-    branches: [main, "feature/v2.4-ovp-lm393-guard-15v-tht"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

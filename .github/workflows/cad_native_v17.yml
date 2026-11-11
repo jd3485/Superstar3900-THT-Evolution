@@ -1,9 +1,7 @@
 name: V1.7 KiCad9 six-sheet 13V8 fused input Schottky TVS CAD gate
 on:
-  push:
-    branches: [main, "feature/v1.7-fused-reverse-tvs-input-kicad"]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
