@@ -2,7 +2,7 @@
 
 ## Principles and merge controls
 - ChatGPT identifies and corrects electronics/EDA errors directly. GitHub stores revisions.
-- 20 historical workflows are **retained verbatim apart from their triggers** and remain
+- 21 historical workflows are **retained verbatim apart from their triggers** and remain
   available via manual `workflow_dispatch`. They no longer run separately for every
   push, PR, or administrative change, avoiding simultaneous KiCad installations.
 - `.github/workflows/ci_optimized.yml` is the single automatic PR gate:
@@ -10,7 +10,7 @@
     even documentation-only (to preserve handoff continuity).
   - **Full:** for electrical, script, YAML, library, BOM, layout, testing or
     unrecognized changes, a single job in the **official KiCad9 Docker image**
-    executes **all 19 remaining historical workflows' original PR-applicable run steps in
+    executes **all 20 remaining historical workflows' original PR-applicable run steps in
     order**, including actual native KiCad9 ERC, netlists, footprint SVG,
     partition audits, screenings and ngspice. Only repeated bootstrap
     installation steps and per-workflow checkout/upload steps are deduplicated.
@@ -41,7 +41,7 @@
   **NO FAB / NO TX / NO BATTERY / VEHICLE**, no change to SMD repository.
 
 ## Rollout caution
-The old 20 workflows are the source of truth for all original test commands.
+The old 22 workflows are the source of truth for all original test commands.
 The optimized runner extracts each `run` step and executes its shell text
 under `bash -e -o pipefail`. Any changed legacy step count or a new unknown
 workflow fails the manifest. Manually inspect evidence for status and technical
@@ -52,3 +52,13 @@ push were **not** part of PR checks. They now run on standalone V0.6
 `workflow_dispatch`, and on manual optimized full dispatch when
 `include_v06_exploration=true`; normal PR runs retain their original
 conditional skip. The script asserts exactly these five conditional steps.
+
+V2.4 adds `cad_native_v24.yml` as the 20th native/SPICE workflow in
+`ci/full_regressions.py`, now **21 historical workflows in total** including
+the ten-suite Python workflow. The original V2.4 KiCad gate is not skipped;
+its 6 original `run` steps (minus only KiCad installation) are executed
+by the common container for each changed-CAD PR.
+
+
+## 2026-11-11 update for V2.5 candidate (PR #28 DRAFT)
+The historical workflow set now includes a V2.5 manual KiCad9 workflow. The consolidated runner tracks **21 native/SPICE** workflows plus the same historical Python regression workflow, and the single automatic PR gate continues to execute all native tests only once in its pinned KiCad9 container. No parallel installation fan-out is reintroduced. The new V2.5 native ERC/netlist/7 SVG and PVT screen must pass on the new final HEAD. Previous V2.4 PASS does not transfer. No PCB or safety qualification. NO FAB/NO TX.

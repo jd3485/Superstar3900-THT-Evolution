@@ -1,0 +1,60 @@
+name: V2.4 KiCad9 seven-sheet OVP LM393 supply guard and raw sense THT candidate
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  native-v24-supervisor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deterministic CAD delta and conservative analytical screen
+        run: |
+          node --check 04_KiCad/V2.4/genera_ovp_guard_v24.js
+          node 04_KiCad/V2.4/genera_ovp_guard_v24.js --check
+          python3 -B 03_Verifiche/V2.4/screen_supervisor_guard_v24.py
+      - name: Install native KiCad9
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register stock and local symbol and footprint libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.4").resolve()
+          cfg=Path.home()/".config/kicad/9.0"
+          (cfg/"sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          stock=Path("/usr/share/kicad/template/fp-lib-table").read_text()
+          local=(p/"fp-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p))
+          entries=[x for x in local.splitlines() if x.strip().startswith("(lib ")]
+          assert len(entries)==3
+          (cfg/"fp-lib-table").write_text(stock.rstrip()[:-1]+"\n"+"\n".join(entries)+"\n)\n")
+          PY
+      - name: ERC0 all seven native sheets, without waivers
+        run: |
+          mkdir -p 03_Verifiche/V2.4/native_results
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.4/native_results/erc.json 04_KiCad/V2.4/PLL_RX_HIERARCHICAL_MASTER_V2.4.kicad_sch
+      - name: Export both genuine netlists, test all preserved partitions and changed pins
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.4/native_results/v23_baseline.net 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.4/native_results/v24_guard.net 04_KiCad/V2.4/PLL_RX_HIERARCHICAL_MASTER_V2.4.kicad_sch
+          python3 -B 03_Verifiche/V2.4/verify_kicad_v24.py 03_Verifiche/V2.4/native_results/v23_baseline.net 03_Verifiche/V2.4/native_results/v24_guard.net
+      - name: Export all seven native KiCad9 schematic SVG pages
+        run: |
+          mkdir -p 03_Verifiche/V2.4/native_results/schematic
+          kicad-cli sch export svg --output 03_Verifiche/V2.4/native_results/schematic/ 04_KiCad/V2.4/PLL_RX_HIERARCHICAL_MASTER_V2.4.kicad_sch
+          test "$(find 03_Verifiche/V2.4/native_results/schematic -type f -name '*.svg' | wc -l)" -ge 7
+      - name: Archive audit evidence including failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V24-KiCad9-OVP-R1011-D806-7sheets-NO-FAB-NO-TX
+          path: 03_Verifiche/V2.4/native_results/
+          if-no-files-found: warn

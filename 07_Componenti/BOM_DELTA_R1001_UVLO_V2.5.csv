@@ -1,0 +1,5 @@
+Reference,MPN,Value,Package,Footprint,Change,Qualification
+R1001,Vishay PR01000101801JR500,1k8 5pct 1W,PR01 axial,Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal,Value from 3k3 to 1k8,LAB PVT NOT QUALIFIED
+R1012,Yageo MFR-25FBF52-36K,36k 1pct 0.25W,MFR25 axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,New FUSED_RAW to UVLO_SENSE,LAB PVT NOT QUALIFIED
+R1013,Yageo MFR-25FBF52-10K,10k 1pct 0.25W,MFR25 axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,New UVLO_SENSE to GND,LAB PVT NOT QUALIFIED
+U801,existing TI LM393N,secondary comparator B,PDIP8,Package_DIP:DIP-8_W7.62mm,Pin5 GND to UVLO_SENSE and pin7 NC to CMP_OUT,SAFETY NOT QUALIFIED

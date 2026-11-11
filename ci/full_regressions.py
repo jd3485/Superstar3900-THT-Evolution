@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Run ALL original 19 KiCad9/ngspice legacy suites in ONE verified KiCad9 container.
+"""Run ALL original 22 KiCad9/ngspice legacy suites in ONE verified KiCad9 container.
 
-The 20th original workflow (verifica_v02) is ALWAYS run in ci/fast_regressions.py.
+The additional original workflow (verifica_v02) is ALWAYS run in ci/fast_regressions.py.
 No ERC/DRC waiver, no best-effort test skipping, and no fake pass on failure.
 Only separate installation steps and GitHub artifact/checkout steps are deduplicated.
 """
@@ -16,11 +16,11 @@ RUN_COUNTS={
  "cad_native_v13.yml":6,"cad_native_v14.yml":7,"cad_native_v15.yml":6,
  "cad_native_v16.yml":6,"cad_native_v17.yml":8,"cad_native_v18.yml":9,
  "cad_native_v19.yml":7,"cad_native_v20.yml":9,"cad_native_v21.yml":7,
- "cad_native_v22.yml":7,"cad_native_v23.yml":7,
+ "cad_native_v22.yml":7,"cad_native_v23.yml":7,"cad_native_v24.yml":6,"cad_native_v25.yml":6,"cad_native_v26.yml":6,
  "boost_v07.yml":2,"ngspice_v14_vco_frontend.yml":2,
  "pll_tristate_v09.yml":2,"vco_spice_v06.yml":8,"vtune_driver_v08.yml":2,
 }
-EXPECTED_ALL_WORKFLOWS=20
+EXPECTED_ALL_WORKFLOWS=23
 ALLOWED_USES=("actions/checkout@v4","actions/upload-artifact@v4")
 INSTALL_NGSPICE_RE=re.compile(r"^\s*sudo\s+.*apt-get\s+install\s+.*\bngspice\b.*$",re.MULTILINE)
 
@@ -73,7 +73,7 @@ def load_steps(name:str) -> list[tuple[str,str|None]]:
     return commands
 
 def main()->None:
-    assert len(RUN_COUNTS)==19
+    assert len(RUN_COUNTS)==22
     workflow_dir=ROOT/".github/workflows"
     actual={p.name for p in workflow_dir.glob("*.yml")}
     expected=set(RUN_COUNTS)|{"verifica_v02.yml"}
@@ -107,7 +107,7 @@ def main()->None:
                           env=os.environ.copy(),check=True)
             executed+=1
         print("::endgroup::",flush=True)
-    print("PASS_FULL_HISTORICAL_19_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
+    print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
     main()

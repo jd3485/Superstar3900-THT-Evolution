@@ -1,0 +1,4 @@
+Reference,MPN,Value,Package,Footprint,Status,Unqualified
+R1011,Vishay PR03000208200JAC00,820R 3W 5pct,PR03 Cu DIN0617 axial,Resistor_THT:R_Axial_DIN0617_L17.0mm_D6.0mm_P25.40mm_Horizontal,CANDIDATE,"Lead fit thermal and source stress"
+D806,Diotec 1N5352B,15V 5W 5pct,DO201 axial,Diode_THT:D_DO-201_P15.24mm_Horizontal,CANDIDATE,"Nonideal I-V thermal RoHS exemption and surge"
+R1002,unchanged,56k2 1pct,axial,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,NET_REWIRED,"Pin1 senses FUSED_RAW before series rail"

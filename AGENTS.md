@@ -66,15 +66,15 @@ La CI ufficiale è `.github/workflows/ci_optimized.yml`: dieci suite
 unitarie storiche Python veloci su ogni PR, comprese le modifiche ai documenti;
 per ogni modifica elettrica, KiCad, BOM, test, workflow, o file non riconosciuto,
 un'unica esecuzione FULL nel container KiCad9 ufficiale immobilizzato a digest
-deve eseguire tutti i 19 workflow storici originali (step di test reali).
-I 20 workflow legacy rimangono disponibili con `workflow_dispatch` per
+deve eseguire tutti i 21 workflow storici originali (step di test reali).
+I 22 workflow legacy (21 nativi/SPICE + 1 Python) rimangono disponibili con `workflow_dispatch` per
 diagnosi indipendente, ma non partono più automaticamente per PR/push.
 La CI FULL salta **solo** installazioni duplicate e upload/checkout già
 centralizzati: non ERC, pin-net, footprint, ngspice, script né regressioni.
 Ogni merge tecnico richiede gate `Required CI gate` verde sullo SHA finale
 e audit di log/evidenze; `skipped` è valido per FULL **solo** su diff
 esclusivamente documentale rilevato dal controllo scope.
-Nuovi workflow non inventariati bloccano la FULL.
+Nuovi workflow non inventariati bloccano la FULL. La suite manuale V2.5 e ora inclusa nel manifest; conta i workflow nel file ci/full_regressions.py, non usare numeri storici come baseline elettrica.
 
 Documentazione operativa: [ci/CI_COST_OPTIMIZATION.md](ci/CI_COST_OPTIMIZATION.md).
 Nessun accesso al budget, fatturazione o regole di branch-protection viene
