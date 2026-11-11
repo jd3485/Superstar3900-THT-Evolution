@@ -1,0 +1,4 @@
+(fp_lib_table
+ (lib (name "THT_V21") (type "KiCad") (uri "${KIPRJMOD}/../V2.1/THT_V21.pretty") (options "") (descr "V2.1 axial F701 and D702 candidate footprints"))
+ (lib (name "THT_V22") (type "KiCad") (uri "${KIPRJMOD}/THT_V22.pretty") (options "") (descr "V2.2 Bourns RLB0914 radial L920 mechanical candidate"))
+)

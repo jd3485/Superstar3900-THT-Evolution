@@ -1,0 +1,67 @@
+name: V2.2 native KiCad9 7-sheet L920 Bourns radial THT candidate and netlist preservation
+on:
+  push:
+    branches: [main, "feature/v2.2-bourns-L920-radial-tht"]
+  pull_request:
+    branches: [main, "feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints"]
+permissions:
+  contents: read
+jobs:
+  native-v22-L920:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact reproducibility from all seven V2.1 KiCad sources
+        run: |
+          node --check 04_KiCad/V2.2/genera_L920_v22.js
+          node 04_KiCad/V2.2/genera_L920_v22.js --check
+          python3 -B 03_Verifiche/V2.2/screen_l920_v22.py
+      - name: Install native KiCad9
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register stock THT and both project-local THT footprint libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.2").resolve()
+          cfg=Path.home()/".config/kicad/9.0"
+          (cfg/"sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          baseline=Path("/usr/share/kicad/template/fp-lib-table").read_text()
+          local=(p/"fp-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p))
+          assert "Resistor_THT" in baseline and baseline.rstrip().endswith(")")
+          entries=[line for line in local.splitlines() if line.strip().startswith("(lib ")]
+          assert len(entries)==2 and "THT_V21" in entries[0] and "THT_V22" in entries[1]
+          (cfg/"fp-lib-table").write_text(baseline.rstrip()[:-1]+"\n"+"\n".join(entries)+"\n)\n")
+          PY
+      - name: Export native KiCad9 footprint for L920
+        run: |
+          mkdir -p 03_Verifiche/V2.2/native_results/footprints
+          kicad-cli fp export svg --output 03_Verifiche/V2.2/native_results/footprints/ 04_KiCad/V2.2/THT_V22.pretty
+          test "$(find 03_Verifiche/V2.2/native_results/footprints -type f -name '*.svg' | wc -l)" -eq 1
+      - name: Native ERC all seven sheets without waivers
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.2/native_results/erc.json 04_KiCad/V2.2/PLL_RX_HIERARCHICAL_MASTER_V2.2.kicad_sch
+      - name: Native complete netlists 72 groups and all exact pin partitions
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.2/native_results/v21_baseline.net 04_KiCad/V2.1/PLL_RX_HIERARCHICAL_MASTER_V2.1.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.2/native_results/v22_candidate.net 04_KiCad/V2.2/PLL_RX_HIERARCHICAL_MASTER_V2.2.kicad_sch
+          python3 -B 03_Verifiche/V2.2/verify_kicad_v22.py 03_Verifiche/V2.2/native_results/v21_baseline.net 03_Verifiche/V2.2/native_results/v22_candidate.net
+      - name: Export seven native KiCad9 schematic SVG pages
+        run: |
+          mkdir -p 03_Verifiche/V2.2/native_results/schematic
+          kicad-cli sch export svg --output 03_Verifiche/V2.2/native_results/schematic/ 04_KiCad/V2.2/PLL_RX_HIERARCHICAL_MASTER_V2.2.kicad_sch
+          test "$(find 03_Verifiche/V2.2/native_results/schematic -type f -name '*.svg' | wc -l)" -ge 7
+      - name: Store evidence including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V22-seven-sheets-Bourns-L920-NO-FAB-NO-TX
+          path: 03_Verifiche/V2.2/native_results/
+          if-no-files-found: warn
