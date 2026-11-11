@@ -30,8 +30,18 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           p=(Path.cwd()/"04_KiCad/V2.0").resolve()
-          for name in ("sym-lib-table","fp-lib-table"):
-              (Path.home()/".config/kicad/9.0"/name).write_text((p/name).read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          cfg=Path.home()/".config/kicad/9.0"
+          (cfg/"sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          # A local fp-lib-table with ONLY V2.0 would eclipse all builtin KiCad libraries.
+          # Preserve installed template libraries, then add the project THT_V20 entry.
+          official=Path("/usr/share/kicad/template/fp-lib-table")
+          assert official.is_file(), "KiCad9 system footprint table template missing"
+          builtin=official.read_text()
+          local=(p/"fp-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p))
+          assert builtin.rstrip().endswith(")") and local.rstrip().endswith(")")
+          local_entry=local[local.index("(lib "):local.rfind(")")].strip()
+          assert "THT_V20" in local_entry and "Resistor_THT" in builtin
+          (cfg/"fp-lib-table").write_text(builtin.rstrip()[:-1]+"\n "+local_entry+"\n)\n")
           PY
       - name: Native KiCad9 footprint parser and physical SVG export of F701/D702
         run: |
