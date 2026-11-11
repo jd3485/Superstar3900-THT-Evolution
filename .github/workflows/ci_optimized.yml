@@ -1,4 +1,4 @@
-name: THT verified CI cost optimized (10 fast suites + all 20 historical suites)
+name: THT verified CI cost optimized (10 fast suites + all 21 historical suites)
 on:
   pull_request:
     branches: [main]
@@ -68,6 +68,7 @@ jobs:
           path: |
             03_Verifiche/V2.3/native_results/
             03_Verifiche/V2.4/native_results/
+            03_Verifiche/V2.5/native_results/
           retention-days: 3
           if-no-files-found: warn
   gate:
