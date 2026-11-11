@@ -18,7 +18,8 @@ function buildV20(src){
  const flag=[["1","ERC_SOURCE_NOT_HARDWARE","power_out",-5.08,0]];
  function sym(name,ref,fp,ps,w=5.08,h=5.08,onboard=true){
   const pins=ps.map(p=>`(pin ${p[2]} line (at ${p[3]} ${p[4]} ${p[3]<0?0:180}) (length 5.08) (name "${p[1]}" ${eff}) (number "${p[0]}" ${eff}))`).join("\n");
-  return `(symbol "${name}" (pin_numbers (hide yes)) (pin_names (offset 0.76)) (in_bom ${onboard?"yes":"no"}) (on_board ${onboard?"yes":"no"})
+  const pinNames=ps.length===2?"(pin_names (offset 0.76) (hide yes))":"(pin_names (offset 0.76))";
+  return `(symbol "${name}" (pin_numbers (hide yes)) ${pinNames} (in_bom ${onboard?"yes":"no"}) (on_board ${onboard?"yes":"no"})
 (property "Reference" "${ref}" (at 0 15.24 0) ${eff})
 (property "Value" "${name}" (at 0 -15.24 0) ${eff})
 (property "Footprint" "${fp}" (at 0 0 0) (effects (font (size 1 1)) (hide yes)))
@@ -48,16 +49,17 @@ function buildV20(src){
  const fpCapCer="Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm";
  let child=`(kicad_sch (version 20250114) (generator "tht_v20_boost_vtune_generator") (generator_version "9.0")
 (uuid "${SHEET}")
-(paper "A3")
+(paper "A2")
 (lib_symbols\n${lib(true)}\n)
 `;
  const ins=[];
  const wire=(x,y,a,b)=>ins.push(`(wire (pts (xy ${x} ${y}) (xy ${a} ${b})) (stroke (width 0) (type default)) (uuid "${uuid()}"))`);
  const label=(name,x,y)=>ins.push(`(label "${name}" (at ${x} ${y} 0) ${eff} (uuid "${uuid()}"))`);
  function place(symname,ref,val,fp,x,y,ps,nets,onboard=true){
+  const propOffset=(symname==="MC34063ABN_DIP8"||symname==="LM317T_TO220")?35.56:12.7;
   ins.push(`(symbol (lib_id "THT_V20:${symname}") (at ${x} ${y} 0) (unit 1) (in_bom ${onboard?"yes":"no"}) (on_board ${onboard?"yes":"no"}) (dnp no) (uuid "${uuid()}")
-(property "Reference" "${ref}" (at ${x} ${+(y-12.7).toFixed(2)} 0) ${eff})
-(property "Value" "${val}" (at ${x} ${+(y+12.7).toFixed(2)} 0) ${eff})
+(property "Reference" "${ref}" (at ${x} ${+(y-propOffset).toFixed(2)} 0) ${eff})
+(property "Value" "${val}" (at ${x} ${+(y+propOffset).toFixed(2)} 0) ${eff})
 (property "Footprint" "${fp}" (at ${x} ${y} 0) (effects (font (size 1 1)) (hide yes)))
 ${ps.map(p=>`(pin "${p[0]}" (uuid "${uuid()}"))`).join("\n")}
 (instances (project "${NEW}" (path "/${ROOT}/${SHEET}" (reference "${ref}") (unit 1)))))`);
