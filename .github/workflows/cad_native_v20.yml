@@ -1,0 +1,60 @@
+name: V2.0 KiCad9 native THT fuse and TVS footprint pre-PCB gate (NO FAB)
+on:
+  push:
+    branches: [main, "feature/v2.0-tht-verified-fuse-tvs-footprints-and-pcb-preflight"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-v20-prepcb:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce all ten native KiCad schematic/footprint sources from unchanged V1.9
+        run: |
+          node --check 04_KiCad/V2.0/genera_footprint_v20.js
+          node 04_KiCad/V2.0/genera_footprint_v20.js --check
+      - name: Install KiCad9 CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register existing native symbol and new local footprint library
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.0").resolve()
+          for name in ("sym-lib-table","fp-lib-table"):
+              (Path.home()/".config/kicad/9.0"/name).write_text((p/name).read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Native KiCad9 footprint parser and physical SVG export of F701/D702
+        run: |
+          mkdir -p 03_Verifiche/V2.0/native_results/footprints
+          kicad-cli fp export svg --output 03_Verifiche/V2.0/native_results/footprints/ 04_KiCad/V2.0/THT_V20.pretty
+          test "$(find 03_Verifiche/V2.0/native_results/footprints -type f -name '*.svg' | wc -l)" -eq 2
+      - name: KiCad9 full six-sheet schematic ERC no waivers
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.0/native_results/erc.json 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+      - name: Native KiCad9 netlist exact 64-group preservation and datasheet geometry gate
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v19.net 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v20.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          python3 -B 03_Verifiche/V2.0/verify_prepcb_native_v20.py 03_Verifiche/V2.0/native_results/v19.net 03_Verifiche/V2.0/native_results/v20.net
+      - name: Native KiCad9 six-sheet electrical SVG
+        run: |
+          mkdir -p 03_Verifiche/V2.0/native_results/schematic
+          kicad-cli sch export svg --output 03_Verifiche/V2.0/native_results/schematic/ 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          test "$(find 03_Verifiche/V2.0/native_results/schematic -type f -name '*.svg' | wc -l)" -ge 6
+      - name: Archive actual KiCad proof without claiming production PCB DRC
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V20-KiCad9-two-THT-footprints-six-sheet-no-fab-no-tx
+          path: 03_Verifiche/V2.0/native_results/
+          if-no-files-found: warn

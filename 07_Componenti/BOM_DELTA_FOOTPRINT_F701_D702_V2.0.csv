@@ -1,0 +1,3 @@
+reference,manufacturer,mpn,footprint_library,footprint_name,pad_pitch_mm,body_length_max_mm,body_diameter_max_mm,lead_diameter_max_mm,drill_mm,pad_diameter_mm,status
+F701,Littelfuse,0251.500MXL,THT_V20,Fuse_Littelfuse_PICOII_0251_500MXL_P12.70mm,12.70,7.11,2.80,0.64,0.90,2.10,PRELIMINARY_UNQUALIFIED_SOURCE_COORDINATION_AND_FORMED_LEAD_FIT
+D702,ST,P6KE20CA,THT_V20,TVS_ST_P6KE20CA_DO15_P12.70mm,12.70,6.75,3.53,0.88,1.10,2.30,PRELIMINARY_UNQUALIFIED_SURGE_AND_FORMED_LEAD_FIT
