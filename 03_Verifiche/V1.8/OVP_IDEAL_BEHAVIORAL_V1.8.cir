@@ -1,0 +1,25 @@
+* V1.8 THT OVP: IDEALIZED behavior ONLY; NOT TI/Infineon vendor macromodel.
+* VREF fixed; LM393 output approximated via smooth tanh; PMOS replaced by RON/ROFF switch.
+* Inrush, SOA, input max 36V, power-up, VGS clamp, real TL431 and device failure NOT MODELED.
+VRAW RAW 0 PWL(0 13.8 3m 13.8 3.1m 19 6m 19 6.1m 15.5 8m 15.5 8.1m 14 11m 14)
+VREF VREF 0 2.495
+R1002 RAW SENSE 56.2k
+R1003 SENSE 0 10k
+R1004 VREF PLUS 100k
+R1005 CMP PLUS 1Meg
+* An assumed CMP high ~2.335V under Q802 base load and low ~0.2V.
+BCMP CMP 0 V=0.2+2.135*(1-tanh(80*(V(SENSE)-V(PLUS))))/2
+* Approx high-side PMOS switch - not a real IRF9540N/LM393N/TL431BCLP model
+SOVP RAW SWITCHED CMP 0 SWITCH_MODEL
+.model SWITCH_MODEL SW(RON=0.117 ROFF=100MEG VT=1.2 VH=0.05)
+RLOAD SWITCHED 0 100
+.control
+set noaskquit
+tran 20u 11m
+meas tran normal_v find v(switched) at=2m
+meas tran ovp_v find v(switched) at=5m
+meas tran hysteresis_hold_v find v(switched) at=7m
+meas tran rearm_v find v(switched) at=10m
+quit
+.endc
+.end

@@ -1,0 +1,17 @@
+reference,quantity,mpn_candidate,package,footprint,value_function,source,status,qualified
+Q801,1,Infineon IRF9540NPBF,TO-220-3 THT,Package_TO_SOT_THT:TO-220-3_Vertical,PCH high side gate1 drain2 source3,Infineon IRF9540N,SOA_TRANSIENT_NOT_TESTED,NO
+U801,1,TI LM393N,PDIP8 THT,Package_DIP:DIP-8_W7.62mm,dual open collector comparator channel A,TI LM393-N,OFFSET_COMMON_MODE_NOT_QUALIFIED,NO
+U802,1,TI TL431BCLP,TO-92 THT,Package_TO_SOT_THT:TO-92_Inline,precision 2.495V reference K1 A2 REF3,TI TL431,STARTUP_TEMP_STABILITY_UNQUALIFIED,NO
+Q802,1,onsemi 2N3904,TO-92 THT,Package_TO_SOT_THT:TO-92_Inline,gate sink NPN E1 B2 C3,onsemi 2N3904,BIAS_TRANSIENT_UNQUALIFIED,NO
+D803,1,onsemi 1N4742A,DO-41 THT,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,12V gate source zener K1 to MOS source,onsemi 1N4742A,ZENER_AT_ACTUAL_CURRENT_NOT_QUALIFIED,NO
+R1001,1,axial THT resistor,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,3.3k reference current candidate,analytical_budget,POWER_DERATING_NOT_DONE,NO
+R1002,1,axial 1pct THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,56.2k high input divider,analytical_budget,PART_TOLERANCES_ASSUMED,NO
+R1003,1,axial 1pct THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,10k low input divider,analytical_budget,PART_TOLERANCES_ASSUMED,NO
+R1004,1,axial 1pct THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,100k positive feedback reference,analytical_budget,PART_TOLERANCES_ASSUMED,NO
+R1005,1,axial 1pct THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,1Meg positive feedback from output,analytical_budget,PART_TOLERANCES_ASSUMED,NO
+R1006,1,axial THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,2.2k comparator output pullup,analytical_budget,LOW_OUTPUT_CURRENT_UNQUALIFIED,NO
+R1007,1,axial THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,22k Q802 base drive,analytical_budget,BIAS_UNQUALIFIED,NO
+R1008,1,axial THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,47k PFET gate source pullup OFF,analytical_budget,GATE_CHARGE_UNQUALIFIED,NO
+R1009,1,axial THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,10k NPN collector to MOS gate,analytical_budget,GATE_SINK_UNQUALIFIED,NO
+R1010,1,axial THT,DIN0207,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,100k Q802 base shunt,analytical_budget,GATE_SINK_UNQUALIFIED,NO
+PWR801,1,KiCad power flag,NO_BOARD,,ERC-only mark pre-OVP external supply,KiCad ERC,NOT_REAL_COMPONENT,NO
