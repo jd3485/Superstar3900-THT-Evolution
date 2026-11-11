@@ -37,6 +37,11 @@ jobs:
           root=(Path.cwd()/"04_KiCad/V2.3").resolve()
           d=Path.home()/".config/kicad/9.0"
           (d/"sym-lib-table").write_text((root/"sym-lib-table").read_text().replace("${KIPRJMOD}",str(root)))
+          baseline=Path("/usr/share/kicad/template/fp-lib-table").read_text()
+          local=(root/"fp-lib-table").read_text().replace("${KIPRJMOD}",str(root))
+          entries=[line for line in local.splitlines() if line.strip().startswith("(lib ")]
+          assert len(entries)==3
+          (d/"fp-lib-table").write_text(baseline.rstrip()[:-1] + chr(10) + chr(10).join(entries) + chr(10) + ")" + chr(10))
           PY
           kicad-cli sch erc --exit-code-violations --format json --output /tmp/tht-native/erc.json 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
       - name: Lightweight baseline evidence
