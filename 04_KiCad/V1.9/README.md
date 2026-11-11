@@ -5,3 +5,5 @@ Master `PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch`, sei pagine KiCad9 native. Il
 Ricostruzione deterministica `node 04_KiCad/V1.9/genera_supervisore_v19.js --check`. CI native KiCad9 ERC, due netlist reali, confronto completo conservazione pin-net, SVG 6 pagine e stima analitica dissipazione. Sorgenti V1.8 immutati, SMD intatta.
 
 **ATTENZIONE:** non esiste una protezione certificata contro inversione o sovratensione continua oltre i massimi; LM393 max 36V, leakage/temperatura/stabilità/test vendor mancanti, fuse TVS non qualificati, nessun PCB. **NO FAB / NO TX.**
+
+**Risultato CAD:** [KiCad9 native 42971502918](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42971502918): ERC 0, 64 gruppi netlist, 63 gruppi precedenti preservati tranne migrazione tre pin del controllo, generator e SVG sei pagine PASS, test aritmetici 21 scenari PASS non equivalenti ad automotive qualificata. NON usare tensioni di batteria o veicolo. NO FAB / NO TX.
