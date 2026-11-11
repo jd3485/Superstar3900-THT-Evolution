@@ -45,7 +45,7 @@ const transform=function transform(name,raw){
              +makeR("R1013","YAGEO_MFR-25FBF52-10K_10K_1PCT",337.82,200,"UVLO_SENSE","GND")
              +`(text "V2.5 UVLO: U801 pin5 UVLO_SENSE, pin7 CMP_OUT; R1012 36k, R1013 10k, R1001 1k8. CANDIDATE ONLY. NO FAB / NO TX." (at 20.32 411.48 0) (effects (font (size 1 1))) (uuid "b025cbd1-faae-4e37-bf25-000000000003"))
 `;
-   result=once(result,"(embedded_fonts no)",add+"(embedded_fonts no)");
+   result=once(result,'(symbol (lib_id "THT_V18:R_1P_THT") (at 254 242.57 0)',add+'(symbol (lib_id "THT_V18:R_1P_THT") (at 254 242.57 0)');
  }
  return result;
 };
