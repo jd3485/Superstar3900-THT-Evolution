@@ -74,16 +74,16 @@ function buildV18(s){
  place("1N4742A_ZENER12","D803","ONSEMI_1N4742A_12V_GATE_LIMIT",diodefp,515.62,71.12,["1","2"]);
  connectPins(515.62,71.12,zener,["FUSED_RAW","PFET_GATE"]);
  const resistors=[
- ["R801","3k3_0p5W","FUSED_RAW","VREF2V5"],
- ["R802","56k2_1pct","FUSED_RAW","SENSE_RAW"],
- ["R803","10k_1pct","SENSE_RAW","GND"],
- ["R804","100k_1pct","VREF2V5","CMP_PLUS"],
- ["R805","1Meg_HYST","CMP_OUT","CMP_PLUS"],
- ["R806","2k2_PULLUP","VREF2V5","CMP_OUT"],
- ["R807","22k_BASE","CMP_OUT","Q_BASE"],
- ["R808","47k_GATE_SOURCE","FUSED_RAW","PFET_GATE"],
- ["R809","10k_GATE_SINK","PFET_GATE","GATE_SINK"],
- ["R810","100k_BASE_GND","Q_BASE","GND"]
+ ["R1001","3k3_0p5W","FUSED_RAW","VREF2V5"],
+ ["R1002","56k2_1pct","FUSED_RAW","SENSE_RAW"],
+ ["R1003","10k_1pct","SENSE_RAW","GND"],
+ ["R1004","100k_1pct","VREF2V5","CMP_PLUS"],
+ ["R1005","1Meg_HYST","CMP_OUT","CMP_PLUS"],
+ ["R1006","2k2_PULLUP","VREF2V5","CMP_OUT"],
+ ["R1007","22k_BASE","CMP_OUT","Q_BASE"],
+ ["R1008","47k_GATE_SOURCE","FUSED_RAW","PFET_GATE"],
+ ["R1009","10k_GATE_SINK","PFET_GATE","GATE_SINK"],
+ ["R1010","100k_BASE_GND","Q_BASE","GND"]
  ];
  for(let i=0;i<resistors.length;i++){
   const [refid,val,a,b]=resistors[i],x=i<5?254:400.05,y=242.57+(i%5)*29.21;
