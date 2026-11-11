@@ -24,5 +24,5 @@ report={
  "base_unloaded_range_v":[round(min(x[1] for x in cases),3),round(max(x[1] for x in cases),3)],
  "combined_sink_current_mA":[round(min(x[2] for x in cases),3),round(max(x[2] for x in cases),3)],
  "model":"Resistor-divider only; no transistor BE I-V, no vendor diode I-V/leakage, no temperature, no full startup or loaded comparator output.",
- "fail_closed_proved":False,"no_kicad_v26_schematic":True,"NO_FAB":True,"NO_TX":True}
+ "fail_closed_proved":False,"cad_not_checked_by_diode_screen":True,"NO_FAB":True,"NO_TX":True}
 print(json.dumps(report,sort_keys=True))

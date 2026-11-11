@@ -11,4 +11,4 @@ sinks=[r[2] for r in rows if r[0]==13.8]
 assert max(sinks)/(1000*ib)<4
 assert all(abs(r[3])<20 for r in rows if r[0]==18)
 assert all(abs(r[3])>20 for r in rows if r[0]==48)
-print(json.dumps({"gate":"PASS_IDEAL_SERIES_INTERLOCK_STUDY_ONLY","states":states,"sink_13p8_mA":[round(min(sinks),4),round(max(sinks),4)],"Q802_base_ideal_mA":round(1000*ib,4),"stack_sat_assumed_V":[.2,.4,.6],"48V_gate_stress":True,"vendor_spice":False,"hardware_qualified":False,"kicad_v26_exists":False,"NO_FAB":True,"NO_TX":True},sort_keys=True))
+print(json.dumps({"gate":"PASS_IDEAL_SERIES_INTERLOCK_STUDY_ONLY","states":states,"sink_13p8_mA":[round(min(sinks),4),round(max(sinks),4)],"Q802_base_ideal_mA":round(1000*ib,4),"stack_sat_assumed_V":[.2,.4,.6],"48V_gate_stress":True,"vendor_spice":False,"hardware_qualified":False,"cad_not_checked_by_ideal_screen":True,"NO_FAB":True,"NO_TX":True},sort_keys=True))

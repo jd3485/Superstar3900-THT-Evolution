@@ -26,7 +26,7 @@ print(json.dumps({
     "illustrative_cases":len(pairs),
     "minimum_assumed_hysteresis_v":round(min(a-b for a,b in pairs),4),
     "hardware_or_vendor_qualified":False,
-    "kicad_v26_completed":False,
+    "cad_not_checked_by_hysteresis_screen":True,
     "D807_low_level_and_leakage_qualified":False,
     "NO_FAB":True,"NO_TX":True
 },sort_keys=True))
