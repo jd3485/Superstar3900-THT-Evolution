@@ -1,0 +1,18 @@
+name: INFRA PILOT signed KiCad9 PPA without Launchpad API (NO FAB NO TX)
+on:
+  push:
+    branches: ["infra/ci-kicad9-signed-ppa-pilot"]
+permissions:
+  contents: read
+jobs:
+  signed-kicad9-install:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secure key fingerprint and signed package installation
+        run: bash ci/install_kicad9_signed_ppa.sh
+      - name: No repository design changes or fabrication
+        run: |
+          test -f 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+          kicad-cli version | grep -E '^9\.0\.'
