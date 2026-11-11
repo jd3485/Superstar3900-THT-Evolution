@@ -1,3 +1,12 @@
+# V1.9 — supervisore OVP THT con Schottky D804/D805 e R1001 1 W (baseline elettrica V0.9 preservata)
+- **CAD KiCad9 reale**: `04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch` contiene sei fogli nativi. D804 1N5819 **A2 da FUSED_RAW / K1 a OVP_CTL_VCC** alimenta U801 LM393 pin8, R1001 pin1 e R1002 pin1. D805 1N5819 **A2 GND / K1 OVP_CTL_VCC** è un clamp candidato. R1001 sostituita con Vishay PR01000103301JR500 3,3 kΩ/1 W assiale, footprint 9x3,2mm pitch 12,7mm.
+- [**KiCad9 CI run 42971502918**](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42971502918): **ERC 0**, **64 gruppi elettrici**, conservate TUTTE le partizioni pin V1.8 63 gruppi ad eccezione dei tre pin U801/8 R1001/1 R1002/1 spostati intenzionalmente sul nuovo rail, SVG sei pagine, generazione bit-per-bit e screening DC 21 casi PASS. Nessun vendor SPICE e nessun test fisico; 36 V ingresso e Vf 0,25–0,60 V ipotizzata portano R1001 a ~0,328–0,335 W.
+- **LIMITI CRITICI**: l'alimentazione del controllo è ora bloccata da un diodo contro inversione diretta ma la polarità inversa di veicolo NON è qualificata (leakage Schottky, Q802/gate, massimi dei pin); LM393 max 36 V a monte di Q801 ancora esposto alle sovratensioni; fusibile/TVS/termica non validati, 20V VTUNE e powergood non integrati, nessuna PCB o hardware RF. Sorgenti V1.8 e progetto SMD invariati. **NON collegare a batteria/veicolo; NO FAB / NO TX.**
+
+**Next CAD-first gate:** valutare supervisor con macro vendor e stress avviamento/brownout/inversione, proteggere i pin dai >36 V e isolare Q802/gate, selezionare footprint F701/D702 e coordinamento fusibile/TVS e R1001 derating, quindi powergood/mute fail-closed e 20V VTUNE. Mai qualificare una PCB per sola ERC.
+
+---
+
 # V1.8 — OVP high-side THT IRF9540N/LM393/TL431B nel master KiCad (baseline elettrica V0.9 preservata)
 - **Circuito nativo realmente modificato:** `04_KiCad/V1.8/PLL_RX_HIERARCHICAL_MASTER_V1.8.kicad_sch` (6 pagine): Q801 P-MOSFET TO-220 inserito **in serie tra F701 e D701**; U801 LM393N PDIP8 + U802 TL431BCLP TO-92 + Q802 2N3904, D803 zener gate e R1001–R1010 gestiscono soglia e isteresi. Schemi V1.7 e SMD invariati.
 - [**KiCad9 + ngspice CI 42966236280**](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42966236280) **PASS**: ERC nativo **0 violazioni**, **63 gruppi netlist** (62 reti collegate e 1 U801 pin7 NC), **54 reti V1.7 mantenute** eccetto spostamento voluto D701 pin2, libreria THT e 6 pagine SVG, generator bit-per-bit, analisi 128 combinazioni di tolleranze e **ngspice comportamentale**.
