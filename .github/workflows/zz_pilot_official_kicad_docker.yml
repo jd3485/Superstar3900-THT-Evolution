@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 16
     container:
       image: kicad/kicad:9.0
+      options: --user 0:0
     steps:
       - uses: actions/checkout@v4
       - name: Confirm official KiCad CLI 9.0 native in prebuilt image
