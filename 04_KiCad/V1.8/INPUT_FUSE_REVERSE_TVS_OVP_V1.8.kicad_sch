@@ -243,7 +243,7 @@
 (label "PFET_GATE" (at 528.32 71.12 0) (effects (font (size 1 1))) (uuid "af18bcd1-faae-4e37-bf18-000000000061"))
 (symbol (lib_id "THT_V18:R_1P_THT") (at 254 242.57 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "af18bcd1-faae-4e37-bf18-000000000062")
  (property "Reference" "R1001" (at 254 228.6 0) (effects (font (size 1 1))))
- (property "Value" "3k3_0p5W" (at 254 256.54 0) (effects (font (size 1 1))))
+ (property "Value" "3k3_0p25W_SCREEN" (at 254 256.54 0) (effects (font (size 1 1))))
  (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (at 254 242.57 0) (effects (font (size 1 1)) (hide yes)))
  (pin "1" (uuid "af18bcd1-faae-4e37-bf18-000000000063"))
 (pin "2" (uuid "af18bcd1-faae-4e37-bf18-000000000064"))

@@ -74,7 +74,7 @@ function buildV18(s){
  place("1N4742A_ZENER12","D803","ONSEMI_1N4742A_12V_GATE_LIMIT",diodefp,515.62,71.12,["1","2"]);
  connectPins(515.62,71.12,zener,["FUSED_RAW","PFET_GATE"]);
  const resistors=[
- ["R1001","3k3_0p5W","FUSED_RAW","VREF2V5"],
+ ["R1001","3k3_0p25W_SCREEN","FUSED_RAW","VREF2V5"],
  ["R1002","56k2_1pct","FUSED_RAW","SENSE_RAW"],
  ["R1003","10k_1pct","SENSE_RAW","GND"],
  ["R1004","100k_1pct","VREF2V5","CMP_PLUS"],
@@ -118,4 +118,4 @@ for(const [file,data] of Object.entries(out)){
  else throw Error("Requires --check or --write");
 }
 console.log(JSON.stringify({status:"NATIVE_KICAD_V18_REPRODUCIBLE",files:Object.keys(out).length,
-nominal_trip_v:16.2,nominal_reclose_v:14.7,hardware_qualified:false,pcb:false,fab_authorized:false,tx_authorized:false}));
+ideal_unloaded_trip_v:16.5169,ideal_unloaded_reclose_v:15.0154,behavioral_load_trip_v_approx:16.4206,behavioral_load_reclose_v_approx:15.1357,hardware_qualified:false,pcb:false,fab_authorized:false,tx_authorized:false}));
