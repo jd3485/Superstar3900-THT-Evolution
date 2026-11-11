@@ -1,0 +1,2 @@
+Reference,MPN,Value,Package,Footprint,Status,Technical blockers
+L920,Bourns RLB0914-681KL,680uH +/-10%,Radial THT,"THT_V22:Inductor_Bourns_RLB0914_681KL_P5.00mm",CANDIDATE_NOT_QUALIFIED,"Pitch tolerance; boost Isat thermal and EMI; mechanical fit and PCB DRC"
