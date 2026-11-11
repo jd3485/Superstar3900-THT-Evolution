@@ -1,0 +1,67 @@
+name: V2.1 native KiCad9 seven-sheet VTUNE20 plus manufacturer dimensioned F701 D702 THT footprints
+on:
+  push:
+    branches: [main, "feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-v21-seven-sheet-fp:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify deterministic preservation of seven full KiCad electrical sheets
+        run: |
+          node --check 04_KiCad/V2.1/genera_footprint_v21.js
+          node 04_KiCad/V2.1/genera_footprint_v21.js --check
+      - name: Install KiCad9 native CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register ALL stock footprint libraries plus THT_V21 and symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.1").resolve()
+          cfg=Path.home()/".config/kicad/9.0"
+          (cfg/"sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          baseline=Path("/usr/share/kicad/template/fp-lib-table").read_text()
+          local=(p/"fp-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p))
+          assert "Resistor_THT" in baseline and baseline.rstrip().endswith(")")
+          entry=local[local.index("(lib "):local.rfind(")")].strip()
+          assert "THT_V21" in entry
+          (cfg/"fp-lib-table").write_text(baseline.rstrip()[:-1]+"\n "+entry+"\n)\n")
+          PY
+      - name: Export two actual KiCad9 native axial footprints as SVG
+        run: |
+          mkdir -p 03_Verifiche/V2.1/native_results/footprints
+          kicad-cli fp export svg --output 03_Verifiche/V2.1/native_results/footprints/ 04_KiCad/V2.1/THT_V21.pretty
+          test "$(find 03_Verifiche/V2.1/native_results/footprints -type f -name '*.svg' | wc -l)" -eq 2
+      - name: ERC 0 violations on FULL SEVEN SHEETS including physical 20V VTUNE
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.1/native_results/erc.json 04_KiCad/V2.1/PLL_RX_HIERARCHICAL_MASTER_V2.1.kicad_sch
+      - name: KiCad9 native electrical netlist exact 72 groups and all pin partitions
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.1/native_results/v20_seven_sheet_baseline.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.1/native_results/v21_7sheet.net 04_KiCad/V2.1/PLL_RX_HIERARCHICAL_MASTER_V2.1.kicad_sch
+          python3 -B 03_Verifiche/V2.1/verify_footprints_7sheet_native_v21.py 03_Verifiche/V2.1/native_results/v20_seven_sheet_baseline.net 03_Verifiche/V2.1/native_results/v21_7sheet.net
+          python3 -B 03_Verifiche/V2.1/audit_all_components_native_v21.py 03_Verifiche/V2.1/native_results/v21_7sheet.net
+      - name: Export all seven actual native KiCad schematic SVGs
+        run: |
+          mkdir -p 03_Verifiche/V2.1/native_results/schematic
+          kicad-cli sch export svg --output 03_Verifiche/V2.1/native_results/schematic/ 04_KiCad/V2.1/PLL_RX_HIERARCHICAL_MASTER_V2.1.kicad_sch
+          test "$(find 03_Verifiche/V2.1/native_results/schematic -type f -name '*.svg' | wc -l)" -ge 7
+      - name: Archive actual native evidence for review including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V21-KiCad9-7sheets-72net-fuse-tvs-axial-NO-FAB
+          path: 03_Verifiche/V2.1/native_results/
+          if-no-files-found: warn
