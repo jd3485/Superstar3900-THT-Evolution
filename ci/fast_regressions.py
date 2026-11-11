@@ -11,3 +11,6 @@ for version in VERSIONS:
     subprocess.run([sys.executable,"-B","-m","unittest","discover","-s",str(path),
                     "-p","test_*.py","-v"],cwd=ROOT,check=True)
 print("PASS_FAST_LEGACY_UNITTESTS_ALL_TEN_VERSION_SUITES",flush=True)
+
+# Every PR also guards the 138-reference THT lifecycle inventory against CAD drift.
+subprocess.run([sys.executable,"-B",str(ROOT/"03_Verifiche/V2.6/verify_mpn_inventory_v26.py")],cwd=ROOT,check=True)
