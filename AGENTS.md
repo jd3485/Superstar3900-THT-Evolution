@@ -8,7 +8,7 @@
 
 ## Mandato permanente, ambito e autonomia
 
-Obiettivo: completare **una PCB unica Superstar 3900 THT Evolution**, con schemi KiCad reali, componenti e impronte esclusivamente **through-hole (THT)**, pin↔pad↔net verificati, layout RF/IF/alimentazioni correttamente ingegnerizzato, nessun errore elettrico, ERC o DRC **noto**. Nessun processo software può garantire zero difetti hardware; prove fisiche e review indipendenti rimangono obbligatorie.
+Obiettivo: completare **due PCB interconnesse Superstar 3900 THT Evolution (PCB-MAIN radio e PCB-FRONT comandi/display/S-meter analogico), secondo ADR-001**, con schemi KiCad reali, componenti e impronte esclusivamente **through-hole (THT)**, pin↔pad↔net verificati, layout RF/IF/alimentazioni correttamente ingegnerizzato, nessun errore elettrico, ERC o DRC **noto**. Nessun processo software può garantire zero difetti hardware; prove fisiche e review indipendenti rimangono obbligatorie.
 
 L'utente delega priorità, MPN/valori ordinari giustificati, alternative tecniche, divisione in revisioni, branch/PR e integrazione delle modifiche ordinarie **quando i gate richiesti sono superati e i permessi lo consentono**. Non interrompere una sessione dopo ogni revisione e non chiedere «continua». Passare autonomamente a più revisioni consecutive reali, finché la sessione e gli strumenti lo consentono.
 
@@ -30,6 +30,10 @@ L'utente delega priorità, MPN/valori ordinari giustificati, alternative tecnich
 10. Dopo un merge valido, se restano capacità e strumenti, **procedere con il successivo problema concreto senza aspettare una nuova richiesta**. In una nuova chat ripartire dal checkpoint, non dalla memoria o dall'ultima frase dell'assistente.
 
 **Anti-loop:** non creare microrevisioni di soli report per simulare progresso; non attribuire percentuali PCB a test di script o footprint; niente false simulazioni vendor e niente layout dimostrativo presentato come radio completa.
+
+## Architettura di prodotto approvata, successiva al mandato storico
+
+L'utente ha approvato due PCB, frontalino stile Superstar 3900 **Evolution**, manopole fisiche e **S-meter analogico a lancetta**. Decisione [ADR-001](00_Gestione_Progetto/ADR-001_DUE_PCB_FRONTALE_EVOLUTION.md): vincola il prodotto finito, non implica che la PCB frontale sia già progettata. La V2.6 resta il CAD MAIN parziale. Preservare il divieto NO FAB/NO TX e verificare ciascuna delle due PCB reali prima della produzione. La frase storica «PCB unica» in revisioni passate è superata da questo ADR.
 
 ## Vincoli non negoziabili
 

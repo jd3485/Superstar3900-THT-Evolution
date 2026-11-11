@@ -1,5 +1,8 @@
 # Superstar 3900 THT Evolution — CAD V2.6 su main (11 novembre 2026)
 
+**Architettura prodotto approvata:** due PCB (radio principale e frontalino), stile 3900 **Evolution** con manopole tradizionali e **S-meter analogico a lancetta**. [ADR-001: specifica e vincoli](00_Gestione_Progetto/ADR-001_DUE_PCB_FRONTALE_EVOLUTION.md). Il CAD V2.6 rappresenta la MAIN ancora incompleta; la FRONT è da progettare. Nessun PCB layout né fab autorizzati.
+
+
 ## Ultima verifica elettrica del CAD V2.6: D803 (11 novembre 2026)
 
 La [PR #31](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/31) è integrata su main (merge `0d28a2c38c785d92421c7b99aec4a039a3962c12`). La [CI 43081722718](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43081722718) **3/3 PASS** ha verificato sulla netlist KiCad9 nativa che lo Zener D803 (onsemi 1N4742A 12V THT), già presente, è collegato correttamente tra source e gate di Q801, con 76 reti invariate. Nuovo audit Python di 486 scenari illustrativi: la precedente segnalazione |VGS| >20V a 48V vale **per D803 aperto**, non per un dispositivo sano con clamp ideale. La Vz nominale è specificata a 21mA, ben sopra i ~3mA ipotizzati: il clamp reale non è qualificato. [Rapporto tecnico](03_Verifiche/V2.6/RAPPORTO_D803_GATE_CLAMP.md). Nessuna modifica allo schema o ai componenti, nessuna autorizzazione hardware. Issue #27 ancora OPEN.
