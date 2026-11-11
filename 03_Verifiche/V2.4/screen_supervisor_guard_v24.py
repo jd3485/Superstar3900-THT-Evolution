@@ -1,30 +1,69 @@
 #!/usr/bin/env python3
-"""Screen ONLY: resistor/zener nominal PVT and TL431 UVLO risk. NOT safety qualification."""
-import json,math
-Rnom=680.; Vznom=15.; Vref=2.5; Rref=3300.; Rpull=2200.
-samples=[]
-for vin in (0.,9.,10.,11.,12.,13.8,16.5,20.,24.,36.,48.):
- for rf in (.95,1.05):
-  for vd in (.25,.65):
-   for icc in (.0005,.001):
-    R=Rnom*rf
-    vr=(vin-vd+R*Vref/Rref-R*icc)/(1+R/Rref)
-    vr=max(0.,vr)
-    # 15V+-5% approximate vendor Vz at 17mA. At other currents, Vz is not a guaranteed clamp.
-    vz=Vznom
-    if vr>vz:vr=vz
-    total=max(0.,(vin-vd-vr)/R)
-    iref=max(0.,(vr-Vref)/Rref)
-    cathode=iref-Vref/Rpull
-    iz=max(0.,total-icc-iref)
-    pr=total**2*R;pz=vr*iz
-    samples.append({"vin":vin,"vcc":round(vr,3),"v_sense":round(vin*10000./66200.,3),"i_tl431_net_mA":round(cathode*1000,3),"p_r_w":round(pr,3),"p_z_w":round(pz,3)})
-assert max(q["vcc"] for q in samples)<=15.001
-at_nom=[q for q in samples if q["vin"]==13.8]
-assert min(q["i_tl431_net_mA"] for q in at_nom)>1.,at_nom
-at_low=[q for q in samples if q["vin"]==10.]
-assert min(q["i_tl431_net_mA"] for q in at_low)<1.
-at_high=[q for q in samples if q["vin"]==48.]
-assert max(q["p_r_w"] for q in at_high)<2.0
-report={"gate":"PASS_V24_ANALYTIC_SCREEN_ONLY","MPN_R1011":"Vishay PR02000206800JR500 680R 2W 5pct","MPN_D806":"onsemi 1N4744A 15V 1W 5pct","lab_voltage_min_qualified":False,"sustained_48V_qualified":False,"zener_dynamic_and_thermal_qualified":False,"TL431_brownout_10V_known_risk":True,"reverse_fault_qualified":False,"gate_qualified":False,"datasheet_limits":{"LM393N_Vcc_max_V":36,"IRF9540N_Vgs_abs_V":20,"Zener_1N4744A_power_TL50C_W":1},"ranges":{"at_13p8V_TL431_net_min_mA":min(q["i_tl431_net_mA"] for q in at_nom),"at_48V_R_power_max_analytic_W":max(q["p_r_w"] for q in at_high),"at_48V_zener_power_max_analytic_W":max(q["p_z_w"] for q in at_high)},"scenarios":len(samples),"no_fab":True,"no_tx":True}
+"""V2.4 limited PVT screening; a passing model is NOT a safety qualification."""
+from itertools import product
+import json
+
+R_NOM = 820.0
+R_TOL = 0.05
+R_REF = 3300.0
+R_PULL = 2200.0
+V_REF = 2.5
+VINS = (0.0, 9.0, 10.0, 11.0, 12.0, 13.8, 16.5, 20.0, 24.0, 36.0, 48.0)
+# Diotec 1N5352B voltage window only specified at vendor test 75 mA.
+VZ_ASSUMED_TEST_POINTS = (14.2, 15.0, 15.8)
+
+def pr03_cu_derated_w(ambient_c):
+    """Vishay PR03 Cu 3W P70, illustrative linear derating to 0W at 200C."""
+    return 3.0 * max(0.0, min(1.0, (200.0-ambient_c)/130.0))
+
+samples = []
+for vin, rf, vd, icc, vz in product(
+    VINS, (1-R_TOL, 1+R_TOL), (0.25, 0.65), (0.0005, 0.001), VZ_ASSUMED_TEST_POINTS
+):
+    r = R_NOM*rf
+    # NOT vendor SPICE: 2.5V ideal TL431 and ideal stiff Zener at assumed Vz.
+    free_vcc = max(0.0, (vin-vd+r*V_REF/R_REF-r*icc)/(1+r/R_REF))
+    vcc = min(free_vcc, vz)
+    ir = max(0.0, (vin-vd-vcc)/r)
+    iref = max(0.0, (vcc-V_REF)/R_REF)
+    ik = iref-V_REF/R_PULL
+    iz = max(0.0, ir-icc-iref)
+    samples.append(dict(vin=vin, vcc=vcc, ik=ik, iz=iz,
+                        pr=ir*ir*r, pz=vcc*iz))
+
+def rows(vin):
+    return [s for s in samples if s["vin"]==vin]
+
+at_nom,at_low,at_high=rows(13.8),rows(10.0),rows(48.0)
+ikmin=min(s["ik"] for s in at_nom)*1000
+prmax=max(s["pr"] for s in at_high)
+pzmax=max(s["pz"] for s in at_high)
+izmax=max(s["iz"] for s in at_high)*1000
+assert len(samples)==264
+assert ikmin>1.0
+assert min(s["ik"] for s in at_low)<0.001
+assert prmax<pr03_cu_derated_w(125.0)
+assert prmax>pr03_cu_derated_w(140.0), "Expected high-ambient derating hazard must remain visible"
+assert pzmax<5.0
+assert 0.0<izmax<75.0, "Vz limits NOT guaranteed at these lower currents"
+report={
+ "gate":"PASS_V24_LIMITED_IDEALIZED_SCREEN_ONLY",
+ "R1011":"Vishay PR03000208200JAC00 820R 3W Cu-lead PR03 5pct",
+ "D806":"Diotec 1N5352B DO-201 15V 5W 5pct",
+ "scenarios":len(samples),
+ "at_13p8V_TL431_min_est_mA":round(ikmin,3),
+ "at_10V_TL431_min_est_mA":round(min(s["ik"] for s in at_low)*1000,3),
+ "at_48V_R_power_max_ideal_W":round(prmax,3),
+ "PR03_derated_125C_W":round(pr03_cu_derated_w(125),3),
+ "PR03_derated_140C_W":round(pr03_cu_derated_w(140),3),
+ "at_48V_Z_power_max_ideal_W":round(pzmax,3),
+ "at_48V_Z_current_max_ideal_mA":round(izmax,3),
+ "zener_vz_limits_apply_only_at_75mA":True,
+ "vendor_spice_model_used":False,
+ "brownout_failclosed_qualified":False,
+ "sustained_48V_qualified":False,
+ "reverse_gate_F701_D702_qualified":False,
+ "powergood_mute_hardware_present":False,
+ "no_fab":True,"no_tx":True,"no_battery_or_vehicle":True
+}
 print(json.dumps(report,sort_keys=True))
