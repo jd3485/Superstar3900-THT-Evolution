@@ -1,3 +1,13 @@
+# Checkpoint operativo 11 novembre 2026 (proposta documentale NON MERGED)
+
+Main verificato `7b2e7bf4997779b7cd5e233d906ee32609170598` (PR23 protocollo): ultima modifica elettrica integrata V2.0 (PR17), sette fogli KiCad9; **nessuna PCB**.
+[PR #20 V2.1](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20) OPEN/DRAFT: F701/D702 footprint THT candidati, CI finale zero step.
+[PR #24 V2.2](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/24) OPEN/DRAFT **basata sulla #20**: nuovo master KiCad sette fogli, footprint candidato L920 Bourns RLB0914-681KL radiale. Passato solo gate JS indipendente 10 file generati, non ERC.
+[Issue #22](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22): runner GitHub Actions non eseguono step neppure al retry. NON integrare entrambe le PR senza gate native verdi e verifiche complete.
+Ripresa: CI → merge #20 solo dopo green → rebase/riesame #24 con CI → L501 166nH RF e sicurezza alimentazioni; TX, RF/IF/audio/control e PCB mancano. NO FAB / NO TX / NO BATTERIA-VEICOLO.
+
+---
+
 # V2.0 — sette fogli KiCad9: alimentazione VTUNE20 THT fisicamente integrata (baseline V0.9 preservata)
 - **Novità CAD reale:** master `04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch`, settimo child `POWER20_VTUNE_BOOST_LDO_V2.0.kicad_sch`. U911 **ST MC34063ABN PDIP8** con boost candidata ~27,95V, **L920 Bourns RLB0914-681KL 680µH THT**, U912 **onsemi LM317T TO220** regola ~20,02V ideali, C/R filtro dopo LM317, `VANA20_FILT` collegata *tramite gerarchia reale* al pad **U803 pin8** del filtro PLL. D921/D922 scarica condensatori LDO, tab U912 è VOUT e non GND; tutte le reti V1.9 RX/5V/PLL/VCO restano inalterate.
 - **Evidenza KiCad9 concreta:** [run 42986863110](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42986863110) ha completato **ERC0**, **72 gruppi netlist V2.0 rispetto a 64 V1.9**, tutte le precedenti partizioni-pin identiche, 7 pagine SVG e generatore 9 file PASS. Lo script DC ha inizialmente fermato l'esecuzione per una classificazione del margine corrente troppo rigida; la correzione distingue condizioni **vicine** al limite teorico da vere violazioni. I CI del commit finale restano da concludere.
