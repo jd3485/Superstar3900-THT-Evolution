@@ -1,0 +1,67 @@
+name: V2.3 native KiCad9 Coilcraft L501 THT adjustable VCO inductor physical prototype
+on:
+  push:
+    branches: [main, "feature/v2.3-coilcraft-L501-tunable-tht"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-v23-L501:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deterministic seven-sheet migration plus theoretical non-RF screen
+        run: |
+          node --check 04_KiCad/V2.3/genera_L501_v23.js
+          node 04_KiCad/V2.3/genera_L501_v23.js --check
+          python3 -B 03_Verifiche/V2.3/screen_vco_l501_v23.py
+      - name: Install actual KiCad9 CLI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register stock and local THT footprint and symbol libraries
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.3").resolve()
+          cfg=Path.home()/".config/kicad/9.0"
+          (cfg/"sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          baseline=Path("/usr/share/kicad/template/fp-lib-table").read_text()
+          local=(p/"fp-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p))
+          entries=[line for line in local.splitlines() if line.strip().startswith("(lib ")]
+          assert len(entries)==3
+          assert all("THT_V"+n in entries[i] for i,n in enumerate(("21","22","23")))
+          (cfg/"fp-lib-table").write_text(baseline.rstrip()[:-1]+"\n"+"\n".join(entries)+"\n)\n")
+          PY
+      - name: Native footprint SVG of actual 2-lead Coilcraft Uni7 THT candidate
+        run: |
+          mkdir -p 03_Verifiche/V2.3/native_results/footprints
+          kicad-cli fp export svg --output 03_Verifiche/V2.3/native_results/footprints/ 04_KiCad/V2.3/THT_V23.pretty
+          test "$(find 03_Verifiche/V2.3/native_results/footprints -type f -name '*.svg' | wc -l)" -eq 1
+      - name: Native KiCad9 seven-sheet ERC0 unwaived
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.3/native_results/erc.json 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+      - name: Native netlist exact 72 electrical groups and 129 of 129 footprint fields
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.3/native_results/v22_baseline.net 04_KiCad/V2.2/PLL_RX_HIERARCHICAL_MASTER_V2.2.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.3/native_results/v23_candidate.net 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+          python3 -B 03_Verifiche/V2.3/verify_kicad_v23.py 03_Verifiche/V2.3/native_results/v22_baseline.net 03_Verifiche/V2.3/native_results/v23_candidate.net
+      - name: Export all seven native KiCad9 schematic SVGs
+        run: |
+          mkdir -p 03_Verifiche/V2.3/native_results/schematic
+          kicad-cli sch export svg --output 03_Verifiche/V2.3/native_results/schematic/ 04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch
+          test "$(find 03_Verifiche/V2.3/native_results/schematic -type f -name '*.svg' | wc -l)" -ge 7
+      - name: Upload traceable native evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V23-KiCad9-L501-Coilcraft-7sheets-129footprints-NO-FAB-NO-TX
+          path: 03_Verifiche/V2.3/native_results/
+          if-no-files-found: warn
