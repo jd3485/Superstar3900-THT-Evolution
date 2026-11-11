@@ -1,10 +1,12 @@
-# Checkpoint operativo 11 novembre 2026 (proposta documentale NON MERGED)
+# Handoff THT — aggiornamento verificato 11 novembre 2026
 
-Main verificato `7b2e7bf4997779b7cd5e233d906ee32609170598` (PR23 protocollo): ultima modifica elettrica integrata V2.0 (PR17), sette fogli KiCad9; **nessuna PCB**.
-[PR #20 V2.1](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20) OPEN/DRAFT: F701/D702 footprint THT candidati, CI finale zero step.
-[PR #24 V2.2](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/24) OPEN/DRAFT **basata sulla #20**: nuovo master KiCad sette fogli, footprint candidato L920 Bourns RLB0914-681KL radiale. Passato solo gate JS indipendente 10 file generati, non ERC.
-[Issue #22](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22): runner GitHub Actions non eseguono step neppure al retry. NON integrare entrambe le PR senza gate native verdi e verifiche complete.
-Ripresa: CI → merge #20 solo dopo green → rebase/riesame #24 con CI → L501 166nH RF e sicurezza alimentazioni; TX, RF/IF/audio/control e PCB mancano. NO FAB / NO TX / NO BATTERIA-VEICOLO.
+**Fonte canonica al prossimo avvio:** [WORK_STATO_CORRENTE.md](00_Gestione_Progetto/WORK_STATO_CORRENTE.md) su `main` + [AGENTS.md](AGENTS.md). Confermare sempre le evidenze live.
+
+**Ultima revisione CAD EFFETTIVAMENTE MERGED:** **V2.3, PR #26**, main commit tecnico `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`. Nella stessa sessione integrate V2.1 PR20 `b7b475e05b7279f2944fbfa6ea50d38680f874c4` e V2.2 PR24 `30328084e72339f3909e618ff37162e8f31827d4`. KiCad9 V2.3 native [run 43012377058](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43012377058) PASS ERC0/72 partizioni/7 SVG/129 riferimenti con footprint campo compilato. **20/20 workflow PR final head V2.3 PASS.**
+
+**NON È UNA PCB COMPLETA**: resta un sottosistema RX PLL; l'induttore L501 Coilcraft 150-05J08L è candidato THT NON qualificato RF, come L920 Bourns (termica e EMI non verificate), F701/D702 e catena OVP oltre 36V LM393. Sono assenti powergood/mute fail-closed, RF/IF/audio/controller, PCB, DRC, Gerber, hardware. Issue #19/#21 restano aperte; #22 quota Actions risolto/chiuso, CI ora utilizzabile. NO FAB / NO TX, non collegare batteria/veicolo.
+
+**Prossimo intervento tecnico:** stress e protezione upstream LM393 e gate durante transitori/reverse/overvoltage, power-good/mute fail-closed, poi sicurezza alimentazioni/valori MPN e RF front end; modifiche native KiCad + verifiche gate reali PR prima di merge.
 
 ---
 

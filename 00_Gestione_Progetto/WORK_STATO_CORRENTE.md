@@ -1,71 +1,65 @@
-# WORK_STATO_CORRENTE.md — checkpoint canonico per la continuità ChatGPT Work THT
+# WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Rilevazione iniziale:** mercoledì **11 novembre 2026**. Repository unico: **jd3485/Superstar3900-THT-Evolution**; branch autoritativo: **main**. Questo file è un indice verificabile, non una sostituzione dei branch, delle PR e dei run GitHub.
+**Aggiornato:** 11 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
+non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
+[AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
+SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
+Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
-**IN OGNI NUOVA CHAT:** leggere **[AGENTS.md](../AGENTS.md)** da main insieme a questo checkpoint. Poi interrogare live GitHub e non fidarsi di uno stato obsoleto. Leggere [handoff storico](../RIPRENDI_IN_UNA_NUOVA_CHAT.md), [stato tecnico](STATO_PROGETTO.md), il [piano PCB RF THT](PIANO_PCB_RF_THT_V2.0.md), i rapporti e le CI.
+## Ultima revisione realmente integrata — V2.3
 
-## Verifica operativa nuova sessione — 11 novembre 2026 (solo checkpoint non integrato)
-
-> Questa sezione è proposta nel branch documentale dedicato. **Non affermare che
-> sia in main prima del merge**: il documento originale di main era stato
-> aggiornato quando HEAD era ancora `284bd...`.
-> Nella nuova chat leggere nuovamente AGENTS e checkpoint DA MAIN e interrogare GitHub live.
-
-- **Main HEAD accertato**: `7b2e7bf4997779b7cd5e233d906ee32609170598`, merge PR #23 di protocollo; ultima REVISIONE ELETTRICA MERGED resta **V2.0** (PR #17), sette fogli, 72 gruppi netlist nel run KiCad9 valido di V2.0. Nessun layout PCB, nessun DRC.
-- **PR #20 OPEN/DRAFT NON MERGED**: [V2.1 F701/D702](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20), head `2d1402a20a5b25080f8d5039d38cafedf777c1e0`, branch `feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints`, basata su V2.0 senza perdere settimo foglio. Due footprint THT candidati assiali; la verifica V2.1 finale NON è passata.
-- **PR #24 OPEN/DRAFT NON MERGED (stacked sopra #20)**: [V2.2 L920 Bourns](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/24), branch `feature/v2.2-bourns-L920-radial-tht`, 17 nuovi file V2.2 iniziali e commit correttivo `e8da9e59de0ee7ff9de8b465bdc1cf0199755ca2`. Il master V2.2 include sette schemi KiCad9 veri e nuovo footprint candidato THT `THT_V22:Inductor_Bourns_RLB0914_681KL_P5.00mm`; l'unico delta voluto di metadato rispetto a V2.1 è il Footprint di L920. Bourns <https://www.bourns.com/docs/product-datasheets/rlb.pdf>: 680 µH ±10%, Ø9,2 mm corpo max, altezza max 13 mm, reofori Ø0,65 mm nominali, passo 5,0 ±0,8 mm. Pad Ø2,0 mm / drill Ø1,0 mm **sono candidati NON verificati su hardware**. Irms tipica 0,49 A, Isat tipica 0,9 A, RDC massima 1,6 ohm; boost MC34063, termica, EMI, RF e qualifica assemblaggio aperte.
-- **Gate realmente eseguito V2.2**: riproducibilità deterministica dei **10 file generati** verificata con un harness JS indipendente read-only che legge dal repository via connettore GitHub ed esegue il generatore con filesystem emulato; restituisce `PASS_V22_GENERATOR_REPRODUCIBLE`. È un gate limitato al testo, **NON** KiCad CLI, ERC o netlist KiCad. Il QA Python non è stato eseguito da runner.
-- **Quota GitHub Actions identificata dalla notifica del titolare (11 novembre 2026):** l'account `jd3485` ha usato **2.000 minuti su 2.000** (100%). La notifica indica **reset 1 dicembre 2026**. Se il budget Actions è impostato a 0 $, non si possono usare minuti aggiuntivi; se l'account consente spese oltre quota, potrebbero essere fatturate. **Budget attuale non verificato**. È la spiegazione concreta dei recenti workflow che finiscono senza runner e senza step, NON un errore elettrico KiCad dimostrato. Non effettuare tentativi ripetuti o autorizzare spesa; verificare disponibilità della quota prima di eseguire CI. Issue #22 aggiornata con evidenza della notifica.
-- **GitHub Actions bloccate infrastrutturalmente**: [issue #22](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22). Retry V2.1 [run 42991959540](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42991959540) **tentativo 2 failure, 0 steps**. V2.2 [run 42996976088](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42996976088) e regressione [run 42996976115](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42996976115): **failure, 0 steps**. Run recente main anch'esso zero steps. Causa runner/quote/billing/status ancora da determinare. Nessuna di queste failure prova un errore ERC, ma nessuna equivale a test PASS.
-- **Ordine vincolante di ripresa**: risolvere runner; verificare tutti i gate su SHA finale PR #20 e solo allora merge V2.1; riconciliare branch PR #24 con main e verificare native KiCad9 ERC0, 72 gruppi identici pin/net, 7 SVG, footprint SVG, BOM, script e CI prima di merge V2.2. Dopo, qualificare L501 RF 166nH, stress di alimentazione >36V LM393, TVS/fusibile, correnti/temperatura e catena RX mancante. **Non forzare merge tecnico in assenza di controlli verdi**.
-- **Copertura footprint nominale, da validare con export nativo**: main V2.0 quattro vuoti (F701, D702, L501, L920); #20 idealmente due (L501, L920); #24 idealmente uno (L501). Non attribuire questi valori ad un nuovo audit KiCad.
-- **NO FAB / NO GERBER PRODUZIONE / NO TX**, no batteria o veicolo, progetto SMD non modificato.
-
-## Ultima revisione effettivamente integrata in main (fotografia verificata)
-
-| Campo | Stato verificato |
+| Campo | Ultimo stato accertato |
 |---|---|
-| Ultima **revisione elettrica effettivamente MERGED** | **V2.0 — sette fogli RX PLL/VCO/5V/13,8V OVP/VTUNE20** |
-| PR merged | [#17 — V2.0 boost MC34063ABN + LM317T](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/17) |
-| **HEAD main all'ultima lettura** | **7b2e7bf4997779b7cd5e233d906ee32609170598** (PR #23 documentale, revisione elettrica ancora V2.0) |
-| Esempio CI KiCad 9 V2.0 riuscita | [run 42986863110](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42986863110) |
-| CI su main V2.0 verificata | [run 42989687101](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42989687101) — **success** |
-| Master KiCad di main | [PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch](../04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch) |
-| Contenuto KiCad reale | **7 pagine native; 72 gruppi netlist**. VANA20_FILT collegato fisicamente al driver PLL U803 pin8 tramite foglio MC34063ABN / LM317T |
-| Stato ERC schematico | **0 violazioni** negli export KiCad9 verificati; **non** rappresenta qualifica hardware |
-| Componenti nel master parziale | **129** riferimenti fisici (censimento netlist ultimo); **125** footprint valorizzati, **4** da completare: F701, D702, L501, L920 |
-| PCB unica completa | **NON ESISTE**. Zero layout, nessun DRC PCB, nessun Gerber di produzione |
-| Avanzamento | Stima complessiva precedente ~15% schemi/progetto; **PCB fisica 0%**. Evitare aumenti senza evidenze |
-| Sicurezza/autorizzazione | **NO FAB / NO GERBER DI PRODUZIONE / NO TX**. Non collegare a veicolo o batteria |
+| **Ultima revisione ELETTRICA/CAD MERGED** | **V2.3 — sette fogli KiCad9 RX PLL/VCO/5V/13,8V OVP/VTUNE20, footprint L501 Coilcraft candidato** |
+| **HEAD main all'ultimo controllo tecnico** | `faa146e2bdd12b13df1cbb4d20e67196ad5098b9` (merge PR #26; un successivo commit solo-documentale cambierà naturalmente HEAD: RIVERIFICARLO live) |
+| PR #20 **V2.1 MERGED** | [#20](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20) — merge `b7b475e05b7279f2944fbfa6ea50d38680f874c4`, footprint assiali F701 e D702 THT candidati |
+| CI V2.1 sul final HEAD | **18/18 workflow PASS** (17 regressioni storiche + gate V2.1); [native KiCad run 42991959540, tentativo 3](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42991959540): ERC 0, 72 partizioni pin-net, 7 SVG, 2 footprint SVG |
+| PR #24 **V2.2 MERGED** | [#24](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/24) — merge `30328084e72339f3909e618ff37162e8f31827d4`, footprint THT candidato L920 Bourns 680µH |
+| CI V2.2 sul final HEAD | **19/19 workflow PASS** su `574abd13c5591a1cbb3ccc0c8cd2289a2df05339`; [native run 43011468320](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43011468320): ERC0, 72 partizioni intatte, 128/129 campi footprint |
+| PR #26 **V2.3 MERGED** | [#26](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/26) — merge `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`, candidato Coilcraft 150-05J08L L501 e nuova impronta THT |
+| CI V2.3 sul final HEAD | **20/20 workflow PASS** su `d0b31d413a044e0c8035c0460086b5193e52197f`; [native run 43012377058](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43012377058): KiCad9 ERC0, sette fogli SVG, **72 gruppi netlist e tutte le partizioni pin→net invariate** |
+| Master KiCad autorevole | [04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch](../04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch) |
+| Copertura CAD nel master RX **parziale** | **129 riferimenti fisici, 129/129 campi Footprint valorizzati**; passaggio di audit **non** equivale a qualifica componenti/package né al completamento radio |
+| PCB unica, routing, DRC PCB | **NON ESISTONO / NON ESEGUITI**. Nessun `.kicad_pcb` completo. Nessun Gerber produttivo, nessun prototipo o test hardware |
+| Autorizzazioni | **NO FAB / NO GERBER PRODUZIONE / NO TX**; vietata connessione a batteria, veicolo o catena TX senza autorizzazione |
 
-## Lavoro in corso: NON fonderlo con lo stato di main
+### File reali della revisione V2.3
 
-### PR #20 — V2.1, footprint assiali e master a sette fogli
+Sette schemi nativi nuovi `04_KiCad/V2.3/*.kicad_sch`, generatore
+`04_KiCad/V2.3/genera_L501_v23.js`, tabelle librerie e
+`THT_V23.pretty/Inductor_Coilcraft_150-05J08L_Uni7_Tunable_THT.kicad_mod`,
+audit `03_Verifiche/V2.3/verify_kicad_v23.py`, gate aritmetico
+`screen_vco_l501_v23.py`, rapporto `RAPPORTO_L501_VCO_V2.3.md`, workflow
+`.github/workflows/cad_native_v23.yml` e delta BOM. Solo proprietà
+**Value** e **Footprint** di L501 variate intenzionalmente da V2.2; tutte
+le 72 partizioni elettriche native invariate.
+La V2.2 conserva F701, D702, L920 e la gerarchia BOOST/VTUNE20; V2.1
+conserva l'intero master V2.0 a sette fogli.
 
-- **PR:** [#20 — OPEN / DRAFT, NON MERGED](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20).
-- **HEAD di lavoro alla rilevazione:** **2d1402a20a5b25080f8d5039d38cafedf777c1e0**; branch feature/v2.1-7sheet-kicad9-tht-fuse-tvs-footprints.
-- **Base esatta della PR:** main V2.0, commit 284bd3641d7a0f905d14dc4c9f36ee9da84bbc93. Il master V2.1 conserva **tutti i sette fogli** e modifica soltanto i due campi Footprint dei componenti **F701 0251.500MXL** e **D702 ST P6KE20CA**; 7/7 schemi confrontati deterministicamente con il master originale V2.0 al netto del nome progetto e di queste due proprietà.
-- **Impronte candidate:** THT_V21.pretty, corpo/massimi datasheet e pad-fori assiali a **passo 12,70 mm non ancora approvato per produzione**. La vecchia PR #18 basata su sei fogli è stata chiusa **senza merge** per evitare di perdere il settimo foglio.
-- **BOM dopo eventuale PR #20**: 127/129 footprint **attesi**, L501 e L920 residui; questo conteggio **NON è un risultato di CI finale V2.1**.
-- **CI bloccata:** [issue #22](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22): su SHA 2d1402a... **19/19 workflow falliti senza runner e con ZERO step eseguiti**. Non chiamarli test passati né diagnosi di errori CAD. Causa da confermare (runner/quotas/billing/status di GitHub Actions).
-- **Azioni:** appena GitHub Actions riparte, eseguire/rilanciare veri test su HEAD PR #20; controllare 7 fogli, ERC0, 72 partizioni pin-net, footprint SVG reali, audit completo BOM THT e regressioni storiche. Se base/main si muove, riconciliare senza perdere revisioni concorrenti. **Merge solo dopo gate tutti verdi.**
+## Qualifiche ancora NON superate — blocchi reali
 
-### Problemi aperti a maggior priorità
+1. **[Issue #19, L501 VCO](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/19)**: Coilcraft **150-05J08L THT regolabile** candidato 165nH, range 137–193nH, Q min 114 a 50 MHz, SRF min 650 MHz **senza nucleo**, impronta diagonale con foro 0,8/pad 1,8mm proposta. Non è una qualifica RF. Mancano campione/fit, disponibilità MPN, tuning con BB204G, **KVCO, lock 270 canali, phase noise, deriva termica, Q caricato, EMI** e schermatura del boost. [Datasheet Coilcraft](https://www.coilcraft.com/getmedia/aaa9fcd2-5ef1-4ee2-b9b8-0ec1aa8c8db0/uni7.pdf). Lasciare issue aperta.
+2. **[Issue #21, L920 boost](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/21)**: candidato Bourns **RLB0914-681KL** 680µH THT, footprint Ø2mm/drill1mm/pitch5mm. Irms tipica 0,49A, Isat tipica 0,9A, DCR max1,6Ω. Da validare stress, ripple, Ipk MC34063, saturazione termica, ingresso, EMC e spur sul VCO/IF; hardware e dimensioni pezzo. [Datasheet Bourns](https://www.bourns.com/docs/product-datasheets/rlb.pdf).
+3. **Ingresso 13,8 V / protezione**: LM393 upstream ha **36V massimo** non protetto per sovratensioni sopra limite; reverse battery, transitori, load dump e rete Q802/gate-source non qualificati. **F701** Littelfuse 0251.500MXL e **D702** ST P6KE20CA hanno impronte THT candidate ma **senza** coordinamento sorgente/fusibile I²t/TVS energy e senza prova meccanica del pitch assiale 12,70 mm.
+4. **Regolatori e sicurezza funzionale**: 7805/boost 20V LM317 non qualificati per correnti, termica, startup, brownout, PSRR/ripple e comportamento da guasto; **power-good/mute fail-closed non integrati**. Non attribuire sicurezza ai soli ERC0 o test ideali.
+5. **Ricevitore completo assente**: preselector/front-end RF, mixer, IF, demodulazione AM/FM/USB/LSB, audio, squelch, controllo canali e front-panel completamente da progettare THT. Nessuna PCB completa, nessuna DRC, layout RF/IF o netlist↔PCB qualificata.
+6. **Sola evidenza da software**: ngspice storico è modello surrogato/comportamentale; non sono eseguiti macro-modelli vendor completi o misure elettriche/RF su prototipi. Nessuna trasmissione ammessa.
 
-1. **[Issue #22 — Actions senza runner](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22):** ripristinare CI; è un blocker di integrazione, non una ragione per forzare il merge. Controllare dashboard Actions e limiti di utilizzo o problemi del servizio, senza presumere la causa.
-2. **[Issue #19 — L501 VCO](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/19):** valore 166 nH di modello, componente THT reale e footprint non qualificati; servono Q, SRF, tolleranze, KVCO e RF.
-3. **[Issue #21 — L920 boost](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/21):** Bourns RLB0914-681KL 680 µH candidato THT senza footprint; corrente di saturazione/termica/ripple/EMI ancora da qualificare.
-4. **Sicurezza alimentazioni:** F701/D702 senza I²t/source/TVS energy coordination; LM393 non protetto per >36V raw, reverse-battery e gate-source non validati; regolatori 5V/VTUNE20 senza prove termiche/ripple o modelli vendor, power-good/mute non integrati.
-5. **Blocchi radio mancanti:** front-end RF, mixer e IF, AM/FM/SSB, audio, squelch e controller interamente THT. Solo dopo schemi completi scegliere stackup RF, fissaggi, ritorni massa e routing della PCB e svolgere DRC realmente completo.
+## Issue, PR e GitHub Actions al checkpoint
 
-## Procedura obbligatoria di aggiornamento
+- **Issue #22 (quota Actions)**: [CLOSED](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22), 2.000/2.000 minuti consumati in precedenza; titolare ha sbloccato Actions. Runner ripartiti: gate V2.1/V2.2/V2.3 **eseguiti davvero** e passati. Diversi tentativi hanno incontrato **HTTP 500/504 Launchpad PPA** durante installazione KiCad; quelli falliti sono stati ritentati, non reinterpretati come test CAD. Non cambiare budget senza consenso.
+- Nessuna **PR tecnica** rimasta aperta al merge della V2.3. La sola PR documentale [#25](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/25) era OPEN/DRAFT ed è stata **aggiornata con questo checkpoint**. Verificare live prima di usarla come fonte.
+- Project SMD **mai modificato** in questa sessione. Non trasferire specifiche SMD.
 
-Dopo ciascuna revisione/merge **verificato**, sostituire la fotografia iniziale con dati live: **SHA main**, PR e nuovo merge SHA, esatta revisione master e path, test/run IDs pass/fail, differenze netlist, ERC/DRC, componenti e footprint ancora mancanti, risultati hardware *se misurati*, prossima priorità e stato NO FAB/NO TX. Indicare separatamente branch/PR che **non** sono state integrate e i blocchi di infrastruttura.
+## Prossima sequenza tecnica autonoma
 
-Prima della fine di ogni sessione Work, aggiornare questo documento e l'handoff in GitHub, se consentito; se la CI non permette il merge, lasciare una **PR/commit/issue di handoff** distinguendo lo stato presente su main dallo stato ancora non integrato. Evitare in ogni caso di riscrivere la verità del repository da memoria, chat passate o PR draft.
+Partire da `main` V2.3 e dagli issue aperti: prima progettare e verificare **protezione OVP del comparatore LM393 e network gate su fault, startup/brownout, power-good/mute fail-closed**, con datasheet originali e analisi fault; evitare falsi PWR_FLAG. Poi validare componenti magnetici/TVS con dimensionamento PVT, modelli vendor e criteri meccanici; proseguire verso front-end RF e mixer/IF THT, demodulazione/audio/controlli.
+Ogni revisione reale: branch → nuovo file KiCad nativo → ERC e netlist pin-net in KiCad9 + test appropriati → PR/CI su **HEAD finale** → merge solo dopo gate verdi. Dopo merge aggiornare questo checkpoint.
+Non creare una PCB dimostrativa o Gerber fintanto che l'intera radio RX/THT e safety non sono completati e riesaminati.
 
-## Ripresa in chat nuova
+**VINCOLI ASSOLUTI: NO FAB / NO TX, NO BATTERIA / VEICOLO.**
 
-Con le istruzioni del Progetto ChatGPT: **«Riprendi.»**
+## Ripresa in una nuova sessione
 
-Senza le istruzioni: **«Riprendi THT da jd3485/Superstar3900-THT-Evolution; leggi da main AGENTS.md e 00_Gestione_Progetto/WORK_STATO_CORRENTE.md, verifica GitHub live, prosegui con più revisioni CAD e CI/PR/merge verificate, aggiorna il checkpoint. NO FAB / NO TX.»**
+«Leggi `AGENTS.md` e `00_Gestione_Progetto/WORK_STATO_CORRENTE.md` da `main` del repo `jd3485/Superstar3900-THT-Evolution`. Verifica in tempo reale SHA main, PR, Actions e issue. Riparti dall'ultima revisione effettivamente MERGED, prosegui autonomamente con più revisioni KiCad THT, CI e merge solo dopo tutti i test; aggiorna checkpoint. NO FAB / NO TX; non toccare SMD.»
