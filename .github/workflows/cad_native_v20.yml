@@ -1,0 +1,62 @@
+name: V2.0 genuine KiCad9 7-sheet THT MC34063ABN boost LM317 VTUNE rail
+on:
+  push:
+    branches: [main, "feature/v2.0-seven-sheet-tht-vtune20-boost-ldo"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  native-v20-vtune:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bit-perfect native KiCad9 generation from untouched V1.9
+        run: |
+          node --check 04_KiCad/V2.0/genera_vtune20_v20.js
+          node 04_KiCad/V2.0/genera_vtune20_v20.js --check
+      - name: Install native KiCad9
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq kicad
+          kicad-cli version
+      - name: Register all historical THT symbol libraries and new boost/LDO symbols
+        run: |
+          mkdir -p "$HOME/.config/kicad/9.0"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=(Path.cwd()/"04_KiCad/V2.0").resolve()
+          (Path.home()/".config/kicad/9.0/sym-lib-table").write_text((p/"sym-lib-table").read_text().replace("$"+"{KIPRJMOD}",str(p)))
+          PY
+      - name: Export actual U911/U912 and passive 100-percent THT symbol library
+        run: |
+          mkdir -p 03_Verifiche/V2.0/native_results/symbols
+          kicad-cli sym export svg --output 03_Verifiche/V2.0/native_results/symbols/ 04_KiCad/V2.0/THT_V20.kicad_sym
+      - name: Native ERC on fully connected 7-sheet RX PLL and VTUNE20 hierarchy
+        run: |
+          kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.0/native_results/erc.json 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+      - name: Export actual KiCad netlists and prove every V1.9 original pin-net partition is unchanged
+        run: |
+          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v19_baseline.net 04_KiCad/V1.9/PLL_RX_HIERARCHICAL_MASTER_V1.9.kicad_sch
+          kicad-cli sch export netlist --output 03_Verifiche/V2.0/native_results/v20_vtune20.net 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          python3 -B 03_Verifiche/V2.0/verify_vtune20_native_v20.py 03_Verifiche/V2.0/native_results/v19_baseline.net 03_Verifiche/V2.0/native_results/v20_vtune20.net
+      - name: Export 7 native KiCad9 schematic SVG pages
+        run: |
+          mkdir -p 03_Verifiche/V2.0/native_results/svg
+          kicad-cli sch export svg --output 03_Verifiche/V2.0/native_results/svg/ 04_KiCad/V2.0/PLL_RX_HIERARCHICAL_MASTER_V2.0.kicad_sch
+          test "$(find 03_Verifiche/V2.0/native_results/svg -type f -name '*.svg' | wc -l)" -ge 7
+      - name: Screen boost current limit / LM317 headroom against assumed DC envelopes (NO QUALIFICATION)
+        run: |
+          python3 -B 03_Verifiche/V2.0/screen_vtune20_v20.py
+          cp 03_Verifiche/V2.0/screen_v20.json 03_Verifiche/V2.0/native_results/
+      - name: Archive real native results on PASS or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V2.0-KiCad9-THT-7SHEETS-VTUNE20-UNQUALIFIED-NO-FAB-NO-TX
+          path: 03_Verifiche/V2.0/native_results
+          if-no-files-found: warn
