@@ -51,6 +51,7 @@ jobs:
           kicad-cli sch export netlist --output 03_Verifiche/V2.6/native_results/v25_baseline.net 04_KiCad/V2.5/PLL_RX_HIERARCHICAL_MASTER_V2.5.kicad_sch
           kicad-cli sch export netlist --output 03_Verifiche/V2.6/native_results/v26_uvlo.net 04_KiCad/V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch
           python3 -B 03_Verifiche/V2.6/verify_kicad_v26.py 03_Verifiche/V2.6/native_results/v25_baseline.net 03_Verifiche/V2.6/native_results/v26_uvlo.net
+          python3 -B 03_Verifiche/V2.6/audit_d803_gate_clamp_v26.py 03_Verifiche/V2.6/native_results/v26_uvlo.net
       - name: Export all seven native KiCad9 schematic SVG pages
         run: |
           mkdir -p 03_Verifiche/V2.6/native_results/schematic
