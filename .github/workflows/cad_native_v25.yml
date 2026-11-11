@@ -40,6 +40,9 @@ jobs:
       - name: ERC0 all seven native sheets, without waivers
         run: |
           mkdir -p 03_Verifiche/V2.5/native_results
+          # Diagnostic only: write actual KiCad pin-net evidence even if ERC then fails.
+          # This does NOT relax the mandatory ERC gate or permit a merge.
+          kicad-cli sch export netlist --output 03_Verifiche/V2.5/native_results/pre_erc_diagnostic.net 04_KiCad/V2.5/PLL_RX_HIERARCHICAL_MASTER_V2.5.kicad_sch
           kicad-cli sch erc --exit-code-violations --format json --output 03_Verifiche/V2.5/native_results/erc.json 04_KiCad/V2.5/PLL_RX_HIERARCHICAL_MASTER_V2.5.kicad_sch
       - name: Export both genuine netlists, test all preserved partitions and changed pins
         run: |
