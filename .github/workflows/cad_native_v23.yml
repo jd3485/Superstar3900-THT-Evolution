@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, "feature/v2.3-coilcraft-L501-tunable-tht"]
   pull_request:
-    branches: [main, "feature/v2.2-bourns-L920-radial-tht"]
+    branches: [main]
 permissions:
   contents: read
 jobs:
