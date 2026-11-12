@@ -18,7 +18,7 @@ PARTS = {"U1401", "R1401", "R1402", "C1401", "C1402",
          "C1403", "D1401", "D1402", "J1401", "J1402"}
 
 
-def nominal_vout(vref=1.25, iadj=50e-6, rtop=240.0, rbottom=910.0):
+def nominal_vout(vref=1.25, iadj=50e-6, rtop=120.0, rbottom=453.0):
     """First-order TI equation; use typical, not worst-case parameters."""
     return vref * (1 + rbottom / rtop) + iadj * rbottom
 
@@ -30,8 +30,9 @@ def estimated_tj(vin, vout, iout, ambient=60.0, assumed_theta_ja=50.0):
 
 
 def budget_checks():
-    assert abs(nominal_vout() - 6.0350833333) < 0.002
+    assert abs(nominal_vout() - 5.9914) < 0.002
     assert 5.8 < nominal_vout() < 6.3
+    assert 1.25 / 120 >= 0.010, "Regulator divider must support worst-case 10mA minimum load"
     # Conservative illustrative 50 C/W, 60 C ambient. These are not
     # approval for even 9V operation; thermal + PVT review still pending.
     assert estimated_tj(9.0, 6.0, 0.20) == 90.0
