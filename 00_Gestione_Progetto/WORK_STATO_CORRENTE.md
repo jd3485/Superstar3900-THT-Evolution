@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — bozza contratto elettrico MAIN ↔ FRONT audio con pin-net verificabili
+
+**Main verificato prima del lavoro:** SHA `c9362037015fbad2792af3c67fca821e60a6677c`, PR #54 e #55 integrate, nessuna PR aperta. Schemi principali V2.6 invariati. Due moduli standalone V2.7 DRAFT già integrati nella repository: LM386 RX MAIN (12 ref THT, ERC0) e volume FRONT (3 ref THT, ERC0). **Nessuna PCB**.
+
+**Nuova branch in revisione:** `verification/interboard-audio-pin-contract-20261112`. Aggiunto `03_Verifiche/V2.7/CONTRATTO_AUDIO_INTERBOARD_MAIN_FRONT_DRAFT.md` con schema cavo **a 2 conduttori**: J1302 FRONT pin1 segnale wiper RV1301 → J1202 MAIN pin1 AUDIO_IN; J1302 pin2 AF_GND → J1202 pin2 GND. Le schede restano isolate: contratto è **logico, NON una connessione fisica**. Il demod RX, il potenziometro/shaft definitivo e il 5V audio dedicato restano da qualificare. Entrambe le estremità utilizzano header maschi da PCB: **non accoppiabili direttamente**, serve cavo con contatti femmina o soluzione interboard diversa con MPN verificati.
+
+**Controllo reale previsto nella CI FULL:** `03_Verifiche/V2.7/verify_interboard_audio_contract_native.py` esporta entrambe le netlist usando KiCad9 e verifica membership pin→net per 2 connessioni e potenziometro; aggiunto al `ci/full_regressions.py`, nessuna deroga ERC. **Non dichiarare PASS finché non siano verificati i log del commit finale**.
+
+**Stima gestionale al 12/11:** ~**20%** progettazione globale delle due PCB, **0% layout e routing fisico**; stima non metrica formale. 6/138 MPN confermati per MAIN V2.6 è solo progresso BOM di fabbricazione, **non** percentuale progetto. Gate sicurezza #27 e approvvigionamento #42 aperti; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 12 novembre 2026 — PR #54 MERGED: primo schema KiCad9 FRONT_VOLUME THT validato
 
 **Stato LIVE dopo il merge:** PR [#54](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/54) MERGED su `main`, SHA `31e84a6c91fc47c810e1090f13759af94519540b`, CI FULL [run #43257852754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43257852754) **3/3 SUCCESS** sul final HEAD `4f167d5a61164a1f6bc84eec0cd7b1456f83a117`. Nativa KiCad9: **ERC 0 errori, 0 warning**; tre componenti THT `RV1301`, `J1301`, `J1302`; export netlist ufficiale conferma `/AF_GND`, `/DEMOD_AUDIO`, `/VOL_WIPER_TO_AMP`. Tutte regressioni storiche della MAIN eseguite e superate, nessun waiver.
