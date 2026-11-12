@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — Primo schema nativo PCB-FRONT volume THT in revisione
+
+**Main live al bootstrap:** `564f2084f8ddbc4488b4a85562acf6806a493780`, PR #53 MERGED, nessuna PR aperta; master V2.6 ancora **7 fogli/138 THT/76 reti**. Precedente audio RX LM386 V2.7 DRAFT isolato 12 THT, ERC0 con [CI #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252), nessuna PCB reale.
+
+**Lavoro nuovo in branch `cad/front-volume-audio-v27-draft-20261112`, NON ancora integrato:** schema KiCad9 `04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch`, 3 ref THT: J1301 segnale/audio GND da demod RX, RV1301 pot 10k lineare THT (pin1 ingresso, pin2 cursore, pin3 massa), J1302 ingresso del modulo LM386. `TH_FRONT.kicad_sym`, `sym-lib-table`, `fp-lib-table` e file progetto, footprint locale **PROVVISORIO tre pad**, NON associato a un OEM pot di produzione, assolutamente **NO PCB FAB**. Il test `03_Verifiche/V2.7/verify_front_volume_native.py` è incluso nella CI FULL per imporre ERC KiCad9 e netlist; report `03_Verifiche/V2.7/RAPPORTO_FRONT_VOLUME_THT_DRAFT.md`.
+
+**Limiti:** nessuna continuità pin↔net fra due PCB ancora dimostrata, nessun demod reale, ergonomia/audio pot 10k da validare, alimentazione audio MAIN indipendente ancora da progettare, componenti DRAFT aggiuntivi NON inclusi nei 138 MAIN. Nessun PCB routing, DRC o misure elettroniche. Merge soltanto dopo gate CI sul final HEAD, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 12 novembre 2026 — PR #52 integrata: primo schema audio RX THT nativo V2.7 DRAFT
 
 **PR #52 MERGED** nel `main` vero: SHA `78f077a9132a2067d50330d8a5bcbdc62ba4b3f3`. CI FULL [run #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252): **3/3 SUCCESS** su HEAD `7e07cc47b7421048ccaa1670e75daebe088f6c5a`. Il controllo effettivo `kicad-cli sch erc --exit-code-violations` sul nuovo foglio audio riporta **0 errori / 0 warning**, netlist KiCad9 esportata e verificati **12 ref THT**; tutte le 22 suite storiche CI FULL hanno completato (111 comandi reali). Nessun waiver ERC.

@@ -1,0 +1,3 @@
+(fp_lib_table
+ (lib (name "TH_FRONT") (type "KiCad") (uri "${KIPRJMOD}/TH_FRONT.pretty") (options "") (descr "Provisional THT volume pilot pads; physical pot not qualified"))
+)
