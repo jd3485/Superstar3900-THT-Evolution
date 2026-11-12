@@ -7,6 +7,15 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #43 integrata, audit di pin candidati successivo in corso
+
+**PR #43 MERGED** su `main`: merge SHA `5a43da52e5eb73188832f050c7786c01ec24d0a1`. CI definitiva [run #43215777733](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43215777733) **3/3 PASS** sul commit head `55a90ddfa7e21bc9a030b8736f48b089f62c966b`: fast, suite native KiCad9/ngspice e gate. File aggiunti/aggiornati: inventario OEM V2.6 e `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO2_2026-11-12.md`. Le prove produttive di tre **candidati** TI (LM393N/NOPB, LM358N/NOPB, LM317T/NOPB) NON costituiscono promozione dei MPN CAD; F701 ha evidenza RoHS ma non lifecycle. **6/138 confermati; 132/138 da verificare.**
+
+**Lavoro successivo non ancora integrato:** [`RAPPORTO_PINOUT_CANDIDATI_TI_LOTTO2.md`](../../03_Verifiche/V2.6/RAPPORTO_PINOUT_CANDIDATI_TI_LOTTO2.md), audit documentale della corrispondenza pin numerici simbolo KiCad/OEM e intervalli termici 0..70°C U801/U803. Nessuna modifica ai file KiCad o al gate BOM; nessuna nuova KiCad ERC/netlist/CI dichiarata per questo branch. Prossimi blocker: qualifica sotto guasto #27, specifica MPN di tutti i passivi, U401 ML145151YP, L501, L920, verifica effettiva pin-pad-net e package meccanici. **V2.7 circuitale sospesa, NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 
 ## STOP V2.7 — Audit produttivo obbligatorio di TUTTI i 138 THT (12 novembre 2026)
 
