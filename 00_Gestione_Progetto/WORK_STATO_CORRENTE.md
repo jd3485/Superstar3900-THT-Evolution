@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #60 MERGED: alimentazione THT audio 6V da banco validata con KiCad9
+
+**PR #60 MERGED** su `main`, commit `aa3118a8f89ea37253e3482ef898d3744fcc2c42`. Azioni [#43330851162](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43330851162): **3/3 SUCCESS** sul final head `188065066667d1f8b8383901f0e04071ddce4e9f` — test rapido PASS, suite full KiCad9 native/legacy PASS, required gate PASS. Il nuovo `verify_audio_psu_lm317_native.py` ha esportato la netlist reale, confermato **10 refs THT**, pinout LM317 ADJ/OUT/IN, diodi e polarità C1402/C1403, **ERC nativo 0 errori e 0 warning**. Anche il controllo aritmetico vincola il derivatore R=110Ω/412Ω, Vout nominale 5.952V e l'esclusione del caso termico 13.8V/0.2A. **NON è SPICE vendor, né qualifica termica o prova hardware**.
+
+**Artefatto nuovo `04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch`**, con libreria `TH_PSU.kicad_sym`, progetto, `sym-lib-table`, e 10 posizioni THT: U1401 TI LM317T/NOPB dichiarato ACTIVE OEM TO220 pin1 ADJ pin2 OUT+TAB pin3 IN, R1401/1402, C1401/1402/1403, D1401/1402 e J1401/1402. Alimentazione isolata **esclusivamente 9–10V da banco limitata in corrente**, uscita 6V verso test. **Non collegata all'LM386** né al master radio. Rischi: protezione inversione e transitori ingresso assente, OEM diodi/passivi da qualificare, SOA, dissipatore con TAB LIVE e 6V+ termica, speaker load e budget corrente. Anche a 10V/0.35A, modello termico illustrativo supera la soglia progettuale.
+
+**Stato radio corretto:** la V2.6 MAIN resta 7 fogli/138 posizioni, non esiste alcun PCB-MAIN/FRONT fisico completo o routing; il pilot MAIN LM386 12 ref, FRONT volume 3 ref e PSU audio 10 ref sono DRAFT separati, senza conteggio BOM integrato. Il criterio passivi standard ADR-002 consente proseguimento degli schemi, ma la fabbricazione è bloccata da BOM #42, protezioni #27 e RF U401/L501. Completamento progetto circa **20% stima**, routing **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — nuovo schema nativo 6 V audio indipendente solo laboratorio (PR tecnica in revisione)
 
 **Main iniziale:** SHA `72a0dbd175d1e6033061d4a06fcb82b2441fed12`, PR #58/#59 integrate e nessuna PR aperta. Master MAIN V2.6 invariato, due draft KiCad9 MAIN audio LM386 e FRONT volume già integrati, nessuna PCB/Routing.
