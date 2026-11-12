@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #58 integrata, polarità elettrolitici audio verificata
+
+**PR #58 MERGED su main** SHA `9230f55c1b500b736f95c332ffe6f1e7a8b35e8c` e [GitHub Actions #43328377827](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43328377827) **3/3 PASS** su head `d47e793f18d4602c31eb863184e2a5e6218171e3`: native KiCad9 audio ERC **0 errori / 0 warning**, `PASS_POLARITY_C1202_C1204_C1206_3_THT_ELECTROLYTICS`, `PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT`, FRONT-volume e MAIN/FRONT native pin contract PASS, regressioni storiche complete. Nessun waiver.
+
+**Modifiche integrate:** simbolo `TH_AUDIO:CP` embedded e libreria locale con pin1 `POS_+` e pin2 `NEG_-`; test pin↔net nativi C1202 positivo `AMP_OUT` negativo `SPK_HOT`, C1204 positivo `BYPASS` negativo `GND`, C1206 positivo `AUDIO_5V` negativo `GND`; rapporto `03_Verifiche/V2.7/RAPPORTO_AUDIO_POLARITA_E_POWER_BUDGET.md`. È una modifica reale KiCad9 a **schema DRAFT isolato**, non al master V2.6.
+
+**Blocco aperto:** LM386N-1 produce la potenza 250–325mW (a 8ohm, THD10%) dichiarata OEM **a 6V**, non garantita a 5V; da verificare rail audio dedicato, corrente speaker, termica, controllo volume effettivo e polarità fisica MPN dei capacitori. MASTER V2.6 7 fogli/138 refs invariato; PCB-MAIN/FRONT layout **0%**; avanzamento globale stimato circa **20%** invariato. **NO FAB / NO GERBER DI PRODUZIONE / NO TX / NO BATTERIA-VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — revisione CAD polarità elettrolitici audio e gate alimentazione
 
 **Main verificato alla partenza:** `7d0395316729134429172fe5225affdec69a30e4`; PR #56/#57 MERGED, nessuna PR aperta; master MAIN V2.6 e FRONT senza layout, NO FAB. **Branch `cad/audio-lm386-electrolytic-polarity-20261113` (NON ancora fuso):** `TH_AUDIO:CP` nel pilot audio LM386 e nella libreria locale ora esplicita **pin1 POS+**, **pin2 NEG-** per C1202/C1204/C1206, senza alterare reti o numerazione dei pad. Il controllo nativo `verify_audio_draft_native.py` è stato rafforzato per confrontare simbolo embedded/libreria e le membership pin-net dai file **KiCad9 netlist**: C1202 positivo AMP_OUT negativo SPK_HOT, C1204 positivo BYPASS negativo GND, C1206 positivo AUDIO_5V negativo GND. Rapporto OEM e calcoli illustrativi in `03_Verifiche/V2.7/RAPPORTO_AUDIO_POLARITA_E_POWER_BUDGET.md`.
