@@ -6,6 +6,7 @@ provisional and must not be fabricated without a qualified OEM replacement.
 """
 from pathlib import Path
 import subprocess
+import re
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -43,8 +44,11 @@ def main():
         netlist = netfile.read_text(encoding="utf-8")
         for ref in EXPECTED:
             assert f'(ref "{ref}")' in netlist, ("Missing ref from native netlist", ref)
+        net_names = re.findall(r'\\(net\\s+\\(code\\s+[^)]+\\)\\s+\\(name "([^"]+)"\\)', netlist)
+        print("FRONT_NATIVE_NET_NAMES:", net_names, flush=True)
         for net in NETS:
-            assert f'(name "{net}")' in netlist, ("Missing named net", net)
+            assert any(actual == net or actual.endswith("/" + net)
+                       for actual in net_names), ("Missing named net", net, net_names)
         assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in netlist
         print("PASS_KICAD9_FRONT_VOLUME_ERC0_THREE_COMPONENT_THT_NETLIST_NOT_FOR_FAB", flush=True)
 
