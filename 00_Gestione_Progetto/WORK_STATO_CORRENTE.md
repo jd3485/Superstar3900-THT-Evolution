@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #44 integrata; lotto 3 audit Schottky/boost/fusibile in revisione
+
+**PR #44 MERGED** su `main`, commit `a600627c3933ad12c331eb49bd8e309fd1837d97`. CI [#43216359795](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43216359795): fast PASS, required gate PASS, suite native **SKIPPED correttamente** per diff esclusivamente documentale. Documento pinout preliminare TI U801/U803/U912 integrato; nessuna modifica CAD.
+
+**Lotto 3 in branch (non ancora integrato):** `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO3_DIODES_FUSE_L920.md`, 6 righe di inventario arricchite di fonti senza promozione lifecycle: D701/D804/D805/D920 Vishay 1N5819 (SKU precisi da scegliere, 40 V nominali impongono test fault/transient), L920 Bourns RLB0914-681KL PCN e parametri, F701 Littelfuse 0251.500MXL dichiarazione REACH con Pb. I documenti di qualità/PCN/conformità non provano produzione OEM attuale. Conteggio **6/138 ACTIVE** e **132/138 DA_VERIFICARE** invariato. Nessuna simulazione vendor, ERC nuova, BOM-release o progetto PCB dichiarati.
+
+**Priorità:** verifica MPN SKU OEM scritta e prodotto ancora fabbricato; selezione MPN esatti, controllo VRRM/guasti, L920 corrente/saturazione, U401 PLL e L501 Coilcraft; poi qualifica CAD. Resta STOP V2.7 e BOM-release, Issue #27 sicurezza. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 12 novembre 2026 — PR #43 integrata, audit di pin candidati successivo in corso
 
 **PR #43 MERGED** su `main`: merge SHA `5a43da52e5eb73188832f050c7786c01ec24d0a1`. CI definitiva [run #43215777733](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43215777733) **3/3 PASS** sul commit head `55a90ddfa7e21bc9a030b8736f48b089f62c966b`: fast, suite native KiCad9/ngspice e gate. File aggiunti/aggiornati: inventario OEM V2.6 e `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO2_2026-11-12.md`. Le prove produttive di tre **candidati** TI (LM393N/NOPB, LM358N/NOPB, LM317T/NOPB) NON costituiscono promozione dei MPN CAD; F701 ha evidenza RoHS ma non lifecycle. **6/138 confermati; 132/138 da verificare.**
