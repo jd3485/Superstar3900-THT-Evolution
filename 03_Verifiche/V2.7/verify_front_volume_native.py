@@ -6,7 +6,6 @@ provisional and must not be fabricated without a qualified OEM replacement.
 """
 from pathlib import Path
 import subprocess
-import re
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,11 +43,16 @@ def main():
         netlist = netfile.read_text(encoding="utf-8")
         for ref in EXPECTED:
             assert f'(ref "{ref}")' in netlist, ("Missing ref from native netlist", ref)
-        net_names = re.findall(r'\\(net\\s+\\(code\\s+[^)]+\\)\\s+\\(name "([^"]+)"\\)', netlist)
-        print("FRONT_NATIVE_NET_NAMES:", net_names, flush=True)
+        # KiCad may prefix root-sheet local label names with '/'.
+        # Read only exported net entries rather than guessing the prefix.
+        assert "(nets" in netlist, "No native net section"
+        net_section = netlist.rsplit("(nets", 1)[1]
+        net_name_lines = [line.strip() for line in net_section.splitlines()
+                          if '(name "' in line]
+        print("FRONT_NATIVE_NET_LINES:", net_name_lines, flush=True)
         for net in NETS:
-            assert any(actual == net or actual.endswith("/" + net)
-                       for actual in net_names), ("Missing named net", net, net_names)
+            assert any(net in line for line in net_name_lines), (
+                "Missing named net", net, net_name_lines)
         assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in netlist
         print("PASS_KICAD9_FRONT_VOLUME_ERC0_THREE_COMPONENT_THT_NETLIST_NOT_FOR_FAB", flush=True)
 
