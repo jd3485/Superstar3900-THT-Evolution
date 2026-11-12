@@ -5,7 +5,6 @@ Only a draft module, not part of the seven-sheet MAIN V2.6. Test must fail on
 ERC errors and cannot be used as a production release or speaker-power proof.
 """
 from pathlib import Path
-import re
 import subprocess
 import tempfile
 
@@ -40,8 +39,7 @@ def main():
              str(SOURCE)],
             cwd=ROOT, text=True, check=True)
         netlist = netfile.read_text(encoding="utf-8")
-        refs = set(re.findall(r"\\(ref \"([A-Za-z][0-9]+)\"", netlist))
-        missing = REQUIRED - refs
+        missing = {ref for ref in REQUIRED if f'(ref "{ref}")' not in netlist}
         assert not missing, f"Missing from native netlist: {sorted(missing)}"
         for name in NETS:
             assert name in netlist, f"Missing required native net: {name}"
