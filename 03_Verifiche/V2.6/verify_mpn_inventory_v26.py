@@ -62,6 +62,14 @@ def main():
     grouped_ids = [ref for group in bins for ref in group["references"].split(";")]
     assert len(grouped_ids) == len(set(grouped_ids)) == 138
     assert set(grouped_ids) == ids
+    # Risk-based schematic progression does NOT weaken the complete OEM
+    # production/assembly release gate below. Test coverage for all placements.
+    from classify_design_risk_v26 import build as build_design_risk
+    risk_rows = build_design_risk()
+    assert len(risk_rows) == 138
+    assert {r["reference"] for r in risk_rows} == ids
+    assert all(r["bom_release_policy"] == "EXACT_ACTIVE_OEM_MPN_AND_THT_FIT_REQUIRED"
+               for r in risk_rows)
     import sys
     if "--release" in sys.argv:
         unresolved=[r["reference"] for r in rows if r["manufacturer_lifecycle"]!="ATTIVO_CONFERMATO"]
