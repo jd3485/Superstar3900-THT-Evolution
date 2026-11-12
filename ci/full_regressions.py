@@ -107,6 +107,15 @@ def main()->None:
                           env=os.environ.copy(),check=True)
             executed+=1
         print("::endgroup::",flush=True)
+    # New standalone V2.7 audio draft: fail the FULL gate on any native
+    # schematic ERC violation or missing pin/net in the exported netlist.
+    pilot=ROOT/"04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
+    if pilot.exists():
+        print("::group::V2.7 RX AUDIO THT PILOT NATIVE KIcad9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_audio_draft_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":

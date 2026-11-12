@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_AUDIO") (type "KiCad") (uri "${KIPRJMOD}/TH_AUDIO.kicad_sym") (options "") (descr "THT LM386 RX audio pilot, project-local symbols"))
+)
