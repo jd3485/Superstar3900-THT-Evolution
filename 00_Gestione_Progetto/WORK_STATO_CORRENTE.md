@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #48 integrata e otto ulteriori posizioni THT sotto audit
+
+**PR #48 MERGED** sul ramo `main`, SHA `9d714b41e223eb7e940b0d533ec7dc401acb6ed1`, Actions [#43248555956](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43248555956) **3/3 PASS**. Sei posizioni passive (tre resistori 10k, tre ceramici 100nF) con MPN candidati Yageo/Vishay, **non ancora qualificati**.
+
+**Lotto successivo in branch, NON integrato**: `03_Verifiche/V2.6/RAPPORTO_PASSIVI_LOTTO2_C0G_X7R.md` e 8 posizioni in inventario: C403/C404 (22pF C0G PLL), C507/C510 (100pF C0G VCO), C602/C614/C615/C616 (100nF X7R bypass 5V). I candidati sono ricavati da cross-reference Vishay rev. **23/08/2012**, che NON dimostra fabbricazione corrente. Pitch documentato **2.54mm**, KiCad **2.50mm**: non qualificare come drop-in fino a confronto meccanico. Nessuna modifica CAD, nessuna simulazione vendor dichiarata.
+
+**Resta** 6/138 `ATTIVO_CONFERMATO`, 132/138 `DA_VERIFICARE`, release BOM BLOCCATA. Issue #42 OEM U401/L501 e Issue #27 sicurezza ancora bloccanti. STOP V2.7, NO FAB / NO TX / NO batteria/veicolo.
+
+---
+
 ## 12 novembre 2026 — PR #47 integrata; audit passivi lotto 1 in corso
 
 **PR #47 MERGED** su `main`, commit `e210a17642c89c8825694b6a1cfbdfc66cc2189c`, CI [#43245509954](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43245509954) **3/3 PASS** incluse native KiCad9/regressioni e required gate. Aggiunto lo strumento di raggruppamento acquisti e verifica copertura di **138 refs / 114 gruppi (Value, footprint)**, senza allentare il gate BOM.
