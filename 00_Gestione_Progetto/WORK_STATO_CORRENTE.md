@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #45 MERGED e conferma blocchi produttivi principali
+
+**PR #45 integrata** su `main`: commit `3f2c34b004081de964c70229651793d34a8b3531`. GitHub Actions [run #43217910409](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43217910409) **3/3 SUCCESS** sullo SHA head `72ad054f482344570b6ab1838140522ada9bf3cf`, incluse suite fast, KiCad9 nativa/regressioni e required gate. Inventario V2.6 arricchito con prove OEM relative a D701/D804/D805/D920, L920, F701 e rapporto `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO3_DIODES_FUSE_L920.md`. **Nessun cambiamento circuitale.**
+
+**Nuovo controllo diretto documentazione OEM (registrato in Issue #42 e #19):** Lansdale pubblica il cross-reference `MC145151P2 -> ML145151YP` PDIP28 e modulo «Request a Quote», **non prova nuova fabbricazione corrente**. Coilcraft Uni7 `150-05J08L`: L regolabile **137–193 nH** (nom. 165 nH), Q min **114 a 50 MHz**, SRF min **650 MHz**, DCR **13,2 mΩ** nella pagina OEM; pagina segnala anche configurazione non acquistabile online, condizione **non sinonimo EOL**. Produttori devono confermare nuovi lotti fabbricati, continuità produttiva, conformità e modalità ordini. I due MPN **non sono promossi a ACTIVE**. Links: https://www.lansdale.com/datasheets.php ; https://www.lansdale.com/parts_reference.php?manufacturer=Motorola%2FFreescale&series=Wireless ; https://www.coilcraft.com/en-us/products/rf/tunable-rf-inductors/vertical-mount/uni7/?skuId=27487 .
+
+**STATO reale**: MAIN KiCad V2.6, 7 fogli, 138 THT e 76 reti; FRONT ancora da progettare. **6/138 MPN posizionali produttivi confermati, 132 DA_VERIFICARE**, gate `--release` bloccato. Non è stata inviata una richiesta commerciale ai fabbricanti e nessuna risposta scritta OEM acquisita. Prossimo passo: ottenere riscontri esatti su U401/L501/L920, selezionare MPN dei passivi e identificare fattibilità del criterio B, poi qualifica sicurezza #27. **STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 12 novembre 2026 — PR #44 integrata; lotto 3 audit Schottky/boost/fusibile in revisione
 
 **PR #44 MERGED** su `main`, commit `a600627c3933ad12c331eb49bd8e309fd1837d97`. CI [#43216359795](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43216359795): fast PASS, required gate PASS, suite native **SKIPPED correttamente** per diff esclusivamente documentale. Documento pinout preliminare TI U801/U803/U912 integrato; nessuna modifica CAD.
