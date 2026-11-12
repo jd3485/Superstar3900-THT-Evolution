@@ -26,6 +26,13 @@ def main():
     assert "Package_DIP:DIP-8_W7.62mm" in source
     assert "LM386N-1/NOPB" in source
     assert source.count("(no_connect (at ") == 2, "Gain pins intentionally floating"
+    # The project-local and embedded CP symbols must agree on polarized
+    # electrode numbering: pin 1 = positive, pin 2 = negative.
+    library = SOURCE.parent / "TH_AUDIO.kicad_sym"
+    for symbol_text in (source, library.read_text(encoding="utf-8")):
+        section = symbol_text.split('(symbol "CP_1_1"', 1)[1].split('\n)', 1)[0]
+        assert '(name "POS_+"' in section and '(number "1"' in section
+        assert '(name "NEG_-"' in section and '(number "2"' in section
     with tempfile.TemporaryDirectory(prefix="tht_audio_native_") as folder:
         folder = Path(folder)
         erc = folder / "erc_audio.rpt"
@@ -48,6 +55,16 @@ def main():
         assert not missing, f"Missing from native netlist: {sorted(missing)}"
         for name in NETS:
             assert name in netlist, f"Missing required native net: {name}"
+        # Native pin-to-net checks prevent a silent reverse-electrolytic
+        # change even if KiCad ERC itself remains at zero violations.
+        from verify_interboard_audio_contract_native import exported_nets, require
+        parsed = exported_nets(SOURCE, folder / "audio_polarity.net")
+        require(parsed, "AMP_OUT", ("C1202", "1"))
+        require(parsed, "SPK_HOT", ("C1202", "2"))
+        require(parsed, "BYPASS", ("C1204", "1"))
+        require(parsed, "AUDIO_5V", ("C1206", "1"))
+        require(parsed, "GND", ("C1204", "2"), ("C1206", "2"))
+        print("PASS_POLARITY_C1202_C1204_C1206_3_THT_ELECTROLYTICS", flush=True)
         print("PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT", flush=True)
 
 
