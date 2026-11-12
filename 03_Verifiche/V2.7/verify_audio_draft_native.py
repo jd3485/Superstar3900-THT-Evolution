@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
 REQUIRED = {
     "U1201", "R1201", "R1202", "C1201", "C1202",
-    "C1203", "C1204", "C1205", "C1206",
+    "C1203", "C1204", "C1205", "C1206", "J1201",
 }
 NETS = {"AUDIO_IN", "PRE_IN", "AMP_IN", "AMP_OUT", "AUDIO_5V",
         "SPK_HOT", "ZOBEL", "BYPASS", "GND"}
@@ -20,8 +20,8 @@ NETS = {"AUDIO_IN", "PRE_IN", "AMP_IN", "AMP_OUT", "AUDIO_5V",
 
 def main():
     source = SOURCE.read_text(encoding="utf-8")
-    assert source.count("(symbol (lib_id ") == 9
-    assert source.count("(in_bom yes)") >= 9
+    assert source.count("(symbol (lib_id ") == 10
+    assert source.count("(in_bom yes)") >= 10
     assert "(footprint" not in source.lower() or "Footprint" in source
     assert "Package_DIP:DIP-8_W7.62mm" in source
     assert "LM386N-1/NOPB" in source
@@ -48,7 +48,7 @@ def main():
         assert not missing, f"Missing from native netlist: {sorted(missing)}"
         for name in NETS:
             assert name in netlist, f"Missing required native net: {name}"
-        print("PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_9_THT", flush=True)
+        print("PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_10_THT", flush=True)
 
 
 if __name__ == "__main__":
