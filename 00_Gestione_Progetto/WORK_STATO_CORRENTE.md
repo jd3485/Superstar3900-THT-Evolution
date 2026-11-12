@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — ADR-002 ratificato e nuovo gate progettazione/fabbricazione
+
+**PR #50 MERGED** su `main`: SHA reale `bca0c76bf1f8b6fcfc08d645b759ba7c820efaed`. CI [run #43250659897](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43250659897) **3/3 SUCCESS**, inclusi test Python veloci, regressioni KiCad9 native e required gate sullo SHA head `757db03812e007b12ac4569b88cf9d990cebee73`. Aggiunta [ADR-002](ADR-002_GATE_DESIGN_PASSIVI_STANDARD_THT.md), aggiornato `AGENTS.md`, introdotto `classify_design_risk_v26.py` e esteso `verify_mpn_inventory_v26.py` con asserzioni su tutte le 138 posizioni.
+
+**VINCOLO REVISIONATO SU RICHIESTA UTENTE:** componenti R/C standard selezionabili a specifica per sviluppare il circuito, senza MPN OEM esatto subito; 37 posizioni classificate `STANDARD_PASSIVE` in prima analisi cautelativa, altre reti RF/PLL/sicurezza sono a gate dedicato. Per FAB/BOM finale resta l'obbligo di MPN OEM attivo THT su ciascun componente **montato**, con DNI C805 risolto. L'issue #42 è stata aggiornata e resta aperta come gate di fabbricazione. Conteggio OEM confermati **6/138**, non indice completamento radio.
+
+**PROSSIMA REVISIONE TECNICA:** ricominciare V2.7 nelle porzioni **indipendenti** dai blocchi U401/L501/#27 (solo con CAD vero e test), mentre verificare produzione attuale della PLL Lansdale, disponibilità Coilcraft RF e rischi di sicurezza; documentare pin↔pad↔net e PVT. Elettronica integrata **V2.6** con 7 fogli; nessuna PCB MAIN/FRONT completa né DRC hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 12 novembre 2026 — decisione committente ADR-002: passivi standard non bloccano più gli schemi
 
 **PR #49 integrata** su `main`, commit `e1596756a6086151c9c140df831a14c934f9abf6`; CI [#43249465480](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43249465480) 3/3 PASS. L'audit di 8 condensatori da cross-reference storica Vishay è documentazione, non approvazione OEM.
