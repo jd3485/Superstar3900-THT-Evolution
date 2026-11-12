@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #47 integrata; audit passivi lotto 1 in corso
+
+**PR #47 MERGED** su `main`, commit `e210a17642c89c8825694b6a1cfbdfc66cc2189c`, CI [#43245509954](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43245509954) **3/3 PASS** incluse native KiCad9/regressioni e required gate. Aggiunto lo strumento di raggruppamento acquisti e verifica copertura di **138 refs / 114 gruppi (Value, footprint)**, senza allentare il gate BOM.
+
+**Lotto passivi in revisione, NON integrato:** R403/R502/R804 (Yageo CFR-25JB-52-10K candidato 10k THT, stato OEM MPN da certificare), C401/C405/C406 (Vishay K104K15X7RF53L2 candidato X7R 100nF, passo OEM 2.54mm vs CAD 2.50mm da verificare); `03_Verifiche/V2.6/RAPPORTO_PASSIVI_LOTTO1_CANDIDATI.md`. Nessun valore o footprint CAD modificato, nessun lifecycle promosso, **6/138 ACTIVE e 132/138 DA_VERIFICARE**. Conferma produttiva corrente e fit/performance mancanti. STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 12 novembre 2026 — PR #46 integrata e nuovo gate di copertura audit approvvigionamento
 
 **PR #46 MERGED** su `main`: SHA `696e6d19dc04d96f07517c46b441db223885fca9`, CI [#43218640115](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43218640115) fast PASS, required gate PASS, KiCad native SKIPPED per solo checkpoint documentale. Confermata la necessità di evidenza OEM sui nuovi lotti per U401 ML145151YP e L501 Coilcraft 150-05J08L.
