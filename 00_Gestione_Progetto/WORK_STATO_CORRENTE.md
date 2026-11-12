@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #54 MERGED: primo schema KiCad9 FRONT_VOLUME THT validato
+
+**Stato LIVE dopo il merge:** PR [#54](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/54) MERGED su `main`, SHA `31e84a6c91fc47c810e1090f13759af94519540b`, CI FULL [run #43257852754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43257852754) **3/3 SUCCESS** sul final HEAD `4f167d5a61164a1f6bc84eec0cd7b1456f83a117`. Nativa KiCad9: **ERC 0 errori, 0 warning**; tre componenti THT `RV1301`, `J1301`, `J1302`; export netlist ufficiale conferma `/AF_GND`, `/DEMOD_AUDIO`, `/VOL_WIPER_TO_AMP`. Tutte regressioni storiche della MAIN eseguite e superate, nessun waiver.
+
+**Artefatti nuovi reali:** `04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch`, simboli custom `TH_FRONT.kicad_sym`, tabelle librerie, progetto KiCad, footprint a tre pad `TH_FRONT.pretty/Potentiometer_THT_3Pin_PROVISIONAL.kicad_mod` e verificatore `03_Verifiche/V2.7/verify_front_volume_native.py` agganciato al gate FULL. L'utente ha approvato la separazione delle PCB (ADR-001). Il pot 10 kΩ lineare è solo una **scelta elettronica preliminare**: impronta e posizione dell'albero non sono qualificate, e devono essere sostituite da un vero MPN OEM THT ancora prodotto PRIMA del layout/frontale definitivo.
+
+**Non affermare:** non esiste ancora un'interconnessione reale master MAIN / FRONT, un demod RX, una PCB-FRONT tracciata, una prova audio o un DRC su PCB. Il master radio **MAIN V2.6 rimane 7 fogli, 138 refs, 76 reti**; il pilot MAIN RX audio da 12 ref e questo FRONT_VOLUME da 3 ref sono schematici DRAFT **separati**, non entrano nel denominatore della BOM V2.6. Da progettare: alimentazione audio senza disturbi RF, segnale dal demodulatore, impedenze/livello e volume audio ergonomico, connettore fisico interboard e massa. Issue #27 sicurezza, #19 Coilcraft, #42 MPN finali ancora aperte. **NO FAB / NO GERBER DI PRODUZIONE / NO TX / NO BATTERIA-VEICOLO.**
+
+---
+
 ## 12 novembre 2026 — Primo schema nativo PCB-FRONT volume THT in revisione
 
 **Main live al bootstrap:** `564f2084f8ddbc4488b4a85562acf6806a493780`, PR #53 MERGED, nessuna PR aperta; master V2.6 ancora **7 fogli/138 THT/76 reti**. Precedente audio RX LM386 V2.7 DRAFT isolato 12 THT, ERC0 con [CI #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252), nessuna PCB reale.

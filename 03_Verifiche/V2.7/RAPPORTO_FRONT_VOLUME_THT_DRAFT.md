@@ -1,5 +1,15 @@
 # V2.7 DRAFT — Interfaccia FRONT_VOLUME THT
 
+## Verifica nativa effettuata e PR integrata
+
+**PR #54 MERGED**, SHA `31e84a6c91fc47c810e1090f13759af94519540b`. Ultima CI [#43257852754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43257852754) **3/3 PASS** con test rapido, regressioni KiCad9/ngspice FULL e required gate. Nei log della suite nativa specifica: `Found 0 violations`, `ERC messages: 0 Errors 0 Warnings`, `FRONT_NATIVE_NET_LINES` = `/AF_GND`, `/DEMOD_AUDIO`, `/VOL_WIPER_TO_AMP`, `PASS_KICAD9_FRONT_VOLUME_ERC0_THREE_COMPONENT_THT_NETLIST_NOT_FOR_FAB`.
+
+La prima CI #43256975815 non aveva superato il test di *naming* nel verificatore netlist (ERC già 0). La successiva #43257406382 ha fallito per un'espressione regolare di diagnostica errata, non per errore dello schematico. Il verificatore è stato corretto per leggere i nomi realmente esportati dal tool (con prefisso `/`), senza allentare ERC. L'ultima CI #43257852754 valida lo SHA finale. La validità dello schema resta limitata alla **connettività CAD e al footprint THT provvisorio**, non a qualità audio, dimensioni meccaniche o fabbricabilità.
+
+---
+
+
+
 **12 novembre 2026.** Primo circuito elettrico **standalone** per il controllo volume sulla futura PCB-FRONT, conforme a ADR-001 (PCB-MAIN e PCB-FRONT separate). La documentazione non costituisce release meccanica, BOM o PCB; nessun collegamento è stato aggiunto al master V2.6 o al modulo audio MAIN esistente.
 
 ## Collegamenti progettati
