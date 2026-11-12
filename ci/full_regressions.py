@@ -116,6 +116,13 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_audio_draft_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
+    if front.exists():
+        print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_front_volume_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
