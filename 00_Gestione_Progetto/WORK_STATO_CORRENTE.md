@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — revisione CAD polarità elettrolitici audio e gate alimentazione
+
+**Main verificato alla partenza:** `7d0395316729134429172fe5225affdec69a30e4`; PR #56/#57 MERGED, nessuna PR aperta; master MAIN V2.6 e FRONT senza layout, NO FAB. **Branch `cad/audio-lm386-electrolytic-polarity-20261113` (NON ancora fuso):** `TH_AUDIO:CP` nel pilot audio LM386 e nella libreria locale ora esplicita **pin1 POS+**, **pin2 NEG-** per C1202/C1204/C1206, senza alterare reti o numerazione dei pad. Il controllo nativo `verify_audio_draft_native.py` è stato rafforzato per confrontare simbolo embedded/libreria e le membership pin-net dai file **KiCad9 netlist**: C1202 positivo AMP_OUT negativo SPK_HOT, C1204 positivo BYPASS negativo GND, C1206 positivo AUDIO_5V negativo GND. Rapporto OEM e calcoli illustrativi in `03_Verifiche/V2.7/RAPPORTO_AUDIO_POLARITA_E_POWER_BUDGET.md`.
+
+**Problema potenza ancora aperto:** TI specifica LM386N-1 output nominale 250–325mW su 8ohm e **6V**, THD10%; non è garanzia della potenza a **5V** del pilot. La corrente di riposo 4mA tip/8mA max a 6V non è corrente di picco richiesta dal carico speaker. Non collegare LM386 a 7805 PLL senza analisi corrente, termica, rumore e compatibilità RF; temperatura OEM 0..70°C. Le polarità ora sono dichiarate ma la forma fisica/MPN dei condensatori non è qualificata. Gate native CI su HEAD definitivo da verificare prima di merge; ERC0 da solo non prova sicurezza o fabbricabilità. Stima progetto circa **20%**, layout **0%**, nessun numero aumentato grazie alla sola nuova audit. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 12 novembre 2026 — PR #56 MERGED: contratto audio MAIN ↔ FRONT validato su netlist native
 
 **PR #56 MERGED** su `main`: SHA `e9ea0c20e4ba0404b286eab637d4ab3c992c2230`. CI [run #43274571617](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43274571617) **3/3 PASS**, su HEAD `1acf42bc431b8ae1c5a575de5a3292e67b5afd2c`. Il nuovo controllo native KiCad9 `verify_interboard_audio_contract_native.py` ha esportato entrambe le netlist reali dei pilot MAIN-audio e FRONT-volume e verificato: FRONT J1301-1→RV1301-1 `DEMOD_AUDIO`, RV1301-2→J1302-1 `VOL_WIPER_TO_AMP`, J1301-2/RV1301-3/J1302-2 `AF_GND`; lato MAIN J1202-1/C1201-1 `AUDIO_IN`, J1202-2/U1201-4 `GND` e J1201-1/U1201-6 `AUDIO_5V`. La connessione **logica** del cablaggio previsto è J1302 FRONT pin1→J1202 MAIN pin1, pin2→pin2. Tutte le suite storiche eseguite e PASS.
