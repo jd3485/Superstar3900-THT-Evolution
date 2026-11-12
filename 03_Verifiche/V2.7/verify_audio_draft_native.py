@@ -30,10 +30,15 @@ def main():
         folder = Path(folder)
         erc = folder / "erc_audio.rpt"
         netfile = folder / "audio.net"
-        subprocess.run(
+        completed = subprocess.run(
             ["kicad-cli", "sch", "erc", "--exit-code-violations",
              "-o", str(erc), str(SOURCE)],
-            cwd=ROOT, text=True, check=True)
+            cwd=ROOT, text=True, capture_output=True)
+        print("KiCad CLI ERC STDOUT:", completed.stdout, flush=True)
+        print("KiCad CLI ERC STDERR:", completed.stderr, flush=True)
+        if erc.exists():
+            print("KiCad9 AUDIO PILOT ERC REPORT:\\n" + erc.read_text(encoding="utf-8"), flush=True)
+        completed.check_returncode()
         subprocess.run(
             ["kicad-cli", "sch", "export", "netlist", "-o", str(netfile),
              str(SOURCE)],
