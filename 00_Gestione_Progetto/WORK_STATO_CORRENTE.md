@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — decisione committente ADR-002: passivi standard non bloccano più gli schemi
+
+**PR #49 integrata** su `main`, commit `e1596756a6086151c9c140df831a14c934f9abf6`; CI [#43249465480](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43249465480) 3/3 PASS. L'audit di 8 condensatori da cross-reference storica Vishay è documentazione, non approvazione OEM.
+
+**Nuovo lavoro in branch (NON su main finché non merge)**: [ADR-002](ADR-002_GATE_DESIGN_PASSIVI_STANDARD_THT.md) recepisce il cambio esplicito deciso dall'utente: resistenze/condensatori comuni possono essere specificati per requisiti, senza MPN produttivo esatto per continuare le sezioni V2.7 indipendenti; componente RF/sicurezza/PLL/boost richiede gate di settore prima del design freeze. `classify_design_risk_v26.py` classifica tutte le 138 refs e l'inventory verifier ne controlla la copertura. **Il gate BOM finale `--release` rimane obbligatoriamente bloccante** finché mancano MPN attivamente fabbricati e DNI risolti. 6/138 certificati OEM, 132 da verificare; numeri di **fabbricazione**, NON percentuale di completamento del progetto.
+
+**Prossima attività tecnica:** riprendere schemi reali delle sezioni indipendenti e accertare fattibilità PLL U401 e RF L501 prima di congelare tali reti; la sicurezza input #27 rimane aperta e la protezione non è dichiarata pronta. MAIN KiCad V2.6 invariata, PCB-FRONT non iniziata. NO FAB/NO TX/NO batteria/veicolo. Gate CI della policy in attesa.
+
+---
+
 ## 12 novembre 2026 — PR #48 integrata e otto ulteriori posizioni THT sotto audit
 
 **PR #48 MERGED** sul ramo `main`, SHA `9d714b41e223eb7e940b0d533ec7dc401acb6ed1`, Actions [#43248555956](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43248555956) **3/3 PASS**. Sei posizioni passive (tre resistori 10k, tre ceramici 100nF) con MPN candidati Yageo/Vishay, **non ancora qualificati**.
