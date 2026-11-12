@@ -1,5 +1,13 @@
 # V2.7 DRAFT — regolazione audio 6 V con LM317 THT, **solo banco isolato**
 
+## Risultato conclusivo della prima revisione CAD
+
+La PR [#60](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/60) è stata **integrata**: SHA `aa3118a8f89ea37253e3482ef898d3744fcc2c42`. La CI [#43330851162](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43330851162) ha terminato **3/3 PASS** sullo SHA HEAD `188065066667d1f8b8383901f0e04071ddce4e9f`. Dalla suite KiCad9 nativa risultano `Found 0 violations`, `ERC messages: 0 Errors 0 Warnings`, `PASS_KICAD9_AUDIO_6V_LM317_PSU_ERC0_THT10_PINNET_NO_FAB`, `PASS_LM317_6V_DESIGN_EQUATION_AND_NONVEHICULAR_THERMAL_RED_FLAGS`; regredite tutte le suite storiche.
+
+Queste evidenze **validano la connettività del modello KiCad e le asserzioni di progetto**, non i parametri termo-elettrici del componente reale. Non sono state eseguite simulazioni vendor SPICE di stabilità/audio/power né misure fisiche. L'alimentatore 9–10V da banco è un prerequisito esterno; **non** rappresenta un'alimentazione veicolare o una sorgente integrata nella radio. L'LM386 resta indipendente.
+
+---
+
 **13 novembre 2026.** Nuovo sottocircuito elettronico KiCad9 reale ma **isolato** dalla radio. Non è una sorgente 13,8 V veicolare: l'ingresso J1401 richiede un alimentatore di laboratorio regolato, limitato in corrente, **9–10 V**, con polarità corretta. La radio principale non è connessa. Nessun collegamento a batteria/veicolo, alimentatore RF/PLL o antenna/TX.
 
 ## Fonti OEM e componenti
