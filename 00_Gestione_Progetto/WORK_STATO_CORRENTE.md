@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #56 MERGED: contratto audio MAIN ↔ FRONT validato su netlist native
+
+**PR #56 MERGED** su `main`: SHA `e9ea0c20e4ba0404b286eab637d4ab3c992c2230`. CI [run #43274571617](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43274571617) **3/3 PASS**, su HEAD `1acf42bc431b8ae1c5a575de5a3292e67b5afd2c`. Il nuovo controllo native KiCad9 `verify_interboard_audio_contract_native.py` ha esportato entrambe le netlist reali dei pilot MAIN-audio e FRONT-volume e verificato: FRONT J1301-1→RV1301-1 `DEMOD_AUDIO`, RV1301-2→J1302-1 `VOL_WIPER_TO_AMP`, J1301-2/RV1301-3/J1302-2 `AF_GND`; lato MAIN J1202-1/C1201-1 `AUDIO_IN`, J1202-2/U1201-4 `GND` e J1201-1/U1201-6 `AUDIO_5V`. La connessione **logica** del cablaggio previsto è J1302 FRONT pin1→J1202 MAIN pin1, pin2→pin2. Tutte le suite storiche eseguite e PASS.
+
+**Non è ancora un collegamento PCB fisico:** nessun cablaggio/PCB assemblato, nessun PCB-MAIN/FRONT layout, nessun DRC PCB. Le due estremità sono pin-header maschi, quindi un cavo idoneo è ancora da progettare e scegliere; pot 10k/footprint provvisorio e demod RX non ancora qualificati. Il rail audio +5V del banco NON è connesso al +5V PLL/RF; alimentazione dedicata da progettare. Master MAIN V2.6 invariato; 138 refs di baseline non includono i 15 componenti dei due DRAFT.
+
+**Stima progetto documentata:** circa **20%** ingegnerizzazione complessiva delle due PCB (incertezza alta), **0%** layout/routing, non equiparare a 6/138 OEM attivi (gate BOM). **NO FAB / NO TX / NO BATTERIA/VEICOLO**. Prossime priorità: scelta concreta di cablaggio/mating headers, qualifica di pot THT e interfaccia demod, budget corrente e isolamento audio prima di disegnare PCB.
+
+---
+
 ## 12 novembre 2026 — bozza contratto elettrico MAIN ↔ FRONT audio con pin-net verificabili
 
 **Main verificato prima del lavoro:** SHA `c9362037015fbad2792af3c67fca821e60a6677c`, PR #54 e #55 integrate, nessuna PR aperta. Schemi principali V2.6 invariati. Due moduli standalone V2.7 DRAFT già integrati nella repository: LM386 RX MAIN (12 ref THT, ERC0) e volume FRONT (3 ref THT, ERC0). **Nessuna PCB**.
