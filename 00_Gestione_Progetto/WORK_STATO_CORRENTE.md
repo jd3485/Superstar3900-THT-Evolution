@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #52 integrata: primo schema audio RX THT nativo V2.7 DRAFT
+
+**PR #52 MERGED** nel `main` vero: SHA `78f077a9132a2067d50330d8a5bcbdc62ba4b3f3`. CI FULL [run #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252): **3/3 SUCCESS** su HEAD `7e07cc47b7421048ccaa1670e75daebe088f6c5a`. Il controllo effettivo `kicad-cli sch erc --exit-code-violations` sul nuovo foglio audio riporta **0 errori / 0 warning**, netlist KiCad9 esportata e verificati **12 ref THT**; tutte le 22 suite storiche CI FULL hanno completato (111 comandi reali). Nessun waiver ERC.
+
+**Artefatti reali nuovi, senza alterare la baseline:** `04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch` con U1201 TI LM386N-1/NOPB PDIP-8 (MPN OEM dichiarato ACTIVE, ma temporaneamente non disponibile sul sito TI), R1201–R1202, C1201–C1206, J1201 (+5 V da laboratorio), J1202 ingresso audio RX, J1203 uscita speaker, 12 componenti fisici THT; simboli progetto `TH_AUDIO.kicad_sym`, `sym-lib-table`, `.kicad_pro`. Validatore nativo `03_Verifiche/V2.7/verify_audio_draft_native.py` aggiunto alla CI FULL. Il primo ERC era 8 errori + 40 warning, il secondo 2 + 10, il finale 0 + 0 dopo correzioni **vere** di griglia, connettori e libreria.
+
+**Distinzione fondamentale:** questo è **uno schematico nativo DRAFT isolato e verificato**, non un master radio V2.7, non una PCB. La sezione non è connessa al V2.6 MAIN: gli attuali **7 fogli, 138 refs, 76 reti** restano immutati. I 12 ref audio NON si aggiungono ancora al denominatore dei 138 dell'inventario master, ma richiederanno verifica MPN finale. Il 5V viene solo dal connettore **da banco** J1201: non alimentare dal 7805 RF/PLL senza budget corrente, separazione masse/rumore e qualifica termica. Mancano demodulatore AM/FM, controllo volume su PCB-FRONT, integrazione alimentazione, speaker load/THD e test PVT. **ERC0 non significa qualifica funzionale o sicurezza.**
+
+**Prossimo sviluppo:** revisionare e integrare un sottosistema RF/IF/audio coerente con ADR-001, verificare lo stadio audio con sorgente/corrente e prestazioni realistiche; U401/L501 e sicurezza #27 rimangono bloccanti per le proprie parti. Gate BOM finale #42 resta attivo (6/138 confermati). **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 12 novembre 2026 — nuovo pilot KiCad9 V2.7 audio RX isolato in revisione
 
 **Ultimo main verificato alla partenza:** commit `06c902240fdd0865a60a942ba551ccf9f1a6ed98` (PR #51 merged, checkpoint ADR-002). Nessuna PR aperta al bootstrap. **CAD integrato ancora MAIN V2.6** e NO PCB-FRONT.

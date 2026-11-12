@@ -1,3 +1,9 @@
+## Risultato finale validato e integrato (12 novembre 2026)
+
+**La PR #52 è stata integrata**: merge `78f077a9132a2067d50330d8a5bcbdc62ba4b3f3`; test su final head `7e07cc47b7421048ccaa1670e75daebe088f6c5a`, [Actions #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252), **3/3 PASS**. Esito nativo documentato nei log: `Found 0 violations`, `ERC messages: 0 Errors 0 Warnings`, `PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT`, eseguite 22 suite legacy + il nuovo pilot. Nessun DRC perché nessuna PCB audio fisica è stata disegnata.
+
+Questa conferma di corretta connettività/sintassi KiCad **non è una certificazione** della stabilità, THD, potenza, sicurezza, budget dei 5 V, compatibilità elettrica con il resto del ricevitore o disponibilità dei passivi. Il foglio è DRAFT standalone, non collegato alla gerarchia MAIN V2.6 e non alimentabile da veicolo.
+
 # V2.7 DRAFT — Sezione audio RX THT isolata, non integrata al master
 
 **12 novembre 2026.** Prima modifica KiCad di un sottosistema indipendente dopo ADR-002. Non è l'intera V2.7, né un ricevitore funzionante, né il progetto PCB. Il master MAIN V2.6 (7 fogli, 138 posizioni) e i suoi generatori sono lasciati **bit-for-bit immutati**.
