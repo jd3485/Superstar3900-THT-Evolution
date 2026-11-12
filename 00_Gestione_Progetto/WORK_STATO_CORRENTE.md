@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — nuovo schema nativo 6 V audio indipendente solo laboratorio (PR tecnica in revisione)
+
+**Main iniziale:** SHA `72a0dbd175d1e6033061d4a06fcb82b2441fed12`, PR #58/#59 integrate e nessuna PR aperta. Master MAIN V2.6 invariato, due draft KiCad9 MAIN audio LM386 e FRONT volume già integrati, nessuna PCB/Routing.
+
+**Nuovo lavoro nella branch `cad/audio-dedicated-6v-lm317-bench-20261113` (non ancora MERGED):** standalone `04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch` con **10 componenti THT**: U1401 TI LM317T/NOPB ACTIVE **TO‑220 3 pin NDE**, R1401 110Ω/1%, R1402 412Ω/1%, C1401 ingresso 100nF, C1402 uscita 10µF polarizzato, C1403 ADJ 10µF polarizzato, D1401 diodo OUT→IN, D1402 diodo ADJ→OUT, J1401 ingresso lab **9–10V soltanto**, J1402 uscita 6V. Regolatore live pin1 ADJ, pin2 OUT + linguetta, pin3 INPUT. Impostato valore nominale circa **5,952 V**, divider worst-case minimo >10mA; **NESSUN collegamento all'LM386** né ai rail radio o veicolo. `03_Verifiche/V2.7/verify_audio_psu_lm317_native.py` aggiunto a CI FULL, deve verificare ERC, netlist 10 THT, protezioni e polarità. Rapporto: `03_Verifiche/V2.7/RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md`.
+
+**Termica ancora da qualificare**: budget illustrativo a 60°C e θJA=50°C/W, 0.2A: Vin9→90°C stimati, Vin10→100°C, Vin13.8→138°C (NON ammissibile nell'esempio). 13.8V **vietati per questo pilot**; ingresso non reverse-protected, corrente reale LM386 e SOA ignoti. Non proclamare qualifica su semplice calcolo o ERC; test nativo da controllare prima del merge. Master radio V2.6 138 refs intatto; tre draft THT separati non sono la PCB. Stima progetto circa 20% e layout 0%, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 13 novembre 2026 — PR #58 integrata, polarità elettrolitici audio verificata
 
 **PR #58 MERGED su main** SHA `9230f55c1b500b736f95c332ffe6f1e7a8b35e8c` e [GitHub Actions #43328377827](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43328377827) **3/3 PASS** su head `d47e793f18d4602c31eb863184e2a5e6218171e3`: native KiCad9 audio ERC **0 errori / 0 warning**, `PASS_POLARITY_C1202_C1204_C1206_3_THT_ELECTROLYTICS`, `PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT`, FRONT-volume e MAIN/FRONT native pin contract PASS, regressioni storiche complete. Nessun waiver.

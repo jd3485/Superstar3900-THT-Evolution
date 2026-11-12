@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_PSU") (type "KiCad") (uri "${KIPRJMOD}/TH_PSU.kicad_sym") (options "") (descr "Audio 6V bench LM317 THT test-only symbols"))
+)
