@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 12 novembre 2026 — PR #46 integrata e nuovo gate di copertura audit approvvigionamento
+
+**PR #46 MERGED** su `main`: SHA `696e6d19dc04d96f07517c46b441db223885fca9`, CI [#43218640115](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43218640115) fast PASS, required gate PASS, KiCad native SKIPPED per solo checkpoint documentale. Confermata la necessità di evidenza OEM sui nuovi lotti per U401 ML145151YP e L501 Coilcraft 150-05J08L.
+
+**Lavoro nuovo in PR #47 (NON ancora integrato):** strumento `03_Verifiche/V2.6/group_procurement_v26.py`, relativo rapporto e rafforzamento del verificatore inventario per garantire esattamente **114 gruppi valore/impronta e 138 riferimenti fisici non duplicati**. Il raggruppamento **non** certifica equivalenza elettrica, disponibilità né ciclo produttivo. La CI deve verificare la modifica allo script prima dell'integrazione. Stato BOM **6/138 ACTIVE, 132/138 DA_VERIFICARE**, ultima V2.6 CAD, nessuna PCB. STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 12 novembre 2026 — PR #45 MERGED e conferma blocchi produttivi principali
 
 **PR #45 integrata** su `main`: commit `3f2c34b004081de964c70229651793d34a8b3531`. GitHub Actions [run #43217910409](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43217910409) **3/3 SUCCESS** sullo SHA head `72ad054f482344570b6ab1838140522ada9bf3cf`, incluse suite fast, KiCad9 nativa/regressioni e required gate. Inventario V2.6 arricchito con prove OEM relative a D701/D804/D805/D920, L920, F701 e rapporto `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO3_DIODES_FUSE_L920.md`. **Nessun cambiamento circuitale.**

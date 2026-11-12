@@ -53,6 +53,15 @@ def main():
                for r in rows if r["manufacturer_lifecycle"]=="ATTIVO_CONFERMATO")
     assert all(r["mpn_exact_confirmed"]=="NO"
                for r in rows if r["manufacturer_lifecycle"]!="ATTIVO_CONFERMATO")
+    # Procurement groups must cover every exact physical reference; groups
+    # never promote a lifecycle status and do not alter the release gate.
+    from group_procurement_v26 import build
+    bins = build()
+    assert len(bins) == 114, len(bins)
+    assert sum(int(group["quantity"]) for group in bins) == 138
+    grouped_ids = [ref for group in bins for ref in group["references"].split(";")]
+    assert len(grouped_ids) == len(set(grouped_ids)) == 138
+    assert set(grouped_ids) == ids
     import sys
     if "--release" in sys.argv:
         unresolved=[r["reference"] for r in rows if r["manufacturer_lifecycle"]!="ATTIVO_CONFERMATO"]
