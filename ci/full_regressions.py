@@ -204,6 +204,22 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_trimmer_range_ngspice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Cross-module IF455->AM455 bench interface checks real KiCad9 netlists
+    # from both standalone THT schematics; not a built connector/cable.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_am455_cross_module_native.py").exists():
+        print("::group::IF455->AM455 BENCH CONNECTOR PIN-NET CONTRACT",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_cross_module_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
+    # Downstream detector input impedance remains unknown: native ngspice
+    # tests 10k/1k SHUNT SURROGATES only, not an OEM 1N4148 RF model.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_downstream_input_load_ac.cir").exists():
+        print("::group::IF455 DOWNSTREAM LOADING NATIVE NGSPICE AC",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_downstream_load_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
