@@ -80,16 +80,32 @@ stessa installazione nativa in decine di job paralleli**.
 
 La CI ufficiale è `.github/workflows/ci_optimized.yml`: dieci suite
 unitarie storiche Python veloci su ogni PR, comprese le modifiche ai documenti;
-per ogni modifica elettrica, KiCad, BOM, test, workflow, o file non riconosciuto,
-un'unica esecuzione FULL nel container KiCad9 ufficiale immobilizzato a digest
-deve eseguire tutti i 21 workflow storici originali (step di test reali).
+per ogni modifica elettrica, KiCad, BOM, test nativo/pin-net, SPICE,
+workflow, o file non riconosciuto, un'unica esecuzione FULL nel container
+KiCad9 ufficiale immobilizzato a digest deve eseguire tutti i workflow
+storici originali (step di test reali).
+
+**Eccezione ristretta dal 13 novembre 2026:** soltanto i quattro file di
+calcoli *puramente analitici* esplicitamente elencati in
+`ci/ci_scope.py:FAST_ONLY_ANALYTICAL` (due script Python di carico/corrente
+audio e i due CSV d'ingresso) possono utilizzare il gate FAST senza FULL.
+Gli script sono eseguiti **ad ogni PR** da `ci/fast_regressions.py`;
+l'eccezione non si estende a cartelle, nuovi script, test KiCad, circuiti,
+test d'interfaccia, simulazioni ngspice, workflow né manifest di CI.
+Qualsiasi diff misto con anche un solo file tecnico fuori allowlist richiede
+FULL. Modifiche a `ci/ci_scope.py` o `ci/fast_regressions.py`
+richiedono FULL prima di integrare. La modalità manuale rimane FULL,
+il gate richiesto conserva FAST=SUCCESS e, quando FULL è richiesto,
+FULL=SUCCESS. Un FULL skipped non prova ERC; vale solo per documentazione
+o per i quattro file analitici **verificati dal FAST**.
 I 22 workflow legacy (21 nativi/SPICE + 1 Python) rimangono disponibili con `workflow_dispatch` per
 diagnosi indipendente, ma non partono più automaticamente per PR/push.
 La CI FULL salta **solo** installazioni duplicate e upload/checkout già
 centralizzati: non ERC, pin-net, footprint, ngspice, script né regressioni.
 Ogni merge tecnico richiede gate `Required CI gate` verde sullo SHA finale
 e audit di log/evidenze; `skipped` è valido per FULL **solo** su diff
-esclusivamente documentale rilevato dal controllo scope.
+esclusivamente documentale o in allowlist analitica ristretta,
+rilevato dal controllo scope.
 Nuovi workflow non inventariati bloccano la FULL. La suite manuale V2.5 e ora inclusa nel manifest; conta i workflow nel file ci/full_regressions.py, non usare numeri storici come baseline elettrica.
 
 Documentazione operativa: [ci/CI_COST_OPTIMIZATION.md](ci/CI_COST_OPTIMIZATION.md).
