@@ -17,6 +17,20 @@ Il contratto **pin J1602→J1501** è stato introdotto e verificato indipendente
 
 Script già integrato in PR #89 `03_Verifiche/V2.7/verify_if455_am455_interface_native.py`: esegue **due esportazioni KiCad9** `kicad-cli sch export netlist`, richiede i nodi e i pin della bobina, dei condensatori, del connettore e del diodo, verifica separatamente che il catodo D1501 pin1 sia sul nodo di rivelazione AM e che il suo anodo pin2 sia sul pin1 IF in ingresso. Rifiuta commistioni con rail audio/PLL, TX e alimentazioni. Un'identità di nomi non dimostra che esista un cavo: servono connettori femmina, schermatura, protezioni, orientamento pin1, test continuità e percorso di massa RF.
 
+## Esito nativo confermato — PR #92 MERGED
+
+La [PR #92](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/92) è **integrata** (merge `a965d3bc585e4a0cfe9ded4edea59086c6bcf7cf`), workflow [#43442916740](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43442916740) **FAST + FULL + required GATE 3/3 PASS**, final HEAD `ede2503195a25abd15ec77f0f64a1b4302c8f44f`. Test ngspice reale `PASS_NGSPICE_IF455_DETECTOR_LOAD_SENSITIVITY_SURROGATES_NOT_DIODE_NO_FAB`, 101 righe AC. A **455kHz** il modulo di trasferimento del solo modello era:
+
+| Carico uscita (R1602=100kΩ sempre presente) | |Vout/Vin| modellato | Variazione vs riferimento |
+|---|---:|---:|
+| Nessun carico aggiuntivo | **0,835056** | riferimento |
+| +10kΩ paralleli (surrogato) | **0,180772** | circa **−78,35%** |
+| +1kΩ paralleli (surrogato) | **0,022074** | circa **−97,36%** |
+
+I trasferimenti sono moduli di tensione **ad una singola frequenza**, non livelli RMS audio o guadagni in dB della radio, e non sono un dato reale di 1N4148. Il risultato quantifica la dipendenza dal carico e impone di valutare uno stadio di adattamento/buffer **dopo aver caratterizzato il diodo e le impedenze IF**. Non dimostra che il buffer sia già scelto o necessario in ogni architettura.
+
+---
+
 ## Perché non possiamo collegarli direttamente come blocco di ricezione approvato
 
 La porta di ingresso AM455 non è una resistenza costante: **D1501 è un diodo 1N4148 non polarizzato** e presenta impedenza non lineare dipendente dall'ampiezza istantanea, dal punto di polarizzazione, dalla capacità di giunzione, dalla frequenza e dal carico a valle. Non conosciamo ancora il livello IF fornito dal mixer/amplificatore, né la sua impedenza. Le precedenti scansioni ngspice del tank usavano il solo `R1602=100kΩ` in uscita, senza il rivelatore.
