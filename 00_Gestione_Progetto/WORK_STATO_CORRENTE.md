@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #101 MERGED: filtro IF455→KSP10→AM455, buffer candidato respinto dal modello
+
+**[PR #101](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/101) MERGED**, commit `cf1078c3ed557ec728c32113b179435675eb2b15`. L'esecuzione finale [GitHub Actions #43473518325](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43473518325) sul final commit tecnico/documentale `b0bf220e7f644d06b0536f4083eab947a7ab0269` è **FAST+FULL+required gate 3/3 SUCCESS**. Run precedente [#43473046507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43473046507) ha eseguito il calcolo nativo a 50ns: `PASS_NGSPICE_IF455_KSP10_AM455_GENERIC_NONLINEAR_CASCADE_NOT_OEM_NO_FAB_NO_TX`, 111 comandi storici FULL, ripetibilità del riferimento a 50ns < **0,061%**.
+
+**Misure ngspice MODELLO GENERICO**: a 0,5V picco AFpp filtro diretto+diodo **23,326606mV**, con Q1701 buffer+diodo **0,741563mV** (3,179% del diretto), picco RF tank **0,3938995V → 0,09449585V**. A 2,0V picco AFpp diretto **214,324050mV**, con Q1701 **14,614407mV** (6,8188% del diretto), RF tank **0,7549801V → 0,3779901V**. Nel modello, **la polarizzazione e il collegamento tramite C1701 da 10nF caricano il filtro invece di adattarlo: l'attuale follower KSP10BU NON va integrato nella radio**. KiCad Q1701 PR #97 rimane *schematico da banco*, non un modulo RF approvato.
+
+**Anomalia numerica importante:** il modello legacy a 200ns (PR #94/#95) aveva `0,17444891Vpp` a 2V picco, ma lo stesso deck ricalcolato a 50ns fornisce `0,21445359Vpp` (+22,9%). La referenza diretta PR #101 a 50ns dà `0,21432405Vpp` (-0,0604% dal deck legacy ricalcolato allo stesso passo). I dati storici sono **sensibili al timestep**, non dimensionamenti convergenti. Il primo run PR #101 è fallito correttamente per discrepanza fra passi 200ns e 50ns; la correzione ha aumentato la risoluzione e introdotto controllo indipendente a parità di passo, **nessun bypass**. Per qualifica serve sweep 50/25/12,5ns, in questa revisione successiva in corso. Report `03_Verifiche/V2.7/RAPPORTO_CASCATA_IF455_KSP10_AM455_TRANSIENT_GENERIC_DRAFT.md` e deck/script reali.
+
+**Stato fisico:** master MAIN V2.6 7 fogli/138 refs intatto, Q1701 standalone non interconnesso, PCB-MAIN e PCB-FRONT non progettate fisicamente, layout 0%; progresso complessivo ancora **~20% stima**. Mancano modello OEM, impedenza, rumore, selettività, FM/SSB, AGC, alimentazioni sicure, BOM THT attiva e footprint finali. L'uso GitHub Actions rimane orientato alla qualità, protezioni PR+CI sempre attive. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 13 novembre 2026 — PR #99 MERGED: KSP10BU THT bench 9 corner DC + AC ngspice GENERICO
 
 **[PR #99](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/99) MERGED** commit `30dca9bc5187b40a9a54a6fbb2af079ea5d59ec5`, GitHub Actions [#43469630157](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43469630157) sul final commit tecnico `e12c2e681f498e89bdd97ecdd65dea61782c96c8`: **FAST + FULL + required gate 3/3 SUCCESS** con 111 comandi storici FULL e `PASS_NGSPICE_IF455_KSP10_GENERIC_BJT_9_BIAS_AC_CORNERS_NOT_OEM_NO_FAB_NO_TX`.

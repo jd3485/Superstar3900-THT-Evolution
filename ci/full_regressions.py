@@ -271,6 +271,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_am455_combined_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Nonlinear diode peak resolution: comparative 50/25/12.5ns transients
+    # for the complete generic tank-BJT-detector chain at two AM levels.
+    # Record numerical nonconvergence as evidence: NOT a hardware gate.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_cascade_timestep_convergence_native.py").exists():
+        print("::group::IF455 KSP10 AM455 NONLINEAR TIMESTEP CONVERGENCE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_cascade_timestep_convergence_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
