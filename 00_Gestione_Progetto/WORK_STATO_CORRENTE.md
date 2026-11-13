@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #94 MERGED: transitorio non lineare IF455→AM455 con diodo GENERICO
+
+**PR [#94](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/94) MERGED** con SHA `9f218cbcc888b03247a03399bca41ea3b57c5bd9`. La CI del commit tecnico `75b6271b59d6ab16dddddf1d3ce2732041bb2f46`, [run #43455702580](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43455702580), ha **FAST + FULL + required gate 3/3 SUCCESS**, con **111 comandi storici FULL** eseguiti. Il log nativo ngspice riporta `PASS_NGSPICE_GENERIC_DIODE_TRANSIENT_NOT_OEM_NOT_HARDWARE_NO_FAB_NO_TX` e misure sul modello: AF picco-picco filtro+diodo **0,17444891 V**, AF del rivelatore alimentato direttamente **2,0377306 V**, rapporto **8,56094%**, massimo RF positivo al nodo uscita filtro **0,6972108 V**. Il deck assume sorgente AM 455kHz picco 2V, modulazione 1kHz 50%, 50Ω, L1mH, 82pF+30pF trimmer, Rcoil16,5Ω ipotetica; diodo `DGENERIC` già usato nel banco. **NON è macromodello OEM della 1N4148** e il confronto diretto non è un'architettura RF approvata: non esprime sensibilità reale della radio né giustifica ancora un buffer scelto.
+
+**Modifiche reali integrate**: deck `03_Verifiche/V2.7/spice/if455_am455_nonlinear_transient_generic.cir`, verificatore `verify_if455_am455_nonlinear_transient_native.py`, gancio nel runner `ci/full_regressions.py` **senza nuovo job GitHub Actions**, rapporto `RAPPORTO_IF455_AM455_TRANSITORIO_NONLINEARE_GENERIC_DRAFT.md` aggiornato successivamente con risultati CI. **Master MAIN V2.6 ancora invariato**, sette fogli/138 posizioni; moduli KiCad9 V2.7 standalone, non interconnessi su scheda fisica. Prossimo blocco: sweep transitorio di ampiezza e modelli/corner diodi, caratterizzazione IF source/input, scelta IF/buffer THT e selettività, poi FM/SSB/AGC/S-meter e alimentazioni. Induttanza L1601 footprint non qualificato, disegno PCB-MAIN e PCB-FRONT **0%**, complessivo **~20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 13 novembre 2026 — PR #92 MERGED: sensibilità al carico d'uscita IF455 verificata in ngspice
 
 **PR [#92](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/92) MERGED** su `main` SHA `a965d3bc585e4a0cfe9ded4edea59086c6bcf7cf`. GitHub Actions [#43442916740](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43442916740) **3/3 PASS** sul HEAD `ede2503195a25abd15ec77f0f64a1b4302c8f44f`: FAST PASS, FULL KiCad9/ngspice con **111 comandi storici** PASS, required gate PASS. Log nativo ngspice `PASS_NGSPICE_IF455_DETECTOR_LOAD_SENSITIVITY_SURROGATES_NOT_DIODE_NO_FAB`: rapporto trasferimento |Vout/Vin| a 455 kHz del **modello** con tank L1mH, C82pF, Ctrim30pF, Ccoupling10pF, Rcoil16,5Ω **assunta**:
