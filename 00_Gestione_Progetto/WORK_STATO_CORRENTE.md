@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — connettori di alimentazione LAB PSU↔LM386 JST XH 2,50mm, in revisione
+
+**Bootstrap:** HEAD `ab2e9ad89b200375fd0929158fd8e6a34ed130f4`, PR #70/#71/#72 MERGED e nessuna PR aperta. Branch tecnica `cad/audio-jst-xh-two-pin-lab-harness-20261113`, **non ancora integrata**. Per collegamento lab 6V PSU→LM386, modifica KiCad **reale**: i footprint a due pad di **J1402 PSU** e **J1201 LM386**, embedded e librerie locali, sono ora `Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` (sostituisce header generico 2,54mm). Pad 1 alimentazione `AUDIO_6V_LAB`, pad 2 massa locale/ritorno. Per un cavo fisico con due header da PCB sono previste **due housing femmina JST XHP-2** e quattro terminali a crimpare **SXH-001T-P0.6**, AWG 22–28 come documentato dal catalogo ufficiale JST. Codici *candidati OEM documentati*, stato manufacturing dei singoli MPN, crimpatura, sicurezza/anti-inversione e resistenza alle vibrazioni **non ancora qualificati**.
+
+**Gate tecnico esteso:** `03_Verifiche/V2.7/verify_audio_6v_supply_contract_native.py` richiede due istanze CAD, due simboli embedded e due librerie con footprint esatto; confronta il **file footprint originale installato in KiCad9** e impone 2 pad through-hole, passo 2,50mm, pin1/pin2; continua export netlist nativa e prova separazione RF/PLL. Report `03_Verifiche/V2.7/RAPPORTO_HARNESS_JST_XH_AUDIO_6V_LAB_DRAFT.md`. **CI FINAL HEAD da verificare prima di merge**, non dichiarare preventivamente ERC o footprint validati.
+
+**Perimetro:** il resto dei connettori e PCB-MAIN V2.6 138 posizioni non cambia; PSU LM317 e audio LM386 restano schemi standalone non cablati. Un housing polarizzato NON protegge da crimp invertiti, +6V vs massa, corti o vibrazioni; no fabbricazione. Alimentatore 10–10,5V solo LAB, nessuna idoneità 13,8V, NO FAB / NO TX / NO BATTERIA / NO VEICOLO. Layout fisico due PCB ~0%, complessivo ~20% stima.
+
+---
+
 ## 13 novembre 2026 — PR #71 MERGED: transitorio ngspice differenziale 2 fili e ground bounce
 
 **PR [#71](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/71) MERGED** su `main`, SHA `48bbe6d02c8dcfcf17a5ea62fe9e456c54e14434`. Workflow [#43400933150](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43400933150) **3/3 PASS** su final HEAD `28d4701f200a5a115193c2fcc4cf8d37cccb8e2d`: FAST PASS, FULL native KiCad9/ngspice e 111 regressioni legacy PASS, required gate PASS. Evidenza log `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` con **droop_good=0,078 V**, **droop_bad=0,390 V**, ground bounce **0,028 V** e **0,210 V**. Nessun waiver.
