@@ -1,0 +1,47 @@
+* Superstar 3900 THT V2.7 - IF455 LC output sensitivity to downstream load.
+* REAL ngspice AC, LINEAR SHUNT RESISTOR SURROGATES, NOT the nonlinear 1N4148.
+* Full tank: 1mH, C fixed 82p, Ctrim mid 30p, 10p input/output,
+* 16.5ohm AC coil-loss ASSUMPTION, 50ohm generator, 47k tank damping,
+* 100k output reference. R10K and R1K add illustrative input shunts.
+* Correct 2-wire J1602->J1501 contract checked in KiCad separately.
+* Source and diode dynamic impedance of actual AM detector UNKNOWN. NO FAB.
+.title IF455 downstream detector load sensitivity - behavioral only
+VS_UNLOADED src_UNLOADED 0 DC 0 AC 1
+RS_UNLOADED src_UNLOADED gen_UNLOADED 50
+C1601_UNLOADED gen_UNLOADED tank_UNLOADED 10p
+L1601_UNLOADED tank_UNLOADED ltail_UNLOADED 1m
+RL_UNLOADED ltail_UNLOADED 0 16.5
+C1602_UNLOADED tank_UNLOADED 0 82p
+CTRIM_UNLOADED tank_UNLOADED 0 30p
+RDAMP_UNLOADED tank_UNLOADED 0 47k
+C1604_UNLOADED tank_UNLOADED out_UNLOADED 10p
+R1602_UNLOADED out_UNLOADED 0 100k
+VS_R10K src_R10K 0 DC 0 AC 1
+RS_R10K src_R10K gen_R10K 50
+C1601_R10K gen_R10K tank_R10K 10p
+L1601_R10K tank_R10K ltail_R10K 1m
+RL_R10K ltail_R10K 0 16.5
+C1602_R10K tank_R10K 0 82p
+CTRIM_R10K tank_R10K 0 30p
+RDAMP_R10K tank_R10K 0 47k
+C1604_R10K tank_R10K out_R10K 10p
+R1602_R10K out_R10K 0 100k
+R_DOWNSTREAM_R10K out_R10K 0 10000
+VS_R1K src_R1K 0 DC 0 AC 1
+RS_R1K src_R1K gen_R1K 50
+C1601_R1K gen_R1K tank_R1K 10p
+L1601_R1K tank_R1K ltail_R1K 1m
+RL_R1K ltail_R1K 0 16.5
+C1602_R1K tank_R1K 0 82p
+CTRIM_R1K tank_R1K 0 30p
+RDAMP_R1K tank_R1K 0 47k
+C1604_R1K tank_R1K out_R1K 10p
+R1602_R1K out_R1K 0 100k
+R_DOWNSTREAM_R1K out_R1K 0 1000
+.control
+set wr_singlescale
+ac lin 101 450k 460k
+wrdata if455_downstream_loading_ac.dat vm(out_UNLOADED) vm(out_R10K) vm(out_R1K)
+quit
+.endc
+.end
