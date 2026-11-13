@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — circuito ngspice reale per transitorio del rail 6V audio, in review
+
+**Baseline main letta all'avvio:** SHA `b9f96bdec552620e8230d83861dbb045a69710fb` (PR #68/#69 MERGED, nessuna PR aperta); `AGENTS.md` e questo checkpoint letti da main. Branch `simulation/audio-6v-rail-step-spice-20261113`, **NON ancora integrato**. Nuova simulazione ngspice **reale** `03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir` e validatore `03_Verifiche/V2.7/verify_audio_rail_step_ngspice.py` agganciato a `ci/full_regressions.py` (riutilizza ngspice già installato e runner FULL, senza ulteriore job). La rete passiva corrisponde ai condensatori di PSU C1402=10µF e LM386 C1206=100µF, con **sorgente IDEALE** 5,952V, resistenza interna ipotetica 0,25Ω e resistenze cavo ipotetiche 0,20/1,50Ω; gradino carico forzato 20→140mA di 5ms, misure native `.meas` di droop/ripristino a 4/8/15ms. Attese analitiche: **54mV** con R totale 0,45Ω e **210mV** con R totale 1,75Ω; questi non sono risultati misurati prima dell'esito CI. Rapporto `03_Verifiche/V2.7/RAPPORTO_TRANSITORIO_RAIL_AUDIO_6V_NGSPICE.md`.
+
+**Limitazioni obbligatorie:** modello comportamentale idealizzato, **NON macromodello TI LM317/LM386**, niente impedenze reali di cavi, condensatori con ESR/ESL, USB/veicolo, né simulazione THD, startup o transitori di batteria. Il test PASS indica coerenza della simulazione ngspice con un modello passivo, non idoneità alla fabbricazione o alla trasmissione. L'LM317 rimane solo LAB 10–10,5V e l'LM386 solo DRAFT. **CI e merge sul final SHA ancora da verificare**. Master V2.6 7 fogli/138 refs invariato, PCB-MAIN/FRONT non sbrogliate, layout/routing 0%, percentuale complessiva ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #68 MERGED: corrente media tipica LM386 stimata da Fig. 6-7 TI
 
 **PR [#68](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/68) MERGED** sul ramo `main`, SHA `83b9c820a5d4c96b37c931e5aa87f52e87ca3b92`; Actions [#43397404736](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43397404736) **3/3 PASS** sul final HEAD `f1a39edbe004f4e49040d6512937c2873b723384`: FAST, FULL KiCad9/ngspice/legacy e required gate SUCCESS. Log FAST `PASS_LM386_TYPICAL_CURRENT_GRAPH_ENVELOPE_NOT_VENDOR_SPICE_OR_FAB` con scenari `(0.125, 0.071, 0.091, 0.082, 0.103, 85.2)` e `(0.25, 0.105, 0.133, 0.116, 0.145, 95.6)`; le ultime temperature sono **solo** per θJA=50°C/W assunto e Tamb=60°C.
