@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — carico sul filtro IF455 verso diodo AM455, simulazione in revisione
+
+**Bootstrap:** main SHA `214e063a7c016613ae4c28f77f79ff01f3a4d2b3`, PR #89 MERGED con test nativo KiCad9 del collegamento **J1602:1→J1501:1** (IF455 signal verso anodo D1501 pin2) e **J1602:2→J1501:2** (ritorno), già presente in FULL. La precedente PR #88 del presente lavoro è stata **chiusa senza merge** perché duplicava la verifica del collegamento. Il nuovo branch `simulation/if455-detector-load-only-20261113` (NON ancora merged) aggiunge **solo analisi non duplicata ngspice** `03_Verifiche/V2.7/spice/if455_downstream_input_load_ac.cir` e `verify_if455_downstream_load_native.py`: tre reti AC 455k con tank 1mH/82pF/trim30pF e R1602 100k, confronto carico aggiuntivo **10kΩ e 1kΩ**. Lo script esegue ngspice reale, legge 101 campioni e impone che più carico attenui il segnale a 455kHz. Carichi **surrogati resistivi**, NON modello non lineare 1N4148, non approvano direttamente il collegamento RF. Gate nel runner FULL esistente, nessun nuovo job Actions.
+
+**CI finale del branch ancora da verificare.** Documentato `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_CARICO_USCITA_NGSPICE.md`. Manca impedenza dinamica del detector con bias/ampiezza IF, buffer selettivo THT, Q/SRF reali, filtri RF e prova fisica. Master V2.6 7 fogli/138 refs invariato, IF455/AM455 ancora due pilot distinti, nessuna PCB concreta/DRC, layout 0%, progresso complessivo ~20% stimato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — nuovo contratto pin↔net IF455 Tank→AM455 Envelope, in revisione
 
 **Base main verificata:** commit `54dc37e09368073e2c3cd58f416fd08464dfe061` (PR #86/#87 MERGED, nessuna PR aperta). Nuovo branch tecnico `engineering/if455-am455-native-interface-20261113`, ancora **NON INTEGRATO**: verifica `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` con **due netlist esportate da KiCad9 reale** per assicurare collegamento logico fra J1602 del tank IF455 e J1501 del rivelatore AM455 (pad1 segnale 455k AM IF, pad2 massa), anodo D1501 pin2 in ingresso, resto rivelatore J1502 AF out, nessuna commistione con rail 6V audio/PLL/TX/13,8V. Aggiunto al runner FULL preesistente `ci/full_regressions.py` senza job extra Actions. Rapporto `03_Verifiche/V2.7/RAPPORTO_CONTRATTO_IF455_AM455_THT.md`. **CI ancora da verificare; non merge fino al gate verde**.
