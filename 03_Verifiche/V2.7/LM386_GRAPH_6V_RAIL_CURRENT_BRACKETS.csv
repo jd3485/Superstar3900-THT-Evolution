@@ -1,0 +1,3 @@
+speaker_ohms,pout_w,pdiss_low_w,pdiss_high_w,basis
+8,0.125,0.30,0.42,manual_broad_TI_Fig_6_7_typical_only
+8,0.250,0.38,0.55,manual_broad_TI_Fig_6_7_typical_only
