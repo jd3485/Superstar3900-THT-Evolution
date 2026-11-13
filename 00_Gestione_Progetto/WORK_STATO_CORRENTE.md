@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #78 MERGED: simulazione 455kHz AM con ngspice reale, diodo generico
+
+**PR [#78](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/78) MERGED** su main, SHA `caa5288fbb5ea6d6c26c8099ef62fb2f51b800fd`. Workflow [#43407974037](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407974037) **3/3 PASS** sul final HEAD `5968ee408df3904c243c11faa3ccbeec2a1f6157`: FAST, FULL KiCad9 + ngspice e GATE obbligatorio tutti success. Log veri: AM455 KiCad9 ERC `0 Errors 0 Warnings`, `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`, ngspice `PASS_NGSPICE_AM455_GENERIC_DIODE_AM_VS_UNMOD_BENCH_NO_FAB_NO_SSB_FM`, tutte le 111 regressioni storiche eseguite.
+
+**Risultato simulato:** portante bench 455kHz, ampiezza 2,0Vpk, modulazione AM 1kHz indice 0,5, diodo **generic model non OEM**; test in finestra 30–40ms ha misurato AF picco-picco circa **1,9125V** (portante modulata) contro **0,1255V** (portante non modulata). Il residuo secondo caso contiene transitorio del condensatore di accoppiamento AC e ripple del modello; non interpretarlo come dato di reiezione RF o prestazione audio dell'hardware. Il test certifica soltanto differenza funzionale dentro la simulazione ed è integrato nel runner FULL esistente **senza job Actions aggiuntivo**. Rapporto `03_Verifiche/V2.7/RAPPORTO_AM455_NGSPICE_GENERIC_DIODE_BENCH.md`, deck ngspice e validatore in V2.7.
+
+**Confini non modificati:** PR #77 ha integrato solo un DRAFT AM455 con 7 refs THT/4 reti KiCad9; il master MAIN V2.6 7 fogli/138 riferimenti, i 3 pilot audio e la PCB-FRONT restano **non integrati**. Il 3900 storico usa IF 10,695MHz + 455kHz per AM/FM e IF 10,695MHz per SSB; il rivelatore AM non è FM o SSB, non ha amplificazione/AGC, né funziona direttamente con segnali d'antenna microvolt. Manca PCB layout/routing (0%), DRC PCB e approvvigionamento OEM finale; avanzamento complessivo circa **20% solo stima**. Prossima priorità: catena IF/mixer e stadi di selezione/AGC, distinguendo rivelatori AM, FM e SSB, oltre a specifica potenza audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #77 MERGED; simulazione AM455 ngspice generica in revisione
 
 **PR [#77](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/77) MERGED** su `main`, commit `0a56a9bf2e1b99506e706fdc1ad708062ae1b35c`, Actions [#43407170875](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407170875) **3/3 SUCCESS** sul final HEAD `9ddefff104aa5f94e830d461fcbfeef928d46701`. Esempio nativo nuovo `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`: KiCad9 ERC **0 errori, 0 warning**, 7 refs/4 reti/pin direzione D1501 verificati con export netlist, e 111 comandi storici FULL superati. **È il primo pilot di demodulazione AM IF455 THT reale in KiCad9**, standalone **solo laboratorio**, non circuito finale della radio.
