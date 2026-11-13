@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #99 MERGED: KSP10BU THT bench 9 corner DC + AC ngspice GENERICO
+
+**[PR #99](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/99) MERGED** commit `30dca9bc5187b40a9a54a6fbb2af079ea5d59ec5`, GitHub Actions [#43469630157](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43469630157) sul final commit tecnico `e12c2e681f498e89bdd97ecdd65dea61782c96c8`: **FAST + FULL + required gate 3/3 SUCCESS** con 111 comandi storici FULL e `PASS_NGSPICE_IF455_KSP10_GENERIC_BJT_9_BIAS_AC_CORNERS_NOT_OEM_NO_FAB_NO_TX`.
+
+Nuovo deck nativo `03_Verifiche/V2.7/spice/if455_ksp10_generic_bjt_bias_ac.cir`, script `verify_if455_ksp10_generic_bjt_bias_ac.py`, gate nel runner FULL esistente. Nove transienti+AC a **455 kHz** di un circuito che riprende lo schematico KiCad9 della PR #97: alimentazione banco 5,5/6/6,5 V × beta generic40/80/160. Nel **solo modello** emettitore **1,011065–1,364428 V**, corrente emettitore **0,459575–0,620195 mA**, rapporto AC ampiezza `Vout/Vsource` **0,966637–0,973451**; per rail 6V β80: base **1,830799V**, emettitore **1,192877V**, corrente **0,542217mA**, ampiezza AC **0,970670**. Report con tutti e 9 i casi `03_Verifiche/V2.7/RAPPORTO_KSP10_IF455_GENERIC_BJT_DC_AC_CORNERS_DRAFT.md`.
+
+**Non equivocare:** BJT `QGEN` non è un modello OEM di KSP10BU, beta e capacità non sono tolleranze certificate, il test non include filtro tank/demod AM, rumore, PVT, selettività, guadagno IF o instabilità hardware. Il Q1701 KSP10BU resta CANDIDATO THT con pinout OEM verificato, non parte BOM finale qualificata. La policy Actions è lasciata abilitata per ogni controllo necessario, senza trattare il costo dei minuti come vincolo progettuale secondo la decisione dell'utente; rami protetti e PR/CI obbligatorie restano. Master MAIN V2.6 7 fogli/138 refs intatto; nuovo follower V2.7 isolato, nessuna PCB reale, layout/routing **0%**, avanzamento complessivo **~20% stima**. Prossimo gate: prova di interfaccia filtro IF455→follower→rivelatore AM con carico non lineare, datasheet OEM e caratterizzazione del rumore/stabilità prima di revisione RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 13 novembre 2026 — PR #97 MERGED: primo stadio IF455 THT KSP10BU, KiCad9 nativo ERC0
 
 **[PR #97](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/97) MERGED**, commit `b16778889558d08c4fb8e98c54cd2d41a6238526`. GitHub Actions [#43468430403](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43468430403) sul final HEAD tecnico `1807d9520aab12f9e49154073bf5abbe01e5d964`: **FAST + FULL + required gate 3/3 SUCCESS**; 111 comandi legacy eseguiti. Nuovo test `PASS_NATIVE_KICAD9_IF455_KSP10BU_BENCH_THT10_PINPAD_NET_ERC0_NO_FAB_NO_TX`: **KiCad9 ERC 0 errori / 0 warning**, netlist esportata e controllata: 10 componenti THT, 6 reti, tutte pin↔net verificate.
