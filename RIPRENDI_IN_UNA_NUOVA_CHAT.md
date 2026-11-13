@@ -1,4 +1,4 @@
-# Handoff operativo aggiornato — Superstar 3900 THT Evolution, 13 novembre 2026
+# Handoff operativo aggiornato — Superstar 3900 THT Evolution; baseline storica V0.9 preservata, 13 novembre 2026
 
 > **STATO ATTUALE:** non usare le sezioni storiche sottostanti come ultima revisione; iniziare da [AGENTS.md](AGENTS.md) e dal [checkpoint main](00_Gestione_Progetto/WORK_STATO_CORRENTE.md), poi verificare HEAD e CI live.
 >
