@@ -47,7 +47,7 @@
 (instances (project "IF455_TANK_THT_V2_7_DRAFT" (path "/9b640000-5a5a-4a4a-8a8a-000000000000" (reference "C1601") (unit 1)))))
 (symbol (lib_id "TH_TANK:L") (at 152.4 40.64 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "9b640000-5a5a-4a4a-8a8a-000000000015")
 (property "Reference" "L1601" (at 152.4 27.94 0) (effects (font (size 1 1))))
-(property "Value" "1mH_RF_INDUCTOR_PROVISIONAL" (at 152.4 53.34 0) (effects (font (size 1 1))))
+(property "Value" "1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED" (at 152.4 53.34 0) (effects (font (size 1 1))))
 (property "Footprint" "TH_TANK:L_1mH_Axial_THT_PROVISIONAL" (at 152.4 40.64 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "9b640000-5a5a-4a4a-8a8a-000000000016"))
 (pin "2" (uuid "9b640000-5a5a-4a4a-8a8a-000000000017"))
