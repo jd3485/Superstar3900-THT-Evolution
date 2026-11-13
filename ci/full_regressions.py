@@ -304,6 +304,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_generic_njf_full_cascade_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # onsemi J113 worst generic VTO/IDSS scenario: 3 input couplings x 3
+    # source resistors x 2 RF levels. Diagnose gain/loading/forward gate;
+    # avoid claiming these generic results represent OEM yield/linearity.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_j113_worst_corner_coupling_source_native.py").exists():
+        print("::group::IF455 J113 GENERIC WORST CORNER COUPLING SOURCE 18 NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_worst_corner_coupling_source_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
