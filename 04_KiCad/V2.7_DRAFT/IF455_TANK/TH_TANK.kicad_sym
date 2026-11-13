@@ -18,7 +18,7 @@
 (symbol "CT" (pin_names (offset 0.76)) (in_bom yes) (on_board yes)
 (property "Reference" "C" (at 0 10.16 0) (effects (font (size 1 1))))
 (property "Value" "C" (at 0 -10.16 0) (effects (font (size 1 1))))
-(property "Footprint" "TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL" (at 0 0 0) (effects (font (size 1 1))))
+(property "Footprint" "TH_TANK:Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT" (at 0 0 0) (effects (font (size 1 1))))
 (symbol "CT_0_1" (rectangle (start -5.08 5.08) (end 5.08 -5.08) (stroke (width 0.254) (type default)) (fill (type background))))
 (symbol "CT_1_1" (pin passive line (at -7.62 0 0) (length 5.08) (name "1" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1)))))
 (pin passive line (at 7.62 0 180) (length 5.08) (name "2" (effects (font (size 1 1)))) (number "2" (effects (font (size 1 1))))))
