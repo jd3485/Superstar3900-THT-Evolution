@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #70 MERGED, correzione ritorno massa nella simulazione in review
+
+**PR [#70](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/70) MERGED** su `main` SHA `da9dec49ffbe4bb337cd57d7f33f45a1d7f3d723`; Actions [#43399709031](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43399709031) **3/3 PASS** sul final HEAD `e34955a487400cd0e6198ad092c8bac00f381fc2`. Questo integra **ngspice realmente eseguito** per il modello comportamentale passivo rail 6V: `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` con droop 54mV e 210mV **solo sotto l'ipotesi precedente di massa/ritorno ideale**. Full KiCad9/ngspice legacy PASS con 111 comandi storici; niente waiver.
+
+**Difetto di approssimazione individuato dopo merge:** il primo circuito modellava solo la resistenza di andata. La nuova branch `simulation/audio-6v-rail-return-path-20261113` (NON ancora merged) aggiunge **il conduttore di ritorno** da LM386 a PSU, misura il rail differenziale `V(AMP+, AMP_GND_LOCALE)` e il ground bounce, con test ngspice che impone misure reali di entrambi. Le resistenze **ipotetiche** sono ora 0,20Ω andata + 0,20Ω ritorno, oppure 1,50Ω + 1,50Ω. Caduta attesa col gradino 20→140mA: **78mV e 390mV**; ground bounce di 28mV/210mV al carico. Non sono misure fino alla CI final HEAD. Aggiornato `RAPPORTO_TRANSITORIO_RAIL_AUDIO_6V_NGSPICE.md` e test `verify_audio_rail_step_ngspice.py`; la fonte 5,952V e R interna 0,25Ω sono sempre **comportamentali e NON vendor**.
+
+**Stato fisico invariato:** LM317 bench 10–10,5V ingresso, LM386 PSU→AMP è solo un contratto fra due draft THT, non esiste cablaggio, DRC PCB o Gerber. MAIN V2.6 7 fogli/138 refs, FRONT draft, layout 0%, stima complessiva ~20%. Alimentazione veicolare, termica, rumore e sicurezza #27/MPN #42 sono aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.** Integrazione della seconda PR solo dopo gate nativi HEAD verde.
+
+---
+
 ## 13 novembre 2026 — circuito ngspice reale per transitorio del rail 6V audio, in review
 
 **Baseline main letta all'avvio:** SHA `b9f96bdec552620e8230d83861dbb045a69710fb` (PR #68/#69 MERGED, nessuna PR aperta); `AGENTS.md` e questo checkpoint letti da main. Branch `simulation/audio-6v-rail-step-spice-20261113`, **NON ancora integrato**. Nuova simulazione ngspice **reale** `03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir` e validatore `03_Verifiche/V2.7/verify_audio_rail_step_ngspice.py` agganciato a `ci/full_regressions.py` (riutilizza ngspice già installato e runner FULL, senza ulteriore job). La rete passiva corrisponde ai condensatori di PSU C1402=10µF e LM386 C1206=100µF, con **sorgente IDEALE** 5,952V, resistenza interna ipotetica 0,25Ω e resistenze cavo ipotetiche 0,20/1,50Ω; gradino carico forzato 20→140mA di 5ms, misure native `.meas` di droop/ripristino a 4/8/15ms. Attese analitiche: **54mV** con R totale 0,45Ω e **210mV** con R totale 1,75Ω; questi non sono risultati misurati prima dell'esito CI. Rapporto `03_Verifiche/V2.7/RAPPORTO_TRANSITORIO_RAIL_AUDIO_6V_NGSPICE.md`.
