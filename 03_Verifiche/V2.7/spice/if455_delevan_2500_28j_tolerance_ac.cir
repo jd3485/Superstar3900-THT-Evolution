@@ -1,0 +1,55 @@
+* Superstar3900 THT V2.7 — candidate Delevan 2500-28J sensitivity, NOT OEM SPICE.
+* 1mH +/-5% (supplier tolerance), DCR 16.5ohm max used as ILLUSTRATIVE Rseries.
+* 2.8MHz SRF implies ~3.23pF nominal parasitic in ideal LC estimate, NOT measured.
+* Q 60 at 790kHz does NOT establish Q at 455kHz. ESR AC is unknown.
+* 10pF input/output, source50ohm, 110+2.2pF shunt, 47k shunt, 100k output.
+* No production footprint selection, no measured passband, NO FAB NO TX.
+.title if455 Delevan active THT candidate +/-5% inductance and parasitic sensitivity
+V_L_MINUS5 src_L_MINUS5 0 DC 0 AC 1
+RGEN_L_MINUS5 src_L_MINUS5 gen_L_MINUS5 50
+CIN_L_MINUS5 gen_L_MINUS5 tank_L_MINUS5 10p
+L_L_MINUS5 tank_L_MINUS5 loss_L_MINUS5 0.95m
+RLOSS_L_MINUS5 loss_L_MINUS5 0 16.5
+CSH_L_MINUS5 tank_L_MINUS5 0 110p
+CFINE_L_MINUS5 tank_L_MINUS5 0 2.2p
+RDAMP_L_MINUS5 tank_L_MINUS5 0 47k
+COUT_L_MINUS5 tank_L_MINUS5 out_L_MINUS5 10p
+RLOAD_L_MINUS5 out_L_MINUS5 0 100k
+V_L_NOM src_L_NOM 0 DC 0 AC 1
+RGEN_L_NOM src_L_NOM gen_L_NOM 50
+CIN_L_NOM gen_L_NOM tank_L_NOM 10p
+L_L_NOM tank_L_NOM loss_L_NOM 1m
+RLOSS_L_NOM loss_L_NOM 0 16.5
+CSH_L_NOM tank_L_NOM 0 110p
+CFINE_L_NOM tank_L_NOM 0 2.2p
+RDAMP_L_NOM tank_L_NOM 0 47k
+COUT_L_NOM tank_L_NOM out_L_NOM 10p
+RLOAD_L_NOM out_L_NOM 0 100k
+V_L_PLUS5 src_L_PLUS5 0 DC 0 AC 1
+RGEN_L_PLUS5 src_L_PLUS5 gen_L_PLUS5 50
+CIN_L_PLUS5 gen_L_PLUS5 tank_L_PLUS5 10p
+L_L_PLUS5 tank_L_PLUS5 loss_L_PLUS5 1.05m
+RLOSS_L_PLUS5 loss_L_PLUS5 0 16.5
+CSH_L_PLUS5 tank_L_PLUS5 0 110p
+CFINE_L_PLUS5 tank_L_PLUS5 0 2.2p
+RDAMP_L_PLUS5 tank_L_PLUS5 0 47k
+COUT_L_PLUS5 tank_L_PLUS5 out_L_PLUS5 10p
+RLOAD_L_PLUS5 out_L_PLUS5 0 100k
+V_L_NOM_CPAR src_L_NOM_CPAR 0 DC 0 AC 1
+RGEN_L_NOM_CPAR src_L_NOM_CPAR gen_L_NOM_CPAR 50
+CIN_L_NOM_CPAR gen_L_NOM_CPAR tank_L_NOM_CPAR 10p
+L_L_NOM_CPAR tank_L_NOM_CPAR loss_L_NOM_CPAR 1m
+RLOSS_L_NOM_CPAR loss_L_NOM_CPAR 0 16.5
+CSH_L_NOM_CPAR tank_L_NOM_CPAR 0 110p
+CFINE_L_NOM_CPAR tank_L_NOM_CPAR 0 2.2p
+RDAMP_L_NOM_CPAR tank_L_NOM_CPAR 0 47k
+COUT_L_NOM_CPAR tank_L_NOM_CPAR out_L_NOM_CPAR 10p
+RLOAD_L_NOM_CPAR out_L_NOM_CPAR 0 100k
+CPAR_L_NOM_CPAR tank_L_NOM_CPAR 0 3.23p
+.control
+set wr_singlescale
+ac lin 2001 400k 510k
+wrdata if455_delevan_corners.dat vm(out_L_MINUS5) vm(out_L_NOM) vm(out_L_PLUS5) vm(out_L_NOM_CPAR)
+quit
+.endc
+.end

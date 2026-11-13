@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — L1601 candidato OEM attivo + sweep IF455 tolleranze, lavoro in revisione
+
+**Bootstrap live:** MAIN HEAD `909396c0e8530fe296f8345c46c8b6af882eeef5`, nessuna PR aperta; AGENTS e checkpoint riletti da main. L1601 sul pilot IF455 rimane **1mH THT con footprint provvisorio**, non ancora fabbricabile. La ricerca corrente ha individuato un MPN industriale concreto: **Delevan `2500-28J`** (distributore DigiKey indica `Active`), induttore assiale 1mH ±5%, DCR max16,5Ω, Q60 @790kHz, SRF2,8MHz, Ø4,83×11,18mm, −55…105°C. `Q@790kHz` **NON** è Q@455kHz, DCR **NON** è perdita RF AC e SRF non fissa il comportamento del filtro. Alcuni Xicon `42IF102-RC` oggi sono dichiarati **Obsolete** e NON candidati per la distinta finale.
+
+**Nuovo branch `engineering/if455-delevan-tolerance-review-20261113` NON ancora integrato:** nello schematico KiCad9 il valore di L1601 è identificato `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED` ma **non cambia** pin↔net, valore nominale, né footprint THT **PROVISIONAL**. Nuovo deck ngspice `spice/if455_delevan_2500_28j_tolerance_ac.cir` con quattro casi: L=0,95/1,00/1,05mH e nominale con Cpar3,23pF derivata da SRF 2,8MHz **come ipotesi**, Rserie16,5Ω scenariale e sorgente/carichi precedenti. Nuovo test nativo `verify_if455_delevan_tolerance_ngspice.py` fa scansione AC 2001 punti e impone di rilevare spostamento di frequenza che **blocca la release del filtro a capacità fissa 110pF senza taratura**. Nuovo controllo nel runner FULL esistente, nessun nuovo workflow GitHub Actions e nessuna modifica alla policy economica. Rapporto `03_Verifiche/V2.7/RAPPORTO_L1601_DELEVAN_2500_28J_TOLLERANZE_IF455.md`. **Non dichiarare PASS prima della CI finale della PR.**
+
+**Continuano i blocchi:** serve sorgente a impedenza reale, filtro IF adatto AM/FM, mixer, AGC, S-meter, selezione bobina/tuning, modello OEM e layout fisico; Xicon obsoleti esclusi; nessun DRC PCB o fabbricazione, master MAIN V2.6 7 fogli/138 refs intatto, pilot standalone, layout/routing 0%, complessivo ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #81 MERGED: tank IF455 THT ricalibrato sotto carico e verificato ngspice
 
 **PR [#81](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/81) MERGED**, SHA `3a217a5135696355309fd89e482c84e3aa02c54e`. GitHub Actions [#43411046493](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43411046493) **3/3 PASS** sul commit HEAD `d8a7929c50fa32f263233163829e36a826f09f4c`: FAST, FULL nativo KiCad9+ngspice, required gate tutti SUCCESS. Log tecnici: `PASS_KICAD9_IF455_THT9_ERC0_1MH_112P2_UNLOADED_PROVISIONAL_NO_FAB` con ERC **0 errori/0 avvisi**, 9 refs/4 reti pin↔net verificati; `PASS_NGSPICE_IF455_LOADED_RESONANCE_RETUNE_GENERIC_RLC_NOT_OEM_NO_FAB`, scansione AC nativa **1001 punti** con `old=437000.0Hz`, `updated=454500.0Hz`, LC ideale scarico `475142.31Hz`, modulo gain picco nuovo `0.79366` **soltanto nel modello**; legacy `executed_commands=111` PASS.

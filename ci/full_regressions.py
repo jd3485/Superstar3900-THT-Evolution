@@ -187,6 +187,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_loaded_ac_ngspice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # OEM Delevan active candidate 2500-28J, RF Q at 455k not qualified.
+    # Actual native ngspice +/-5% inductance & illustrative SRF parasitic
+    # shows why fixed IF tank must NOT be released for manufacturing.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_delevan_2500_28j_tolerance_ac.cir").exists():
+        print("::group::V2.7 IF455 DELEVAN CANDIDATE TOLERANCE NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_delevan_tolerance_ngspice.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
