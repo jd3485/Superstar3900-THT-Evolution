@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "MCL_SBL1_CANDIDATE") (type "KiCad") (uri "${KIPRJMOD}/SBL1_MIXER_OEM_PINOUT.kicad_sym") (options "") (descr "OEM pinout verified only; A06 PCB footprint unqualified; no fabrication"))
+)
