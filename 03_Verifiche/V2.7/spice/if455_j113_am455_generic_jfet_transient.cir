@@ -1,0 +1,65 @@
+* Onsemi J113 IS A CANDIDATE ONLY. Generic NJF model beta/vto is NOT OEM data.
+* V2.7 THT: IF455 LC tank -> onsemi J113 CANDIDATE depletion JFET source follower -> AM455 detector.
+* Whole signal path is GENERIC behavioral SPICE; no OEM J113 JFET or OEM 1N4148 model.
+* Separate identical source/tank instances for direct versus buffered comparison.
+* No shared tank loading: independent stimulus with SAME AM amplitude and 50-ohm source.
+* Timestep tightened to 50 ns for diode crest accuracy and independent reference convergence.
+* 6V bench rail ONLY. No hardware, noise, AGC, SSB, FM, selectivity or PCB qualification.
+.title IF455 THT generic tank J113 JFET source follower diode comparison NO FAB
+.param fc=455k fa=1k depth=0.5 amp=2 rail=6
+* Case D: prior unbuffered LC -> AM455 generic diode reference.
+BIFD src_d 0 V={(amp*(1+depth*sin(2*pi*fa*time))*sin(2*pi*fc*time))}
+RGEND src_d gen_d 50
+C1601D gen_d tank_d 10p
+L1601D tank_d ltail_d 1m
+RCOILD ltail_d 0 16.5
+C1602D tank_d 0 82p
+C1603D tank_d 0 30p
+R1601D tank_d 0 47k
+C1604D tank_d out_d 10p
+R1602D out_d 0 100k
+D1501D out_d envelope_d DGENERIC
+R1501D envelope_d 0 47k
+C1501D envelope_d 0 1n
+C1502D envelope_d af_d 100n
+R1502D af_d 0 100k
+* Case B: identical LC followed by candidate onsemi J113 THT source follower, pin1 D/2 S/3 G.
+BIFB src_b 0 V={(amp*(1+depth*sin(2*pi*fa*time))*sin(2*pi*fc*time))}
+RGENB src_b gen_b 50
+C1601B gen_b tank_b 10p
+L1601B tank_b ltail_b 1m
+RCOILB ltail_b 0 16.5
+C1602B tank_b 0 82p
+C1603B tank_b 0 30p
+R1601B tank_b 0 47k
+C1604B tank_b out_b 10p
+R1602B out_b 0 100k
+* Native KiCad9 J113 component values; JFET spice order D G S, OEM TO92 pin1 D/2 S/3 G.
+VLAB vcc 0 DC {rail}
+C1801 out_b gate_j 10p
+R1801 gate_j 0 1Meg
+JQ1801 vcc gate_j source_j JGEN
+R1802 source_j 0 2.2k
+C1802 source_j bufferout 10n
+R1803 bufferout 0 100k
+* Pure voltage probe of VGS; VCVS E has infinite control-port impedance.
+EGS gs_monitor 0 gate_j source_j 1
+D1501B bufferout envelope_b DGENERIC
+R1501B envelope_b 0 47k
+C1501B envelope_b 0 1n
+C1502B envelope_b af_b 100n
+R1502B af_b 0 100k
+.model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)
+.model JGEN NJF(BETA=0.00088888889 VTO=-1.5 LAMBDA=0.02 CGS=5p CGD=2p RD=20 RS=20)
+.tran 0.025u 12m 0 0.025u
+.meas tran direct_max MAX v(af_d) FROM=8m TO=11m
+.meas tran direct_min MIN v(af_d) FROM=8m TO=11m
+.meas tran buffered_max MAX v(af_b) FROM=8m TO=11m
+.meas tran buffered_min MIN v(af_b) FROM=8m TO=11m
+.meas tran direct_tank_max MAX v(out_d) FROM=8m TO=11m
+.meas tran buffered_tank_max MAX v(out_b) FROM=8m TO=11m
+.meas tran buffered_source_max MAX v(source_j) FROM=8m TO=11m
+.meas tran buffered_source_min MIN v(source_j) FROM=8m TO=11m
+.meas tran gate_source_max MAX v(gs_monitor) FROM=8m TO=11m
+.meas tran gate_source_min MIN v(gs_monitor) FROM=8m TO=11m
+.end

@@ -288,6 +288,22 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_highz_bias_coupling_screen_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # onsemi-only J113 TO92 pin1D/2S/3G: vendor-specific KiCad9 source
+    # follower BENCH schematic, nine THT refs / six nets, no production.
+    if (ROOT/"04_KiCad/V2.7_DRAFT/IF455_J113_SOURCE_FOLLOWER/IF455_J113_SOURCE_FOLLOWER_THT_V2_7_DRAFT.kicad_sch").exists():
+        print("::group::IF455 ONSEMI J113 TO92 NATIVE KICAD9 ERC PIN NET",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_source_follower_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
+    # Generic depletion NJF models, not vendor macromodel: 12 RF AM nonlinear
+    # runs comparing direct diode with high-Z J113 gate source follower.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_j113_am455_generic_jfet_transient.cir").exists():
+        print("::group::IF455 J113 GENERIC NJF FULL CASCADE 12 CORNERS NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_generic_njf_full_cascade_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":

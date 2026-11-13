@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_J113") (type "KiCad") (uri "${KIPRJMOD}/TH_J113.kicad_sym") (options "") (descr "Only onsemi J113 TO92 case 135AN vendor pin assignment"))
+)
