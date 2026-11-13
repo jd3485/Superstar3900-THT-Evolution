@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #89 MERGED: contratto pin IF455 TANK→AM455 ENVELOPE
+
+**PR [#89](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/89) MERGED** su main `214e063a7c016613ae4c28f77f79ff01f3a4d2b3`; run [#43441748177](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43441748177) **3/3 PASS** su final HEAD `d47b7baaff79d0ebcc9a829dd74447e92b6bc9e6`, FAST/FULL KiCad9/ngspice/required gate tutti verdi e 111 comandi legacy conclusi. La nuova verifica `PASS_KICAD9_NATIVE_IF455_AM455_2WIRE_IF_CONTRACT_NO_FAB_NO_TX` ha esportato e confrontato **realmente le due netlist autonome KiCad9**, stabilendo J1602.1→J1501.1 (RF IF 455kHz e anodo D1501.2), J1602.2→J1501.2 (massa/ritorno), assenza di commistione 6V AUDIO, PLL, TX e 13,8V. La mappa cavi è **logica da banco**, non un PCB o un cablaggio reale costruito o qualificato. Nuovi file `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` e `RAPPORTO_CONTRATTO_IF455_AM455_THT.md`, nuovo gate nel runner FULL esistente.
+
+**Prossima priorità concreta:** simulare l'effetto del **diodo AM non lineare** sull'impedenza e sull'accordo del filtro IF455 con C1603 trimmer regolabile; precedenti sweep hanno Rload100k ma non carico reale D1501. Mancano OEM RF model, guadagno IF, SSB/FM/AGC, filtro reale, layout e DRC. L1601 bobina footprint PROVISIONAL, C1603 EW GKG50015 ora P5mm da disegno OEM ma clearance PCB non provata; master V2.6 7 fogli/138 refs e tutte le partizioni THT invariati. Completamento complessivo **~20% stima**, PCB fisiche e routing **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — nuovo contratto pin↔net IF455 Tank→AM455 Envelope, in revisione
 
 **Base main verificata:** commit `54dc37e09368073e2c3cd58f416fd08464dfe061` (PR #86/#87 MERGED, nessuna PR aperta). Nuovo branch tecnico `engineering/if455-am455-native-interface-20261113`, ancora **NON INTEGRATO**: verifica `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` con **due netlist esportate da KiCad9 reale** per assicurare collegamento logico fra J1602 del tank IF455 e J1501 del rivelatore AM455 (pad1 segnale 455k AM IF, pad2 massa), anodo D1501 pin2 in ingresso, resto rivelatore J1502 AF out, nessuna commistione con rail 6V audio/PLL/TX/13,8V. Aggiunto al runner FULL preesistente `ci/full_regressions.py` senza job extra Actions. Rapporto `03_Verifiche/V2.7/RAPPORTO_CONTRATTO_IF455_AM455_THT.md`. **CI ancora da verificare; non merge fino al gate verde**.
