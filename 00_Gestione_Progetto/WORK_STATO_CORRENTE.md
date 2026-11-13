@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #83 MERGED; IF455 regolabile C1602+C1603 trimmer, nuova revisione in review
+
+**PR [#83](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/83) MERGED** sul main `c9f1a473bf00080bf961693bd397eb9982df4667`; Actions [#43413234046](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43413234046) **3/3 SUCCESS** sul final HEAD `d99880b7c13a02005f3c7308c72f6cac89752bf9`: FAST, FULL native KiCad9/ngspice, required gate PASS, 111 comandi legacy. Nuovo ngspice AC 2001 punti ha misurato, nel SOLO modello RLC semplificato con Delevan 1mH ±5% e 16,5Ω di perdita assunta: picco `466220Hz` con L−5%, `454395Hz` nominale, `443395Hz` con L+5%, `448510Hz` con Cpar 3,23pF equivalente SRF. Rilevato esplicitamente `REJECT_FIXED_110PF_IF455_TANK_WITH_5PCT_COIL_UNTIL_TRIM_AND_RF_MEASUREMENTS`. **Test PASS significa che il rischio è stato individuato**, non che la bobina è qualificata. L1601 sullo schema è ora `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED`, footprint locale ANCORA PROVISIONAL. Candidato Delevan 2500-28J active 1mH±5%, Q@790k e SRF2,8MHz catalogo; Xicon IF storico obsoleto, escluso.
+
+**Nuovo ramo `cad/if455-variable-trimmer-gkg50015-v27-20261113` (NON ancora merged):** modifica nativa KiCad9 sul tank IF455, sempre 9 refs THT/4 nets, **C1602 110pF→82pF C0G** e **C1603 2,2pF fisso→EW Electronics GKG50015 trimmer 10–50pF THT** (DigiKey ACTIVE, Q200 @1MHz non @455kHz) con simbolo separato `TH_TANK:CT` e footprint THT locale **PROVISIONAL** 2 pad (geometria OEM ancora da confermare, NO FAB). Capacità di shunt nel banco 92–132pF per coprire in teoria i corner ±5% e capacità parassita del modello, rispetto a 110pF non regolabile. Nuova simulazione ngspice 8 reti/1201 punti `verify_if455_trimmer_range_ngspice.py` impone peak min-cap>458k e peak max-cap<452k per ogni corner; test aggiunto al runner FULL esistente senza Actions aggiuntive. Rapporti in `03_Verifiche/V2.7/RAPPORTO_IF455_GKG50015_TRIM_REGOLABILE_DRAFT.md` e `RAPPORTO_L1601_DELEVAN_2500_28J_TOLLERANZE_IF455.md`.
+
+**Non dichiarare validata la seconda revisione prima del gate 3/3 CI sul final HEAD.** V2.6 MAIN 7 fogli/138 componenti invariata, quattro draft audio/AM455, tank IF455 ancora separati, nessun layout fisico/DRC, progetto circa 20% stima e routing0%. Apertura RF/IF + AGC/S-meter/SSB/FM, sicurezza e MPN restano. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — L1601 candidato OEM attivo + sweep IF455 tolleranze, lavoro in revisione
 
 **Bootstrap live:** MAIN HEAD `909396c0e8530fe296f8345c46c8b6af882eeef5`, nessuna PR aperta; AGENTS e checkpoint riletti da main. L1601 sul pilot IF455 rimane **1mH THT con footprint provvisorio**, non ancora fabbricabile. La ricerca corrente ha individuato un MPN industriale concreto: **Delevan `2500-28J`** (distributore DigiKey indica `Active`), induttore assiale 1mH ±5%, DCR max16,5Ω, Q60 @790kHz, SRF2,8MHz, Ø4,83×11,18mm, −55…105°C. `Q@790kHz` **NON** è Q@455kHz, DCR **NON** è perdita RF AC e SRF non fissa il comportamento del filtro. Alcuni Xicon `42IF102-RC` oggi sono dichiarati **Obsolete** e NON candidati per la distinta finale.
