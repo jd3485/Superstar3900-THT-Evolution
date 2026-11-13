@@ -14,7 +14,7 @@ REQUIRED = {
     "U1201", "R1201", "R1202", "C1201", "C1202",
     "C1203", "C1204", "C1205", "C1206", "J1201", "J1202", "J1203",
 }
-NETS = {"AUDIO_IN", "PRE_IN", "AMP_IN", "AMP_OUT", "AUDIO_5V",
+NETS = {"AUDIO_IN", "PRE_IN", "AMP_IN", "AMP_OUT", "AUDIO_6V_LAB",
         "SPK_HOT", "ZOBEL", "BYPASS", "GND"}
 
 
@@ -62,7 +62,7 @@ def main():
         require(parsed, "AMP_OUT", ("C1202", "1"))
         require(parsed, "SPK_HOT", ("C1202", "2"))
         require(parsed, "BYPASS", ("C1204", "1"))
-        require(parsed, "AUDIO_5V", ("C1206", "1"))
+        require(parsed, "AUDIO_6V_LAB", ("C1206", "1"))
         require(parsed, "GND", ("C1204", "2"), ("C1206", "2"))
         print("PASS_POLARITY_C1202_C1204_C1206_3_THT_ELECTROLYTICS", flush=True)
         print("PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT", flush=True)
