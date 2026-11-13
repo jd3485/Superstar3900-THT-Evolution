@@ -23,7 +23,7 @@ BASELINE_500UV=(0.023925459,0.025212924)
 BASELINE_500UV_WORST=(0.023924896,0.005823876)
 
 def measure(log,name):
-    rx=r"(?im)^\\s*"+re.escape(name)+r"\\s*=\\s*([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)"
+    rx=r"(?im)^\s*"+re.escape(name)+r"\s*=\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)"
     m=re.search(rx,log)
     assert m,("Missing ngspice transient measurement",name,log[-1600:])
     v=float(m.group(1))
