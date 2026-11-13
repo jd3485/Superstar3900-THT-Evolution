@@ -1,0 +1,28 @@
+* Superstar THT 3900 V2.7 455kHz AM ONLY bench detector
+* Generic manually stated diode model NOT Vishay or any OEM macromodel.
+* Two otherwise identical circuits, modulated vs unmodulated 455kHz carrier.
+* Envelope R=47k C=1nF, AC coupling 100nF Rload=100k matching KiCad draft.
+* No IF gain, receiver sensitivity, AGC, FM, SSB, chassis, EMI or TX.
+.title AM455 diode envelope detector illustrative ngspice -- NO FAB
+.param fc=455k fa=1k mag=0.50 amp=2.0
+BAM src_am 0 V={(amp*(1+mag*sin(2*pi*fa*time))*sin(2*pi*fc*time))}
+RGEN_AM src_am if_am 50
+D_AM if_am env_am DGENERIC
+R1501_AM env_am 0 47k
+C1501_AM env_am 0 1n
+C1502_AM env_am af_am 100n
+R1502_AM af_am 0 100k
+BUN src_unmod 0 V={(amp*sin(2*pi*fc*time))}
+RGEN_UN src_unmod if_unmod 50
+D_UN if_unmod env_unmod DGENERIC
+R1501_UN env_unmod 0 47k
+C1501_UN env_unmod 0 1n
+C1502_UN env_unmod af_unmod 100n
+R1502_UN af_unmod 0 100k
+.model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)
+.tran 0.20u 42m 0 0.20u
+.meas tran am_max MAX v(af_am) FROM=30m TO=40m
+.meas tran am_min MIN v(af_am) FROM=30m TO=40m
+.meas tran unmod_max MAX v(af_unmod) FROM=30m TO=40m
+.meas tran unmod_min MIN v(af_unmod) FROM=30m TO=40m
+.end
