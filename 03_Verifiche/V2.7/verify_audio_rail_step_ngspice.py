@@ -51,6 +51,9 @@ def main():
     assert "C1206_GOOD amp_good amp_gnd_good 100u" in raw
     assert "C1206_BAD amp_bad amp_gnd_bad 100u" in raw
     assert "ILOAD_GOOD amp_good amp_gnd_good PULSE(0.020 0.140" in raw
+    assert "EAMPDIFF_GOOD amp_diff_good 0 amp_good amp_gnd_good 1" in raw
+    assert "EAMPDIFF_BAD amp_diff_bad 0 amp_bad amp_gnd_bad 1" in raw
+    assert "FIND v(amp_diff_good)" in raw and "FIND v(amp_diff_bad)" in raw
     with tempfile.TemporaryDirectory(prefix="tht_audio_step_ngspice_") as folder:
         output_file=Path(folder)/"ngspice.log"
         process=subprocess.run(["ngspice","-b","-o",str(output_file),str(NET)],
