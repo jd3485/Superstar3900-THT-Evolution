@@ -143,6 +143,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_audio_6v_supply_contract_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # New ngspice behavioral rail-step study. This exercises REAL transient
+    # simulation, not LM317/LM386 vendor semiconductor models. No PCB release.
+    spice=ROOT/"03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir"
+    if spice.exists():
+        print("::group::V2.7 AUDIO 6V LAB RAIL STEP NATIVE NGSPICE BEHAVIORAL",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_audio_rail_step_ngspice.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
