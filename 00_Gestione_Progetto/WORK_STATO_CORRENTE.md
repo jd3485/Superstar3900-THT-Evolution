@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #66 MERGED: gate numerico corrente speaker e termica LM317
+
+**PR [#66](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/66) integrata** su `main`, SHA `f1a6d570a095141b91f06c053310372e168937f6`. CI [#43395884826](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43395884826): **3/3 SUCCESS** sul final HEAD `dea1540a8d7512aaf3374178f6f16b16d054d874` (fast unit PASS, full native KiCad9/ngspice/legacy PASS, gate obbligatorio PASS). Nei log veloci `PASS_LM386_LM317_ANALYTICAL_LOAD_ENVELOPE_NO_POWER_CERTIFICATION`, LM317 termica simulata solo per ipotesi `tj_at_0p2A_C=108.94`, `max_theta_at_0p35A_C_per_W=37.94`. Nessuna nuova suite nativa: riusate le regressioni FULL, calcolo numerico collocato nelle FAST.
+
+**File integrati:** `03_Verifiche/V2.7/verify_audio_load_envelope.py`, `AUDIO_LOAD_ENVELOPE_LM386_6V.csv`, `RAPPORTO_LM386_LM317_ENVELOPE_CARICO_AUDIO.md` e aggiornamento `ci/fast_regressions.py`. Scenari 4/8Ω e 100/125/250mW distinguono V/I RMS/picco nel carico dalla corrente **non nota** del rail. TI LM386: 250mW MIN a 6V/8Ω ma **THD 10%**; 0,2% THD è dato TYP a 125mW/1kHz. Con PSU laboratorio VIN10,5V, VOUT parametrico minimo 5,6055V, Tamb60°C, θJA assunto 50°C/W, **0,35A supply DC ipotetici** darebbero ~145,7°C, sopra il budget prudenziale Tj≤125°C. Queste sono formule illustrative, NON una prova SPICE vendor o verifica hardware. La PSU e la linea RF restano scollegate.
+
+**Prossima attività critica:** scegliere target audio e altoparlante 8Ω, ricavare profilo realistico di corrente e THD a 6V con modello/misure, definire dissipatore/PCB termico e soluzione audio PSU da 13,8V con protezioni prima di freeze dell'alimentazione. Non dedurre che 8Ω 125mW corrisponda a I_regolatore=125mA. Master MAIN V2.6 7 fogli/138 refs invariato, 3 schemi audio standalone, PCB fisiche/layout e DRC assenti, progresso globale circa 20% stimato e layout **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — gate numerico potenza LM386 / termica LM317 in revisione
 
 **Bootstrap verificato:** SHA main `c9e95217372bb15d013b615e51902f90cfd49944` (PR #65 MERGED, nessuna PR aperta). Nuova branch `engineering/audio-6v-load-envelope-20261113` in review, **nessuna modifica ai simboli/footprint o alle reti KiCad**. Implementato `03_Verifiche/V2.7/verify_audio_load_envelope.py` con tabella `AUDIO_LOAD_ENVELOPE_LM386_6V.csv` e relazione `RAPPORTO_LM386_LM317_ENVELOPE_CARICO_AUDIO.md`; integrato nella **CI FAST** per evitare un nuovo job nativo solo per aritmetica.
