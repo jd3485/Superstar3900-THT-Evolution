@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — IF455 tank passivo THT KiCad9, PR tecnica in revisione
+
+**Bootstrap live main:** SHA `11f055fd2a2ff9380696178c0e09bd0811bc7c1d`, PR #77/#78/#79 integrate e nessuna PR aperta. Nuova branch `cad/if455-passive-tank-bench-v27-20261113` **non ancora integrata**: creato il vero schema KiCad9 `04_KiCad/V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch`, 9 refs THT, 4 reti, con C1601=10pF, L1601=1mH THT **induttore RF OEM non identificato, footprint 2 pad THT PROVVISORIO e NO FAB**, C1602=120pF + C1603=2,2pF C0G, R1601=47kΩ carico Q, C1604=10pF e R1602=100kΩ, ingressi J1601 e uscita J1602. `f≈455,29kHz` **solo formula LC ideale**, senza dati SRF/Q/ESR, accoppiamento, filtri o carico reale del diodo AM. Nessuna selettività garantita e nessun collegamento alla MAIN.
+
+**Gate nativo proposto** `03_Verifiche/V2.7/verify_if455_tank_native.py` esegue KiCad9 ERC --exit-code-violations, netlist e controllo pin↔net 9 refs/4 reti e footprint induttore THT 15,24mm nominalmente provvisorio; chiamato da `ci/full_regressions.py` senza nuovo job. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_TANK_THT_BENCH_DRAFT.md`. **Nessun PASS dichiarato finché la CI finale non conclude su SHA HEAD.** AM/FM IF455 non include SSB IF10,695. Bloccano il circuito finito: MPN e Q/SRF bobina attiva OEM, carico/filtri RF, simulazione selettività/tolleranze, stadi attivi IF e mixer, AGC, S-meter, input safety.
+
+**Stato generale:** master MAIN V2.6 7 fogli/138 refs invariato, pilot AM455 7 refs e tre pilot audio separati, PCB-MAIN/FRONT non sbrogliate, DRC fisico assente, percentuale complessiva ~20% stima e layout 0%. **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #78 MERGED: simulazione 455kHz AM con ngspice reale, diodo generico
 
 **PR [#78](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/78) MERGED** su main, SHA `caa5288fbb5ea6d6c26c8099ef62fb2f51b800fd`. Workflow [#43407974037](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407974037) **3/3 PASS** sul final HEAD `5968ee408df3904c243c11faa3ccbeec2a1f6157`: FAST, FULL KiCad9 + ngspice e GATE obbligatorio tutti success. Log veri: AM455 KiCad9 ERC `0 Errors 0 Warnings`, `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`, ngspice `PASS_NGSPICE_AM455_GENERIC_DIODE_AM_VS_UNMOD_BENCH_NO_FAB_NO_SSB_FM`, tutte le 111 regressioni storiche eseguite.
