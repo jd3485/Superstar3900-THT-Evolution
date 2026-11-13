@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "TH_TANK") (type "KiCad") (uri "${KIPRJMOD}/TH_TANK.pretty") (options "") (descr "PROVISIONAL THT 1mH coil no fab"))
+)
