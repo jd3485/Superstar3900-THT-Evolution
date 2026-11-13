@@ -38,10 +38,14 @@ def main():
     assert '(kicad_symbol_lib (version 20231120)' in s
     assert '(symbol "SBL-1_PLUS"' in s
     assert '(property "Value" "SBL-1+"' in s
-    assert '(property "Footprint" ""' in s,("Unapproved A06 footprint accidentally assigned",LIB)
-    assert "Connector" not in s and 'DIP-' not in s
+    # Library now also registers the three simple THT bench connectors.
+    # Apply mixer-OEM checks only to the SBL symbol, not the J2 pin header.
+    assert '(symbol "J2"' in s
+    sbl=s.split('(symbol "SBL-1_PLUS"',1)[1].split('(symbol "J2"',1)[0]
+    assert '(property "Footprint" ""' in sbl,("Unapproved A06 footprint accidentally assigned",LIB)
+    assert "Connector" not in sbl and 'DIP-' not in sbl
     assert "MCL_SBL1_CANDIDATE" in table and LIB.name in table
-    assert pin_extraction(s)==PIN_MAP,(pin_extraction(s),PIN_MAP)
+    assert pin_extraction(sbl)==PIN_MAP,(pin_extraction(sbl),PIN_MAP)
     assert sum(1 for v in PIN_MAP.values() if v=="GROUND")==4
     # IEC double-balanced passive mixer has two physically separate IF pads.
     assert PIN_MAP["3"]=="IF_A" and PIN_MAP["4"]=="IF_B"
@@ -65,10 +69,14 @@ def main():
                            capture_output=True,text=True)
         assert cmd.returncode==0,("KiCad9 native symbol parser failed",cmd.stderr,cmd.stdout)
         svgs=list(Path(tmp).rglob("*.svg"))
-        assert len(svgs)==1,("KiCad9 symbol export missing or unexpected",svgs,cmd.stdout)
-        assert svgs[0].stat().st_size>500,("Invalid SVG export",svgs[0])
-        print("SBL1_NATIVE_KICAD9_SYMBOL_EXPORT_PASS",svgs[0].name,
-              "bytes",svgs[0].stat().st_size,flush=True)
+        assert len(svgs)==2,("Both mixer and connector native symbols must export",svgs,cmd.stdout)
+        mixer_svg=next((svg for svg in svgs if "SBL-1_PLUS" in svg.name),None)
+        assert mixer_svg is not None and mixer_svg.stat().st_size>500,(
+            "Mixer KiCad9 SVG export missing",svgs)
+        assert all(svg.stat().st_size>500 for svg in svgs)
+        print("SBL1_NATIVE_KICAD9_SYMBOL_EXPORT_PASS",mixer_svg.name,
+              "bytes",mixer_svg.stat().st_size,
+              "all_symbols_exported",len(svgs),flush=True)
     print("SBL1_OEM_PINOUT_CANDIDATE",PIN_MAP,flush=True)
     print("SBL1_LO_7DBM_50OHM_SOURCE_BUDGET_ASSUMED",{
         "LO_nominal_dBm":LO_DBM,"power_mW":round(p_w*1000,6),
