@@ -2,6 +2,7 @@
 * Whole signal path is GENERIC behavioral SPICE; no OEM BJT or OEM 1N4148 model.
 * Separate identical source/tank instances for direct versus buffered comparison.
 * No shared tank loading: independent stimulus with SAME AM amplitude and 50-ohm source.
+* Timestep tightened to 50 ns for diode crest accuracy and independent reference convergence.
 * 6V bench rail ONLY. No hardware, noise, AGC, SSB, FM, selectivity or PCB qualification.
 .title IF455 THT generic tank plus BJT follower plus AM diode comparison NO FAB
 .param fc=455k fa=1k depth=0.5 amp=2 rail=6 gain=80
@@ -48,7 +49,7 @@ C1502B envelope_b af_b 100n
 R1502B af_b 0 100k
 .model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)
 .model QGEN NPN(Is=1e-14 Bf={gain} Vaf=100 Cje=5p Cjc=1p Tf=0.3n Tr=20n)
-.tran 0.2u 12m 0 0.2u
+.tran 0.05u 12m 0 0.05u
 .meas tran direct_max MAX v(af_d) FROM=8m TO=11m
 .meas tran direct_min MIN v(af_d) FROM=8m TO=11m
 .meas tran buffered_max MAX v(af_b) FROM=8m TO=11m
