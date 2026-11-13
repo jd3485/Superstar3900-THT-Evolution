@@ -356,6 +356,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_load_tradeoff_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Independent 6-case full-frequency native AC check of the same
+    # 47/100/220k damping × 100/220k output resistance configurations
+    # previously evaluated by Johnson noise source superposition.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_resistor_noise_bandwidth_crosscheck_native.py").exists():
+        print("::group::IF455 RESISTOR NOISE TRADEOFF 6 AC BW NATIVE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_resistor_noise_bandwidth_crosscheck_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
