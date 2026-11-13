@@ -35,6 +35,7 @@ def main():
                 load={"extra":"","resistors":{"RGEN":50.0,"RCOIL":16.5,
                        "RDAMP":float(rdamp),"RLOAD":float(rload)}}
                 folder=Path(tmp)/label
+                folder.mkdir(parents=True,exist_ok=False)
                 sig=base.spectrum(document(load,rdamp,rload,"SIGNAL"),
                                   folder/"signal")
                 h455=abs(sig[base.COUNT//2])
