@@ -1,3 +1,17 @@
+# Handoff operativo aggiornato — Superstar 3900 THT Evolution, 13 novembre 2026
+
+> **STATO ATTUALE:** non usare le sezioni storiche sottostanti come ultima revisione; iniziare da [AGENTS.md](AGENTS.md) e dal [checkpoint main](00_Gestione_Progetto/WORK_STATO_CORRENTE.md), poi verificare HEAD e CI live.
+>
+> **Ultima revisione tecnica verificata:** [PR #102](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/102) MERGED `1582ca3e905a10e4c299f8617616dddb0121aa29`, CI [#43474856530](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43474856530) FAST/FULL/required **3/3 green** sul final head `10e3e1447d624716b71fbf57159f1b0e07a8fa26`, 111 comandi legacy. Il test nativo a 50/25/12,5ns sulla catena IF455 tank→KSP10 candidate→AM455 generic diode passa il criterio **<2%** sulle otto misure nel dimezzamento finale.
+>
+> **Decisione tecnica aperta:** l'attuale follower Q1701 da banco su KiCad 9 standalone è **respinto** come adattatore da integrare perché nel modello generico riduce AFpp a circa **3,14% e 7,29%** del percorso diretto (input 0,5/2 V). Servono studio di bias/input loading, OEM model e rumore, non semplice modifica di schema per fabbricazione.
+>
+> **Architettura vincolante:** due PCB 100% THT MAIN + FRONT con S-meter analogico, ADR-001/002; master MAIN V2.6 sette fogli/138 riferimenti intatto, **PCB fisiche/routing 0%**, circa 20% stima progetto. Componenti finali OEM attivamente prodotti, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**. Rami protetti e PR + required CI obbligatorie; l'utente non vuole limitare verifiche per il costo Actions.
+>
+> **Priorità successiva:** progettare e confrontare interfacce IF455 THT ad alta impedenza di ingresso e non lineari con filtro/diodo; qualifica OEM/PVT/noise e solo poi KiCad gerarchico della radio.
+
+---
+
 # Handoff THT — aggiornamento verificato 11 novembre 2026
 
 **Baseline storica V0.9 preservata** senza modifiche a modelli, test e revisioni precedenti; le versioni KiCad successive aggiungono solo modifiche verificate. NO FAB / NO TX.
