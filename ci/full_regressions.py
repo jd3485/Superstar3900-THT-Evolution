@@ -179,6 +179,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_tank_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # IF455 coil-loss/coupling load and retuning comparison: actual ngspice AC.
+    # Behavioral RLC only (not OEM Q/SRF or production filter qualification).
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_loaded_tank_ac_comparison.cir").exists():
+        print("::group::V2.7 IF455 LOADED LC 455K NATIVE NGSPICE AC SWEEP",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_loaded_ac_ngspice.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
