@@ -9,6 +9,17 @@
 - Rilevatore: D anodo IF → catodo `env`, `47kΩ` e `1nF` verso massa, `100nF` serie verso uscita, `100kΩ` dall'AF verso massa, come nella netlist KiCad 9. Gli stessi componenti sono replicati nel caso senza modulazione.
 - Transitorio fino a 42 ms con passo massimo 0,20µs per risolvere il periodo portante ~2,2µs; `.meas tran` rileva massimo e minimo AF fra 30 e 40 ms, per ridurre gli effetti del collegamento AC iniziale.
 
+## Esito reale della prima esecuzione nativa (PR #78)
+
+La [PR #78](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/78) è stata integrata al commit `caa5288fbb5ea6d6c26c8099ef62fb2f51b800fd`, dopo [Actions #43407974037](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407974037) **3/3 PASS** sul final HEAD `5968ee408df3904c243c11faa3ccbeec2a1f6157`. La FULL ha eseguito ngspice reale e stampato:
+- `AM455_SPICE_BENCH_AM_P2P_V 1.9125 UNMOD_P2P_V 0.1255`;
+- `PASS_NGSPICE_AM455_GENERIC_DIODE_AM_VS_UNMOD_BENCH_NO_FAB_NO_SSB_FM`;
+- `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB` con ERC nativo `0 Errors 0 Warnings`, e **111 regressioni storiche** eseguite.
+
+**Interpretazione corretta:** il caso senza modulazione mostra **0,1255V picco-picco non nulli** nella finestra di misura, dovuti anche al transitorio ancora presente della rete di accoppiamento e al residuo di portante; il risultato non è una specifica di soppressione della RF. L'ampiezza del caso AM dipende dall'ampiezza di iniezione 2 Vpk e dal modello diodo generico, **non** è il livello che avremo nella radio. Questa PR non convalida sensibilità, selettività, THD, SSB, FM, né componenti OEM.
+
+---
+
 ## Gate automatico aggiunto a FULL
 Lo script `03_Verifiche/V2.7/verify_am455_generic_diode_spice.py` invoca **ngspice reale**, richiede le quattro misure numeriche AF, rifiuta errori e valori non finiti, verifica che la portante AM produca un segnale AF sensibilmente maggiore della portante non modulata, e confronta l'ampiezza picco-picco con un intervallo **molto ampio** per evitare di fingere un modello vendor. L'esito è `PASS_NGSPICE_AM455_GENERIC_DIODE_AM_VS_UNMOD_BENCH_NO_FAB_NO_SSB_FM` **solo se il simulatore termina e produce misure valide**. La CI FULL riutilizza l'unico runner KiCad9/ngspice già esistente e mantiene tutte le suite ERC/netlist storiche.
 
