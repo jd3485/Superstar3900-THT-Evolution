@@ -27,7 +27,7 @@ MEASUREMENTS=("vpre_good","vload_good","vrest_good",
 def parse_measurements(output):
     result={}
     for key in MEASUREMENTS:
-        regex=r"(?im)^\\s*"+key+r"\\s*=\\s*([-+]?\\d+(?:\\.\\d+)?(?:[eE][-+]?\\d+)?)"
+        regex=r"(?im)^\s*"+key+r"\s*=\s*([-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)"
         match=re.search(regex,output)
         if not match:
             raise AssertionError("Missing actual ngspice .meas "+key+": "+output[-3000:])
@@ -57,7 +57,7 @@ def main():
         print("NATIVE_NGSPICE_STDERR",process.stderr[-1000:],flush=True)
         print("NATIVE_NGSPICE_MEASUREMENTS",logfile[-3500:],flush=True)
         process.check_returncode()
-        assert not re.search(r"(?im)^\\s*(?:error|fatal):",logfile),"ngspice reports error"
+        assert not re.search(r"(?im)^\s*(?:error|fatal):",logfile),"ngspice reports error"
         vals=parse_measurements(logfile)
     for suffix,cable in (("good",R_CABLE_GOOD),("bad",R_CABLE_BAD)):
         r_total=R_REG_ASSUMED+cable
