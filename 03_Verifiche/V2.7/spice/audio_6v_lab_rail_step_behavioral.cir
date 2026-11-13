@@ -1,0 +1,29 @@
+* Superstar 3900 THT V2.7 audio +6V lab rail STEP RESPONSE
+* BEHAVIORAL PASSIVE NETWORK ONLY: ideal 5.952 V Thevenin source, not TI LM317
+* Resistors are deliberate SCENARIO assumptions, not measured cable/PCB geometry.
+* C1402 = 10u at PSU output; C1206 = 100u at LM386 input.
+* Constant load models hypothetical aggregate amplifier + other external load.
+* Model excludes LM386 nonlinear current, LM317 dynamics/ESR/ESL/temperature/thermal.
+.title Audio rail behavioral transient -- NOT FOR FAB OR VEHICLE
+VREG_GOOD reg_good 0 DC 5.952
+RREG_GOOD reg_good psu_good 0.25
+C1402_GOOD psu_good 0 10u
+RCABLE_GOOD psu_good amp_good 0.20
+C1206_GOOD amp_good 0 100u
+ILOAD_GOOD amp_good 0 PULSE(0.020 0.140 5m 1u 1u 5m 20m)
+
+VREG_BAD reg_bad 0 DC 5.952
+RREG_BAD reg_bad psu_bad 0.25
+C1402_BAD psu_bad 0 10u
+RCABLE_BAD psu_bad amp_bad 1.50
+C1206_BAD amp_bad 0 100u
+ILOAD_BAD amp_bad 0 PULSE(0.020 0.140 5m 1u 1u 5m 20m)
+
+.tran 10u 18m
+.meas tran vpre_good FIND v(amp_good) AT=4m
+.meas tran vload_good FIND v(amp_good) AT=8m
+.meas tran vrest_good FIND v(amp_good) AT=15m
+.meas tran vpre_bad FIND v(amp_bad) AT=4m
+.meas tran vload_bad FIND v(amp_bad) AT=8m
+.meas tran vrest_bad FIND v(amp_bad) AT=15m
+.end
