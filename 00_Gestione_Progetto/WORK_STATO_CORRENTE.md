@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #77 MERGED; simulazione AM455 ngspice generica in revisione
+
+**PR [#77](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/77) MERGED** su `main`, commit `0a56a9bf2e1b99506e706fdc1ad708062ae1b35c`, Actions [#43407170875](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407170875) **3/3 SUCCESS** sul final HEAD `9ddefff104aa5f94e830d461fcbfeef928d46701`. Esempio nativo nuovo `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`: KiCad9 ERC **0 errori, 0 warning**, 7 refs/4 reti/pin direzione D1501 verificati con export netlist, e 111 comandi storici FULL superati. **È il primo pilot di demodulazione AM IF455 THT reale in KiCad9**, standalone **solo laboratorio**, non circuito finale della radio.
+
+**Nuovo lavoro sulla branch `simulation/am455-am-demod-ngspice-bench-20261113` (non ancora integrato):** `03_Verifiche/V2.7/spice/am455_envelope_1khz_generic_diode_bench.cir` implementa una vera simulazione transitoria ngspice per AM 455kHz/tono 1kHz/indice0,5 su generatore 2Vpk, confrontata con portante NON modulata, due rivelatori D `DGENERIC`+47kΩ/1nF+100nF/100kΩ come nel CAD; `verify_am455_generic_diode_spice.py` legge max/min in banda audio dal simulatore e verifica una differenza misurabile. Inserito nella FULL `ci/full_regressions.py`; **modello diodo genericamente stimato, NON datasheet Vishay né simulazione vendor**. Rapporto `03_Verifiche/V2.7/RAPPORTO_AM455_NGSPICE_GENERIC_DIODE_BENCH.md`; CI ngspice finale non ancora verificata.
+
+**Nessun master integrato:** V2.6 MAIN 7 fogli/138 refs invariato, tre pilot audio e ora quarto pilot AM455 7 refs separati. IF AM/FM 10.695→455 e IF SSB 10.695, mixer/filtri/AGC/S-meter e alimentazione veicolare ancora incompleti; layout e routing PCB-MAIN/FRONT 0%, avanzamento complessivo circa 20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — nuovo CAD AM IF 455kHz rivelatore d'inviluppo THT, in revisione
 
 **main verificato a inizio lavoro:** SHA `8c9ffefc334d56521aac5928a977b3ffe5ea57a2` (PR #75 e #76 MERGED; zero PR aperte); `AGENTS.md`, checkpoint, stato progetto e handoff letti live. Ripresa priorità radio dopo ottimizzazione GitHub Actions.
