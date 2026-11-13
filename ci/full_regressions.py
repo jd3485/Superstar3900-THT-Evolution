@@ -221,6 +221,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_downstream_load_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Nonlinear 455kHz AM generic-diode transient; NOT OEM 1N4148 or hardware validation.
+    # Reuse the existing FULL container/job; no extra GitHub Actions workflow.
+    nonlinear=ROOT/"03_Verifiche/V2.7/spice/if455_am455_nonlinear_transient_generic.cir"
+    if nonlinear.exists():
+        print("::group::IF455 AM455 GENERIC NONLINEAR TRANSIENT NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_nonlinear_transient_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
