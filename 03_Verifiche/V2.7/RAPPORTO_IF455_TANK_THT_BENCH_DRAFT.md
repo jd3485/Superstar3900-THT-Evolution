@@ -20,6 +20,12 @@ Frequenza di risonanza nominale ideale `1/(2π √(L·C))`: L=1mH e C1602+C1603=
 
 **Connettori di banco** THT 2 pin 2,54mm con geometria generica, NON definitivi per la scheda. **L1601 ha un footprint locale `TH_TANK:L_1mH_Axial_THT_PROVISIONAL`** con due pad passanti provvisori distanti 15,24mm (file KiCad .kicad_mod). La geometria **non è ricavata da un datasheet OEM** ed è vietata in produzione. Non è stata selezionata una bobina con Q e SRF adatti alla IF 455kHz: questo è il vincolo critico. C/R rimangono valori standard schematici secondo ADR-002, da completare con specifiche termiche/MPN esatti prima di FAB.
 
+## Esito verificato della PR #81
+
+La [PR #81](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/81) è **integrata** (merge `3a217a5135696355309fd89e482c84e3aa02c54e`); la [run #43411046493](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43411046493) ha terminato **3/3 PASS** sul final head `d8a7929c50fa32f263233163829e36a826f09f4c`. In KiCad9 ERC `0 Errors 0 Warnings`, 9 THT e 4 reti nativamente verificate. **Risultati di ngspice realmente eseguito**, AC 1001 righe: prima C1602=120pF `peak=437000Hz`, dopo C1602=110pF `peak=454500Hz`, risonanza LC ideale non caricata `475142,31Hz`. Queste sono **soltanto** caratteristiche dell'RLC a Rcoil30Ω ASSUNTA, C ideali, generatore50Ω e carico100kΩ; non sono prove della banda IF della radio.
+
+---
+
 ## Revisione IF455 con carico di accoppiamento — PR tecnica in verifica
 
 La prima PR #80 (integrata) usava 1mH+122,2pF e calcolava 455,29kHz **senza** includere il contributo dei due condensatori di accoppiamento da 10pF. Con la sorgente 50Ω e carico 100kΩ il centro risultava **spostato**, nel semplice modello di perdite della bobina da 30Ω in serie, verso ~437kHz. Il problema è stato individuato **prima della qualifica**, senza dichiarare fabbricabile il filtro.
