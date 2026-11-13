@@ -28,3 +28,24 @@ Script: `03_Verifiche/V2.7/verify_if455_highz_bias_coupling_screen_native.py`. L
 - Anche un ipotetico miglioramento rispetto all'originale non autorizza l'integrazione nel master MAIN V2.6 e non basta per fissare MPN/R/C del prodotto; serve successiva revisione KiCad 9 di variante reale e verifica OEM/temperatura.
 - Lo screening non modifica KiCad né qualsiasi PCB. Solo FAST+FULL+required verdi sul commit finale rendono valida l'integrazione di questa **evidenza esplorativa**.
 - **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Risultati reali del run #43477471030 — 16 casi nativi
+
+FAST, FULL KiCad9/ngspice e required gate **3/3 SUCCESS** su commit `56694e2ed4d9c813cdb8ec3e8681ba6dc25ea926`. Log con `PASS_NGSPICE_IF455_GENERIC_BJT_16_BIAS_COUPLING_CORNERS_NO_OEM_NO_FAB_NO_TX` e 16 righe native; riferimento diretto del modello a 25ns **23,9246 mVpp** per sorgente 0,5V e **216,298 mVpp** per 2V. Si riportano solo ipotesi circuitali e risultati ngspice, non dati OEM.
+
+| C1701 e bias | AFpp buffer 0,5V (mV) | buffer/diretto 0,5V | AFpp buffer 2V (mV) | buffer/diretto 2V |
+|---|---:|---:|---:|---:|
+| 10n / 22k–10k (baseline) | 0,753 | 0,0315 | 15,566 | 0,0720 |
+| 10n / 220k–100k | 12,022 | 0,5025 | 392,119 | 1,8128 |
+| 10n / 470k–220k | 23,966 | 1,0017 | 468,951 | 2,1680 |
+| 47p / 220k–100k | 10,810 | 0,4518 | 372,996 | 1,7244 |
+| 10p / 220k–100k | 6,361 | 0,2659 | 305,157 | 1,4108 |
+| 2,2p / 220k–100k | 1,287 | 0,0538 | 80,663 | 0,3729 |
+| 47p / 470k–220k | 22,041 | 0,9213 | 433,314 | 2,0033 |
+| 10p / 470k–220k | 14,937 | 0,6243 | 378,337 | 1,7491 |
+
+**Importante:** a 2V con bias 470k–220k il modello rileva `emitter_min` **negativo di circa 2–12mV** in diverse topologie. Il fatto che la tensione numerica superi momentaneamente il riferimento di massa (per accoppiamenti non lineari) è un segnale d'allarme per escursione, linearità e robustezza del punto di lavoro; non è una condizione di bias verificata. Il rapporto AFpp maggiore di 1 a 2V non dimostra affatto migliore qualità radio: potrebbe riflettere risposta non lineare, diverso carico o distorsione; non è stata calcolata l'ampiezza della fondamentale audio, THD o SNR.
+
+**Diagnosi:** l'aumento della resistenza del partitore rispetto a 22k/10k recupera una quota importante di segnale a valle del filtro nel modello. La sola riduzione di C1701 a 2,2p senza riprogettazione impedenza/bias non è sufficiente: a 0,5V l'audio rimane quasi nullo. La scelta migliore a 2V (**10n/470k–220k**) non è approvabile perché il margine di bias a forti segnali è insufficiente e il modello è generico.
+
+**Decisione ingegneristica:** conservare questo screening come vincolo progettuale. Non modificare l'originale KiCad Q1701 e non approvare questa topologia. Valutare un **source follower JFET depletion THT J113** con gate ad alta impedenza e bias autonomo, confrontandolo nello stesso circuito completo; il componente è un CANDIDATO attivo (onsemi J113 TO-92, non un sostituto qualificato) e deve superare test nativi KiCad ERC/netlist e ngspice su corner JFET prima di scelta. Datasheet onsemi: https://www.onsemi.com/pdf/datasheet/mmbfj113-d.pdf; distributore https://www.digikey.it/it/products/detail/onsemi/J113/1048989.
