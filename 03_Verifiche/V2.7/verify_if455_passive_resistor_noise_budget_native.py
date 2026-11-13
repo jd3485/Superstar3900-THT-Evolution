@@ -86,7 +86,7 @@ def main():
     sch=TANK.read_text(encoding="utf-8")
     prior=PRIOR.read_text(encoding="utf-8")
     assert "EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM" in sch
-    assert "16,5Ω" in prior and "Zport" in prior
+    assert "16,5Ω" in prior and "455k" in prior
     assert set(LOADS)=={"reference_R100k","JFET_GATE_PASSIVE"}
     for label,load in LOADS.items():
         with tempfile.TemporaryDirectory(prefix="tht_if455_thermal_") as td:
