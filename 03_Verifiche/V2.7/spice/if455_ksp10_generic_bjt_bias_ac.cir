@@ -1,0 +1,26 @@
+* V2.7 IF455 KSP10BU common-collector BENCH schematic electrical surrogate.
+* NOT an onsemi/OEM KSP10 semiconductor model or guaranteed 455kHz gain/noise.
+* Matches 6V LAB ONLY, 22k/10k bias, 2k2 emitter, 10n input/output, 100k output.
+* No tank connected. No receiver RF sensitivity or NO FAB/NO TX.
+.title IF455 KSP10 emitter follower generic BJT corners
+.param rail=6 gain=80
+VCC vcc 0 DC {rail}
+VDRIVE src 0 DC 0 AC 1
+RSRC src input 50
+C1701 input base 10n
+R1701 vcc base 22k
+R1702 base 0 10k
+Q1701 vcc base emitter QGEN
+R1703 emitter 0 2.2k
+C1702 emitter output 10n
+R1704 output 0 100k
+.model QGEN NPN(Is=1e-14 Bf={gain} Vaf=100 Cje=5p Cjc=1p Tf=0.3n Tr=20n)
+.control
+set wr_singlescale
+tran 5u 1m
+wrdata ifbuf_bias.dat v(base) v(emitter) v(vcc)
+ac lin 3 454k 456k
+wrdata ifbuf_ac.dat vm(output) vm(src)
+quit
+.endc
+.end
