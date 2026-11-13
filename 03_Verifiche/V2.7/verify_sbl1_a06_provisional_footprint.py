@@ -4,6 +4,8 @@ FAIL closed if MX1701 is assigned this UNQUALIFIED footprint in the bench.
 """
 from pathlib import Path
 import re
+import subprocess
+import tempfile
 ROOT=Path(__file__).resolve().parents[2]
 DIR=ROOT/"04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE"
 FP=DIR/"SBL1_A06_CANDIDATE.pretty/SBL1_A06_UNQUALIFIED.kicad_mod"
@@ -64,5 +66,18 @@ def main():
     mix=sch.split('(lib_id "MCL_SBL1_CANDIDATE:SBL-1_PLUS")',1)[1].split("(instances ",1)[0]
     assert '(property "Footprint" ""' in mix,"NO FAB: footprint must stay unassigned before OEM graphic review"
     assert all(f'(pin "{i}"' in mix for i in range(1,9))
-    print("PASS_A06_PROVISIONAL_THT_8_PADS_MIRROR_CONSISTENT_FOOTPRINT_NOT_ASSIGNED_NO_FAB_NO_TX")
+    # Native KiCad9 parse/export of the real .pretty module: this is not PCB DRC.
+    # SVG proves the footprint can be loaded by KiCad; it does not certify the
+    # manufacturer's drawing or drill/plating mechanical fit.
+    with tempfile.TemporaryDirectory(prefix="tht_sbl1_a06_native_fp_") as tmp:
+        cmd=["kicad-cli","fp","export","svg","--output",tmp,
+             "--footprint","SBL1_A06_UNQUALIFIED",str(FP.parent)]
+        run=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True)
+        print("NATIVE_KICAD9_A06_FOOTPRINT_SVG",run.stdout,run.stderr,flush=True)
+        run.check_returncode()
+        svgs=list(Path(tmp).rglob("*.svg"))
+        assert svgs,("KiCad9 generated no SVG for A06 candidate",cmd)
+        assert all(p.stat().st_size>500 for p in svgs),svgs
+        print("NATIVE_KICAD9_A06_SVG_SIZE",[(p.name,p.stat().st_size) for p in svgs],flush=True)
+    print("PASS_NATIVE_KICAD9_FP_EXPORT_A06_PROVISIONAL_THT_8_PADS_MIRROR_CONSISTENT_FOOTPRINT_NOT_ASSIGNED_NO_FAB_NO_TX")
 if __name__=="__main__": main()
