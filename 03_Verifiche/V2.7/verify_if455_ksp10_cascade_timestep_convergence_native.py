@@ -78,6 +78,8 @@ def main():
                            "relative_change":round(delta,7),
                            "below_two_percent":delta<0.02},flush=True)
                     assert math.isfinite(delta) and delta>=0
+                    if i==len(samples)-1:
+                        assert delta<0.02,("Final 25ns->12.5ns model step not converged at 2%",amp,field,delta)
             results.extend(samples)
     assert len(results)==len(AMPS)*len(STEPS)
     print("PASS_NGSPICE_IF455_KSP10_AM455_6_TIMESTEP_AUDITS_NOT_OEM_NO_FAB_NO_TX",flush=True)
