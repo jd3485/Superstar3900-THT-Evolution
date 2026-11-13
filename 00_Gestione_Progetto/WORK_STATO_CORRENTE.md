@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #80 MERGED, correzione accordo IF455 sotto carico in revisione
+
+**PR [#80](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/80) MERGED**, commit main `63343cc924ae86e50ae682ca17ad3176839f802f`; Actions [#43410035549](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43410035549) 3/3 PASS sul final head `029667747cf2f1e43eec362b17f93f17dbf43d19`, `PASS_KICAD9_IF455_THT9_ERC0_1MH_122P2_NOMINAL_PROVISIONAL_NO_FAB`, ERC0/0 warning, 9 refs THT/4 reti, 111 comandi legacy PASS. Scheda IF455 risonante DRAFT autonoma; footprint L1601 15,24mm **provvisorio non produttivo**.
+
+**Correzione tecnica successiva in branch `cad/if455-loaded-resonance-ngspice-v27-20261113` NON ancora merged:** il picco della rete **caricata** da C coupling 10pF input/output, sorgente50Ω e coil loss assunta30Ω non coincide con 455,29kHz della LC isolata 1mH+122,2pF; nel modello semplice il picco era circa 437kHz. Modificato lo schema nativo per C1602 **110pF** (in precedenza 120pF), C1603 2,2pF; `f_LC_scarica≈475,14kHz` ora volutamente diverso dal picco di rete accoppiata atteso ~454,5kHz. Aggiunto vero AC sweep ngspice 350–600kHz vecchio/nuovo con analisi di 1001 punti, script `verify_if455_loaded_ac_ngspice.py` che estrae `wrdata` e impone miglioramento frequenza; test inserito in FULL già esistente. ERC/netlist aggiornati sulla nuova capacità, rapporto `RAPPORTO_IF455_TANK_THT_BENCH_DRAFT.md`. **CI finale ancora da verificare**; nessuna dichiarazione di selettività garantita. Perdita coil30Ω non OEM, carico del diodo non qualificato, bobina attualmente prodotta da selezionare; NO FAB.
+
+**Stato globale:** MAIN V2.6 7 fogli/138 refs immutata, quattro draft audio+AM455 e nuovo tank IF455 standalone, non una PCB completa; layout 0%, percentuale di progetto circa 20% stima. Non alimentare radio da veicolo/batteria, NO TX.
+
+---
+
 ## 13 novembre 2026 — IF455 tank passivo THT KiCad9, PR tecnica in revisione
 
 **Bootstrap live main:** SHA `11f055fd2a2ff9380696178c0e09bd0811bc7c1d`, PR #77/#78/#79 integrate e nessuna PR aperta. Nuova branch `cad/if455-passive-tank-bench-v27-20261113` **non ancora integrata**: creato il vero schema KiCad9 `04_KiCad/V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch`, 9 refs THT, 4 reti, con C1601=10pF, L1601=1mH THT **induttore RF OEM non identificato, footprint 2 pad THT PROVVISORIO e NO FAB**, C1602=120pF + C1603=2,2pF C0G, R1601=47kΩ carico Q, C1604=10pF e R1602=100kΩ, ingressi J1601 e uscita J1602. `f≈455,29kHz` **solo formula LC ideale**, senza dati SRF/Q/ESR, accoppiamento, filtri o carico reale del diodo AM. Nessuna selettività garantita e nessun collegamento alla MAIN.
