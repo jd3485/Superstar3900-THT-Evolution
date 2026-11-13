@@ -46,6 +46,7 @@ def main():
                     ("C1604 tank out 10p","C1604D tank_d out_d 10p"),
                     ("R1501 envelope 0 47k","R1501D envelope_d 0 47k")):
         assert old in prior and new in original,("Prior model reference drift",old,new)
+    assert ".tran 0.05u 12m 0 0.05u" in original
     outcomes=[]
     with tempfile.TemporaryDirectory(prefix="tht_if455_full_cascade_") as temp:
         for amplitude in AMPS:
@@ -73,10 +74,29 @@ def main():
             ratio=buffered/direct
             assert math.isfinite(ratio) and ratio>0
             if amplitude==2.0:
-                # Independent prior native deck delivered 0.17444891 Vpp at 2 Vpeak.
-                # This ensures direct reference was not silently redesigned.
-                assert abs(direct-0.17444891)<0.005,(
-                    "Reference drift versus PR #94/#95",direct)
+                # Re-run prior model with the SAME 50ns timestep rather than
+                # assuming its historical 200ns result is numerically converged.
+                legacy=folder/"legacy_direct.cir"
+                legacy_log=folder/"legacy_direct.log"
+                original_legacy=prior.replace(".tran 0.2u 12m 0 0.2u",
+                                              ".tran 0.05u 12m 0 0.05u")
+                assert original_legacy!=prior
+                legacy.write_text(original_legacy,encoding="utf-8")
+                command=subprocess.run(["ngspice","-b","-o",str(legacy_log),str(legacy)],
+                                        cwd=folder,text=True,capture_output=True)
+                prior_log=legacy_log.read_text(encoding="utf-8",errors="replace")
+                command.check_returncode()
+                assert "Error:" not in prior_log
+                legacy_af=metric(prior_log,"coupled_max")-metric(prior_log,"coupled_min")
+                assert legacy_af>0
+                error=abs(direct-legacy_af)/legacy_af
+                print("IF455_CASCADE_DIRECT_REFERENCE_NUMERICAL_REPRODUCIBILITY",
+                      {"legacy_50ns_AFpp_V":round(legacy_af,9),
+                       "cascade_direct_50ns_AFpp_V":round(direct,9),
+                       "fractional_delta":round(error,6),
+                       "legacy_200ns_historical_AFpp_V":0.17444891},flush=True)
+                assert error<0.03, ("Numerical reference mismatch at equal timestep",
+                                   direct,legacy_af,error)
             result={"input_peak_V":amplitude,"direct_AFpp_V":round(direct,9),
                     "buffered_AFpp_V":round(buffered,9),"buffer_to_direct_AFpp":round(ratio,6),
                     "direct_tank_positive_peak_V":round(tank_d,9),
