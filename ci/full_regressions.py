@@ -204,6 +204,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_trimmer_range_ngspice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Verify candidate IF455 LC -> diode AM455 bench cable pin1 signal/pin2 GND
+    # against BOTH native KiCad9 exported netlists. No physical harness.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_am455_interface_native.py").exists():
+        print("::group::V2.7 IF455 TANK TO AM455 DETECTOR 2WIRE NATIVE KICAD9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_interface_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
