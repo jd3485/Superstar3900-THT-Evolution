@@ -30,8 +30,6 @@ CREF_COUPLE env_ref af_ref 100n
 RREF_AUDIO af_ref 0 100k
 .model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)
 .tran 0.2u 12m 0 0.2u
-.meas tran coupled_af_pp PARAM='coupled_max-coupled_min'
-.meas tran direct_af_pp PARAM='direct_max-direct_min'
 .meas tran coupled_max MAX v(af) FROM=8m TO=11m
 .meas tran coupled_min MIN v(af) FROM=8m TO=11m
 .meas tran direct_max MAX v(af_ref) FROM=8m TO=11m
