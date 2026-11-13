@@ -383,6 +383,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_oem_symbol_lo_contract_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # OEM pin 3+4 tied externally: isolated four-net native KiCad9 mixer
+    # schematic proof, with 3 THT connector ports; no A06 footprint approval.
+    if (ROOT/"04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE/MIXER_SBL1_BENCH_THT_V2_7_DRAFT.kicad_sch").exists():
+        print("::group::SBL1 THT MIXER BENCH SCHEMATIC ERC0 AND 4 NATIVE NETS",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_bench_kicad_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
