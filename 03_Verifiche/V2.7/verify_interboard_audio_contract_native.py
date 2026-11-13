@@ -59,8 +59,8 @@ def main():
     # no power supply is carried over this cable.
     require(main_nets, "AUDIO_IN", ("J1202", "1"), ("C1201", "1"))
     require(main_nets, "GND", ("J1202", "2"), ("U1201", "4"))
-    require(main_nets, "AUDIO_5V", ("J1201", "1"), ("U1201", "6"))
-    assert ("J1302", "1") not in main_nets.get("AUDIO_5V", set())
+    require(main_nets, "AUDIO_6V_LAB", ("J1201", "1"), ("U1201", "6"))
+    assert ("J1302", "1") not in main_nets.get("AUDIO_6V_LAB", set())
 
     # The cable assignment is explicit and directional; connectors currently
     # use generic *male* THT pin headers, so mating/cable details are unqualified.
@@ -72,7 +72,7 @@ def main():
     print("FRONT_NETLIST:", {name: sorted(front[name])
                              for name in ("DEMOD_AUDIO", "VOL_WIPER_TO_AMP", "AF_GND")}, flush=True)
     print("MAIN_AUDIO_INPUT:", {name: sorted(main_nets[name])
-                                for name in ("AUDIO_IN", "GND", "AUDIO_5V")}, flush=True)
+                                for name in ("AUDIO_IN", "GND", "AUDIO_6V_LAB")}, flush=True)
     print("HARNESS_DRAFT_PIN_MAP:", harness, flush=True)
     print("PASS_KICAD9_NATIVE_MAIN_FRONT_AUDIO_PIN_CONTRACT_2_WIRE_DRAFT_NO_FAB", flush=True)
 

@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — collegamento logico LAB 6V LM317 → LM386, KiCad9 in review
+
+**Ultimo main verificato:** SHA `c4baf599e6aa956b3893fea12e577ee0710d27d1` (PR #62, #63 MERGED), nessuna PR aperta. **Branch `cad/audio-lm386-6v-lab-interface-20261113` NON ancora integrato:** nel vero schematico DRAFT LM386, rail del connettore bench +5V `AUDIO_5V` rinominato `AUDIO_6V_LAB`, mantenendo identici i pad e i nodi circuitali: U1201.6, C1205.1, C1206.1, J1201.1. Lato PSU già esiste `AUDIO_6V_LAB` da U1401.2 a J1402.1. In libreria `TH_AUDIO.kicad_sym` e simbolo embedded il connettore adesso è `BENCH_6V_CONN` (soltanto dichiarazione di alimentazione laboratorio).
+
+**Test nativo aggiunto in `ci/full_regressions.py`:** `verify_audio_6v_supply_contract_native.py` riesporta netlist PSU e LM386 e controlla mappa **J1402→J1201 pin1 6V/pin2 ritorno**, nessuna commistione di rail PLL RF e intervallo statico di riferimento LM317 compatibile col range LM386N-1. Aggiornati i test ERC/netlist dei due moduli e del contratto audio FRONT. Report `03_Verifiche/V2.7/CONTRATTO_6V_PSU_LM386_BENCH_DRAFT.md`. Tutte le prove native sul nuovo SHA devono terminare **PASS** prima di merge.
+
+**Vincoli fermi:** ancora **nessuna connessione fisica fra due schede, nessun ingresso 13,8V automotive**, connettori maschi richiedono cavo/distanziamento/anti-inversione; test corrente, THD/EMI, termica, protezioni e alimentatore definitivo non completati. MASTER MAIN V2.6 7 fogli/138 refs invariato, FRONT volume draft 3 refs, PSU 10 refs e LM386 12 refs separati, PCB/routing **0%**, stima complessiva **~20%**. NO FAB/NO TX/NO BATTERIA/VEICOLO.
+
+---
+
 ## 13 novembre 2026 — PR #62 integrata: headroom LM317 audio corretto e verificato
 
 **PR [#62](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/62) MERGED** su `main`, SHA `ce4ccf33272d2e76ffb2524a4627b47f307baa8a`. GitHub Actions [#43391899904](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43391899904) **3/3 PASS** sul commit finale `0aa80817558863644751443ea8576361d0d050d9`: veloce PASS, FULL nativo KiCad9/legacy PASS, required gate PASS. Il test PSU nativo ha riportato `ERC messages: 0 Errors 0 Warnings`, `PASS_KICAD9_AUDIO_6V_LM317_PSU_ERC0_THT10_PINNET_NO_FAB` e output statico `LM317_REFERENCE_ENDPOINTS_NOT_FULL_PVT 5.6055 6.3091`. Nessun waiver; 111 comandi storici FULL.
