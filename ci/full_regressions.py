@@ -230,6 +230,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_nonlinear_transient_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # RF signal amplitude corner check using the existing generic IF455+AM455 deck.
+    # This does not qualify a real diode or IF amplifier. No extra Actions job.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_am455_nonlinear_transient_generic.cir").exists():
+        print("::group::IF455 AM455 GENERIC NONLINEAR INPUT LEVEL SWEEP",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_input_level_sweep_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
