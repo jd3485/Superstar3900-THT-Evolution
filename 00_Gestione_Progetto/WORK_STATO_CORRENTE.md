@@ -7,6 +7,21 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #92 MERGED: sensibilità al carico d'uscita IF455 verificata in ngspice
+
+**PR [#92](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/92) MERGED** su `main` SHA `a965d3bc585e4a0cfe9ded4edea59086c6bcf7cf`. GitHub Actions [#43442916740](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43442916740) **3/3 PASS** sul HEAD `ede2503195a25abd15ec77f0f64a1b4302c8f44f`: FAST PASS, FULL KiCad9/ngspice con **111 comandi storici** PASS, required gate PASS. Log nativo ngspice `PASS_NGSPICE_IF455_DETECTOR_LOAD_SENSITIVITY_SURROGATES_NOT_DIODE_NO_FAB`: rapporto trasferimento |Vout/Vin| a 455 kHz del **modello** con tank L1mH, C82pF, Ctrim30pF, Ccoupling10pF, Rcoil16,5Ω **assunta**:
+- Solo R1602 uscita 100kΩ: `0.835056`.
+- In parallelo ulteriore resistenza 10kΩ: `0.180772` (circa **−78,35%** rispetto al riferimento).
+- In parallelo ulteriore resistenza 1kΩ: `0.022074` (circa **−97,36%**).
+
+**Interpretazione vincolante:** i due carichi aggiunti sono **surrogati resistivi**, NON l'impedenza reale non lineare della 1N4148. I risultati dimostrano la vulnerabilità del circuito al carico, **non** provano che il diodo reale abbia quegli effetti o che un buffer specifico sia obbligatorio. Serve la simulazione transitoria dello stadio combinato e qualifica del livello/impedenza dell'amplificatore IF. Report `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_CARICO_USCITA_NGSPICE.md`; deck/script nelle verifiche V2.7. Riutilizzato runner FULL senza job Actions aggiuntivo.
+
+**Gestione corretta delle PR concorrenti:** il contratto KiCad9 a due fogli J1602→J1501 era già MERGED con PR #89 e relativo checkpoint PR #90; le PR #88 e #91, duplicate o in conflitto documentale, sono state CLOSED senza merge, evitando di sovrascrivere `main` o duplicare test. Solo il nuovo studio di carico della #92 è integrato.
+
+**Rilascio NON autorizzato:** master MAIN V2.6 7 fogli/138 posizioni intatto; IF455 e AM455 sono moduli KiCad9 standalone senza cablaggio fisico; mancano IF/mixer, FM/SSB, AGC, S-meter, alimentazioni sicure, selettività e BOM/footprint finali, PCB layout 0%, complessivo circa **20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #89 MERGED: contratto pin IF455 TANK→AM455 ENVELOPE
 
 **PR [#89](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/89) MERGED** su main `214e063a7c016613ae4c28f77f79ff01f3a4d2b3`; run [#43441748177](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43441748177) **3/3 PASS** su final HEAD `d47b7baaff79d0ebcc9a829dd74447e92b6bc9e6`, FAST/FULL KiCad9/ngspice/required gate tutti verdi e 111 comandi legacy conclusi. La nuova verifica `PASS_KICAD9_NATIVE_IF455_AM455_2WIRE_IF_CONTRACT_NO_FAB_NO_TX` ha esportato e confrontato **realmente le due netlist autonome KiCad9**, stabilendo J1602.1→J1501.1 (RF IF 455kHz e anodo D1501.2), J1602.2→J1501.2 (massa/ritorno), assenza di commistione 6V AUDIO, PLL, TX e 13,8V. La mappa cavi è **logica da banco**, non un PCB o un cablaggio reale costruito o qualificato. Nuovi file `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` e `RAPPORTO_CONTRATTO_IF455_AM455_THT.md`, nuovo gate nel runner FULL esistente.
