@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — gate numerico potenza LM386 / termica LM317 in revisione
+
+**Bootstrap verificato:** SHA main `c9e95217372bb15d013b615e51902f90cfd49944` (PR #65 MERGED, nessuna PR aperta). Nuova branch `engineering/audio-6v-load-envelope-20261113` in review, **nessuna modifica ai simboli/footprint o alle reti KiCad**. Implementato `03_Verifiche/V2.7/verify_audio_load_envelope.py` con tabella `AUDIO_LOAD_ENVELOPE_LM386_6V.csv` e relazione `RAPPORTO_LM386_LM317_ENVELOPE_CARICO_AUDIO.md`; integrato nella **CI FAST** per evitare un nuovo job nativo solo per aritmetica.
+
+**Evidenza OEM:** TI LM386N-1 a 6V/8Ω: potenza 250mW minima / 325mW tipica **a 10% THD**, valore 0,2% THD **tipico a 125mW /1kHz**; non confondere le condizioni, né potenza altoparlante con potenza dal rail. I nuovi calcoli a 8Ω e 4Ω per 100/125/250mW ricavano corrente speaker RMS/picco e taglio RC ideale del C1202 220µF. La PSU LM317 resta **10–10,5V da banco**: modello termico illustrativo con VIN10,5V, VOUT statico min ~5,6055V, Tamb60°C, θJA assunto 50°C/W -> ~109°C a 0,2 A **ipotetici DC supply**, ~146°C a 0,35 A, oltre soglia prudenziale 125°C; non sono misure/limiti garantiti. Definire consumo DC e pulsato reale LM386, carico/speaker, THD/ripple, SOA e dissipatore prima di fissare circuiti.
+
+**Ancora NON convalidato su CI HEAD della branch** al momento della stesura; nessun nuovo prodotto hardware testato, nessun rilascio. Master MAIN V2.6 7 fogli/138 refs e moduli standalone invariati, nessuna PCB fisica o DRC PCB, stima complessiva ~20%, routing 0%. Resta NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 13 novembre 2026 — PR #64 MERGED: rete 6V LM386 e contratto PSU pin↔net integrati
 
 **PR [#64](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/64) MERGED su `main`** SHA `0098877dc5bd195cc774be7c6b91e183e48a501a`. Actions [#43392859696](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43392859696) **3/3 PASS** su HEAD `a010b707be652431e4c6429e46e9621b254bf0ac`, incluso ERC0 reale KiCad9 su LM386 e PSU, test interfaccia FRONT invariato, test `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`, 111 comandi nativi storici eseguiti. Il gate obbligatorio ha autorizzato il merge, senza waiver.

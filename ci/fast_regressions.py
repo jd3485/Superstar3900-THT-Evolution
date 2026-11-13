@@ -14,3 +14,9 @@ print("PASS_FAST_LEGACY_UNITTESTS_ALL_TEN_VERSION_SUITES",flush=True)
 
 # Every PR also guards the 138-reference THT lifecycle inventory against CAD drift.
 subprocess.run([sys.executable,"-B",str(ROOT/"03_Verifiche/V2.6/verify_mpn_inventory_v26.py")],cwd=ROOT,check=True)
+
+# Pure numerical audio load scenarios run even on docs-only PRs. This is not
+# SPICE nor a power-supply certification; it catches inconsistent assumptions
+# about speaker impedance, required swing and regulator thermal envelope.
+subprocess.run([sys.executable,"-B",str(ROOT/"03_Verifiche/V2.7/verify_audio_load_envelope.py")],
+               cwd=ROOT,check=True)
