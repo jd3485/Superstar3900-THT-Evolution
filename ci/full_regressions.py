@@ -170,6 +170,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_am455_generic_diode_spice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # IF455 1mH/122.2pF passive THT lab tank, with PROVISIONAL coil mechanics.
+    # Real KiCad9 ERC and pin-net exports; no receiver passband certification.
+    tank=ROOT/"04_KiCad/V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch"
+    if tank.exists():
+        print("::group::V2.7 IF455 PASSIVE THT LC TANK NATIVE KICAD9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_tank_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
