@@ -391,6 +391,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_bench_kicad_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # A06 provisional native THT copper pads: static mechanical contract
+    # only; preserve the empty mixer footprint and the NO FAB gate.
+    if (ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py").exists():
+        print("::group::SBL1 A06 PROVISIONAL THT PAD MAP AND NO FAB GATE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
