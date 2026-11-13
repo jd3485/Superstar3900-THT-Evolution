@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #81 MERGED: tank IF455 THT ricalibrato sotto carico e verificato ngspice
+
+**PR [#81](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/81) MERGED**, SHA `3a217a5135696355309fd89e482c84e3aa02c54e`. GitHub Actions [#43411046493](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43411046493) **3/3 PASS** sul commit HEAD `d8a7929c50fa32f263233163829e36a826f09f4c`: FAST, FULL nativo KiCad9+ngspice, required gate tutti SUCCESS. Log tecnici: `PASS_KICAD9_IF455_THT9_ERC0_1MH_112P2_UNLOADED_PROVISIONAL_NO_FAB` con ERC **0 errori/0 avvisi**, 9 refs/4 reti pin↔net verificati; `PASS_NGSPICE_IF455_LOADED_RESONANCE_RETUNE_GENERIC_RLC_NOT_OEM_NO_FAB`, scansione AC nativa **1001 punti** con `old=437000.0Hz`, `updated=454500.0Hz`, LC ideale scarico `475142.31Hz`, modulo gain picco nuovo `0.79366` **soltanto nel modello**; legacy `executed_commands=111` PASS.
+
+**Modifica CAD reale:** il risonatore IF455 standalone di PR #80 conserva J1601/J1602, C1601/C1604 10pF, L1601 1mH footprint THT **provisorio e vietato alla fabbricazione**, R1601=47kΩ, R1602=100kΩ, C1603=2,2pF; C1602 è stato corretto **da 120pF a 110pF**. Motivo: la rete accoppiata, con generatore 50Ω, capacità di ingresso/uscita 10pF e resistenza della bobina **30Ω ipotetica**, ha picco simulato 437kHz nel precedente schema, non 455kHz; nuovo valore sposta il picco simulato a **454,5kHz**. Il valore LC scarico nuovo è 475,14kHz e non deve essere confuso con la risposta della rete completa.
+
+**Limitazioni inderogabili:** Q, SRF, perdita, variazioni con temperatura e capacità parassita della bobina OEM **ignota**, C0G e geometria di PCB da verificare; la simulazione si basa su perdite di bobina assunte e sorgente/carico di prova, non rappresenta il vero IF e non determina selettività di canale, SINAD, sensibilità o BER. Occorrono filtro e trasformatore IF regolabili/qualificati, mixer 10,695→455, guadagno AGC e percorso FM/SSB separato, collegamento elettrico fra moduli, prove di banco. Master MAIN V2.6 7 fogli/138 refs invariato, pilot AM455 7 refs e draft audio separati, layout fisico delle PCB 0% e avanzamento complessivo ~20% **stima**, non aumentare sulla base di questa verifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #80 MERGED, correzione accordo IF455 sotto carico in revisione
 
 **PR [#80](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/80) MERGED**, commit main `63343cc924ae86e50ae682ca17ad3176839f802f`; Actions [#43410035549](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43410035549) 3/3 PASS sul final head `029667747cf2f1e43eec362b17f93f17dbf43d19`, `PASS_KICAD9_IF455_THT9_ERC0_1MH_122P2_NOMINAL_PROVISIONAL_NO_FAB`, ERC0/0 warning, 9 refs THT/4 reti, 111 comandi legacy PASS. Scheda IF455 risonante DRAFT autonoma; footprint L1601 15,24mm **provvisorio non produttivo**.
