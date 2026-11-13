@@ -14,6 +14,9 @@ EXPECTED={"7":(-7.62,-2.54),"5":(-2.54,-2.54),"3":(2.54,-2.54),"1":(7.62,-2.54),
 def main():
     src=FP.read_text(encoding="utf-8")
     sch=SCH.read_text(encoding="utf-8")
+    table=(DIR/"fp-lib-table").read_text(encoding="utf-8")
+    assert '(name "SBL1_A06_CANDIDATE")' in table
+    assert '${KIPRJMOD}/SBL1_A06_CANDIDATE.pretty' in table
     assert src.startswith('(footprint "SBL1_A06_UNQUALIFIED"')
     assert "NO FAB - CHECK OEM BOTTOM VIEW" in src
     assert "(attr through_hole)" in src
