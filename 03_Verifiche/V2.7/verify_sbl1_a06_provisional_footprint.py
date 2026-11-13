@@ -9,8 +9,21 @@ DIR=ROOT/"04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE"
 FP=DIR/"SBL1_A06_CANDIDATE.pretty/SBL1_A06_UNQUALIFIED.kicad_mod"
 SCH=DIR/"MIXER_SBL1_BENCH_THT_V2_7_DRAFT.kicad_sch"
 PAD=re.compile(r'\(pad "(\d+)" thru_hole (circle|rect) \(at ([\-\d.]+) ([\-\d.]+)\) \(size ([\d.]+) ([\d.]+)\) \(drill ([\d.]+)\) \(layers "\*\.Cu" "\*\.Mask"\)\)')
-EXPECTED={"7":(-7.62,-2.54),"5":(-2.54,-2.54),"3":(2.54,-2.54),"1":(7.62,-2.54),
-          "8":(-7.62,2.54),"6":(-2.54,2.54),"4":(2.54,2.54),"2":(7.62,2.54)}
+# OEM Case Style A / A06, 98-A Rev B: view FROM THE BOTTOM of the device.
+# Reading convention is not a substitute for inspection of the drawing image.
+OEM_BOTTOM_TOP_ROW=("1","3","5","7")
+OEM_BOTTOM_BOTTOM_ROW=("2","4","6","8")
+PITCH=5.08
+def expected_top_view():
+    # KiCad F.Cu is viewed from the PCB top: reflect bottom-view X axis.
+    columns=(-1.5*PITCH,-0.5*PITCH,0.5*PITCH,1.5*PITCH)
+    result={}
+    for row, y in ((OEM_BOTTOM_TOP_ROW,-PITCH/2),
+                   (OEM_BOTTOM_BOTTOM_ROW,PITCH/2)):
+        for x,pin in zip(columns,row):
+            result[pin]=(-x,y)
+    return result
+EXPECTED=expected_top_view()
 def main():
     src=FP.read_text(encoding="utf-8")
     sch=SCH.read_text(encoding="utf-8")
@@ -29,6 +42,24 @@ def main():
         assert shape==("rect" if num=="1" else "circle"),(num,shape)
         assert (float(dx),float(dy),float(drill))==(2.0,2.0,1.1),(num,dx,dy,drill)
     assert seen==EXPECTED,(seen,EXPECTED)
+    # Geometric acceptance limits for THIS CANDIDATE only, not a fab signoff.
+    assert len({x for x,y in seen.values()})==4
+    assert len({y for x,y in seen.values()})==2
+    xs=sorted({x for x,y in seen.values()})
+    ys=sorted({y for x,y in seen.values()})
+    assert all(abs((xs[i+1]-xs[i])-PITCH)<1e-8 for i in range(3))
+    assert abs((ys[1]-ys[0])-PITCH)<1e-8
+    assert seen["1"]==(7.62,-2.54),"Pin 1 marker requires upper-right TOP position"
+    assert "(fp_circle (center 8.0 -4.0)" in src,"Pin 1 silkscreen marker missing"
+    assert src.count('(pad "')==8,"Unexpected extra pad"
+    # 0.031in diameter + .005in tolerance => 0.9144mm maximum pin diameter.
+    # 1.10mm nominal plated finished drill proposal leaves only 0.1856mm
+    # diametral clearance before plating and meniscus constraints are qualified.
+    max_pin_diameter_mm=(0.031+0.005)*25.4
+    assert max_pin_diameter_mm<1.10
+    min_annular_ring_mm=(2.00-1.10)/2
+    assert min_annular_ring_mm>=0.45-1e-9
+    assert (PITCH-2.00)>3.0,"Insufficient adjacent pad copper separation"
     assert "MX1701" in sch
     mix=sch.split('(lib_id "MCL_SBL1_CANDIDATE:SBL-1_PLUS")',1)[1].split("(instances ",1)[0]
     assert '(property "Footprint" ""' in mix,"NO FAB: footprint must stay unassigned before OEM graphic review"
