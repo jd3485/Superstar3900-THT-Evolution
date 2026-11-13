@@ -44,7 +44,7 @@
 (symbol "TH_AUDIO:BENCH_6V_CONN" (pin_numbers (hide yes)) (pin_names (offset 0.76)) (in_bom yes) (on_board yes)
 (property "Reference" "J" (at 0 12.7 0) (effects (font (size 1 1))))
 (property "Value" "BENCH_6V_LAB_ONLY" (at 0 -12.7 0) (effects (font (size 1 1))))
-(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (at 0 0 0) (effects (font (size 1 1))))
+(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" (at 0 0 0) (effects (font (size 1 1))))
 (symbol "BENCH_6V_CONN_0_1" (rectangle (start -7.62 7.62) (end 7.62 -7.62) (stroke (width 0.254) (type default)) (fill (type background))))
 (symbol "BENCH_6V_CONN_1_1"
 (pin power_out line (at -12.7 2.54 0) (length 5.08) (name "+6V_LAB_SRC" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1)))))
@@ -179,7 +179,7 @@
 (symbol (lib_id "TH_AUDIO:BENCH_6V_CONN") (at 40.64 120.65 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "5e27d000-0000-4000-8000-000000000402")
 (property "Reference" "J1201" (at 40.64 107.95 0) (effects (font (size 1 1))))
 (property "Value" "BENCH_6V_LAB_ONLY" (at 40.64 133.35 0) (effects (font (size 1 1))))
-(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (at 40.64 120.65 0) (effects (font (size 1 1)) (hide yes)))
+(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" (at 40.64 120.65 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "5e27d000-0000-4000-8000-000000000404"))
 (pin "2" (uuid "5e27d000-0000-4000-8000-000000000405"))
 (instances (project "AUDIO_RX_MONO_LM386_V2_7_DRAFT" (path "/5e27d000-0000-4000-8000-000000000001" (reference "J1201") (unit 1)))))
