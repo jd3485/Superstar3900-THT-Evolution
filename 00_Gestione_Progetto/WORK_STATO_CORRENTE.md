@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — stima corrente di rail LM386 da figura OEM, revisione in PR
+
+**Stato main verificato all'apertura:** SHA `e502141b49bc7fb01ceb42e24ede539bb05dbb28`, PR #66/#67 MERGED, nessuna PR aperta. Branch nuova `engineering/audio-6v-supply-current-typical-20261113` non ancora fusa. Dai grafici **tipici** TI LM386 SNAS545D §6.6 Figura 6-7 (dissipazione chip vs potenza di uscita a 6V/8Ω), calcolati intervalli **approssimativi, NON min/max garantiti** di corrente media di rail: 125mW speaker → ~71–91mA LM386, 250mW → ~105–133mA LM386; aggiungere ~10,8–11,94mA di feedback R1401 LM317 → intervalli di corrente **illustrativi** ~82–103mA e ~116–145mA al pin OUT LM317. I 125mA speaker RMS non sono 125mA supply DC. La dissipazione LM317 per un carico tipico non equivale alla capacità continua garantita; 0,35A teorici continuano a violare il caso termico ipotetico.
+
+**Nuova verifica economica:** `03_Verifiche/V2.7/verify_audio_rail_current_graph_v27.py` + CSV di intervalli di lettura grafico + `RAPPORTO_CORRENTE_REALE_STIMATA_LM386_FIG6_7.md`, invocati da `ci/fast_regressions.py`. Nessun nuovo test nativo KiCad per sola aritmetica e nessun wafer/hardware/SPICE TI testato. **CI della nuova PR da verificare prima di merge**. La baseline MAIN V2.6 7 fogli/138 THT, DRAFT audio MAIN/FRONT/PSU rimangono immutati. Il 6V è **solo laboratorio**, input PSU 10–10,5V da banco; nessuna protezione veicolare. Layout 0%, stima progetto ~20%; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 13 novembre 2026 — PR #66 MERGED: gate numerico corrente speaker e termica LM317
 
 **PR [#66](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/66) integrata** su `main`, SHA `f1a6d570a095141b91f06c053310372e168937f6`. CI [#43395884826](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43395884826): **3/3 SUCCESS** sul final HEAD `dea1540a8d7512aaf3374178f6f16b16d054d874` (fast unit PASS, full native KiCad9/ngspice/legacy PASS, gate obbligatorio PASS). Nei log veloci `PASS_LM386_LM317_ANALYTICAL_LOAD_ENVELOPE_NO_POWER_CERTIFICATION`, LM317 termica simulata solo per ipotesi `tj_at_0p2A_C=108.94`, `max_theta_at_0p35A_C_per_W=37.94`. Nessuna nuova suite nativa: riusate le regressioni FULL, calcolo numerico collocato nelle FAST.
