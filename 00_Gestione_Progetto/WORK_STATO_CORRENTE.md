@@ -7,6 +7,14 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — nuovo contratto pin↔net IF455 Tank→AM455 Envelope, in revisione
+
+**Base main verificata:** commit `54dc37e09368073e2c3cd58f416fd08464dfe061` (PR #86/#87 MERGED, nessuna PR aperta). Nuovo branch tecnico `engineering/if455-am455-native-interface-20261113`, ancora **NON INTEGRATO**: verifica `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` con **due netlist esportate da KiCad9 reale** per assicurare collegamento logico fra J1602 del tank IF455 e J1501 del rivelatore AM455 (pad1 segnale 455k AM IF, pad2 massa), anodo D1501 pin2 in ingresso, resto rivelatore J1502 AF out, nessuna commistione con rail 6V audio/PLL/TX/13,8V. Aggiunto al runner FULL preesistente `ci/full_regressions.py` senza job extra Actions. Rapporto `03_Verifiche/V2.7/RAPPORTO_CONTRATTO_IF455_AM455_THT.md`. **CI ancora da verificare; non merge fino al gate verde**.
+
+**Limite cruciale:** **NON** è un collegamento di PCB o un harness fisico, e la simulazione AC del tank con Rload100k **NON** garantisce risposta quando caricato dal diodo 1N4148 **non lineare**; serve simulazione transitoria dell'assieme e un IF driver/buffer qualificato. Filtro e detector restano 2 pilot THT separati, master MAIN V2.6 7 fogli/138 refs non modificato, bobina L1601 con footprint PROVISIONAL, C1603 GKG50015 quote OEM ma clearance PCB ancora non validata, 2 PCB fisiche non disegnate, layout0%, complessivo ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #86 MERGED: correzione meccanica C1603 GKG50015
 
 **PR [#86](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/86) MERGED** su main, SHA `20e417126d89af9aa66be5ff78d4be636d0c19ae`. Run [#43440490803](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43440490803) **3/3 PASS** sul final HEAD `91c062c6005a345129bd98e840580701b87421a5`: FAST success, FULL KiCad9/ngspice + 111 comandi storici success, required gate success. Log: ERC **0 errori/0 warning**, `PASS_KICAD9_IF455_THT9_ERC0_VARIABLE_10TO50PF_PROVISIONAL_NO_FAB`, `PASS_NGSPICE_IF455_VARIABLE_10TO50P_TUNING_RANGE_ONLY_NOT_RF_QUALIFIED_NO_FAB`.
