@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #75 MERGED: Actions FAST-only selettivo per 4 file analitici
+
+**Main verificato:** commit merge `eb9518662caa6c4d55d5ff55f85552a02579eaf1`, PR [#75](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/75) **MERGED**. GitHub Actions [run #43404924743](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43404924743) **3/3 SUCCESS** sul final HEAD `d14c4470b2cdfb8e02cf5840b5ab52b19e6067b4`: FAST, KiCad9/ngspice FULL e required gate PASS. **La PR di modifica della policy ha superato la FULL**; nessun ERC/netlist, SPICE o controllo storico eliminato.
+
+**Ottimizzazione reale:** `ci/ci_scope.py` ha una allowlist esatta `FAST_ONLY_ANALYTICAL` con **due script Python di sola aritmetica** `verify_audio_load_envelope.py` e `verify_audio_rail_current_graph_v27.py`, più i due CSV associati. Gli script sono eseguiti in `ci/fast_regressions.py` **ad ogni PR**. Se il diff contiene soltanto documentazione o i quattro file ammessi, la FULL viene SKIPPED dopo successo FAST; se contiene anche un solo file KiCad, SPICE, test nativo, workflow, policy, BOM o file ignoto, è obbligatorio il FULL KiCad9/ngspice e il required gate impone PASS. `ci/ci_scope.py --selftest` include casi di file nuovi e diff misti che non possono saltare FULL. Manual `workflow_dispatch` rimane FULL. AGENTS e `ci/CI_COST_OPTIMIZATION.md` allineati.
+
+**Nessun risparmio in euro quantificato:** la regola riduce i job KiCad9 solo in futuri casi circoscritti di cambi puramente numerici, che in precedenza triggeravano FULL. Nessuna modifica al progetto elettrico o ai tre draft; il master radio MAIN V2.6 rimane 7 fogli/138 refs; PCB-MAIN/PCB-FRONT fisiche e piste ancora assenti; complessivo ~20% stimato, routing 0%. Priority next: sviluppare RF/IF e demod RX in KiCad nativo, non moltiplicare report. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #73 MERGED: connettori THT JST XH 2,50mm audio LAB
 
 **PR [#73](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/73) integrata** su `main`, merge SHA `c17f5843c8cb694e3fb225198dbc1569f495aa72`. GitHub Actions [#43403815473](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43403815473) **3/3 PASS** sul final HEAD `534867ed039ffa532fa975e97be07df6efc57b9f`: FAST success, FULL native KiCad9/ngspice/111 regressioni storiche success, required gate success. Log: `PASS_KICAD9_JST_XH_2P50_TH_HEADER_PAD1_PAD2_PITCH_BOTH_MODULES` e `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`.
