@@ -21,7 +21,8 @@ R_CABLE_GOOD=0.20
 R_CABLE_BAD=1.50
 # Native .meas labels must be present; never treat a failure as pass.
 MEASUREMENTS=("vpre_good","vload_good","vrest_good",
-              "vpre_bad","vload_bad","vrest_bad")
+              "vpre_bad","vload_bad","vrest_bad",
+              "vgndload_good","vgndload_bad")
 
 
 def parse_measurements(output):
@@ -47,6 +48,10 @@ def main():
     assert "RREG_GOOD reg_good psu_good 0.25" in raw
     assert "RCABLE_GOOD psu_good amp_good 0.20" in raw
     assert "RCABLE_BAD psu_bad amp_bad 1.50" in raw
+    assert "RRETURN_GOOD amp_gnd_good 0 0.20" in raw
+    assert "RRETURN_BAD amp_gnd_bad 0 1.50" in raw
+    assert "C1206_GOOD amp_good amp_gnd_good 100u" in raw
+    assert "C1206_BAD amp_bad amp_gnd_bad 100u" in raw
     assert "ILOAD_GOOD amp_good 0 PULSE(0.020 0.140" in raw
     with tempfile.TemporaryDirectory(prefix="tht_audio_step_ngspice_") as folder:
         output_file=Path(folder)/"ngspice.log"
@@ -60,7 +65,7 @@ def main():
         assert not re.search(r"(?im)^\s*(?:error|fatal):",logfile),"ngspice reports error"
         vals=parse_measurements(logfile)
     for suffix,cable in (("good",R_CABLE_GOOD),("bad",R_CABLE_BAD)):
-        r_total=R_REG_ASSUMED+cable
+        r_total=R_REG_ASSUMED+2*cable
         expected_before=V_NOM-I_IDLE*r_total
         expected_during=V_NOM-I_STEP*r_total
         assert math.isclose(vals["vpre_"+suffix],expected_before,abs_tol=0.006),(
@@ -74,11 +79,16 @@ def main():
             suffix,"resistive drop",drop)
     good_drop=vals["vpre_good"]-vals["vload_good"]
     bad_drop=vals["vpre_bad"]-vals["vload_bad"]
-    assert bad_drop>good_drop*3.2
+    assert bad_drop>good_drop*4.0
+    assert math.isclose(vals["vgndload_good"],I_STEP*R_CABLE_GOOD,abs_tol=.005)
+    assert math.isclose(vals["vgndload_bad"],I_STEP*R_CABLE_BAD,abs_tol=.005)
+    assert vals["vgndload_bad"] > vals["vgndload_good"]*4
     # This circuit cannot certify power supply; it has no semiconductor model.
     print("PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB",
           {"droop_good_V":round(good_drop,4),
-           "droop_high_cable_R_V":round(bad_drop,4)},flush=True)
+           "droop_high_cable_R_V":round(bad_drop,4),
+           "amp_ground_shift_good_V":round(vals["vgndload_good"],4),
+           "amp_ground_shift_bad_V":round(vals["vgndload_bad"],4)},flush=True)
 
 
 if __name__=="__main__":
