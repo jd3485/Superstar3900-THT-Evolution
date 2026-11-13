@@ -28,8 +28,9 @@ def data_rows(path):
 def main():
     sch=SCH.read_text(encoding="utf-8")
     spice=NET.read_text(encoding="utf-8")
-    assert '"110pF_C0G_THT"' in sch
-    assert '"2p2_C0G_THT"' in sch
+    # The deck reproduces the PR81 historical fixed-cap experiment only.
+    assert '"82pF_C0G_THT"' in sch
+    assert "EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM" in sch
     for required in ("NO FAB/NO TX","C1602_NEW tank_new 0 110p",
                      "C1602_OLD tank_old 0 120p",
                      "C1603_NEW tank_new 0 2.2p","C1604_NEW tank_new out_new 10p",

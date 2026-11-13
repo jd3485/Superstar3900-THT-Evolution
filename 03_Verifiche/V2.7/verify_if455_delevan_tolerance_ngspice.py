@@ -30,7 +30,9 @@ def rows_from_ngspice(path):
 def main():
     sch=SCHEMATIC.read_text(encoding="utf-8")
     net=NET.read_text(encoding="utf-8")
-    assert "110pF_C0G_THT" in sch
+    # Historical fixed-cap deck documents the risk already discovered.
+    assert "82pF_C0G_THT" in sch
+    assert "EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM" in sch
     assert "1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED" in sch
     assert "L_1mH_Axial_THT_PROVISIONAL" in sch
     for required in ("NO FAB NO TX","L_L_MINUS5 tank_L_MINUS5 loss_L_MINUS5 0.95m",
