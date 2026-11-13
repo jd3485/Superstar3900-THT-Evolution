@@ -54,7 +54,7 @@
 (instances (project "IF455_TANK_THT_V2_7_DRAFT" (path "/9b640000-5a5a-4a4a-8a8a-000000000000" (reference "L1601") (unit 1)))))
 (symbol (lib_id "TH_TANK:C") (at 152.4 106.68 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "9b640000-5a5a-4a4a-8a8a-000000000022")
 (property "Reference" "C1602" (at 152.4 93.98 0) (effects (font (size 1 1))))
-(property "Value" "120pF_C0G_THT" (at 152.4 119.38000000000001 0) (effects (font (size 1 1))))
+(property "Value" "110pF_C0G_THT" (at 152.4 119.38000000000001 0) (effects (font (size 1 1))))
 (property "Footprint" "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm" (at 152.4 106.68 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "9b640000-5a5a-4a4a-8a8a-000000000023"))
 (pin "2" (uuid "9b640000-5a5a-4a4a-8a8a-000000000024"))
