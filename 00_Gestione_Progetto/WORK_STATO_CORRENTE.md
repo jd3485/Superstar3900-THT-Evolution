@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #62 integrata: headroom LM317 audio corretto e verificato
+
+**PR [#62](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/62) MERGED** su `main`, SHA `ce4ccf33272d2e76ffb2524a4627b47f307baa8a`. GitHub Actions [#43391899904](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43391899904) **3/3 PASS** sul commit finale `0aa80817558863644751443ea8576361d0d050d9`: veloce PASS, FULL nativo KiCad9/legacy PASS, required gate PASS. Il test PSU nativo ha riportato `ERC messages: 0 Errors 0 Warnings`, `PASS_KICAD9_AUDIO_6V_LM317_PSU_ERC0_THT10_PINNET_NO_FAB` e output statico `LM317_REFERENCE_ENDPOINTS_NOT_FULL_PVT 5.6055 6.3091`. Nessun waiver; 111 comandi storici FULL.
+
+**Modifica tecnica CAD reale:** il draft `AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch` e la libreria `TH_PSU.kicad_sym` ora riportano ingresso lab `LAB_VIN_10TO10P5V` e 10–10,5V **al pin IN** del regolatore, correggendo vecchio 9–10V che non soddisfaceva il VIN−VOUT≥3V nelle condizioni parametrizzate alte. Test KiCad9 e PVT di riferimento ±1% ripetibili, rapporto `RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md` aggiornato. Non altera gli altri draft (LM386/FRONT) né il master V2.6.
+
+**Restano bloccanti:** la connettività PSU→LM386 non è stata realizzata, la sorgente 10–10,5V è esterna da laboratorio e NON è alimentazione della radio 13,8V, nessuna qualifica SOA/dissipazione reale, ripple, load transients, protezione inversione, protezione ingresso o chassis/tab attivo; MPN OEM finali non completi, RF/PLL e Issue #27 aperte. MAIN V2.6 7 fogli/138 refs, PCB-MAIN e PCB-FRONT layout/routing **0%**; percentuale complessiva approssimativa **20%** senza crescita artificiale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — correzione input headroom LM317 6V LAB, CAD in review
 
 **Baseline verificata su main:** merge PR #61 `e0d1be6230ca04833a872a98d7d5e542d48f6d44`, nessuna PR aperta. I tre draft KiCad9 audio (LM386 MAIN, volume FRONT, PSU LM317) rimangono **standalone**; 7 fogli MAIN V2.6 e 138 refs invariati, layout PCB 0%.
