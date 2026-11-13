@@ -21,3 +21,18 @@ Lo script `03_Verifiche/V2.7/verify_if455_source_impedance_matrix_native.py` cop
 La matrice non rappresenta l'impedenza complessa/frequenza-dipendente reale, i bias del driver, rumore, distorsione, guadagno, temperatura o Q dell'induttore; anche l'ipotesi Rcoil=16,5 Ω non è una perdita RF OEM. Il passaggio del test significa **solo** che gli scenari sono stati calcolati e riesaminabili; non seleziona alcun transistor/op-amp THT né rende fabbricabile il banco. Dati OEM, test di rumore e qualifica pinout/footprint rimangono prerequisiti.
 
 **Gate:** FAST+FULL+required su HEAD definitivo, lettura del log con tutte le sei misure; merge tecnico solo con gate verdi. Uso del runner FULL esistente, nessun nuovo workflow Actions. Il master KiCad MAIN V2.6 non è modificato, entrambi i moduli KiCad V2.7 restano separati; nessun layout/DRC reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Risultati effettivi — PR #96 MERGED
+
+[PR #96](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/96) **MERGED** con commit `4c5b5293fb1d1f6fc9d667fa6add008c7fc24f98`. Il commit tecnico `40ca3846c2db35a7267750e34d79c01712ae88d2` ha passato **FAST+FULL+required CI 3/3 SUCCESS** nel run [#43460892882](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43460892882). Log: `PASS_NGSPICE_IF455_SOURCE_IMPEDANCE_LEVEL_MATRIX_GENERIC_ONLY_NO_FAB_NO_TX`, con **111 comandi legacy** eseguiti.
+
+| Sorgente (Ω) | AM picco (V) | AFpp tank+diodo (V) | AFpp riferimento diretto (V) | RF out massimo positivo (V) |
+|---:|---:|---:|---:|---:|
+| 50 | 0,5 | 0,011504869 | 0,23901695 | 0,3357122 |
+| 50 | 2,0 | 0,17444891 | 2,0377306 | 0,6972108 |
+| 500 | 0,5 | 0,011262692 | 0,2232765 | 0,3370827 |
+| 500 | 2,0 | 0,18185761 | 1,8248393 | 0,7035286 |
+| 5000 | 0,5 | 0,009101405 | 0,15164026 | 0,3155607 |
+| 5000 | 2,0 | 0,1527582 | 1,1725474 | 0,6631087 |
+
+Il cambio 50→5000Ω riduce AFpp filtrato di **20,89%** al livello 0,5 V e **12,43%** al livello 2 V (nel solo modello). L'andamento non è strettamente monotono fra 50 e 500 Ω al livello 2 V: questo sottolinea la necessità di simulazioni complete e vieta deduzioni lineari semplificate. Non misuriamo selettività di canale, SNR, IMD o reale comportamento RF/PVT: **nessuna qualifica di un buffer THT o di un diodo OEM**, nessun layout PCB né DRC.
