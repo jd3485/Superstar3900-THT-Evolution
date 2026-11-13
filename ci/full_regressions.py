@@ -262,6 +262,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_generic_bjt_bias_ac.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # End-to-end nonlinear AM path with THT KSP10 candidate and generic BJT/diode:
+    # identical independent IF455 tanks, direct diode versus common-collector
+    # followed by diode; native ngspice, no OEM semiconductor qualification.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_ksp10_am455_combined_generic_transient.cir").exists():
+        print("::group::IF455 TANK KSP10 AM455 GENERIC NONLINEAR CASCADE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_am455_combined_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
