@@ -32,7 +32,7 @@ def main():
     text=NET.read_text(encoding="utf-8")
     for needle in ("EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM",
                    "82pF_C0G_THT",
-                   "TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL"):
+                   "TH_TANK:Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT"):
         assert needle in s,("Actual KiCad draft not the simulated topology",needle)
     for needle in ("NO FAB","C1602_LMIN_MIN tank_LMIN_MIN 0 82p",
                    "CTRIM_LMIN_MIN tank_LMIN_MIN 0 10p",
