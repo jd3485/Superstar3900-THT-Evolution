@@ -32,10 +32,13 @@ def main():
     assert base.count("amp=2 rail=6")==1
     assert base.count("C1801 out_b gate_j 10p")==1
     assert base.count("R1801 gate_j 0 1Meg")==1
-    assert base.count("J1801 vcc gate_j source_j JGEN")==1
+    assert base.count("JQ1801 vcc gate_j source_j JGEN")==1
     assert base.count("R1802 source_j 0 2.2k")==1
     assert base.count("C1802 source_j bufferout 10n")==1
     assert base.count("R1803 bufferout 0 100k")==1
+    assert base.count("EGS gs_monitor 0 gate_j source_j 1")==1
+    assert base.count(".meas tran gate_source_max MAX v(gs_monitor)")==1
+    assert base.count(".meas tran gate_source_min MIN v(gs_monitor)")==1
     assert base.count(".tran 0.025u 12m 0 0.025u")==1
     for item in ("10pF_C0G_RF_INPUT_PROVISIONAL","1Meg_GATE_DC_RETURN_PROVISIONAL",
                  "2k2_SOURCE_SELF_BIAS_DRAFT","ONSEMI_J113_TO92_1D_2S_3G_ONLY_CANDIDATE"):
