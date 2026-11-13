@@ -43,9 +43,18 @@ def check_header_footprints():
               if (p/"Connector_JST.pretty"/fp_name).is_file()]
     assert matching,("Official KiCad9 JST XH footprint unavailable",possible)
     footprint=matching[0].read_text(encoding="utf-8")
-    import re
-    pads=re.findall(r'\\(pad "([12])" thru_hole [^\\n]+\\s*\\(at ([0-9.]+) ([0-9.]+)\\)',footprint)
-    assert sorted(pads)==[("1","0","0"),("2","2.5","0")],("Pad1/pad2 or pitch mismatch",pads)
+    # Read only the exact two THT pad declarations, without assuming that
+    # KiCad footprint generator line wrapping is stable across KiCad9.
+    pads=[]
+    for pin_number in ("1","2"):
+        signature='(pad "'+pin_number+'" thru_hole '
+        assert footprint.count(signature)==1,("Missing or duplicated THT pad",pin_number)
+        section=footprint.split(signature,1)[1][:240]
+        assert "(at " in section,("Missing pad coordinate",pin_number)
+        coords=section.split("(at ",1)[1].split(")",1)[0].split()
+        assert len(coords)>=2,("Malformed KiCad footprint pad coordinate",coords)
+        pads.append((pin_number,float(coords[0]),float(coords[1])))
+    assert sorted(pads)==[("1",0.0,0.0),("2",2.5,0.0)],("Pad1/pad2 or pitch mismatch",pads)
     assert footprint.count("(pad \"")==2, "Unexpected pad count"
     assert "Connector_JST" in JST_XH_FP and JST_XH_OLD!=JST_XH_FP
     print("PASS_KICAD9_JST_XH_2P50_TH_HEADER_PAD1_PAD2_PITCH_BOTH_MODULES",flush=True)
