@@ -17,6 +17,12 @@ Per il tank nominale di PR #81, con **L 1 mH e C1602=110 pF, C1603=2,2 pF**, la 
 - frequenza di autorisonanza 2,8MHz: se fosse descritta da L=1mH con un solo condensatore equivalente ideale, `Cpar≈1/((2π·2,8MHz)^2·1mH)≈3,23 pF`. È solo un **modello derivato**, non il dato di capacità realmente garantito per la bobina;
 - il valore di **Q misurato a 790kHz non è Q a 455kHz**; la DCR 16,5Ω non coincide con la resistenza equivalente AC, che cambia con nucleo/frequenza e carico. Non utilizzare il Q=60 per inventare banda a −3dB della nostra sezione IF.
 
+## Evidenze validate PR #83
+
+La [PR #83](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/83) è **MERGED**, SHA `c9f1a473bf00080bf961693bd397eb9982df4667`; Actions [#43413234046](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43413234046) **3/3 PASS**, con 2001 punti AC nativi e picchi `466220Hz` L−5%, `454395Hz` Lnom, `443395Hz` L+5%, `448510Hz` con Cpar3.23pF assunta. Il test ha correttamente emesso il blocco `REJECT_FIXED_110PF_IF455_TANK_WITH_5PCT_COIL_UNTIL_TRIM_AND_RF_MEASUREMENTS` perché la soluzione senza trimmer non copre i corner. Successivamente PR #84 ha aggiunto C1602 82pF+C1603 trimmer 10–50pF e ha superato l'analisi di copertura di quattro corner nel modello (non prova RF reale). Restano non qualificati i footprint OEM di L1601 e C1603.
+
+---
+
 ## Nuova prova ngspice che protegge dalla qualifica prematura
 
 Deck `03_Verifiche/V2.7/spice/if455_delevan_2500_28j_tolerance_ac.cir` con **quattro reti simulate**:
