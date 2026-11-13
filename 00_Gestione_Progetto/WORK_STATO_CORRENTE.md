@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 11 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 13 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 13 novembre 2026 — PR #71 MERGED: transitorio ngspice differenziale 2 fili e ground bounce
+
+**PR [#71](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/71) MERGED** su `main`, SHA `48bbe6d02c8dcfcf17a5ea62fe9e456c54e14434`. Workflow [#43400933150](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43400933150) **3/3 PASS** su final HEAD `28d4701f200a5a115193c2fcc4cf8d37cccb8e2d`: FAST PASS, FULL native KiCad9/ngspice e 111 regressioni legacy PASS, required gate PASS. Evidenza log `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` con **droop_good=0,078 V**, **droop_bad=0,390 V**, ground bounce **0,028 V** e **0,210 V**. Nessun waiver.
+
+**Correzione tecnica essenziale:** i risultati 54/210mV della prima PR #70 valevano soltanto per il **ritorno di massa idealmente perfetto**. La nuova versione della stessa netlist comportamentale modella anche il **filo di ritorno**, usa un voltmetro ideale non caricante `EAMPDIFF` per acquisire `V(amp+,amp_gnd)` (la sintassi diretta `.meas FIND v(a,b)` aveva fallito un primo tentativo CI), e verifica anche `vgndload`. Resistenze scenario andata e ritorno rispettivamente 0,20Ω/0,20Ω o 1,50Ω/1,50Ω, più R PSU **assunta** 0,25Ω; gradino 20→140mA, C1402 10µF e C1206 100µF ideali. Prima CI del branch annullata da commit successivo, seconda con measure differenziale non supportata, **solo l'ultima è valida**.
+
+**Maturità NON acquisita:** questo è ngspice realmente eseguito su una rete passiva **senza macromodelli OEM LM317/LM386**, ESL/ESR, risposta del chip al clipping, cavo o hardware fisici. Non prova prestazioni, EMC, THD, dissipazione, SOA o sicurezza automotive. LM317 PSU richiede 10–10,5V **solo laboratorio**; NON collegare a 13,8V batteria/veicolo. Schemi KiCad MAIN V2.6 (7 fogli/138 refs) e DRAFT LM386, LM317, FRONT non modificati; PCB-MAIN/FRONT layout ancora 0%, complessivo ~20% **stima**. #27 sicurezza, #42 BOM fabbricazione e RF U401/L501 ancora aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 13 novembre 2026 — PR #70 MERGED, correzione ritorno massa nella simulazione in review
 
