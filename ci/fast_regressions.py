@@ -20,3 +20,9 @@ subprocess.run([sys.executable,"-B",str(ROOT/"03_Verifiche/V2.6/verify_mpn_inven
 # about speaker impedance, required swing and regulator thermal envelope.
 subprocess.run([sys.executable,"-B",str(ROOT/"03_Verifiche/V2.7/verify_audio_load_envelope.py")],
                cwd=ROOT,check=True)
+
+# TI figure 6-7 typical graphical dissipation -> supply current *illustration*.
+# Keep it in cheap FAST; no new native KiCad/ngspice job for arithmetic only.
+subprocess.run([sys.executable,"-B",
+                str(ROOT/"03_Verifiche/V2.7/verify_audio_rail_current_graph_v27.py")],
+               cwd=ROOT,check=True)
