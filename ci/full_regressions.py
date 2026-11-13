@@ -161,6 +161,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_am455_bench_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Bench 455kHz AM envelope behavior with a deliberately GENERIC diode model.
+    # This does NOT replace the native KiCad ERC, IF gain or OEM qualification.
+    am455_spice=ROOT/"03_Verifiche/V2.7/spice/am455_envelope_1khz_generic_diode_bench.cir"
+    if am455_spice.exists():
+        print("::group::V2.7 AM455 1KHZ AM DEMOD GENERIC DIODE NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_am455_generic_diode_spice.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
