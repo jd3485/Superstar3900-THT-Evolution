@@ -137,6 +137,12 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_audio_psu_lm317_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    if (ROOT/"04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch").exists():
+        print("::group::V2.7 AUDIO 6V PSU TO LM386 NATIVE PIN CONTRACT",flush=True)
+        subprocess.run([sys.executable, "-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_audio_6v_supply_contract_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
