@@ -49,3 +49,16 @@ Verificatore `03_Verifiche/V2.7/verify_sbl1_mixer_oem_symbol_lo_contract_native.
 
 Il bench non ha alimentazione mixer attiva perché il dispositivo è passivo; il pilotaggio +7dBm LO è però un requisito *esterno* non risolto. Ritorni RF, matching mixer→IF455, VCO, isolamento LO, Q, LNA/IF gain e SNR/SINAD AM/FM/SSB restano bloccanti.
 
+
+## Risultato CAD finale della PR #120
+
+**[PR #120](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/120) MERGED** commit `2bfa1a76e4d78f14cfec58151db19dbb6791e093`, final head `39ddef12e9694198118b9147f10c16dbd1be3179`. [GitHub Actions #43519722696](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43519722696) FAST/FULL/required **3/3 success**; **native KiCad9 ERC: 0 errors, 0 warnings**; exported native netlist **4 component references, 4 nets**:
+
+| Native net | Component terminals |
+|---|---|
+| `IF455_MIXER_IF` | `J1703/1`, `MX1701/3`, `MX1701/4` |
+| `RF_27MHZ_INPUT_PENDING` | `J1701/1`, `MX1701/1` |
+| `LO_27MHZ_OFFSET_PENDING` | `J1702/1`, `MX1701/8` |
+| `IF_BENCH_GND` | `J1701/2`, `J1702/2`, `J1703/2`, `MX1701/2`, `MX1701/5`, `MX1701/6`, `MX1701/7` |
+
+La prima run [#43519032284](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43519032284) ha fallito la FULL per 3 warning `lib_symbol_issues`, perché J2 era solo nella cache dello schematico e non nel file libreria. Il difetto CAD è stato corretto aggiungendo il J2 nella libreria, aggiornando la verifica OEM per analizzare solo il sotto-simbolo SBL-1+, richiedendo la vera esportazione KiCad9 di **entrambi** i simboli e rieseguendo FULL con ERC0. Non sono state nascoste violazioni. Il mixer resta passivo e non qualificato come stadio RF funzionante; **non ha footprint** e non è un circuito fisico integrato col master.
