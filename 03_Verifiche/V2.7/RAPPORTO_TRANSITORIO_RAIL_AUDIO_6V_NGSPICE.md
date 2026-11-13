@@ -2,6 +2,25 @@
 
 **13 novembre 2026 — PR tecnica in revisione.** Modello dei transitori del **collegamento PSU → amplificatore** già definito dai draft KiCad LM317 / LM386; **non è** un macromodello TI LM317, LM386, PCB e cablaggio fisico, né una misura di laboratorio. Non è adatto alla fabbricazione o all'alimentazione automobilistica.
 
+## Revisione delle sonde ngspice `.meas` (CI precedente non verde)
+
+Il primo run della PR #71 sullo SHA iniziale è stato annullato dopo aggiornamento dei test. Sullo SHA successivo `637a8766341a7c59bcf9f33ea9f28e6eecdaa929` la CI nativa ha documentato il fallimento delle `.meas ... FIND v(amp+,amp_gnd)` pur producendo le misure single-node di ground bounce; **non** si può dichiarare PASS. La correzione inserisce in ciascun circuito una **sorgente di tensione dipendente ideale con impedenza di ingresso infinita** (`EAMPDIFF_GOOD`/`EAMPDIFF_BAD`) per trasformare `V(amp+,amp_gnd)` in un segnale single-ended `V(amp_diff)` che ngspice può acquisire con `.meas FIND v(amp_diff)`. È soltanto una **sonda virtuale senza carico**: non cambia né condensatori né resistori né i requisiti del cavo. L'esito definitivo richiede una nuova CI verde sul commit contenente entrambe le sonde.
+
+---
+
+## Correzione fondamentale: resistenza di ritorno inclusa
+
+La prima revisione approvata nella **PR #70** ipotizzava il ritorno di massa ideale (zero ohm) e misurava la tensione dell'alimentazione rispetto alla massa PSU. Era una simulazione valida **solo per quell'ipotesi**, ma **sottostimava il droop ai pin dell'LM386** se il secondo conduttore reale ha resistenza. Questa revisione aggiunge realmente a ngspice `RRETURN_GOOD` e `RRETURN_BAD`, sostituisce i condensatori e carichi a massa globale con massa locale del lato amplificatore, e misura `V(amp+, amp_gnd)`. Controlla anche lo spostamento della massa audio rispetto alla sorgente a 140 mA:
+
+| Scenario | Resistenza andata | Resistenza ritorno | Droop differenziale atteso | Spostamento GND locale atteso al carico |
+|---|---:|---:|---:|---:|
+| Bassa R | 0,20 Ω | 0,20 Ω | **78 mV** | **28 mV** |
+| Alta R | 1,50 Ω | 1,50 Ω | **390 mV** | **210 mV** |
+
+Questi valori restano **calcoli attesi** fino a esito reale della CI. Non rappresentano resistenze misurate o specifiche del cavo, e la massa locale può influire anche sulla suscettibilità al rumore AF/RF. La scelta di resistenza di anello, guaina, connettori, orientamento e ritorni dovrà essere qualificata prima del layout.
+
+---
+
 ## Circuito simulato
 
 Netlist effettiva `03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir`, eseguita con `ngspice -b` dalla CI nativa.
@@ -9,18 +28,18 @@ Netlist effettiva `03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir
 - Sorgente Thévenin IDEALE a **5,952 V**: rappresenta il punto nominale ipotizzato, **non** comportamento o regolazione dinamica reale del LM317.
 - Resistenza equivalente interna IPOTETICA **0,25 Ω**, non specifica OEM del LM317 e **non** da confondere con il suo dropout o con una resistenza piccola segnale.
 - **C1402 = 10 µF** vicino all'uscita PSU e **C1206 = 100 µF** vicino all'ingresso LM386, come nei rispettivi schemi KiCad. Capacità ideali, senza tolleranza, ESR, ESL o perdite. Il 100nF C1205 non viene modellato: sui millisecondi lo scopo è stimare il droop lento, non ripple ad alta frequenza.
-- Due scenari indipendenti di resistenza totale del conduttore di andata (con ritorno modellato idealmente): **0,20 Ω** e **1,50 Ω**. Sono numeri scelti per rendere il fenomeno osservabile, non misure del cavo previsto. La realtà richiede l'intero anello andata+ritorno, contatti e piste.
+- Due scenari indipendenti con **ciascun conduttore** di andata e ritorno modellato esplicitamente: **0,20 Ω per conduttore** oppure **1,50 Ω per conduttore**. Sono numeri illustrativi, non misure del cavo previsto. Il ritorno produce spostamento della massa locale dell'amplificatore rispetto alla massa della sorgente.
 - Carico di corrente costante per tratti che *assorbe* da +6 V a massa: **20 mA** a riposo, sale artificialmente a **140 mA** a 5 ms, rimane 5 ms, poi torna a 20 mA. Questo **non** simula la corrente non lineare di un LM386 o la sua potenza audio/THD.
-- Analisi transitoria da 0 a 18 ms, campionamento a 4 ms, 8 ms, 15 ms; le verifiche confrontano i risultati veri di ngspice con i valori stazionari della rete resistiva/capacitiva. Un test passa solo se ngspice termina con codice 0, produce tutte le misure e ogni confronto rientra nella tolleranza di test.
+- Analisi transitoria da 0 a 18 ms, campionamento differenziale `V(AMP+, AMP_GND)` a 4 ms, 8 ms, 15 ms e della massa locale a 8 ms; le verifiche confrontano i risultati veri di ngspice con i valori stazionari della rete resistiva/capacitiva. Un test passa solo se ngspice termina con codice 0, produce tutte le misure e ogni confronto rientra nella tolleranza di test.
 
 ## Risultati attesi dai calcoli: non dichiararli simulati finché CI non è verde
 
-Per la rete ideale a tempo sufficientemente lungo, la variazione di carico è `ΔI=0,12A`; la caduta dovuta alle due resistenze è `ΔV≈ΔI·(R_interne+R_cavo)`:
+Per la rete ideale a tempo sufficientemente lungo, la variazione di carico è `ΔI=0,12A`; la caduta dovuta alle due resistenze è `ΔV≈ΔI·(R_interna+R_andata+R_ritorno)`:
 
 | Scenario non calibrato | R totale ipotetica | Prima dello step | Durante lo step | Caduta stazionaria attesa |
 |---|---:|---:|---:|---:|
-| Collegamento a bassa resistenza | 0,25+0,20=0,45Ω | 5,943V | 5,889V | **54mV** |
-| Collegamento più resistivo | 0,25+1,50=1,75Ω | 5,917V | 5,707V | **210mV** |
+| Collegamento a bassa resistenza | 0,25+0,20+0,20=0,65Ω | 5,939V | 5,861V | **78mV** |
+| Collegamento più resistivo | 0,25+1,50+1,50=3,25Ω | 5,887V | 5,497V | **390mV** |
 
 La simulazione campiona anche il ripristino dopo il gradino e le misure possono differire leggermente dai valori statici durante il transitorio. Il caso 1,50Ω è **illustrativo**: non indica né un target né un massimo per il cablaggio reale.
 
@@ -30,7 +49,7 @@ La simulazione campiona anche il ripristino dopo il gradino e le misure possono 
 
 1. Presenza di due circuiti con valori di condensatori corrispondenti a C1402/C1206, tensione nominale e resistenze esplicitamente etichettate come scenari.
 2. Invocazione ngspice **reale**, con `.meas tran` per i 6 campioni prima/durante/dopo il gradino sui due circuiti.
-3. Esito senza errori e confronto di tensioni, cadute e recupero con i calcoli passivi; attesa caduta nel caso ad alta resistenza almeno 3,2× quella a bassa resistenza.
+3. Esito senza errori e confronto di tensioni, cadute e recupero con i calcoli passivi; attesa caduta nel caso ad alta resistenza almeno 4,0× quella a bassa resistenza.
 4. Impossibilità di spacciare il test per una qualifica dell'alimentatore: il token di PASS dice chiaramente `BEHAVIORAL`, `NO_VENDOR`, `NO_FAB`. L'ERC e le netlist KiCad dei tre draft restano verificati separatamente dalle loro suite native.
 
 ## Condizioni imprescindibili prima della PCB
