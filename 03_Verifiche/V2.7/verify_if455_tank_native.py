@@ -13,8 +13,8 @@ SCH=BASE/"IF455_TANK_THT_V2_7_DRAFT.kicad_sch"
 FP=BASE/"TH_TANK.pretty/L_1mH_Axial_THT_PROVISIONAL.kicad_mod"
 PARTS={"J1601","C1601","L1601","C1602","C1603","R1601","C1604","R1602","J1602"}
 def main():
-    frequency=1/(2*math.pi*math.sqrt(1e-3*122.2e-12))
-    assert 454000<frequency<457000,frequency
+    frequency=1/(2*math.pi*math.sqrt(1e-3*112.2e-12))
+    assert 473000<frequency<478000,frequency
     sch=SCH.read_text(encoding="utf-8")
     fp=FP.read_text(encoding="utf-8")
     assert sch.count("(symbol (lib_id ")==9
@@ -50,6 +50,6 @@ def main():
                 ("L1601","2"),("C1602","2"),("C1603","2"),
                 ("R1601","2"),("R1602","2"))
         assert len(nets)==4,sorted(nets)
-    print("IF455_LC_IDEAL_RESONANCE_HZ",round(frequency,2),flush=True)
-    print("PASS_KICAD9_IF455_THT9_ERC0_1MH_122P2_NOMINAL_PROVISIONAL_NO_FAB",flush=True)
+    print("IF455_UNLOADED_LC_IDEAL_RESONANCE_HZ",round(frequency,2),flush=True)
+    print("PASS_KICAD9_IF455_THT9_ERC0_1MH_112P2_UNLOADED_PROVISIONAL_NO_FAB",flush=True)
 if __name__=="__main__":main()
