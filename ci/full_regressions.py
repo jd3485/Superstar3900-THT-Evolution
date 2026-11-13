@@ -374,6 +374,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_two_port_source_impedance_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Mini-Circuits actual A06 THT mixer symbol native KiCad9 parser + OEM
+    # eight-pin port mapping; +7dBm 50-ohm LO drive is a budget only.
+    # No A06 footprint or mixer electrical performance is approved.
+    if (ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_oem_symbol_lo_contract_native.py").exists():
+        print("::group::SBL1 OEM A06 CANDIDATE NATIVE KICAD9 SYMBOL LO CONTRACT",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_oem_symbol_lo_contract_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
