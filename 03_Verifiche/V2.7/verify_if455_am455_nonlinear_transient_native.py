@@ -31,7 +31,7 @@ def main():
         assert "Error:" not in log and "fatal" not in log.lower(), "ngspice error"
     values = {}
     for label in ("coupled_max", "coupled_min", "direct_max", "direct_min", "rf_out_peak"):
-        match = re.search(r"(?im)^\\s*" + label + r"\\s*=\\s*([+-]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][+-]?\\d+)?)", log)
+        match = re.search(r"(?im)^\s*" + label + r"\s*=\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)", log)
         assert match, ("Missing measured native transient result", label)
         values[label] = float(match.group(1))
         assert math.isfinite(values[label]), label
