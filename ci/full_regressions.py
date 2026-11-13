@@ -331,6 +331,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_passive_port_impedance_selectivity_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # EW GKG50015 passive 10..50pF trimmer AC retuning: 4 output-load
+    # surrogates x 9 settings = 36 native ngspice runs (not OEM RF Q test).
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_loaded_trimmer_retune_native.py").exists():
+        print("::group::IF455 TRIMMER LOAD RETUNE 36 NATIVE NGSPICE AC",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_loaded_trimmer_retune_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
