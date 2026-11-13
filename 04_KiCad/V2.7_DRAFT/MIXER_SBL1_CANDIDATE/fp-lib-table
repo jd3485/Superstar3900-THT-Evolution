@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "SBL1_A06_CANDIDATE")(type "KiCad")(uri "${KIPRJMOD}/SBL1_A06_CANDIDATE.pretty")(options "")(descr "UNQUALIFIED SBL-1+ A06 THT candidate; NO FAB"))
+)
