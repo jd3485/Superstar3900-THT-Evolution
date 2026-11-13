@@ -13,7 +13,7 @@ SCH=BASE/"IF455_TANK_THT_V2_7_DRAFT.kicad_sch"
 FP=BASE/"TH_TANK.pretty/L_1mH_Axial_THT_PROVISIONAL.kicad_mod"
 PARTS={"J1601","C1601","L1601","C1602","C1603","R1601","C1604","R1602","J1602"}
 def main():
-    frequency=1/(2*math.pi*math.sqrt(1e-3*112.2e-12))
+    frequency=1/(2*math.pi*math.sqrt(1e-3*112e-12))
     assert 473000<frequency<478000,frequency
     sch=SCH.read_text(encoding="utf-8")
     fp=FP.read_text(encoding="utf-8")
@@ -21,6 +21,16 @@ def main():
     assert "IF455 BENCH PASSIVE LC ONLY" in sch
     assert "NOT RF QUALIFIED" in sch and "NO FAB" in sch
     assert "L_1mH_Axial_THT_PROVISIONAL" in sch
+    assert "82pF_C0G_THT" in sch
+    assert "EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM" in sch
+    assert '(symbol "TH_TANK:CT"' in sch
+    assert '(symbol (lib_id "TH_TANK:CT")' in sch
+    assert "TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL" in sch
+    trimmer=BASE/"TH_TANK.pretty/Trimmer_GKG50015_2pad_PROVISIONAL.kicad_mod"
+    trimtxt=trimmer.read_text(encoding="utf-8")
+    assert trimtxt.count(' thru_hole ')==2
+    assert '(pad "1" thru_hole' in trimtxt and '(pad "2" thru_hole' in trimtxt
+    assert "DO NOT FABRICATE" in trimtxt
     assert fp.count(' thru_hole ')==2, "Provisional coil MUST have exactly two THT pads"
     assert '(pad "1" thru_hole circle (at 0 0)' in fp
     assert '(pad "2" thru_hole circle (at 15.24 0)' in fp
@@ -51,5 +61,5 @@ def main():
                 ("R1601","2"),("R1602","2"))
         assert len(nets)==4,sorted(nets)
     print("IF455_UNLOADED_LC_IDEAL_RESONANCE_HZ",round(frequency,2),flush=True)
-    print("PASS_KICAD9_IF455_THT9_ERC0_1MH_112P2_UNLOADED_PROVISIONAL_NO_FAB",flush=True)
+    print("PASS_KICAD9_IF455_THT9_ERC0_VARIABLE_10TO50PF_PROVISIONAL_NO_FAB",flush=True)
 if __name__=="__main__":main()
