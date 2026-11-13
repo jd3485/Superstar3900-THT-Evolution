@@ -27,7 +27,7 @@ def main():
     base=SCH.parent
     assert (base/"TH_IFBUF.kicad_sym").is_file()
     assert (base/"sym-lib-table").is_file()
-    assert \"TH_IFBUF\" in (base/"sym-lib-table").read_text(encoding="utf-8")
+    assert "TH_IFBUF" in (base/"sym-lib-table").read_text(encoding="utf-8")
     # Refuse SMD footprints in every placed physical component.
     for block in s.split("(symbol (lib_id ")[1:]:
         section=block.split("(instances ",1)[0]
