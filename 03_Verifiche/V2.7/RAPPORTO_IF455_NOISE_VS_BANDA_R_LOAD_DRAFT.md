@@ -11,3 +11,18 @@ Questo studio aggiunge `03_Verifiche/V2.7/verify_if455_resistor_noise_bandwidth_
 Nessuna modifica al master V2.6, ai moduli KSP10/J113 standalone o alle PCB. Non sono stati effettuati test di ricezione, distorsione audio, noise figure completa o veicolo.
 
 **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Esiti nativi verificati — PR #115 MERGED
+
+[PR #115](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/115) **MERGED**, commit `9e677634f9facde583cab8a48c9b190d4337b5af`, run finale [#43508971077](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43508971077): FAST/FULL/required **3/3 PASS**, 111 comandi legacy e `PASS_NGSPICE_IF455_6_NOISE_TRADEOFF_AC_BANDWIDTH_NATIVE_NOT_RECEIVER_NO_FAB_NO_TX`. Sei AC ngspice reali su 300–650kHz/1401 punti, valori di H(455k) verificati entro 1% vs PR #114.
+
+| R1601 damping | R1602 out | H455 V/V | picco (kHz) | banda−3dB (kHz) | rumore equip. sorgente PR114 (nV/√Hz) |
+|---:|---:|---:|---:|---:|---:|
+|47kΩ|100kΩ|0,835056|454,75|42,557|27,755|
+|47kΩ|220kΩ|1,016659|456,00|36,521|24,486|
+|100kΩ|100kΩ|1,280374|454,00|27,482|21,300|
+|100kΩ|220kΩ|1,711592|455,50|21,576|18,306|
+|220kΩ|100kΩ|1,723341|454,00|20,289|17,955|
+|220kΩ|220kΩ|2,556853|455,25|14,419|14,736|
+
+**Decisione:** nel SOLO circuito passivo con 16,5Ω di perdita RF ipotizzata e sorgente50Ω idealizzata, l'assetto 220kΩ/220kΩ è il più favorevole dei sei esaminati per **H455, rumore termico equivalente alla sorgente e banda a −3 dB più stretta**, ma NON è ancora uno stadio IF prodotto o selettività CB. Il trasferimento V/V superiore a 1 è risonanza passiva, non guadagno di potenza. La banda a −3dB di un solo risonatore non definisce la reiezione del canale adiacente e potrebbe non soddisfare AM/FM/SSB, soprattutto dopo altri filtri e carichi. Non modificare il CAD standalone o il master prima di: dati reali mixer/IF, banda audio obiettivo, curva completa maschera, PVT, rapporto RF loss/Q OEM, BOM THT, AGC e misure SINAD/THD. NO FAB/TX.
