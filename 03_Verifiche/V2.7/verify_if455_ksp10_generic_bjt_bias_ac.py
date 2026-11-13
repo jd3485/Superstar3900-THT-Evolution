@@ -13,14 +13,14 @@ SCH=ROOT/"04_KiCad/V2.7_DRAFT/IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7
 RAILS=(5.5,6.0,6.5)
 BETAS=(40,80,160)
 
-def read_rows(path):
+def read_rows(path, columns):
     assert path.is_file(),path
     rows=[]
     for line in path.read_text(encoding="utf-8").splitlines():
         try: nums=tuple(float(v) for v in line.split())
         except ValueError:continue
         if nums:rows.append(nums)
-    assert rows and all(len(row)==4 and all(math.isfinite(v) for v in row) for row in rows),path
+    assert rows and all(len(row)==columns and all(math.isfinite(v) for v in row) for row in rows),path
     return rows
 
 def main():
@@ -52,8 +52,8 @@ def main():
                 log=logpath.read_text(encoding="utf-8",errors="replace") if logpath.exists() else ""
                 cmd.check_returncode()
                 assert "Error:" not in log and "fatal" not in log.lower(),log[-1200:]
-                bias=read_rows(case/"ifbuf_bias.dat")
-                ac=read_rows(case/"ifbuf_ac.dat")
+                bias=read_rows(case/"ifbuf_bias.dat",4)
+                ac=read_rows(case/"ifbuf_ac.dat",3)
                 assert len(ac)==3,(rail,beta,len(ac))
                 assert abs(ac[1][0]-455000)<1,(rail,beta,ac[1])
                 base,emit,collector=bias[-1][1:]
