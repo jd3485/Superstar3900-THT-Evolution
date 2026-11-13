@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #64 MERGED: rete 6V LM386 e contratto PSU pin↔net integrati
+
+**PR [#64](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/64) MERGED su `main`** SHA `0098877dc5bd195cc774be7c6b91e183e48a501a`. Actions [#43392859696](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43392859696) **3/3 PASS** su HEAD `a010b707be652431e4c6429e46e9621b254bf0ac`, incluso ERC0 reale KiCad9 su LM386 e PSU, test interfaccia FRONT invariato, test `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`, 111 comandi nativi storici eseguiti. Il gate obbligatorio ha autorizzato il merge, senza waiver.
+
+**CAD aggiornato realmente:** nel foglio DRAFT audio RX LM386 e libreria `TH_AUDIO.kicad_sym`, la rete di alimentazione da laboratorio **`AUDIO_5V` è diventata `AUDIO_6V_LAB`**; sono invariati gli altri collegamenti fisici, i 12 refs THT e la scheda MAIN V2.6. I due fogli PSU/LM386 continuano standalone ma ora sono verificati tramite 2 netlist KiCad9: J1402 PSU pin1→J1201 LM386 pin1 rail `AUDIO_6V_LAB`, pin2→pin2 ritorno, con `U1401.2` e `U1201.6` entrambi sul corretto rail locale dei rispettivi fogli. Aggiunti `verify_audio_6v_supply_contract_native.py` e test nel gate FULL; aggiornata la specifica LM386 e il contratto FRONT per la rete +6V. Rapporto `03_Verifiche/V2.7/CONTRATTO_6V_PSU_LM386_BENCH_DRAFT.md`.
+
+**Limiti immutati:** la connessione tra schemi è una **mappa logica**, non è ancora un cablaggio fisico né due PCB integrate. J1402/J1201 sono pin-header entrambi maschi; crimp, antinversione, carico potenza e ritorni da qualificare. PSU richiede 10–10,5V al suo ingresso da banco, non compatibile con alimentazione veicolare 13,8V. LM386 audio output, THD/potenza, corrente/surriscaldamento e layout RF non sono qualificati. Il master MAIN V2.6 mantiene 7 fogli/138 refs e nessun PCB layout/routing; tre draft standalone con 12/3/10 refs. Stima complessiva ~20%, routing 0%. Issue #27/#42 e RF U401/L501 bloccanti. **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — collegamento logico LAB 6V LM317 → LM386, KiCad9 in review
 
 **Ultimo main verificato:** SHA `c4baf599e6aa956b3893fea12e577ee0710d27d1` (PR #62, #63 MERGED), nessuna PR aperta. **Branch `cad/audio-lm386-6v-lab-interface-20261113` NON ancora integrato:** nel vero schematico DRAFT LM386, rail del connettore bench +5V `AUDIO_5V` rinominato `AUDIO_6V_LAB`, mantenendo identici i pad e i nodi circuitali: U1201.6, C1205.1, C1206.1, J1201.1. Lato PSU già esiste `AUDIO_6V_LAB` da U1401.2 a J1402.1. In libreria `TH_AUDIO.kicad_sym` e simbolo embedded il connettore adesso è `BENCH_6V_CONN` (soltanto dichiarazione di alimentazione laboratorio).
