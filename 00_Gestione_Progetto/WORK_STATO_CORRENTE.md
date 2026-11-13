@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — correzione input headroom LM317 6V LAB, CAD in review
+
+**Baseline verificata su main:** merge PR #61 `e0d1be6230ca04833a872a98d7d5e542d48f6d44`, nessuna PR aperta. I tre draft KiCad9 audio (LM386 MAIN, volume FRONT, PSU LM317) rimangono **standalone**; 7 fogli MAIN V2.6 e 138 refs invariati, layout PCB 0%.
+
+**Lavoro in branch `cad/audio-lm317-input-headroom-pvt-20261113`, NON ancora integrato:** il regolatore audio PSU 6V precedente definiva erroneamente **9–10V ingresso LAB** mentre TI LM317-N garantisce le caratteristiche sul range con **VIN−VOUT≥3V**. All'estremo alto VREF/IADJ e resistenze ±1% si ricava VOUT≈6,31V: a 9V resterebbero solo ≈2,69V. Modificati **file KiCad9 reale e libreria locale**, J1401 e net name in `LAB_VIN_10TO10P5V`, intervallo vincolato **10–10,5V misurati al pin IN del regolatore**, bench a corrente limitata senza batteria/veicolo. Calcolo 6V nominale ~5,952V, estremi statici ~5,61–6,31V non equivalenti a qualifica PVT completa. Aggiornati test di copertura netlist e vincoli di headroom (9V volutamente FAIL come condizione), con nuovi stress termici 10 e 10,5V. Rapporto aggiornato `03_Verifiche/V2.7/RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md`.
+
+**Manca gate CI completo su HEAD**, nessuna integrazione PSU→LM386 autorizzata. Un alimentatore a 10–10,5V NON è un rail finale radio: terminazione audio, protezioni transitori/inversione, SOA/sink del TO220 tab LIVE e potenza speaker da verificare. Distinta OEM per fabbricazione ancora BLOCCATA e NO FAB / NO TX / NO BATTERIA / NO VEICOLO. Stima gestione circa 20%, routing 0%.
+
+---
+
 ## 13 novembre 2026 — PR #60 MERGED: alimentazione THT audio 6V da banco validata con KiCad9
 
 **PR #60 MERGED** su `main`, commit `aa3118a8f89ea37253e3482ef898d3744fcc2c42`. Azioni [#43330851162](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43330851162): **3/3 SUCCESS** sul final head `188065066667d1f8b8383901f0e04071ddce4e9f` — test rapido PASS, suite full KiCad9 native/legacy PASS, required gate PASS. Il nuovo `verify_audio_psu_lm317_native.py` ha esportato la netlist reale, confermato **10 refs THT**, pinout LM317 ADJ/OUT/IN, diodi e polarità C1402/C1403, **ERC nativo 0 errori e 0 warning**. Anche il controllo aritmetico vincola il derivatore R=110Ω/412Ω, Vout nominale 5.952V e l'esclusione del caso termico 13.8V/0.2A. **NON è SPICE vendor, né qualifica termica o prova hardware**.
