@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #68 MERGED: corrente media tipica LM386 stimata da Fig. 6-7 TI
+
+**PR [#68](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/68) MERGED** sul ramo `main`, SHA `83b9c820a5d4c96b37c931e5aa87f52e87ca3b92`; Actions [#43397404736](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43397404736) **3/3 PASS** sul final HEAD `f1a39edbe004f4e49040d6512937c2873b723384`: FAST, FULL KiCad9/ngspice/legacy e required gate SUCCESS. Log FAST `PASS_LM386_TYPICAL_CURRENT_GRAPH_ENVELOPE_NOT_VENDOR_SPICE_OR_FAB` con scenari `(0.125, 0.071, 0.091, 0.082, 0.103, 85.2)` e `(0.25, 0.105, 0.133, 0.116, 0.145, 95.6)`; le ultime temperature sono **solo** per θJA=50°C/W assunto e Tamb=60°C.
+
+**Nuova evidenza e regola:** dalla curva **tipica, non garantita** del grafico OEM TI LM386 SNAS545D Fig.6-7, con ampi intervalli visivi, sono state stimate correnti medie 6V/8Ω LM386 ~71–91mA a 125mW, ~105–133mA a 250mW; aggiungendo il feedback R1401 LM317 ~10,8–11,94mA -> ~82–103mA e ~116–145mA illustrative sul regolatore. Registrati file `03_Verifiche/V2.7/verify_audio_rail_current_graph_v27.py`, `LM386_GRAPH_6V_RAIL_CURRENT_BRACKETS.csv`, `RAPPORTO_CORRENTE_REALE_STIMATA_LM386_FIG6_7.md`, e test FAST in `ci/fast_regressions.py`; nessun runner EDA aggiuntivo per sola aritmetica. **Non** è misura, worst-case TI, qualifica PVT, SPICE vendor o certezza della corrente reale.
+
+**Decisione ancora aperta:** analizzare riserva PSU startup/clip/temperatura e rumore, LM386 THD e temperature reali, dissipation package e dissipatore, protezioni, speaker 8Ω fisico/cavo meccanico. L'LM317 bench rimane con VIN **10–10,5V da LAB**, non 13,8V veicolare, senza protezione automotive. Nessun cambiamento alle net KiCad, master MAIN V2.6 7 fogli/138 refs e 3 moduli standalone invariati, nessuna PCB o DRC, progettazione complessiva ~20% stima e layout/routing 0%. **NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
 ## 13 novembre 2026 — stima corrente di rail LM386 da figura OEM, revisione in PR
 
 **Stato main verificato all'apertura:** SHA `e502141b49bc7fb01ceb42e24ede539bb05dbb28`, PR #66/#67 MERGED, nessuna PR aperta. Branch nuova `engineering/audio-6v-supply-current-typical-20261113` non ancora fusa. Dai grafici **tipici** TI LM386 SNAS545D §6.6 Figura 6-7 (dissipazione chip vs potenza di uscita a 6V/8Ω), calcolati intervalli **approssimativi, NON min/max garantiti** di corrente media di rail: 125mW speaker → ~71–91mA LM386, 250mW → ~105–133mA LM386; aggiungere ~10,8–11,94mA di feedback R1401 LM317 → intervalli di corrente **illustrativi** ~82–103mA e ~116–145mA al pin OUT LM317. I 125mA speaker RMS non sono 125mA supply DC. La dissipazione LM317 per un carico tipico non equivale alla capacità continua garantita; 0,35A teorici continuano a violare il caso termico ipotetico.
