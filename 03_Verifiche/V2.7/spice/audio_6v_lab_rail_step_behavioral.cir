@@ -13,6 +13,8 @@ RCABLE_GOOD psu_good amp_good 0.20
 RRETURN_GOOD amp_gnd_good 0 0.20
 C1206_GOOD amp_good amp_gnd_good 100u
 ILOAD_GOOD amp_good amp_gnd_good PULSE(0.020 0.140 5m 1u 1u 5m 20m)
+* Ideal zero-load voltage probe for differential amplifier pin voltage.
+EAMPDIFF_GOOD amp_diff_good 0 amp_good amp_gnd_good 1
 
 VREG_BAD reg_bad 0 DC 5.952
 RREG_BAD reg_bad psu_bad 0.25
@@ -21,14 +23,16 @@ RCABLE_BAD psu_bad amp_bad 1.50
 RRETURN_BAD amp_gnd_bad 0 1.50
 C1206_BAD amp_bad amp_gnd_bad 100u
 ILOAD_BAD amp_bad amp_gnd_bad PULSE(0.020 0.140 5m 1u 1u 5m 20m)
+* Ideal zero-load voltage probe for differential amplifier pin voltage.
+EAMPDIFF_BAD amp_diff_bad 0 amp_bad amp_gnd_bad 1
 
 .tran 10u 18m
-.meas tran vpre_good FIND v(amp_good,amp_gnd_good) AT=4m
-.meas tran vload_good FIND v(amp_good,amp_gnd_good) AT=8m
-.meas tran vrest_good FIND v(amp_good,amp_gnd_good) AT=15m
-.meas tran vpre_bad FIND v(amp_bad,amp_gnd_bad) AT=4m
-.meas tran vload_bad FIND v(amp_bad,amp_gnd_bad) AT=8m
-.meas tran vrest_bad FIND v(amp_bad,amp_gnd_bad) AT=15m
+.meas tran vpre_good FIND v(amp_diff_good) AT=4m
+.meas tran vload_good FIND v(amp_diff_good) AT=8m
+.meas tran vrest_good FIND v(amp_diff_good) AT=15m
+.meas tran vpre_bad FIND v(amp_diff_bad) AT=4m
+.meas tran vload_bad FIND v(amp_diff_bad) AT=8m
+.meas tran vrest_bad FIND v(amp_diff_bad) AT=15m
 .meas tran vgndload_good FIND v(amp_gnd_good) AT=8m
 .meas tran vgndload_bad FIND v(amp_gnd_bad) AT=8m
 .end
