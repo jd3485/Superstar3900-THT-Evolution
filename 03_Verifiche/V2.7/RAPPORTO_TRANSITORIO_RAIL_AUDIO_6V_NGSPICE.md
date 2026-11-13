@@ -1,6 +1,16 @@
 # V2.7 — Transitorio rail audio 6 V, simulazione comportamentale **ngspice reale**
 
-**13 novembre 2026 — PR tecnica in revisione.** Modello dei transitori del **collegamento PSU → amplificatore** già definito dai draft KiCad LM317 / LM386; **non è** un macromodello TI LM317, LM386, PCB e cablaggio fisico, né una misura di laboratorio. Non è adatto alla fabbricazione o all'alimentazione automobilistica.
+**13 novembre 2026 — revisioni #70/#71 integrate.** Modello dei transitori del **collegamento PSU → amplificatore** già definito dai draft KiCad LM317 / LM386; **non è** un macromodello TI LM317, LM386, PCB e cablaggio fisico, né una misura di laboratorio. Non è adatto alla fabbricazione o all'alimentazione automobilistica.
+
+## Evidenze effettivamente validate in GitHub Actions — 13 novembre 2026
+
+La prima versione è stata integrata con [PR #70](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/70), commit `da9dec49ffbe4bb337cd57d7f33f45a1d7f3d723`, run [#43399709031](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43399709031) **3/3 PASS**: 54/210mV esclusivamente con ritorno a massa ideale.
+
+La **correzione a due conduttori** è integrata con [PR #71](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/71), merge `48bbe6d02c8dcfcf17a5ea62fe9e456c54e14434`, final HEAD `28d4701f200a5a115193c2fcc4cf8d37cccb8e2d`. Run [#43400933150](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43400933150) **3/3 PASS**. Il log FULL ngspice riporta: **0,078V** droop bassa R, **0,390V** droop alta R, **0,028V** spostamento massa locale bassa R e **0,210V** alta R, con `vrest_good=5,939V`, `vrest_bad=5,887V`. Il controllo `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` è stato emesso realmente dopo esecuzione ngspice, insieme alle 111 regressioni nativo/legacy.
+
+La differenza fra le due versioni è **fisicamente significativa ma limitata al modello**: con un ritorno resistivo la caduta ai terminali reali dell'LM386 è maggiore. Né la simulazione né il log indicano che il cavo reale abbia quelle resistenze. L'errore precedente nel comando `.meas` è stato risolto con una sonda differenziale ideale non caricante, e la CI finale lo ha verificato senza eccezioni.
+
+---
 
 ## Revisione delle sonde ngspice `.meas` (CI precedente non verde)
 
