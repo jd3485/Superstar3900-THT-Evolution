@@ -62,7 +62,7 @@ def main():
                 'label "IF455_FILTER_OUT"',
                 'property "Reference" "J1601"','property "Reference" "J1602"'):
         assert key in sch,("KiCad IF455 two-port contract moved",key)
-    assert 'H455' in legacy and "RGEN src gen 50" in legacy
+    assert "CONTRACT=(" in legacy and '"RGEN src gen 50"' in legacy
     results=[]
     with tempfile.TemporaryDirectory(prefix="tht_if455_source_port_") as t:
         for loadname,load in LOADS:
