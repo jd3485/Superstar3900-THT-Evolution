@@ -32,11 +32,19 @@ def estimated_tj(vin, vout, iout, ambient=60.0, assumed_theta_ja=50.0):
 def budget_checks():
     assert abs(nominal_vout() - 5.95241818) < 0.002
     assert 5.8 < nominal_vout() < 6.3
+    # Reference/PVT boundary estimate, NOT final regulator accuracy.
+    vmin = nominal_vout(vref=1.20, iadj=0.0, rtop=110*1.01, rbottom=412*0.99)
+    vmax = nominal_vout(vref=1.30, iadj=100e-6, rtop=110*0.99, rbottom=412*1.01)
+    assert 5.5 < vmin < nominal_vout() < vmax < 6.4
+    # TI guarantees 3V VIN-VOUT conditions; 2.25V typical dropout is insufficient.
+    assert 9.0 - vmax < 3.0, "Old 9V bench input did not cover high Vout"
+    assert 10.0 - vmax >= 3.0, "10V at the IC IN pin is minimum in this design"
+    print("LM317_REFERENCE_ENDPOINTS_NOT_FULL_PVT", round(vmin,4), round(vmax,4), flush=True)
     assert 1.20 / (110 * 1.01) >= 0.010, "Regulator divider must support worst-case 10mA minimum load"
     # Conservative illustrative 50 C/W, 60 C ambient. These are not
     # approval for even 9V operation; thermal + PVT review still pending.
-    assert estimated_tj(9.0, 6.0, 0.20) == 90.0
     assert estimated_tj(10.0, 6.0, 0.20) == 100.0
+    assert estimated_tj(10.5, 6.0, 0.20) == 105.0
     assert estimated_tj(13.8, 6.0, 0.20) > 125.0, "Automotive 13.8V is unsafe in example"
     assert estimated_tj(10.0, 6.0, 0.35) > 125.0, "35% A high-current example violates budget"
     # This circuit is not suitable for an unprotected vehicular environment.
@@ -53,7 +61,7 @@ def main():
         assert f'(number "{pin}"' in text and f'(name "{label}"' in text
         assert f'(number "{pin}"' in library and f'(name "{label}"' in library
     assert "AUDIO_5V" not in text, "Must not tie into RF/PLL 5V"
-    assert "BENCH_ISOLATED_9TO10V" in text and "NO VEHICLE INPUT" in text
+    assert "BENCH_ISOLATED_10TO10P5V" in text and "NO VEHICLE INPUT" in text
 
     with tempfile.TemporaryDirectory(prefix="tht_audio_psu_") as temp:
         directory = Path(temp)
@@ -71,7 +79,7 @@ def main():
         assert PARTS == found, ("Unexpected or missing parts in native netlist",
                                 sorted(PARTS - found), sorted(found - PARTS))
 
-        require(nets, "LAB_VIN_9TO10V", ("J1401", "1"), ("U1401", "3"),
+        require(nets, "LAB_VIN_10TO10P5V", ("J1401", "1"), ("U1401", "3"),
                 ("C1401", "1"), ("D1401", "2"))
         require(nets, "AUDIO_6V_LAB", ("U1401", "2"), ("J1402", "1"),
                 ("R1401", "1"), ("C1402", "1"),
