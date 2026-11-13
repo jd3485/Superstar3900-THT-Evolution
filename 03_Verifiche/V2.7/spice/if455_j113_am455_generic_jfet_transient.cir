@@ -38,10 +38,12 @@ R1602B out_b 0 100k
 VLAB vcc 0 DC {rail}
 C1801 out_b gate_j 10p
 R1801 gate_j 0 1Meg
-J1801 vcc gate_j source_j JGEN
+JQ1801 vcc gate_j source_j JGEN
 R1802 source_j 0 2.2k
 C1802 source_j bufferout 10n
 R1803 bufferout 0 100k
+* Pure voltage probe of VGS; VCVS E has infinite control-port impedance.
+EGS gs_monitor 0 gate_j source_j 1
 D1501B bufferout envelope_b DGENERIC
 R1501B envelope_b 0 47k
 C1501B envelope_b 0 1n
@@ -58,6 +60,6 @@ R1502B af_b 0 100k
 .meas tran buffered_tank_max MAX v(out_b) FROM=8m TO=11m
 .meas tran buffered_source_max MAX v(source_j) FROM=8m TO=11m
 .meas tran buffered_source_min MIN v(source_j) FROM=8m TO=11m
-.meas tran gate_source_max MAX v(gate_j,source_j) FROM=8m TO=11m
-.meas tran gate_source_min MIN v(gate_j,source_j) FROM=8m TO=11m
+.meas tran gate_source_max MAX v(gs_monitor) FROM=8m TO=11m
+.meas tran gate_source_min MIN v(gs_monitor) FROM=8m TO=11m
 .end
