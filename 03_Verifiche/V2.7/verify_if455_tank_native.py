@@ -25,12 +25,25 @@ def main():
     assert "EW_GKG50015_10to50pF_THT_CANDIDATE_TRIM" in sch
     assert '(symbol "TH_TANK:CT"' in sch
     assert '(symbol (lib_id "TH_TANK:CT")' in sch
-    assert "TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL" in sch
-    trimmer=BASE/"TH_TANK.pretty/Trimmer_GKG50015_2pad_PROVISIONAL.kicad_mod"
+    OEM_TRIM="TH_TANK:Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT"
+    assert OEM_TRIM in sch
+    assert "Trimmer_GKG50015_2pad_PROVISIONAL" not in sch
+    trimmer=BASE/"TH_TANK.pretty/Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT.kicad_mod"
+    assert trimmer.is_file()
+    assert not (BASE/"TH_TANK.pretty/Trimmer_GKG50015_2pad_PROVISIONAL.kicad_mod").exists()
     trimtxt=trimmer.read_text(encoding="utf-8")
     assert trimtxt.count(' thru_hole ')==2
-    assert '(pad "1" thru_hole' in trimtxt and '(pad "2" thru_hole' in trimtxt
-    assert "DO NOT FABRICATE" in trimtxt
+    # Vendor GKGxx015 top-adjust drawing: mounting holes are 2x1.2mm at 5.0mm.
+    # Pad 2 on left is ROTOR and must be tied to GND (verified below).
+    # Pad 1 on right is STATOR and must be tied to tuned IF455_TANK node.
+    assert '(pad "2" thru_hole circle (at 0 0) (size 2.2 2.2) (drill 1.2)' in trimtxt
+    assert '(pad "1" thru_hole circle (at 5.0 0) (size 2.2 2.2) (drill 1.2)' in trimtxt
+    assert "ROTOR=GND" in trimtxt
+    assert "F.CrtYd" in trimtxt and "F.Fab" in trimtxt
+    assert "NOT FINAL FAB" in trimtxt
+    # Embedded schematic and local symbol library both have same final footprint binding.
+    local_lib=(BASE/"TH_TANK.kicad_sym").read_text(encoding="utf-8")
+    assert OEM_TRIM in local_lib
     assert fp.count(' thru_hole ')==2, "Provisional coil MUST have exactly two THT pads"
     assert '(pad "1" thru_hole circle (at 0 0)' in fp
     assert '(pad "2" thru_hole circle (at 15.24 0)' in fp
