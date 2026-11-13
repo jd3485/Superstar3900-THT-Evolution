@@ -42,9 +42,7 @@ def main():
     assert "NOT FOR FAB OR VEHICLE" in raw
     assert "* BEHAVIORAL PASSIVE NETWORK ONLY" in raw
     assert "C1402_GOOD psu_good 0 10u" in raw
-    assert "C1206_GOOD amp_good 0 100u" in raw
     assert "C1402_BAD psu_bad 0 10u" in raw
-    assert "C1206_BAD amp_bad 0 100u" in raw
     assert "RREG_GOOD reg_good psu_good 0.25" in raw
     assert "RCABLE_GOOD psu_good amp_good 0.20" in raw
     assert "RCABLE_BAD psu_bad amp_bad 1.50" in raw
@@ -52,7 +50,7 @@ def main():
     assert "RRETURN_BAD amp_gnd_bad 0 1.50" in raw
     assert "C1206_GOOD amp_good amp_gnd_good 100u" in raw
     assert "C1206_BAD amp_bad amp_gnd_bad 100u" in raw
-    assert "ILOAD_GOOD amp_good 0 PULSE(0.020 0.140" in raw
+    assert "ILOAD_GOOD amp_good amp_gnd_good PULSE(0.020 0.140" in raw
     with tempfile.TemporaryDirectory(prefix="tht_audio_step_ngspice_") as folder:
         output_file=Path(folder)/"ngspice.log"
         process=subprocess.run(["ngspice","-b","-o",str(output_file),str(NET)],
