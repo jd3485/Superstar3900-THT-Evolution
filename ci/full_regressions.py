@@ -365,6 +365,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_resistor_noise_bandwidth_crosscheck_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # KiCad J1601/J1602 passive IF455 upstream interface contract:
+    # 3 hypothetical source impedances x 2 downstream loads plus 2 native
+    # complex Zin probes. No mixer gain, NF or OEM impedance inferred.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_two_port_source_impedance_native.py").exists():
+        print("::group::IF455 TWO PORT UPSTREAM SOURCE Z AND LOAD NATIVE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_two_port_source_impedance_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
