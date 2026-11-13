@@ -1,0 +1,36 @@
+* Superstar3900 THT V2.7 IF455 passive tank AC frequency response.
+* BEHAVIORAL/RLC ONLY: coil Rseries=30ohm is a SCENARIO not OEM Q.
+* Source AC=1V with 50ohm generator, C input/output 10pF, 100k output.
+* New KiCad9 tank: L=1mH, C1602=110pF + C1603=2.2pF.
+* Old comparison: L=1mH, C1602=120pF + C1603=2.2pF.
+* Both use NO PCB parasitics, capacitors are IDEAL. NO FAB/NO TX.
+.title 455kHz THT LC bench coupling-loaded tuning not production filter
+VNEW src_new 0 DC 0 AC 1
+RGEN_NEW src_new gen_new 50
+C1601_NEW gen_new tank_new 10p
+L1601_NEW tank_new loss_new 1m
+R_LOSS_NEW loss_new 0 30
+C1602_NEW tank_new 0 110p
+C1603_NEW tank_new 0 2.2p
+R1601_NEW tank_new 0 47k
+C1604_NEW tank_new out_new 10p
+R1602_NEW out_new 0 100k
+
+VOLD src_old 0 DC 0 AC 1
+RGEN_OLD src_old gen_old 50
+C1601_OLD gen_old tank_old 10p
+L1601_OLD tank_old loss_old 1m
+R_LOSS_OLD loss_old 0 30
+C1602_OLD tank_old 0 120p
+C1603_OLD tank_old 0 2.2p
+R1601_OLD tank_old 0 47k
+C1604_OLD tank_old out_old 10p
+R1602_OLD out_old 0 100k
+
+.control
+set wr_singlescale
+ac lin 1001 350k 600k
+wrdata if455_tank_ac_sweep.dat vm(out_new) vm(out_old)
+quit
+.endc
+.end
