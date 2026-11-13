@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — nuovo CAD AM IF 455kHz rivelatore d'inviluppo THT, in revisione
+
+**main verificato a inizio lavoro:** SHA `8c9ffefc334d56521aac5928a977b3ffe5ea57a2` (PR #75 e #76 MERGED; zero PR aperte); `AGENTS.md`, checkpoint, stato progetto e handoff letti live. Ripresa priorità radio dopo ottimizzazione GitHub Actions.
+
+**Nuovo ramo `cad/am455-envelope-detector-bench-v27-20261113` (NON ancora merged):** realizzato `04_KiCad/V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch` con **7 riferimenti fisici tutti THT**, libreria locale `TH_DEMOD.kicad_sym`, progetto e tabella. Ingresso AM 455kHz **da banco** J1501, D1501 Vishay **1N4148-TAP candidato DO-35** (anodo pin2 IF, catodo pin1 envelope), RC R1501 47kΩ/C1501 1nF (tau ~47µs, fc equivalente ~3,39kHz), C1502 100nF AC coupling, R1502 100kΩ riferimento AF e J1502 uscita AM audio bench. **Nessun collegamento** al master MAIN V2.6, all'amplificatore LM386 o alla FRONT, nessuna alimentazione, nessuna RF da antenna.
+
+**Vincolo architettura:** documenti storici Superstar 3900 riportano AM/FM prima IF 10,695MHz/seconda IF 455kHz, SSB su 10,695MHz; un semplice rivelatore d'inviluppo **non è FM/SSB**, e senza IF amplificata non soddisfa la sensibilità RX. Il pilot serve soltanto a provare il principio a livello segnale IF grande. Diodo MPN OEM e carico RC da qualificare; uscita caricata dal volume FRONT 10k potrebbe alterare drasticamente la risposta. Inoltre pilot LM386 6V/8ohm non fornisce i watt dell'audio radio di alcune versioni originali: specifica audio ancora da decidere. Fonti e blocchi dettagliati `03_Verifiche/V2.7/RAPPORTO_AM455_ENVELOPE_THT_BENCH_DRAFT.md`.
+
+**Nuovo controllo nativo** `03_Verifiche/V2.7/verify_am455_bench_native.py` nella FULL verifica ERC KiCad9, netlist e 7 refs/pin del diodo e quattro reti; **CI finale ancora da verificare e merge NON autorizzato prima del PASS**. Master MAIN V2.6 7 fogli/138 posizioni invariato, due PCB reali/routing ancora assenti, complessivo circa 20% stima e layout 0%. Gate #27/#42/IF critica intatti, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — PR #75 MERGED: Actions FAST-only selettivo per 4 file analitici
 
 **Main verificato:** commit merge `eb9518662caa6c4d55d5ff55f85552a02579eaf1`, PR [#75](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/75) **MERGED**. GitHub Actions [run #43404924743](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43404924743) **3/3 SUCCESS** sul final HEAD `d14c4470b2cdfb8e02cf5840b5ab52b19e6067b4`: FAST, KiCad9/ngspice FULL e required gate PASS. **La PR di modifica della policy ha superato la FULL**; nessun ERC/netlist, SPICE o controllo storico eliminato.

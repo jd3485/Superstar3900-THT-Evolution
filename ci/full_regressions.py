@@ -152,6 +152,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_audio_rail_step_ngspice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # 455kHz AM-only THT diode envelope pilot: real native KiCad9 schematic,
+    # not an SSB/FM detector or integrated receiver board.
+    am455=ROOT/"04_KiCad/V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch"
+    if am455.exists():
+        print("::group::V2.7 AM455 ENVELOPE THT BENCH NATIVE KICAD9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_am455_bench_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
