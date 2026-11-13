@@ -313,6 +313,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_worst_corner_coupling_source_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Probe generic 455 kHz envelope detector sensitivity to IF stimulus
+    # 100uV..500mV (generator, NOT aerial sensitivity); direct and J113 path.
+    # No physical noise or OEM diode/JFET model: never label AFpp as SINAD.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_lowlevel_envelope_native.py").exists():
+        print("::group::IF455 GENERIC J113 DIODE LOW LEVEL NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_lowlevel_envelope_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
