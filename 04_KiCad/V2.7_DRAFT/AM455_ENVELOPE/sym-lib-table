@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_DEMOD") (type "KiCad") (uri "${KIPRJMOD}/TH_DEMOD.kicad_sym") (options "") (descr "THT 455kHz bench AM detector local symbols"))
+)
