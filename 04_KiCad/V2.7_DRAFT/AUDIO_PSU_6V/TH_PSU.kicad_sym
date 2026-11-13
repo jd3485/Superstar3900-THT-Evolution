@@ -42,7 +42,7 @@
 )
 (symbol "BENCH_IN" (pin_numbers (hide yes)) (pin_names (offset 0.76)) (in_bom yes) (on_board yes)
 (property "Reference" "J" (at 0 13.97 0) (effects (font (size 1 1))))
-(property "Value" "LAB_9TO10V_ONLY" (at 0 -13.97 0) (effects (font (size 1 1))))
+(property "Value" "LAB_10TO10P5V_ONLY" (at 0 -13.97 0) (effects (font (size 1 1))))
 (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (at 0 0 0) (effects (font (size 1 1))))
 (symbol "BENCH_IN_0_1" (rectangle (start -7.62 7.62) (end 7.62 -7.62) (stroke (width 0.254) (type default)) (fill (type background))))
 (symbol "BENCH_IN_1_1" (pin power_out line (at -12.7 2.54 0) (length 5.08) (name "LAB_VIN" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1)))))
