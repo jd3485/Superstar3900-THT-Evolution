@@ -20,3 +20,18 @@ Criteri di regressione verificati: riproduzione entro 1% della risposta `|H(455k
 - L'ottimo su soli 9 passi è uno screening nominale, non la taratura continua garantita su temperatura, tolleranze o tempi. Verificare capacità a reale rotazione, tolleranze, Q a 455kHz, auto-risonanza e precisione dei footprint.
 - Recuperare la posizione di frequenza non implica recuperare `|H|`, e `|H|` non implica buono SNR/THD, sensibilità d'antenna, selettività AM/FM/SSB o AGC.
 - Nessun master V2.6 modificato, nessuna vera PCB/DRC, nessuna interfaccia finale eletta, nessun transceiver funzionante. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Risultati nativi, run #43496458640
+
+[GitHub Actions #43496458640](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43496458640), commit `4e83e9c220cd81ba90d945e68ff7e8cdc1375c5c`: **FAST/FULL/required 3/3 SUCCESS**, 111 regressioni legacy e `PASS_NGSPICE_IF455_36_REAL_TRIM_LOAD_AC_CASES_UNQUALIFIED_NO_FAB_NO_TX`. I 36 risultati sono tutti presenti nei log nativi; per ogni carico le conclusioni sintetiche sono:
+
+| Carico simulato | Ctrim migliore fra i nove valori per |H455| | |H455| dopo taratura | Miglioramento vs 30pF | fpeak a Ctrim scelto | fpeak a 30pF |
+|---|---:|---:|---:|---:|---:|
+| R100k solo | 30pF | 0,835055562 | 1,000× | 454,8kHz | 454,8kHz |
+| +R10k shunt | 20pF | 0,236347233 | 1,307434× | 458,2kHz | 440,4kHz |
+| +R1k shunt | 20pF | 0,033471412 | 1,516350× | 456,8kHz | 439,2kHz |
+| JFET surrogato passivo 10p/1M/7p | 25pF | 0,681552505 | 1,024603× | 459,6kHz | 450,4kHz |
+
+**Interpretazione:** riportare vicino a 455kHz la frequenza di picco non recupera un trasferimento RF severamente attenuato. Con R1k `|H455|=0,03347` anche a Ctrim 20pF, pari al **4,01%** del valore 0,83506 di riferimento con R100k: circa **25 volte minore**. R10k raggiunge 0,23635, cioè **28,30%** del riferimento. Il surrogato gate JFET raggiunge 0,68155 (**81,62%** del riferimento), ma comprende soltanto capacità e resistenza immaginate e non l'effettivo transistor onsemi J113 con giunzione e gm. La scelta di 25pF non è una raccomandazione OEM/PCB: nel set discreto il picco cade ancora a **459,6kHz**, quindi il vero optimum continuo può trovarsi fra due posizioni provate. Non si garantisce il tuning continuo reale o la geometria della trimmer.
+
+**Decisione progettuale:** nessuna configurazione è qualificata come filtro commerciale CB o ricevitore AM/FM/SSB. Rivedere il collegamento e l'impedenza reale del ricevitore per determinare le condizioni di carico; poi scegliere carico, dispositivo buffer, trimmer e banda insieme. Non inserire R1k, R10k o J113 attivo nel master fino a verifica di noise/AGC/linearità/PVT e caratteristiche OEM. Nessuna PCB prodotta, routing/DRC non applicabile.
