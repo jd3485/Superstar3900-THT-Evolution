@@ -11,6 +11,21 @@
 
 **Topologia:** C1602 e C1603 in parallelo fra nodo `IF455_TANK` e `IF_BENCH_GND`. Capacità ideale shunt variabile da **92 a 132 pF** (82pF +10..50pF), ignorando componenti e carichi parassiti. La posizione nominale puramente illustrativa ~30pF dà 112pF shunt ma non equivale a taratura del filtro intero.
 
+## Evidenza effettivamente validata sul commit KiCad9
+
+[PR #84](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/84) **MERGED** commit `ce74fb2b929986c587fdec5677f51729ea67d702`, Actions [#43414613097](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43414613097) **3/3 PASS** sul HEAD `9bba90431c3ded21231417e8b72605c0e7d15d95`. KiCad 9 **ERC 0 errori / 0 warnings**, 9 riferimenti THT, 4 reti; ngspice eseguito realmente sui quattro corner L con il trimmer a 10 e 50pF. I picchi simulati sono:
+
+| Corner | Trimmer 10pF, picco Hz | Trimmer 50pF, picco Hz |
+|---|---:|---:|
+| L=0,95mH | 510533,3 | 432400,0 |
+| L=1,00mH | 497466,7 | 421466,7 |
+| L=1,05mH | 485466,7 | 411200,0 |
+| L=1,00mH con Cpar 3,23pF ipotetica | 489733,3 | 416666,7 |
+
+455kHz cade nell'intervallo di tutte le curve. **Questo è un esito di copertura dell'intervallo e NON una prova di taratura meccanica, Q o selettività effettiva a 455kHz.** Il simbolo e la geometria delle impronte restano PROVISIONAL / NO FAB.
+
+---
+
 ## Nuova simulazione AC ngspice sul modello semplificato
 
 Deck `03_Verifiche/V2.7/spice/if455_trimmer_gkg50015_tuning_envelope.cir` con 8 reti indipendenti per Ctrim **10pF e 50pF**, combinati con:
