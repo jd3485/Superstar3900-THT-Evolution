@@ -24,3 +24,20 @@ Lo script `03_Verifiche/V2.7/verify_if455_ksp10_am455_combined_native.py` invoca
 **Decisione:** non integrare ancora i tre moduli nel master MAIN V2.6 e non approvare un MPN finale finché il confronto non sia riesaminato e l'interfaccia non abbia modelli rappresentativi, misure PVT, impedenza IF, carico del tank, analisi rumore e una revisione CAD gerarchica reale.
 
 **Gate:** FAST/FULL/required sul commit finale; rapporto dei risultati numerici nativi solo dopo aver letto i log. Nessun waiver o job di sola facciata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+## Esito misurato con ngspice nativo (dati al commit tecnico testato)
+
+Run GitHub Actions [#43473046507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43473046507), commit `c4daea8772a00aef9b48151acedd2ce72d1e350a`: FAST, FULL e required gate **3/3 PASS**; FULL con 111 comandi storici e `PASS_NGSPICE_IF455_KSP10_AM455_GENERIC_NONLINEAR_CASCADE_NOT_OEM_NO_FAB_NO_TX`.
+
+| Generatore AM, picco | AFpp percorso diretto | AFpp con follower KSP10 candidato | Rapporto buffered/direct | Picco RF in uscita tank diretto | Picco RF tank caricato dal follower |
+|---:|---:|---:|---:|---:|---:|
+| 0,5 V | 0,023326606 V | 0,000741563 V | 0,031790 | 0,3938995 V | 0,09449585 V |
+| 2,0 V | 0,214324050 V | 0,014614407 V | 0,068188 | 0,7549801 V | 0,3779901 V |
+
+**Conclusione del modello:** la rete BJT d'ingresso (polarizzazione 22k/10k e parassiti generici) con C1701=10nF, collegata all'uscita C1604=10pF del tank, costituisce un carico RF significativo. Nel modello non è possibile giustificare l'aggiunta di Q1701 come miglioramento: la tensione audio con follower è circa **3,18%** del riferimento diretto a 0,5V e **6,82%** a 2V. L'ampiezza positiva RF sul nodo tank buffer è ~**24%** e ~**50%** del caso diretto. Il buffer candidato **non è approvato**, anche se la simulazione ha superato i test funzionali.
+
+### Ripetibilità numerica: correggere l'interpretazione delle simulazioni precedenti
+
+Il primo tentativo con passo `200 ns` ha fallito la verifica di coerenza con PR #94/#95: il percorso diretto a 2V produceva `0,16578788 Vpp` contro `0,17444891 Vpp` dal test storico. È stato ridotto il massimo passo a **50 ns** e implementata una seconda esecuzione indipendente del deck storico alla medesima risoluzione. A 2V, il vecchio deck ricalcolato dà `0,21445359 Vpp`; il nuovo deck diretto `0,21432405 Vpp`. Scostamento relativo **0,0604%**. Tuttavia il valore a 50ns è circa **22,9% maggiore** dell'originario 200ns: i numeri delle PR #94/#95/#96 **sono dipendenti dalla risoluzione temporale** e non sono risultati quantitativi convergenti. Questo controllo dimostra ripetibilità fra due netlist al passo 50ns, **non** una convergenza temporale assoluta; richiede ulteriore raffinamento (25ns/10ns) prima di dimensionamenti conclusivi.
+
+Il primo gate fallito è stato mantenuto come evidenza e corretto senza disabilitare asserzioni fondamentali: ora il riferimento del deck storico è ricalcolato e confrontato allo stesso passo, con tolleranza del 3%. Non eseguire merge di proposte di buffer OEM o aggiornamenti CAD integrati sulla base di queste sole misure.
