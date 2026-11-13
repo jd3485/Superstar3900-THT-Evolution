@@ -29,12 +29,20 @@ def estimated_tj(vin, vout, iout, ambient=60.0, assumed_theta_ja=50.0):
     return ambient + (vin - vout) * iout * assumed_theta_ja
 
 
+def vout_pvt_endpoints():
+    """Reference + resistor endpoints only; excludes dynamic/line/load effects."""
+    low = nominal_vout(vref=1.20, iadj=0.0,
+                       rtop=110.0 * 1.01, rbottom=412.0 * 0.99)
+    high = nominal_vout(vref=1.30, iadj=100e-6,
+                        rtop=110.0 * 0.99, rbottom=412.0 * 1.01)
+    return low, nominal_vout(), high
+
+
 def budget_checks():
     assert abs(nominal_vout() - 5.95241818) < 0.002
     assert 5.8 < nominal_vout() < 6.3
     # Reference/PVT boundary estimate, NOT final regulator accuracy.
-    vmin = nominal_vout(vref=1.20, iadj=0.0, rtop=110*1.01, rbottom=412*0.99)
-    vmax = nominal_vout(vref=1.30, iadj=100e-6, rtop=110*0.99, rbottom=412*1.01)
+    vmin, _vnom, vmax = vout_pvt_endpoints()
     assert 5.5 < vmin < nominal_vout() < vmax < 6.4
     # TI guarantees 3V VIN-VOUT conditions; 2.25V typical dropout is insufficient.
     assert 9.0 - vmax < 3.0, "Old 9V bench input did not cover high Vout"
