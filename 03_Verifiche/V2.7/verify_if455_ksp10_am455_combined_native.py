@@ -39,11 +39,13 @@ def main():
     for token in ("22k_TOP_BIAS_DRAFT","10k_BOTTOM_BIAS_DRAFT",
                   "2k2_EMITTER_SET_DRAFT","ONSEMI_KSP10BU_TO92_CANDIDATE"):
         assert token in kicad, ("KiCad mismatch",token)
-    for token in (".model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)",
-                  "RCOIL ltail 0 16.5","C1604 tank out 10p","R1501 envelope 0 47k"):
-        assert token in prior and token in original.replace("RCOILD", "RCOIL").replace(
-            "C1604D tank_d out_d","C1604 tank out").replace(
-            "R1501D envelope_d","R1501 envelope"),("Prior generic model changed",token)
+    # Compare actual generic parameters against the previously verified model.
+    assert ".model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)" in prior
+    assert ".model DGENERIC D(Is=2.5n N=1.9 Rs=0.6 Cjo=4p Vj=0.75 Tt=4n)" in original
+    for old,new in (("RCOIL ltail 0 16.5","RCOILD ltail_d 0 16.5"),
+                    ("C1604 tank out 10p","C1604D tank_d out_d 10p"),
+                    ("R1501 envelope 0 47k","R1501D envelope_d 0 47k")):
+        assert old in prior and new in original,("Prior model reference drift",old,new)
     outcomes=[]
     with tempfile.TemporaryDirectory(prefix="tht_if455_full_cascade_") as temp:
         for amplitude in AMPS:
