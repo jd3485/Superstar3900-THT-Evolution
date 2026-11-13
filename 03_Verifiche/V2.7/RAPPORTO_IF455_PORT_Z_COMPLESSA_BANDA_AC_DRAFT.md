@@ -26,3 +26,23 @@ Per ogni carico il test misura l'ampiezza relativa Vout/Vgeneratore a 455k, `f_p
 - DCR 16,5Ω non equivale necessariamente a ESR AC a 455kHz, e non copre auto-risonanza, saturazione, perdite core e interavvolgimento; modello OEM Delevan/EW trimmer ancora da validare.
 - Aggiungere un buffer o un rivelatore reale può modificare il nodo. Nessuna prova della **noise figure**, noise floor, IMD, AM THD, SINAD, AGC o sensibilità d'antenna, nessun test hardware e nessun PCB reale. Non si promuove un MPN sulla sola base di questo script.
 - Il master gerarchico MAIN V2.6 di 7 fogli/138 refs resta intatto; questa è una verifica nuova e sostanziale del port del prototipo THT passivo standalone. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Risultati misurati con ngspice nativo: Actions #43494725977
+
+La [run #43494725977](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43494725977), commit `204d6e2d69670683853182ff81af23947bc2a56a`, ha eseguito realmente le **otto analisi AC** previste. FULL con 111 comandi legacy `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES` e marker `PASS_NGSPICE_IF455_PASSIVE_4_LOADS_AC_COMPLEX_Z_BANDWIDTH_NOT_RECEIVER_NO_FAB_NO_TX`. Valori riportati con arrotondamento dei log:
+
+| Carico modellato | f picco (kHz) | Trasferimento massimo V/V | f−3dB inf–sup (kHz) | BW−3dB (kHz) | fpeak/BW (indice, NON Q OEM) | |H(455k)| | Z porta a 455kHz (Ω) |
+|---|---:|---:|---:|---:|---:|---:|---|
+| R100k riferimento | 454,750 | 0,835107 | 435,081–477,638 | 42,557 | 10,686 | 0,835056 | 33540,957 − j15429,214 |
+| +R10k shunt | 440,250 | 0,224274 | 423,542–460,959 | 37,418 | 11,766 | 0,180772 | 7959,536 − j723,061 |
+| +R1k shunt | 439,000 | 0,031007 | 425,474–455,239 | 29,765 | 14,749 | 0,022074 | 975,865 − j10,781 |
+| Ingresso JFET **surrogato passivo** (C10p + R1M/C7p gate) | 450,250 | 0,686172 | 433,342–469,638 | 36,296 | 12,405 | 0,665187 | 21582,105 − j19978,026 |
+
+**Interpretazione fisica:**
+- Il filtro non deve essere approssimato con un `50Ω`, `1kΩ` o `100kΩ` puramente resistivo all'uscita: nel modello, il riferimento ha `Zout(455k)=33,54k−j15,43kΩ`, con modulo ≈36,92kΩ.
+- Lo shunt 10k riduce `|H(455k)|` da 0,8351 a 0,1808 (**21,65%** del riferimento), mentre 1k lo riduce a 0,02207 (**2,64%** del riferimento) e sposta il picco da 454,75 a 439,0kHz.
+- Anche il surrogato JFET considerato ad alta impedenza produce un **carico reattivo significativo**: picco 450,25kHz (−4,50kHz dal riferimento) e `|H(455k)|=0,6652` (**79,66%** del riferimento). Questo NON rappresenta tutte le impedenze d'ingresso del dispositivo reale.
+- ATTENZIONE: i valori `fpeak/BW` degli shunt possono **crescere** pur riducendosi drasticamente il trasferimento. Non chiamarli 'Q fisico della bobina' né interpretare l'aumento come filtro migliore: sono indici della *funzione di trasferimento fra due nodi con accoppiamento capacitivo*, modificata da smorzamento, spostamenti di picco e carico.
+- `Z porta` è misurata **con il carico incluso** e con la sorgente 50Ω cortocircuitata in AC, non è l'impedenza intrinseca del tank scollegato da tutto. Il trimmer resta fissato a 30pF e la frequenza di picco è una proprietà di questa specifica rete modellata; non è una prova di tolleranze, accordatura finale, AM selectivity o SNR.
+
+**Decisione di progetto:** non inserire KSP10/J113 nel master sulla base di un rapporto AFpp generic. Servono una definizione del punto IF455 fra mixer/stadio IF/filtro/rivelatore, impedenza reale (o banda su carico), spettro di rumore e tensione IF utile ai pin, modalità AM/FM/SSB e target verificabili prima di stabilire valori di adattamento. Questa analisi identifica ora numericamente il *budget di carico passivo* al port, ma non chiude nessuna qualifica OEM né la progettazione PCB.
