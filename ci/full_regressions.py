@@ -212,6 +212,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_interface_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Real ngspice downstream load-sensitivity study; the separate
+    # native KiCad9 IF455→AM455 pin contract is already merged (PR #89).
+    # 10k and 1k are shunt SURROGATES, not nonlinear 1N4148 RF input.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_downstream_input_load_ac.cir").exists():
+        print("::group::IF455 DOWNSTREAM OUTPUT LOAD NATIVE NGSPICE AC",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_downstream_load_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
