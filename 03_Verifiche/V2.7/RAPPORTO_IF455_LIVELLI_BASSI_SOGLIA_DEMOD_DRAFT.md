@@ -26,3 +26,19 @@ File `03_Verifiche/V2.7/verify_if455_lowlevel_envelope_native.py`, che riutilizz
 3. Caratterizzare il reale onsemi J113 con dati OEM e l'esatto diodo THT OEM attivo, incluso leakage/capacitance e risposta PVT, e poi con un banco fisico prima di fissare il CAD.
 
 **Questa PR non modifica il master né propone valore ottimizzato dei componenti. PCB-MAIN e PCB-FRONT non progettate, DRC non applicabile. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Risultati verificati su GitHub Actions, 13/11/2026
+
+La [PR #108](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/108) è **MERGED** commit `a7e67b5c001cbb809b3876d0907aaddf07e6a691`. La run [#43484801445](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43484801445) sul final head `c98af789d7e528eaea280754d6b437ef87acd25d` ha **FAST/FULL/required 3/3 SUCCESS**, 111 comandi legacy e `PASS_NGSPICE_IF455_10_LOWLEVEL_GENERIC_DIODE_J113_CASES_NO_SENSITIVITY_CLAIM_NO_FAB_NO_TX`. Tutti i valori seguenti derivano da ngspice nativo, senza rumore.
+
+| Sorgente simulata AM 455kHz, picco | AFpp diretto, modello generico | AFpp con J113, VTO−0,5V/IDSS2mA | AFpp con J113, VTO−3V/IDSS2mA |
+|---:|---:|---:|---:|
+| 100µV | 0,804167µV | 0,665367µV | 0,463908µV |
+| 1mV | 8,041947µV | 6,653845µV | 4,639164µV |
+| 10mV | 80,44396µV | 66,5626µV | 46,39673µV |
+| 100mV | 0,8103563mV | 0,6688448mV | 0,4654612mV |
+| 500mV | 23,925459mV | 25,212924mV | 5,823876mV |
+
+Nel modello **sotto 100mV** l'uscita AFpp cresce quasi proporzionalmente al generatore e resta **~0,8% del picco di portante generato** nel percorso diretto. Fra 100mV e 500mV compare un cambio marcato della risposta del modello, mentre lo stadio J113 può anche peggiorare il risultato. Non ricavare una precisa tensione di soglia del diodo da questi dati: le reti LC e le capacità parassite contribuiscono e il risultato non include rumore, distorsione o prestazioni garantite OEM. La prova rimane un segnale di rischio che il rivelatore AM generico non è una base sufficiente per stimare la sensibilità RX.
+
+**Decisione tecnica:** nessuna variante dei follower BJT/JFET è qualificata. Per proseguire serve un modello verificato di **guadagno e impedenza complessa IF** dal mixer fino al punto rivelatore, oltre a una specifica AM audio SNR/SINAD e alle distinte modalità FM/SSB. Il prossimo test efficace non è soltanto ampliare il range del generatore ideale: deve calcolare il budget di rumore e di conversione con parametri fisici del percorso. Master KiCad MAIN V2.6 e due PCB invariati. NO FAB/TX.
