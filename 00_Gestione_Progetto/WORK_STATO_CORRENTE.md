@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 13 novembre 2026 — PR #73 MERGED: connettori THT JST XH 2,50mm audio LAB
+
+**PR [#73](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/73) integrata** su `main`, merge SHA `c17f5843c8cb694e3fb225198dbc1569f495aa72`. GitHub Actions [#43403815473](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43403815473) **3/3 PASS** sul final HEAD `534867ed039ffa532fa975e97be07df6efc57b9f`: FAST success, FULL native KiCad9/ngspice/111 regressioni storiche success, required gate success. Log: `PASS_KICAD9_JST_XH_2P50_TH_HEADER_PAD1_PAD2_PITCH_BOTH_MODULES` e `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`.
+
+**CAD realmente modificato:** nei due schematici standalone V2.7, con librerie embedded/locali concordanti, i connettori **J1402 PSU 6V** e **J1201 LM386** hanno l'impronta THT `Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` anziché header generico 2,54mm. Pad1 +6V lab e pad2 ritorno audio verificati via export netlist native; il test ora legge l'effettivo footprint installato in KiCad9 con 2 pad THT a pitch 2,50mm. **Solo test CAD, non un DRC su PCB.** Primo run CI [#43403435479](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43403435479) era fallito per regex errata nel nuovo test: parser corretto senza diminuire i gate, run finale sopra SUCCESS.
+
+**Candidati cablaggio OEM JST presenti nel catalogo corrente:** B2B-XH-A (2 header PCB), XHP-2 (2 housing femmina), SXH-001T-P0.6 (4 crimp), cavo AWG26 candidato entro range di contatto; non sono ancora una BOM/fornitura qualificata né un cavetto montato. Da qualificare *lifecycle OEM esatto*, crimpatura, pin1 orientamento, anti-inversione anche dei fili crimpati, ritenzione, vibrazione, schermatura/routing RF, lunghezza, caduta su entrambi i conduttori, strain relief, isolamento da tab +6V LM317 e sicurezza. Dati e fonte nel `03_Verifiche/V2.7/RAPPORTO_HARNESS_JST_XH_AUDIO_6V_LAB_DRAFT.md`.
+
+**Stato generale:** master MAIN V2.6 7 fogli/138 componenti invariato; LM386 MAIN, LM317 LAB, controllo volume FRONT sono tre schemi DRAFT autonomi, nessuna PCB fisica, nessuna fabbricazione o DRC, layout 0%; progressione complessiva circa 20% **stima senza incremento artificiale**. Alimentatore LM317 bench richiede 10–10,5V al pin IN, NON ingresso veicolo 13,8V; simulazioni ngspice sono comportamentali, non modello OEM. Prossima priorità sostanziale: chiudere architettura ricevitore RF/IF e valutare schematici MAIN mancanti, non restare indefinitamente su verifiche software del pilot audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 13 novembre 2026 — connettori di alimentazione LAB PSU↔LM386 JST XH 2,50mm, in revisione
 
 **Bootstrap:** HEAD `ab2e9ad89b200375fd0929158fd8e6a34ed130f4`, PR #70/#71/#72 MERGED e nessuna PR aperta. Branch tecnica `cad/audio-jst-xh-two-pin-lab-harness-20261113`, **non ancora integrata**. Per collegamento lab 6V PSU→LM386, modifica KiCad **reale**: i footprint a due pad di **J1402 PSU** e **J1201 LM386**, embedded e librerie locali, sono ora `Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` (sostituisce header generico 2,54mm). Pad 1 alimentazione `AUDIO_6V_LAB`, pad 2 massa locale/ritorno. Per un cavo fisico con due header da PCB sono previste **due housing femmina JST XHP-2** e quattro terminali a crimpare **SXH-001T-P0.6**, AWG 22–28 come documentato dal catalogo ufficiale JST. Codici *candidati OEM documentati*, stato manufacturing dei singoli MPN, crimpatura, sicurezza/anti-inversione e resistenza alle vibrazioni **non ancora qualificati**.
