@@ -18,3 +18,9 @@ OEM drawing: case A06; A=.770 in (19.56 mm) to B=.800 in (20.32 mm), E=.370 in (
 3. If the review confirms geometry, rename candidate to approved **only via** technical PR, assign MX1701 footprint, run native KiCad9 ERC/exported netlist + footprint syntax/native pad report, and then review a real PCB separately.
 4. If orientation or dimensions differ, **correct the candidate** and rerun CI before any assignment.
 NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+## Audit OEM aggiuntivo — 14 novembre 2026
+- Riscontrato PDF diretto del case style: https://www.minicircuits.com/case_style/A06.pdf (disegno Mini-Circuits `98-A Rev B, 03/15/12`); il testo PDF è stato recuperato tramite indicizzazione pubblica, **ma la richiesta di screenshot della pagina è stata respinta con HTTP 403**, quindi la vista grafica non è ancora indipendentemente approvata.
+- La descrizione del disegno OEM riconosce due righe nella BOTTOM VIEW con sequenza sinistra→destra `1 3 5 7` / `2 4 6 8`; l'attuale impronta per vista PCB TOP specchia l'asse X. Questa è una *trasformazione dichiarata*, non una prova che il disegno OEM e le coordinate effettive corrispondano allo stesso orientamento.
+- Nuova evidenza da distributore: https://www.mouser.it/it/ProductDetail/Mini-Circuits/SBL-1%2B mostra una **Product Change Notification del 02/11/2026**. Contenuto/effetti sul package non ancora verificati. **Bloccare la qualifica finale** finché la PCN non è stata letta e confrontata con A06, marcatura, pin e finiture. Lo stato 'attivo' del distributore non equivale a dichiarazione OEM attuale né ad assenza di variazioni di forma/funzione.
+- I due gate indipendenti **(disegno meccanico grafico e PCN recente)** restano aperti e la PR deve rimanere draft, anche nel caso di FULL CI verde. Non sostituire un PDF 403 con una validazione sintetica.
