@@ -348,6 +348,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_budget_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Resistor-noise/455k transfer trade-off: 3 damping R values x 2 output
+    # R values, each signal plus 4 native ngspice Johnson transfer probes.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_load_tradeoff_native.py").exists():
+        print("::group::IF455 RESISTOR NOISE VS PORT LOAD 30 NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_load_tradeoff_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
