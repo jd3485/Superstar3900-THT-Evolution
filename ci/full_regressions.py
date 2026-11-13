@@ -339,6 +339,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_loaded_trimmer_retune_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Native SPICE superposition of physically independent Johnson noise
+    # sources in passive IF455 RGEN / RCOIL / RDAMP / RLOAD / optional R_GATE.
+    # 2 load cases x 5-ish AC probe runs; 290K and 8kHz RF band assumptions.
+    if (ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_budget_native.py").exists():
+        print("::group::IF455 NATIVE PASSIVE RF RESISTOR JOHNSON NOISE BUDGET",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_passive_resistor_noise_budget_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
