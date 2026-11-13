@@ -2,6 +2,12 @@
 
 **13 novembre 2026 — PR tecnica in revisione.** Modello dei transitori del **collegamento PSU → amplificatore** già definito dai draft KiCad LM317 / LM386; **non è** un macromodello TI LM317, LM386, PCB e cablaggio fisico, né una misura di laboratorio. Non è adatto alla fabbricazione o all'alimentazione automobilistica.
 
+## Revisione delle sonde ngspice `.meas` (CI precedente non verde)
+
+Il primo run della PR #71 sullo SHA iniziale è stato annullato dopo aggiornamento dei test. Sullo SHA successivo `637a8766341a7c59bcf9f33ea9f28e6eecdaa929` la CI nativa ha documentato il fallimento delle `.meas ... FIND v(amp+,amp_gnd)` pur producendo le misure single-node di ground bounce; **non** si può dichiarare PASS. La correzione inserisce in ciascun circuito una **sorgente di tensione dipendente ideale con impedenza di ingresso infinita** (`EAMPDIFF_GOOD`/`EAMPDIFF_BAD`) per trasformare `V(amp+,amp_gnd)` in un segnale single-ended `V(amp_diff)` che ngspice può acquisire con `.meas FIND v(amp_diff)`. È soltanto una **sonda virtuale senza carico**: non cambia né condensatori né resistori né i requisiti del cavo. L'esito definitivo richiede una nuova CI verde sul commit contenente entrambe le sonde.
+
+---
+
 ## Correzione fondamentale: resistenza di ritorno inclusa
 
 La prima revisione approvata nella **PR #70** ipotizzava il ritorno di massa ideale (zero ohm) e misurava la tensione dell'alimentazione rispetto alla massa PSU. Era una simulazione valida **solo per quell'ipotesi**, ma **sottostimava il droop ai pin dell'LM386** se il secondo conduttore reale ha resistenza. Questa revisione aggiunge realmente a ngspice `RRETURN_GOOD` e `RRETURN_BAD`, sostituisce i condensatori e carichi a massa globale con massa locale del lato amplificatore, e misura `V(amp+, amp_gnd)`. Controlla anche lo spostamento della massa audio rispetto alla sorgente a 140 mA:
