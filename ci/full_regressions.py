@@ -196,6 +196,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_delevan_tolerance_ngspice.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # THT IF455 active EW GKG50015 10-50pF trimmer candidate: real ngspice
+    # range coverage, not a claim of Q/ESR, mechanical footprint or RF release.
+    if (ROOT/"03_Verifiche/V2.7/spice/if455_trimmer_gkg50015_tuning_envelope.cir").exists():
+        print("::group::V2.7 IF455 VARIABLE 10TO50PF TRIM THT NATIVE NGSPICE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_trimmer_range_ngspice.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
