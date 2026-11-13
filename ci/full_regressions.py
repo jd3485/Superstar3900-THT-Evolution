@@ -246,6 +246,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_if455_source_impedance_matrix_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # KSP10BU active THT candidate: native ERC and pin/net mapping for
+    # physically isolated IF455 emitter follower laboratory draft.
+    if (ROOT/"04_KiCad/V2.7_DRAFT/IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch").exists():
+        print("::group::IF455 KSP10BU THT NATIVE KiCad9 ERC NETLIST",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_follower_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":

@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_IFBUF") (type "KiCad") (uri "${KIPRJMOD}/TH_IFBUF.kicad_sym") (options "") (descr "455 kHz THT KSP10 candidate local symbols"))
+)
