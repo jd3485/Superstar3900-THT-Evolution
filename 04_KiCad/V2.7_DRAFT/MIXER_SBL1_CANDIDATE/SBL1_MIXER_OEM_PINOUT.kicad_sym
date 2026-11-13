@@ -1,0 +1,23 @@
+(kicad_symbol_lib (version 20231120) (generator "kicad_symbol_editor")
+  (symbol "SBL-1_PLUS"
+    (pin_names (offset 1.016))
+    (in_bom yes) (on_board yes)
+    (property "Reference" "MX" (at 0 10.16 0) (effects (font (size 1 1))))
+    (property "Value" "SBL-1+" (at 0 -15.24 0) (effects (font (size 1 1))))
+    (property "Footprint" "" (at 0 0 0) (effects (font (size 1 1)) (hide yes)))
+    (property "Datasheet" "https://www.minicircuits.com/pdfs/SBL-1%2B.pdf" (at 0 0 0) (effects (font (size 1 1)) (hide yes)))
+    (property "Description" "Mini-Circuits passive level-7 1-500MHz plug-in A06 THT mixer. IF pins 3+4 MUST be externally tied; A06 footprint unqualified; LO +7dBm nominal." (at 0 0 0) (effects (font (size 1 1)) (hide yes)))
+    (symbol "SBL-1_PLUS_0_1"
+      (rectangle (start -7.62 7.62) (end 7.62 -7.62) (stroke (width 0.254) (type default)) (fill (type background))))
+    (symbol "SBL-1_PLUS_1_1"
+      (pin passive line (at -12.7 2.54 0) (length 5.08) (name "RF" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1)))))
+      (pin passive line (at -2.54 -12.7 90) (length 5.08) (name "GROUND" (effects (font (size 1 1)))) (number "2" (effects (font (size 1 1)))))
+      (pin passive line (at 12.7 2.54 180) (length 5.08) (name "IF_A" (effects (font (size 1 1)))) (number "3" (effects (font (size 1 1)))))
+      (pin passive line (at 12.7 -2.54 180) (length 5.08) (name "IF_B" (effects (font (size 1 1)))) (number "4" (effects (font (size 1 1)))))
+      (pin passive line (at 2.54 -12.7 90) (length 5.08) (name "GROUND" (effects (font (size 1 1)))) (number "5" (effects (font (size 1 1)))))
+      (pin passive line (at 5.08 -12.7 90) (length 5.08) (name "GROUND" (effects (font (size 1 1)))) (number "6" (effects (font (size 1 1)))))
+      (pin passive line (at -5.08 -12.7 90) (length 5.08) (name "GROUND" (effects (font (size 1 1)))) (number "7" (effects (font (size 1 1)))))
+      (pin passive line (at -12.7 -2.54 0) (length 5.08) (name "LO" (effects (font (size 1 1)))) (number "8" (effects (font (size 1 1)))))
+    )
+  )
+)
