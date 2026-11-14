@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #190 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #192 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #192 MERGED: rischio sovratensione positiva MCP6002 esplicitamente bloccato
+
+**[PR #192](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/192) MERGED** su `main`, commit `eca950ec4e167a187565b195745034332b9c9677`, head tecnico `dfe0690f1ec84a408c6a974fcaf9bc6d36d229bb`. [Actions #43639549233](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43639549233): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`; `MCP6002_HIGHZ_POSITIVE_OVP_BLOCKED_NO_UPPER_CLAMP`; `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+**Rettifica tecnica di sicurezza**: secondo Microchip DS20001733L §4.1.2 e Figure 4-1/4-2 non esiste nel circuito una protezione alta a VDD+0.3V implementata o qualificata: il diodo esterno verso VDD deve ancora essere progettato con percorso di corrente/iniezione e verifica a circuito spento. Le stime +20V precedenti assumevano impropriamente la presenza del clamp. Il gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` ora dimostra, con modello resistivo senza clamp, che +20V a J1901 lascia `U1901/3` a circa **19.9095V**, violando il limite assoluto ingresso VDD+1V con alimentazione a 5V o a 0V; +12V produce circa 11.9457V e supera anch'esso il massimo a VDD 5V. Nel modello di clamp basso ipotetico, un guasto persistente −200V produce circa **0.3988W** su R1903, oltre 0.25W nominali. Numeri matematici per evidenziare i rischi, **non** una prova di sicurezza. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato. CAD invariato: **9 refs / 7 reti / 24 pin**, ERC0. Stato design: protezione positiva, ESD, startup/unpowered, leakage MPN, percorso alimentazione, driver bobina/FSD, AGC RX MAIN e PCB native **non qualificati**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #190 MERGED: filtro RF C1902 C0G THT sul buffer MCP6002 da banco
 
