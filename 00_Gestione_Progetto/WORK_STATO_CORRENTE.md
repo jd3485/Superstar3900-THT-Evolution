@@ -1,11 +1,23 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #164 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #166 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #166 MERGED: sensibilità IF455/KSP10 a carico complesso RC ipotetico, 72 AC native
+
+**[PR #166](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/166) MERGED** su `main`, commit `46deeb17fd3fc6b5ae93e3e960c227222cb78b20`, head tecnico `48d2518ad592ffd5a769128b074a1af148a2dbf5`. [Actions #43626609419](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43626609419) **FAST/FULL/required SUCCESS 3/3**, log FULL verificato: `PASS_NATIVE_KICAD9_IF455_KSP10_72_HYPOTHETICAL_COMPLEX_RC_LOAD_NGSPICE_NO_OEM_NO_FAB_NO_TX`, **72 vere risoluzioni ngspice AC**, **111 comandi storici**, nessun `##[error]`.
+
+Nuovo test `03_Verifiche/V2.7/verify_if455_ksp10_hypothetical_complex_rc_load_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_HYPOTHETICAL_RC_LOAD_DRAFT.md`, registrazione obbligatoria in `ci/full_regressions.py`. Esportazione netlist KiCad9 dei circuiti IF455 e KSP10 con verifiche pin↔net; banco condiviso a 6V e transistor BJT **generico**, `beta=40/80/160` × R carico `1500/2000Ω` × C fittizia in parallelo `0/100/330/1000pF` × frequenza `445/455/465kHz`.
+
+Nel **solo** caso modellistico beta160/R2k/455kHz: aggiunta di 100/330/1000pF comporta rapporto tensione follower vs solo R rispettivamente `0,992593872` / `0,974280578` / `0,913639099`. **Non** è la funzione di trasferimento di un filtro ceramico reale: R||C è uno stress fittizio, non una misura OEM FB455/LTM455, né dimostra prestazioni in rumore, IF/LO, dinamica, banda o selettività AM/FM/SSB/CW. Non adottare tali C su KiCad né qualificare un filtro.
+
+Master MAIN V2.6 sette fogli/138 riferimenti invariato, PCB MAIN/FRONT inesistenti, DRC non applicabile, BOM non qualificata. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141), [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123), [PR #143](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) aperte. **Prossimo gate:** modello a due porte o misure OEM dell'effettivo filtro 455kHz e impedenze con mixer LO-driven; decidere sul carico e sull'interfaccia soltanto dopo qualifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 14 novembre 2026 — PR #164 MERGED: KSP10 full tank, 72 AC complesse native
 
