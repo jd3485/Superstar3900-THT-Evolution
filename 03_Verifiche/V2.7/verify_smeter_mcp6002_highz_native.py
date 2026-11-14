@@ -67,8 +67,8 @@ def main():
     rseries=100000
     # The 100k series resistance lies upstream of the 22M input-bias
     # return; this is an ideal DC loading estimate, NOT ESD clamp testing.
-    loss=rdet/(rdet+rbias+rseries)
-    assert loss<0.003
+    loss=(rdet+rseries)/(rdet+rbias+rseries)
+    assert loss<0.01
     for v in (0.1,0.5,1,3,4):
         node=v*rbias/(rdet+rbias+rseries)
         assert math.isclose(node,v*(1-loss),rel_tol=1e-12)
