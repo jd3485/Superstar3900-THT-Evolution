@@ -450,6 +450,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_2500_28j_q_vs_dcr_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Real KiCad9 IF455 standalone port plus four native AC test cases.
+    # Compare both sides of ±3/5/10/20/40 kHz offsets, NOT receiver masks.
+    print("::group::IF455 SINGLE TANK CHANNEL OFFSET NATIVE SELECTIVITY",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_channel_selectivity_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
