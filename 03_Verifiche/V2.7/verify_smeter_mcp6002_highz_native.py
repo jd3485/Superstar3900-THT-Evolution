@@ -12,11 +12,11 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
-REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901","D1902"}
+REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901","D1902","D1903"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
- "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","2")},
- "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2"),("D1902","2")},
+ "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","2"),("D1903","1")},
+ "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2"),("D1902","2"),("D1903","2")},
  "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","1"),("R1904","1"),("D1902","1")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
@@ -51,7 +51,8 @@ def main():
     assert diode_pin_k in s and diode_pin_a in s
     assert diode_pin_k in library and diode_pin_a in library
     assert '(property "Footprint" "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"' in s
-    assert s.count('(property "Footprint" "Diode_THT:')>=2
+    assert s.count('(property "Footprint" "Diode_THT:')>=3
+    assert '(property "Value" "1N4148_DO35_LOWER_NEGATIVE_CLAMP_CANDIDATE_UNQUALIFIED"' in s
     assert '(property "Value" "BZX55C5V6_DO35_ZENER_5V6_RAIL_CANDIDATE_UNQUALIFIED"' in s
     assert '(property "Value" "1N4148_DO35_UPPER_CLAMP_CANDIDATE_NOT_QUALIFIED"' in s
     assert 'MICROCHIP_MCP6002_I_P_PDIP8_CANDIDATE' in s
@@ -72,7 +73,7 @@ def main():
     for name,members in EXPECTED.items():
         require(nets,name,*sorted(members))
         assert set(nets[name])==members,("Unexpected pin-net assignment",name,nets[name])
-    assert sum(len(members) for members in nets.values())==30
+    assert sum(len(members) for members in nets.values())==32
     # 22M passive shunt in parallel with idealized 47k detector: only
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
@@ -134,6 +135,34 @@ def main():
     severe_power=(severe_negative-assumed_vclamp)**2/rseries
     assert severe_current<ds_input_abs_current
     assert severe_power>0.25
+    # D1903 is now an EXTERNAL 1N4148 DO35 low-side clamp with
+    # cathode pin1 on analog input and anode pin2 on VSS/GND.
+    # Unlike the earlier illustrative -0.3V internal-diode assumption,
+    # use example -0.7V external junction; not a Vf guarantee at PVT.
+    external_vclamp=-0.7
+    neg_results={}
+    for source_v in (-12.0,-20.0,-40.0,-200.0):
+        isink=max(0.0,(external_vclamp-source_v)/rseries)
+        p_series=isink*isink*rseries
+        neg_results[source_v]=(round(isink*1000,6),round(p_series,6))
+        if source_v==-20.0:
+            assert 0.00019<isink<0.0002 and p_series<0.005
+        if source_v==-200.0:
+            assert 0.0019<isink<ds_input_abs_current
+            assert p_series>0.25 # R1903 exceeds its declared 0.25W
+    # The external clamp does not eliminate internal ESD current share.
+    # 25nA * 146kOhm is an illustrative DC error; high temperature
+    # diode leakage and input operating range are NOT characterized.
+    illustrative_leakage=25e-9
+    assert illustrative_leakage*r_thevenin>0.003
+    print("MCP6002_HIGHZ_D1903_LOWER_CLAMP_UNQUALIFIED",{
+        "pin1":"K=AM_ENV_AFTER_R1903",
+        "pin2":"A=SMBUF_BENCH_GND",
+        "assumed_forward_clamp_V":external_vclamp,
+        "negative_fault_source_V_to_mA_and_R1903_W":neg_results,
+        "R1903_0P25W_survives_200V":False,
+        "ESD_hot_temp_leakage_and_PVT_qualified":False,
+        "no_fab":True},flush=True)
     # Real D1901 is on the CAD netlist but does NOT make the upstream
     # 5V rail capable of absorbing injection, especially if unpowered.
     assert '(symbol (lib_id "TH_SMETERBUF:D")' in s
@@ -268,11 +297,11 @@ def main():
           "1pct_accuracy_at_100mV",False,
           "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
-          "pins":30,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
+          "pins":32,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
           "unqualified_input_ESD_OVP":True,
           "actual_RX_AGC_or_meter_driver":False},flush=True)
-    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS30_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
