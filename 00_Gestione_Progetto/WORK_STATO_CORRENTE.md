@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #198 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #200 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #200 MERGED: D1903 DO35 clamp inferiore ingresso MCP6002 candidato, guasto −200V NON tollerato
+
+**[PR #200](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/200) MERGED** su `main`, commit `c9fad0484a904d8e87e65decd05d4fd3faa62829`, head tecnico `b4073e14e34336778343271093f04afc3845cdc6`. [Actions #43643037357](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43643037357): **FAST/FULL/required SUCCESS 3/3**; log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1903_LOWER_CLAMP_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Nel banco KiCad9 MCP6002 reale aggiunto `D1903=1N4148 DO-35 THT` con **catodo pad1 al segnale `AM_ENV_AFTER_R1903`** e **anodo pad2 a `SMBUF_BENCH_GND`**; rimangono D1901 clamp superiore, D1902 Zener rail e R1904 bleeder. Netlist nativa **13 componenti / 7 reti / 32 pin** ERC0. Modello illustrativo a Vf=0,7V e guasto DC da connettore: −20V => I≈0,193mA, P(R1903)≈0,003725W; −200V => I≈1,993mA, P(R1903)≈**0,397205W** (> rating **0,25W**). **Rischio termico non risolto**, né sono qualificati clamp interno, leakage PVT, surge/ESD o potenza/tensione impulsiva.
+
+**Blocker**: protezione negativa non approvata per guasti gravi; richiede revisione del limitatore d'ingresso reale, MPN/protezioni certificate e temperature, input AGC MAIN, driver FSD/coil, layout PCB MAIN/FRONT e test fisici. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #198 MERGED: D1902 Zener 5V6 THT e correzione polarità DO-35 pin↔pad D1901/D1902
 
