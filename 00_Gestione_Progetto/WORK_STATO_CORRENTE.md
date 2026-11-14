@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #168 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #170 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #170 MERGED: IF455 S2P con sorgente Thevenin complessa
+
+**[PR #170](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/170) MERGED** su `main`, commit `1055777d01a6c1cad72f7ff81382269668d5e871`, head tecnico `56482547af8c8d8eca2dc58757168ef5a468d07f`. [Actions #43628262564](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43628262564) **FAST/FULL/required SUCCESS 3/3**, log FULL verificato: `PASS_IF455_TOUCHSTONE_TWO_PORT_81_COMPLEX_SOURCE_LOAD_TESTS_NO_OEM_NO_FAB_NO_TX` con **81 crosscheck analitici sintetici**, `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES` con **111 comandi storici**, nessun errore nei log FULL.
+
+Esteso `03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py` a sorgente Thevenin Zs complessa, oltre al carico ZL complesso. Verifica con resistenza serie fittizia (100Ω), Z0=2kΩ, formati RI/MA/DB, tre frequenze, tre carichi e tre sorgenti (81 casi), con confronto indipendente di `Vload/Vs=Zload/(Zsource+100Ω+Zload)`; CLI `--source-real-ohm` e `--source-imag-ohm`. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_S2P_TWO_PORT_MEASUREMENT_CONTRACT_DRAFT.md` ampliato. **Non sono misure OEM, né 81 simulazioni ngspice**; nessuna impedenza reale mixer LO-driven è stata misurata e nessun S2P di filtro reale acquisito. Il master KiCad MAIN V2.6 7 fogli/138 refs invariato, PCB/DRC assenti e BOM ancora non qualificata. Issue #141 e PR #123/#143 restano aperte. Prossimo gate: misure effettive del filtro IF455 e mixer sotto LO, qualifica MPN e selettività per modo. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #168 MERGED: contratto Touchstone IF455 a due porte
 
