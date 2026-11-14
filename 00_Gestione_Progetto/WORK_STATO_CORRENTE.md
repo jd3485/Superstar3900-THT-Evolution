@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #196 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #198 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #198 MERGED: D1902 Zener 5V6 THT e correzione polarità DO-35 pin↔pad D1901/D1902
+
+**[PR #198](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/198) MERGED** su `main`, commit `bb6b81cd2986545e312f9c3f5deec50dd8cb29c9`, head tecnico `715b106d5a279e8575b72119549df0036b9b5bfe`. [Actions #43642100791](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43642100791): **FAST/FULL/required SUCCESS 3/3**. FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1902_5V6_ZENER_LOW_CURRENT_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS30_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni PASS.
+
+Schema KiCad9 standalone: `D1902` candidato Zener BZX55C5V6 DO-35 THT da rail `VLAB5_BUFFER` a `SMBUF_BENCH_GND`. Corretto **difetto critico di polarità pin↔pad** sulla libreria KiCad `TH_SMETERBUF:D` e relativo simbolo embedded: DO-35 standard pad **1=catodo (K)**, pad **2=anodo (A)**; `D1901` ora pin2 A su ingresso e pin1 K a +5V; `D1902` pin2 A a massa e pin1 K a +5V. Gate KiCad9 nativo **12 refs / 7 reti / 30 pin**, ERC0. D1902 non è qualificato: Vz 5,2–6,0V è specificato a 5mA/25°C; il modello +200V/R1903=100k/R1904=4k7/Vf(D1901)=0,7V lascia soltanto ~0,7455mA nel diodo assumendo Vz=5,6V; la regolazione sub-mA e PVT non sono garantite. Conduzione inversa e protezione power-off/ESD/OVP non approvate.
+
+**Blocker**: manca conferma OEM MPN e V-I Zener a bassissima corrente e temperature, protezione reale off-state/ESD e guasti negativi, sorgente MAIN AGC, calibrazione FSD/driver S-meter, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #196 MERGED: R1904 4k7 THT scarico rail 5V da banco, power-off ancora NON qualificato
 
