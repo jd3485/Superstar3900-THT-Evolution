@@ -23,6 +23,14 @@ def main():
     assert "THT_DRAFT_PROVISIONAL" in text
     assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in text
     assert "METER_DRIVE_CANDIDATE" in text and "METER_POS_LIMITED" in text
+    footprint=SCH.parent/"TH_FRONT.pretty/Potentiometer_THT_3Pin_PROVISIONAL.kicad_mod"
+    mod=footprint.read_text(encoding="utf-8")
+    assert "DO NOT FAB" in mod and "PROVISIONAL" in mod
+    assert mod.count(" thru_hole ")==3
+    for pad in ("1","2","3"):
+        assert f'(pad "{pad}" thru_hole ' in mod
+    fp_table=(SCH.parent/"fp-lib-table").read_text(encoding="utf-8")
+    assert 'TH_FRONT' in fp_table and 'TH_FRONT.pretty' in fp_table
     with tempfile.TemporaryDirectory(prefix="tht_front_smeter_") as d:
         erc=Path(d)/"erc.rpt"
         process=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
