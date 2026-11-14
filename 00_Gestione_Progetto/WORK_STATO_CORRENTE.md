@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #140 MERGED: selettività offset canale IF455, filtro LC singolo insufficiente
+
+**[PR #140](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/140) MERGED**, verificato su main commit `60aea20c847cf216e49b78217f9b08be921f40c2`, ultimo head tecnico `1622b47b3530e2dc1a76ee71891a085c2c123723`. [Actions #43591777373](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43591777373) **FAST, FULL KiCad9/ngspice e required gate 3/3 SUCCESS**; log FULL nativi verificati con **111 comandi storici** e marker `PASS_NATIVE_KICAD9_IF455_FOUR_CHANNEL_OFFSET_NGSPICE_SWEEPS_NO_RECEIVER_MASK_NO_FAB_NO_TX`.
+
+Nuovo verificatore `03_Verifiche/V2.7/verify_if455_channel_selectivity_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_CHANNEL_SELECTIVITY_DRAFT.md`, test obbligatorio in `ci/full_regressions.py`. Dal vero schematico KiCad9 IF455 standalone viene verificato J1601→C1601→L1601 e GND; 4 sweep AC nativi ngspice 300–650kHz, fonte Thevenin ipotetica 50Ω, 2 carichi (100kΩ, gate RC passivo) × 2 perdite bobina ipotetiche (16,5Ω DCR-usata-come-proxy o 82,7286Ω teorici da Q790, **non RF455 misurato**). Il verificatore estrae Vout a esattamente 455kHz e attenuazioni **separate lato basso e lato alto** a ±3/5/10/20/40kHz, normalizzate a Vout(455kHz).
+
+**Evidenza numerica:** sorgente 50Ω, carico 100kΩ, perdita proxy 16,5Ω → picco **454750Hz**, BW −3dB **42556,7Hz**, attenuazione relativa a 455kHz a −10kHz **0,8938dB**, +10kHz **0,8565dB**; a −20kHz **3,0289dB**, +20kHz **2,5440dB**. Variante carico gate RC: picco **450250Hz**, BW **36296,4Hz**, a −5kHz attenuazione **−0,2683dB** (segnale offset maggiore del segnale a 455kHz), +5kHz **0,7577dB**; a ±10kHz peggiore **0,1085dB**. Cambiare perdita a 82,7286Ω allarga il BW di riferimento a **53697,9Hz**, peggiorando il rigetto peggiore a ±10kHz a **0,4554dB**. Tutti i quattro casi hanno almeno un lato di ±10kHz con rigetto **inferiore a 3dB**: questo tank isolato **non** è un filtro di selettività di canale stretto qualificato.
+
+**Requisiti autoritativi** `01_Specifiche/REQUISITI_V0.1.md`: modi RX **AM, FM, USB, LSB, CW già confermati**; target prestazionali e banda per modo ancora `TBD`, IF1 10.695MHz/IF2 455kHz solo candidate, non congelate. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) aperta per specifiche quantitative per modo e selezione filtro THT dedicato. Non attribuire arbitrariamente 3kHz SSB/6kHz AM/10kHz FM come valori di progetto approvati; occorre definire canali, larghezza occupata, insertion loss, rigetto adiacente, dinamica, demodulazione e MPN OEM. **Nessun filtro scelto né circuito fisico alterato**. Master V2.6 sette fogli/138 refs immutato; PCB MAIN e FRONT assenti, routing 0%, DRC PCB non applicabile; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) resta DRAFT per qualifica meccanica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #138 MERGED: Q a 790kHz NON è DCR/ESR RF a 455kHz, Delevan 2500-28J
 
 **[PR #138](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/138) MERGED**, verificato su main commit `db4815f187aa0dcc61ff8e2c3b861f799fd288c4`; head tecnico `d811e55831e2028b84d5acc78f857ccb2466938c`. [Actions #43590750543](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43590750543) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**, log FULL verificati con **111 comandi storici** e `PASS_NATIVE_KICAD9_NGSPICE_IF455_8_AC_LOSS_TRIALS_NO_Q455_INFERENCE_NO_FAB_NO_TX`.
