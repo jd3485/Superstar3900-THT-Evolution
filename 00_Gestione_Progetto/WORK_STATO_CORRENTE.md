@@ -7,6 +7,12 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 15 novembre 2026 — V2.7 R1903 fault-envelope test in branch, NOT integrated until PR CI passes
+
+Branch tecnico `v27-smeter-yageo-fault-envelope-20261115`, base main `ebe7f8547d4839677bc57c913658c0647572edc9` (PR #207 checkpoint integrata, FAST+required PASS, FULL skipped documentale). Nuovo test `03_Verifiche/V2.7/verify_smeter_r1903_fault_envelope.py` collegato alla verifica nativa KiCad9 MCP6002, rapporto S-meter aggiornato. Calcolo ideale per R1903 Yageo 120kΩ ±0,5% 1W @70°C, cutoff derating teorico circa 126,6°C per guasto negativo −200V: 125°C passa MODELLO, 130°C FALLISCE MODELLO. Non confondere la corrente del ramo modellata con i 2mA di stress interno IC; nessuna protezione hardware, temperatura corporea o ESD qualificata. Master V2.6 e schemi PCB invariati. **Questa voce descrive un branch non ancora integrato; attendere FULL required CI sul suo HEAD e successivo merge**. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — PR #206 MERGED: R1903 OEM Yageo MFR1WSDRE52-120K, derating 130°C FAIL
 
 **[PR #206](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/206) MERGED** su main, commit `76da7f9fecf2a3b7102e5d542cdc38b928bcc761`, head tecnico `6f237fbf23643b75747f1cd620126ffb8a99b9e7`. [Actions #43645624151](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43645624151): tre job FAST/FULL/required **SUCCESS** verificati, inclusa esecuzione di suite KiCad9/ngspice; nessuna prova fisica. Main precedente `e08965c524a187bf5451ec17fcb2f0764aca08e8`, checkpoint PR205 già integrato.
