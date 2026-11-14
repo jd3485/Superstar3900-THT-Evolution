@@ -2,7 +2,7 @@
 """Native KiCad9 ERC and strict pins↔nets for isolated FRONT analog S-meter.
 
 NOT a qualified meter, protection network, MAIN-FRONT cable or production PCB.
-The 100k resistor value and 10k potentiometer are only schematic candidates:
+The two 100k series resistor candidates and 10k potentiometer are only schematic candidates:
 full-scale meter current, coil resistance and MAIN drive are NOT specified.
 """
 from pathlib import Path
@@ -16,10 +16,11 @@ SCH=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch
 
 def main():
     text=SCH.read_text(encoding="utf-8")
-    assert text.count("(symbol (lib_id ")==4
+    assert text.count("(symbol (lib_id ")==5
     assert all(text.count(f'(property "Reference" "{ref}"')==1
-               for ref in ("J1801","J1802","RV1801","R1801"))
+               for ref in ("J1801","J1802","RV1801","R1801","R1802"))
     assert "100k_0P25W_CANDIDATE_NO_FSD_QUAL" in text
+    assert "100k_0P25W_REDUNDANT_CANDIDATE_NO_FSD_QUAL" in text
     assert "THT_DRAFT_PROVISIONAL" in text
     assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in text
     assert "METER_DRIVE_CANDIDATE" in text and "METER_POS_LIMITED" in text
@@ -51,13 +52,14 @@ def main():
         nets=exported_nets(SCH,Path(d)/"smeter.net")
         require(nets,"METER_DRIVE_CANDIDATE",("J1801","1"),("RV1801","1"))
         require(nets,"METER_TRIM_OUTPUT",("RV1801","2"),("R1801","1"))
-        require(nets,"METER_POS_LIMITED",("R1801","2"),("J1802","1"))
+        require(nets,"METER_LIMIT_STAGE1",("R1801","2"),("R1802","1"))
+        require(nets,"METER_POS_LIMITED",("R1802","2"),("J1802","1"))
         require(nets,"METER_RETURN",("J1801","2"),("RV1801","3"),("J1802","2"))
         # Ensure no unintended short around the resistor/trim and that
         # no local supply or TX pins were added to the isolated harness.
         relevant=("METER_DRIVE_CANDIDATE","METER_TRIM_OUTPUT",
-                  "METER_POS_LIMITED","METER_RETURN")
-        assert len(set(relevant))==4
+                  "METER_LIMIT_STAGE1","METER_POS_LIMITED","METER_RETURN")
+        assert len(set(relevant))==5
         for a in relevant:
             for b in relevant:
                 if a!=b:
@@ -65,10 +67,11 @@ def main():
         assert set.union(*(nets[x] for x in relevant))=={
             ("J1801","1"),("J1801","2"),("RV1801","1"),
             ("RV1801","2"),("RV1801","3"),("R1801","1"),
-            ("R1801","2"),("J1802","1"),("J1802","2")}
+            ("R1801","2"),("R1802","1"),("R1802","2"),
+            ("J1802","1"),("J1802","2")}
         print("FRONT_SMETER_NATIVE_PIN_CONTRACT",
               {k:sorted(nets[k]) for k in relevant},flush=True)
-    print("PASS_KICAD9_FRONT_SMETER_ERC0_PASSIVE_THT_LIMITER_NETLIST_NO_FSD_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
