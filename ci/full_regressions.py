@@ -407,13 +407,42 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
-    # A06 provisional native THT footprint; does not qualify OEM fit or fabricate.
-    if (ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py").exists():
-        print("::group::SBL1 A06 PROVISIONAL THT PAD MAP AND NO FAB GATE",flush=True)
-        subprocess.run([sys.executable,"-B",
-                        str(ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py")],
-                       cwd=ROOT,check=True)
-        print("::endgroup::",flush=True)
+    # C1601 input series coupling: 15 real ngspice AC cases across five
+    # experimental values and three hypothetical source resistances.
+    # No KiCad/BOM edit and no vendor mixer impedance asserted.
+    print("::group::IF455 C1601 NATIVE SOURCE AND CAPACITANCE SWEEP",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_source_sweep_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # C1601 455kHz coupling tradeoff must also evaluate full response shape,
+    # not just nominal scalar amplitude. Hypothetical source Rs only.
+    print("::group::IF455 C1601 PASSBAND SOURCE DEPENDENCE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_bandwidth_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # OEM mixer IF termination is NOT currently implemented in native KiCad.
+    # Nine 455kHz test-only loading cases; no nonlinear SBL-1+ mixer model.
+    print("::group::MIXER IF 50OHM TERMINATION PORT CONTRACT AND TEST LOAD",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_mixer_if_termination_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # Three-frequency RF-facing IF port shunt sensitivity; native KiCad
+    # netlists + twelve ngspice complex-admittance checks only. No diplexer.
+    print("::group::SBL1 IF PORT TEST SHUNT 12 COMPLEX ADMITTANCE CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # A06 OEM TOP M-over-pin2 provisional pad map (no PCB qualification).
+    # This is a native KiCad9 footprint parser/export and no-assignment gate.
+    print("::group::SBL1 A06 TOP M-OVER-PIN2 PROVISIONAL NO FAB",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
