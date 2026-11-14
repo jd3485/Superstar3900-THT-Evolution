@@ -11,19 +11,23 @@ DIR=ROOT/"04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE"
 FP=DIR/"SBL1_A06_CANDIDATE.pretty/SBL1_A06_UNQUALIFIED.kicad_mod"
 SCH=DIR/"MIXER_SBL1_BENCH_THT_V2_7_DRAFT.kicad_sch"
 PAD=re.compile(r'\(pad "(\d+)" thru_hole (circle|rect) \(at ([\-\d.]+) ([\-\d.]+)\) \(size ([\d.]+) ([\d.]+)\) \(drill ([\d.]+)\) \(layers "\*\.Cu" "\*\.Mask"\)\)')
-# OEM Case Style A / A06, 98-A Rev B: view FROM THE BOTTOM of the device.
+# OEM SBL-1+ PDF REV B page1 top M-over-pin2 + OEM bottom view.\n# Bottom-only mirrored-X assumption was contradicted by the actual TOP marker.
 # Reading convention is not a substitute for inspection of the drawing image.
 OEM_BOTTOM_TOP_ROW=("1","3","5","7")
 OEM_BOTTOM_BOTTOM_ROW=("2","4","6","8")
 PITCH=5.08
 def expected_top_view():
-    # KiCad F.Cu is viewed from the PCB top: reflect bottom-view X axis.
+    # OEM *graphic* SBL-1+ datasheet: "M" over pin 2 at TOP-LEFT.
+    # The BOTTOM VIEW shows pin 2 at BOTTOM-LEFT. Reflect the Y axis
+    # (flip upper/lower), NOT X (left/right), to preserve that mark.
+    # This is intentionally an image-anchored mechanical *candidate*,
+    # still not an assembly/drill tolerance qualification.
     columns=(-1.5*PITCH,-0.5*PITCH,0.5*PITCH,1.5*PITCH)
     result={}
-    for row, y in ((OEM_BOTTOM_TOP_ROW,-PITCH/2),
-                   (OEM_BOTTOM_BOTTOM_ROW,PITCH/2)):
+    for row,y in ((OEM_BOTTOM_TOP_ROW,-PITCH/2),
+                  (OEM_BOTTOM_BOTTOM_ROW,PITCH/2)):
         for x,pin in zip(columns,row):
-            result[pin]=(-x,y)
+            result[pin]=(x,-y)
     return result
 EXPECTED=expected_top_view()
 def main():
@@ -51,8 +55,9 @@ def main():
     ys=sorted({y for x,y in seen.values()})
     assert all(abs((xs[i+1]-xs[i])-PITCH)<1e-8 for i in range(3))
     assert abs((ys[1]-ys[0])-PITCH)<1e-8
-    assert seen["1"]==(7.62,-2.54),"Pin 1 marker requires upper-right TOP position"
-    assert "(fp_circle (center 8.0 -4.0)" in src,"Pin 1 silkscreen marker missing"
+    assert seen["1"]==(-7.62,2.54),"OEM top marker: pin1 lower left"
+    assert seen["2"]==(-7.62,-2.54),"OEM top M-over-pin2 must align upper left"
+    assert "(fp_circle (center -8.0 4.0)" in src,"Pin 1 silkscreen marker missing"
     assert src.count('(pad "')==8,"Unexpected extra pad"
     # 0.031in diameter + .005in tolerance => 0.9144mm maximum pin diameter.
     # 1.10mm nominal plated finished drill proposal leaves only 0.1856mm
@@ -79,5 +84,5 @@ def main():
         assert svgs,("KiCad9 generated no SVG for A06 candidate",cmd)
         assert all(p.stat().st_size>500 for p in svgs),svgs
         print("NATIVE_KICAD9_A06_SVG_SIZE",[(p.name,p.stat().st_size) for p in svgs],flush=True)
-    print("PASS_NATIVE_KICAD9_FP_EXPORT_A06_PROVISIONAL_THT_8_PADS_MIRROR_CONSISTENT_FOOTPRINT_NOT_ASSIGNED_NO_FAB_NO_TX")
+    print("PASS_NATIVE_KICAD9_FP_EXPORT_A06_TOP_M_OVER_PIN2_Y_FLIP_THT_8_PADS_UNQUALIFIED_NOT_ASSIGNED_NO_FAB_NO_TX")
 if __name__=="__main__": main()
