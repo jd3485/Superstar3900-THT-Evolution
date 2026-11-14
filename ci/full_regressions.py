@@ -443,6 +443,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_coil_parasitic_srf_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Delevan 2500-28J DCR max 16.5Ω is not AC-loss @455kHz.
+    # Eight native AC sensitivity runs, real KiCad9 port contract.
+    print("::group::IF455 2500-28J Q790 VS DCR RF LOSS SENSITIVITY",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_2500_28j_q_vs_dcr_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
