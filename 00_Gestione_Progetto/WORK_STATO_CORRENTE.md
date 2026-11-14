@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #128 MERGED: native ngspice sweep accoppiamento C1601 IF455
+
+**[PR #128](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/128) MERGED** e verificata su main commit `d403412915c5abe26bdb36b8e9bce7768e7f3dad`; head tecnico `06585aaa5cb0fd3fc5659ef5c4de652d81d15e27`. [Actions #43583597932](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43583597932) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; log FULL verificato con 111 comandi storici e `PASS_NGSPICE_IF455_C1601_15_CANDIDATE_SOURCE_CASES_NO_MIXER_MODEL_NO_FAB_NO_TX`.
+
+Nuovo verificatore reale `03_Verifiche/V2.7/verify_if455_c1601_source_sweep_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_C1601_SOURCE_SWEEP_DRAFT.md`, test obbligatorio registrato nella FULL CI. **15 sweep ngspice AC nativi**: C1601 10/47/100/470/1000 pF × Rs ipotetiche 50/1000/10000Ω; a 455kHz e Rs50Ω trasferimenti |Vout/Vsource| rispettivamente **0,835055562; 1,123823840; 1,030331830; 0,960992122; 0,951119294**. Reactance ideale nominale C1601 10pF: **34979,108Ω**. Le combinazioni sono **solo temporanee nel modello ngspice**; C1601 fisico resta 10pF nello schematico e non è stata selezionata nessuna sostituzione. Nessun modello impedenza complessa/non lineare reale SBL-1+, nessun adattamento o qualità del ricevitore dimostrati.
+
+**Stato CAD:** MAIN V2.6 a sette fogli/138 refs invariata; standalone mixer/filtro IF V2.7 non integrati; entrambe le vere PCB MAIN e FRONT ancora assenti, routing 0%, DRC PCB non applicabile. [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) rimane DRAFT non integrata: footprint A06 THT meccanicamente non qualificata, non assegnare a MX1701 nonostante sua CI verde. Prossima attività: carico/impedenza mixer IF OEM e prova del disegno meccanico TOP/BOTTOM; analizzare banda/rumore e opzioni per interfaccia senza promuovere modelli di banco a hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #126 MERGED: contratto nativo mixer SBL-1+ IF → filtro IF455
 
 **[PR #126](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/126) MERGED**, merge commit `f2b6d60b7d63b0bbe47bbdc16c625f93cbfd6c5e`, head verificato `c9b539f9b8cdd8e7b1e9873de4116c3c20572898`. [Actions #43571786977](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43571786977) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; 111 regressioni storiche, log `PASS_NATIVE_KICAD9_MIXER_TO_IF455_TWO_PIN_IF3_IF4_TIED_C1601_REACTANCE_NO_MATCH_NO_FAB_NO_TX`. Nuovo verificatore reale `03_Verifiche/V2.7/verify_mixer_if455_interface_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_MIXER_TO_IF455_INTERFACE_THT_DRAFT.md`, test aggiunto a `ci/full_regressions.py`.
