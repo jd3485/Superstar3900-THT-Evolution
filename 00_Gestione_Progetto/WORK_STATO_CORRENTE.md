@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #202 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #204 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #204 MERGED: R1903 120k 1W THT, margine teorico negativo −200V ancora non qualificato
+
+**[PR #204](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/204) MERGED** su `main`, commit `7fc33f0e87243e588e9722e807812ae58b92cdbd`, head tecnico `0b2de9575f8e30979bd53cdc1b3f697edb34f385`. [Actions #43644885954](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43644885954): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1903_120K_200V_STRESS_MARGIN_STILL_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 di banco MCP6002: `R1903=120kΩ/1%/1W` THT DIN0411, impronta invariata. ERC0, netlist **13 refs / 7 reti / 32 pin**. Modello illustrativo guasto negativo −200V, Rmin=118,8kΩ, Vf(D1903)=0,2V: corrente≈**1,681818mA**, margine rispetto al limite assoluto 2mA≈**0,318182mA** e P≈0,336027W. Soglia teorica 2mA≈237,8V; oltre, e.g. −250V, modello NON sicuro. Per detector Thevenin 47kΩ e bias 22MΩ: perdita nominale≈**0,753372%**, fc RC con C1902=1nF≈**960,258Hz**, non include offset/leakage PVT, dinamica AGC reale. Il valore 2mA del datasheet è stress assoluto NON operatività consentita; mancano MPN reale, working voltage, impulse/thermal derating, protezioni ESD/rail spento e qualifiche PVT.
+
+**Blocker**: revisione completa stress/ESD/power-off, reali AGC MAIN e bobina/driver S-meter FRONT, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #202 MERGED: R1903 100k 1W DIN0411 THT ridimensionamento candidato, stress 2mA non qualificato
 
