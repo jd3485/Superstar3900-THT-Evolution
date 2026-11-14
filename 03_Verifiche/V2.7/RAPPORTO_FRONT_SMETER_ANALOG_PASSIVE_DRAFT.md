@@ -1,3 +1,13 @@
+## D1903 DO-35 clamp inferiore THT: stress negativo candidato, non ESD certificato
+
+Schema KiCad9 di banco: aggiunto `D1903=1N4148 DO-35 THT`, **anodo/pad2 verso GND** e **catodo/pad1 su `AM_ENV_AFTER_R1903`** (pin MCP6002 U1901/3), dopo `R1903=100kΩ/0,25W`. Il diodo esterno è candidato per limitare l'escursione negativa e deviare parte della corrente dal clamp interno MCP6002; NON assicura ripartizione di corrente né protezione della giunzione interna, PVT, risposte impulsive e ESD.
+
+Modello ohmico a diodo esterno `Vf=0,7V` **assunta**, GND ideale, guasto DC al connettore: a `−20V` corrente ≈0,193mA e potenza `R1903≈3,7mW`; a `−200V` corrente ≈1,993mA, potenza `R1903≈0,397W`, **maggiore della potenza nominale da 0,25W**, anche se la corrente può sembrare inferiore alla soglia di stress 2mA indicata sul datasheet dell'opamp. Tolleranze, impulsi, tensione massima di lavoro e termica di R1903 restano da verificare. Reverse leakage del nuovo D1903 sul segnale positivo e temperatura possono degradare la precisione già non qualificata a 100mV; introdurre il diodo non migliora automaticamente la precisione.
+
+Gate `verify_smeter_mcp6002_highz_native.py`: netlist KiCad9 esatta **13 componenti/7 reti/32 pin**, ERC reale e marker `MCP6002_HIGHZ_D1903_LOWER_CLAMP_UNQUALIFIED`, prova nominale −12/−20/−40/−200V e fallimento esplicito di stress R1903 a −200V. Master MAIN, front analogico e PCB non modificati; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 **Correzione prioritaria pin↔pad (DO-35 standard KiCad9):** pad fisico **1=K (catodo)**, **2=A (anodo)**. Il simbolo personalizzato e quello embedded inizialmente riportavano A=pin1/K=pin2, invertendo sul PCB entrambe le protezioni D1901 e D1902 nonostante ERC formalmente valido. La stessa PR corregge simbolo libreria, simbolo embedded e controllo di netlist nativa: D1901 pin **2=A** su ingresso, **1=K** a +5V; D1902 pin **2=A** a GND, **1=K** a +5V. Verificare comunque il corpo reale e la banda del diodo durante montaggio: **NO FAB**. Fonte impronta KiCad9 DO-35: https://sources.debian.org/src/kicad-footprints/9.0.2-1/Diode_THT.pretty/D_DO-35_SOD27_P7.62mm_Horizontal.kicad_mod
 
 ## D1902 Zener 5V6 THT sul rail: candidato NON qualificato sotto corrente di ginocchio
