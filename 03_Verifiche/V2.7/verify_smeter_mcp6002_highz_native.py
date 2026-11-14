@@ -39,7 +39,7 @@ def main():
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
     assert s.count('(property "Footprint" "Resistor_THT:')>=4
     assert '(property "Value" "4k7_1PCT_0P25W_RAIL_BLEEDER_THT_CANDIDATE"' in s
-    assert '(property "Value" "120k_1PCT_1W_INPUT_FAULT_LIMIT_MARGIN_CANDIDATE"' in s
+    assert '(property "Value" "120k_0P5PCT_1W_YAGEO_MFR1WSDRE52-120K_CANDIDATE"' in s
     assert '(property "Footprint" "Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal" (at 81.28 213.36 0)' in s
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
@@ -204,6 +204,48 @@ def main():
         "nominal_47k_source_loading_percent":round(loss*100,6),
         "RC_3dB_Hz":round(f_3db,4),
         "qualified_for_real_overvoltage_ESD_PVT":False,
+        "no_fab":True},flush=True)
+    # Yageo MFR datasheet 2024-04-03 v4 p3-4: MFR1WS miniature
+    # 1W at <=70 C, derated linearly to 0W at 155 C;
+    # max working 400V, RCWV=min(sqrt(P*R), max working).
+    # Specific distributor-listed MPN MFR1WSDRE52-120K 120k 0.5%
+    # 1W, 9.0+/-0.5 x 3.3+/-0.3mm axial; verify reel/forming.
+    vendor_mpn="MFR1WSDRE52-120K"
+    vendor_power_70c=1.0
+    vendor_working_voltage_max=400.0
+    vendor_rmin=120000*(1-0.005)
+    vendor_size_max_length_mm=9.5
+    vendor_size_max_diameter_mm=3.6
+    assert vendor_size_max_length_mm<9.9
+    assert vendor_size_max_diameter_mm<=3.6
+    def derated_power(temp_c):
+        return vendor_power_70c if temp_c<=70 else max(0.,vendor_power_70c*(155-temp_c)/(155-70))
+    def rcwv(temp_c,r_ohm):
+        return min(vendor_working_voltage_max,math.sqrt(derated_power(temp_c)*r_ohm))
+    negative_fault_resistor_v=200-0.2
+    corner_power=negative_fault_resistor_v**2/vendor_rmin
+    corner_current=negative_fault_resistor_v/vendor_rmin
+    assert corner_current<ds_input_abs_current # only ideal model
+    assert rcwv(70,vendor_rmin)>negative_fault_resistor_v
+    assert rcwv(100,vendor_rmin)>negative_fault_resistor_v
+    assert rcwv(125,vendor_rmin)>negative_fault_resistor_v
+    assert rcwv(130,vendor_rmin)<negative_fault_resistor_v
+    assert derated_power(125)>corner_power
+    assert derated_power(130)<corner_power
+    assert corner_power>0.33
+    print("MCP6002_HIGHZ_R1903_YAGEO_120K_1W_OEM_PVT_LIMITS_UNQUALIFIED",{
+        "vendor_MPN":vendor_mpn,
+        "source":"Yageo MFR datasheet 2024-04-03 v4 pages 2-4",
+        "Rmin_0p5pct_ohm":vendor_rmin,
+        "MFR1WS_power_W_at_70C":vendor_power_70c,
+        "MFR1WS_max_working_V":vendor_working_voltage_max,
+        "R1903_negative_200V_Vf0p2_power_W":round(corner_power,6),
+        "derated_power_at_125C_W":round(derated_power(125),6),
+        "derated_power_at_130C_W":round(derated_power(130),6),
+        "RCWV_at_125C_V":round(rcwv(125,vendor_rmin),5),
+        "RCWV_at_130C_V":round(rcwv(130,vendor_rmin),5),
+        "continuous_negative_200V_130C_qualified":False,
+        "ESD_pulse_humidity_and_assembly_qualified":False,
         "no_fab":True},flush=True)
     # The external clamp does not eliminate internal ESD current share.
     # 25nA * 146kOhm is an illustrative DC error; high temperature
