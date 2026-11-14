@@ -1,11 +1,23 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #164 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #164 MERGED: KSP10 full tank, 72 AC complesse native
+
+**[PR #164](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/164) MERGED** su `main` al commit `7a74320180dbefff58da15ccc8e03dfea1c87a18` (head tecnico `e9a7621dc88cd3f7f72a0972af6bf344528bba1e`). [Actions #43625741215](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43625741215) **FAST/FULL/required 3/3 SUCCESS**, log ispezionati: marker `PASS_NATIVE_KICAD9_KSP10_72_FULL_TANK_COMPLEX_TRANSFER_NGSPICE_NO_OEM_NO_FAB_NO_TX`, **72 reali risoluzioni AC ngspice**, **111 comandi storici**, esportazione netlist KiCad9 KSP10 e tank IF455. Nessun errore Actions; warning Node20 deprecation di checkout/upload non rappresenta un failure test.
+
+Script `03_Verifiche/V2.7/verify_if455_ksp10_full_tank_complex_transfer_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_KSP10_FULL_TANK_COMPLEX_TRANSFER_DRAFT.md`, gate aggiunto a `ci/full_regressions.py`. Banco full-tank esistente, BJT **generico non OEM** 6V, `beta=40/80/160` × carico resistivo dummy `1,5/2kΩ` × CIN temporaneo `10/100/1000/10000pF` × `445/455/465kHz` = **72 casi** con tensioni complesse e fase tank→uscita follower.
+
+A 455kHz, a parità di corner, passando da CIN 10pF a 10nF **la tensione sul tank cala al 78,48–78,61%**, mentre l'uscita follower sale al **149,84–151,22%** del confronto 10pF: documenta il compromesso di carico, **non** miglioramento dimostrato di sensibilità, rumore o selettività. No impedenza complessa reale del filtro, mixer LO-driven, KSP10 OEM NF/IMD, Q/SRF fisici o PCB. **Non adottare nuovi valori CIN** dal solo AC.
+
+Restano aperte [issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) sulla selettività AM/FM/USB/LSB/CW, e PR [#123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) / [#143](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) **DRAFT/UNQUALIFIED**. **Prossimo lavoro:** stimare il carico complesso e trasferimento RF in presenza di un filtro ceramico realistico misurato, e qualifica OEM/noise/linearity, prima di scegliere eventuale CIN/buffer. MAIN V2.6 sette fogli/138 riferimenti invariato; PCB MAIN/FRONT ancora inesistenti, nessun DRC applicabile, BOM non qualificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 14 novembre 2026 — PR #162 MERGED: impedenza complessa KSP10 a 455kHz, 144 test nativi
 
