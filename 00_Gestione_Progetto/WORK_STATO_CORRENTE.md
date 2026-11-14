@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #178 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #180 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #180 MERGED: tracciamento sorgente reale S-meter RX e blocco falsa AGC
+
+**[PR #180](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/180) MERGED** su `main`, commit `6022af2a2677520a97da3d3339337ce8d236dc00`, head tecnico `6c688e327ace7a089e2c9a2e568064922f95bb57`. [Actions #43633620095](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43633620095): FAST, FULL, required **SUCCESS 3/3**. Dal log FULL: `PASS_NATIVE_RX_SOURCE_TRACE_AM_ENVELOPE_NOT_DC_AGC_NOT_MAIN_NO_FAB_NO_TX` e `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES {'executed_commands': 111}`.
+
+Nuovo test integrato nella FULL `03_Verifiche/V2.7/verify_rx_smeter_source_trace_native.py` percorre il vero master KiCad9 MAIN V2.6 + sei figli gerarchici e verifica che non vi siano segnali etichettati AGC/S-meter/RSSI/RX_LEVEL da attribuire senza nuova revisione. Esporta le netlist native AM455 laboratorio e S-meter FRONT: il nodo interno `AM_RECTIFIED_ENV` collega `D1501/1`, `R1501/1`, `C1501/1` e `C1502/1`, mentre `J1502/1` espone `AM_DEMOD_AF_BENCH` **dopo C1502 100nF di accoppiamento AC**, quindi **non** il livello DC e **non** una sorgente S-meter del vero RX MAIN. La rete meter FRONT resta scollegata dalla MAIN. Risultato di carico lineare *ipotetico*: pot 10k direttamente parallelo al detector 47k implica `Req≈8.25kΩ`, `fc≈3.39→19.3kHz` con C1nF; il comportamento del diodo nonlineare non è qualificato. Documento tecnico ampliato `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`.
+
+**Azioni aperte**: sviluppare una catena ricevente MAIN reale con detector livello/AGC per modulazioni AM/FM/SSB, buffer ad alta impedenza, limiti di uscita e isolamento verso FRONT; validare movimento S-meter reale (FSD, resistenza, calibrazione, tolleranze, fault), interconnessione/cavo e PCB. Master MAIN V2.6 invariato, V2.7 sempre DRAFT isolato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #178 MERGED: doppia resistenza serie THT per S-meter analogico FRONT
 
