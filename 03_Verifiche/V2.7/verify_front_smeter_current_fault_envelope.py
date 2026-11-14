@@ -2,7 +2,7 @@
 """PCB-FRONT analog moving-coil S-meter candidate: conservative current gate.
 
 This is NOT a calibrated drive or a real meter OEM qualification. It
-evaluates the actual 10k divider + 100k series resistor topology under
+evaluates the actual 10k divider + two independent 100k series resistor topology under
 unqualified hypothetical source/movement values, including contact faults.
 The expected native KiCad pin↔net geometry is checked separately by
 verify_front_smeter_native.py in FULL.
@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch"
 POT=10000.0
-LIMIT=100000.0
+LIMIT_EACH=100000.0
+LIMIT=2*LIMIT_EACH
 
 def meter_current(vsource,rsource,rpot,rlimit,rcoil,alpha):
     """Positive current through coil for linear divider and Thevenin source.
@@ -53,6 +54,8 @@ def main():
     # in values must cause explicit review of the analytical safety gate.
     assert '(property "Value" "10k_LINEAR_B_THT_DRAFT_PROVISIONAL"' in sch
     assert '(property "Value" "100k_0P25W_CANDIDATE_NO_FSD_QUAL"' in sch
+    assert '(property "Value" "100k_0P25W_REDUNDANT_CANDIDATE_NO_FSD_QUAL"' in sch
+    assert '(property "Reference" "R1802"' in sch
     assert 'METER_DRIVE_CANDIDATE' in sch and 'METER_RETURN' in sch
     cases=0
     for vs in (3.3,6.0,20.0):
@@ -72,26 +75,27 @@ def main():
                     previous=i
                 assert meter_current(vs,rs,POT,LIMIT,rc,0.0)==0.0
 
-    # Hypothetical extremes show why neither usable scale nor safety is
-    # established without the actual meter FSD and MAIN drive limit.
-    # Worst ideal source / shorted coil at full wiper -> 200uA at 20V.
-    assert math.isclose(meter_current(20,0,POT,LIMIT,0,1),200e-6)
-    assert math.isclose(meter_current(6,0,POT,LIMIT,0,1),60e-6)
-    # A hypothetical 100uA FSD movement cannot reach FSD at 6V,
-    # and a hypothetical 50uA FSD movement can be overdriven at 20V.
+    # Nominal twin 100k series: 20V/200k=100uA, 6V/200k=30uA.
+    assert math.isclose(meter_current(20,0,POT,LIMIT,0,1),100e-6)
+    assert math.isclose(meter_current(6,0,POT,LIMIT,0,1),30e-6)
     assert meter_current(6,0,POT,LIMIT,0,1)<100e-6
     assert meter_current(20,0,POT,LIMIT,0,1)>50e-6
-    # Contact-open fault at the wiper or open resistor results in zero
-    # *steady DC* coil current; this is not an inductive transient test.
-    wiper_open_dc=0.0
-    resistor_open_dc=0.0
-    assert wiper_open_dc==resistor_open_dc==0.0
-    # A shorted series resistor removes its safety benefit: compute the
-    # analytic fault current with a tiny positive replacement to avoid
-    # a degenerate zero-ohm denominator. These are NOT safe assumptions.
-    rshort_effective=1e-9
-    fault_i=meter_current(6,0,POT,rshort_effective,100,1)
-    assert fault_i>0.05,"A failed-short limiter may exceed 50mA"
+    # Either resistor shorted alone: the other 100k remains.
+    for failed_index in (0,1):
+        resistors=[LIMIT_EACH,LIMIT_EACH]
+        resistors[failed_index]=0.0
+        surviving=sum(resistors)
+        assert math.isclose(meter_current(20,0,POT,surviving,0,1),200e-6)
+        assert math.isclose(meter_current(6,0,POT,surviving,0,1),60e-6)
+    # Both limiters shorted: resistive fault tolerance entirely lost.
+    # Hypothetical 100-ohm coil at 6V -> ~60mA.
+    double_fault=meter_current(6,0,POT,1e-9,100,1)
+    assert double_fault>0.05
+    # Single open resistor / open wiper gives zero steady DC coil current;
+    # does not model inductive discharge, transients, or ESD.
+    single_open_current_dc=0.0
+    wiper_open_current_dc=0.0
+    assert single_open_current_dc==wiper_open_current_dc==0.0
     # Potentiometer track load and unknown power rating are separate:
     # full-drive 20V across 10k would dissipate 40mW in ideal track,
     # not an assertion that the selected physical part is rated for it.
@@ -99,14 +103,16 @@ def main():
     assert math.isclose(track_power,0.04)
     print("FRONT_SMETER_UNQUALIFIED_FAULT_ENVELOPE",{
         "crosschecks":cases,
-        "20V_ideal_source_short_coil_current_uA":200.0,
-        "6V_ideal_source_short_coil_current_uA":60.0,
-        "6V_limiter_short_coil100_current_A":round(fault_i,9),
+        "two_series_limiters_ohm_each":LIMIT_EACH,
+        "20V_nominal_short_coil_uA":100.0,
+        "20V_single_short_short_coil_uA":200.0,
+        "6V_nominal_short_coil_uA":30.0,
+        "6V_single_short_short_coil_uA":60.0,
+        "6V_double_short_coil100_A":round(double_fault,9),
         "hypothetical_track_power_20V_W":track_power,
-        "FSD_and_MAIN_drive_qualified":False,
-        "wiper_open_and_R_open_only_steady_DC":True},flush=True)
+        "FSD_and_MAIN_drive_qualified":False},flush=True)
     assert cases==135
-    print("PASS_FRONT_SMETER_135_INDEPENDENT_KCL_FAULT_ENVELOPE_NO_FSD_NO_FAB_NO_TX",flush=True)
+    print("PASS_FRONT_SMETER_135_KCL_DUAL_LIMITERS_SINGLE_FAULT_NO_FSD_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
