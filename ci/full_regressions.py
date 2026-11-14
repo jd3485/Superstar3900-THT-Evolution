@@ -133,6 +133,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_smeter_current_fault_envelope.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # FRONT S-meter and volume/audio have distinct return domains. Use
+    # exported native nets and fail closed on extra pins/rails/shorts.
+    print("::group::V2.7 FRONT S-METER AUDIO HARNESS ISOLATION",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_front_harness_isolation_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
     if front.exists():
         print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)
