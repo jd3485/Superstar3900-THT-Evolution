@@ -154,6 +154,11 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_buffer_input_loading_contract.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    print("::group::V2.7 S-METER MCP6002 PDIP8 HIGH-Z LAB BUFFER KICAD9 ERC NETLIST",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
     if front.exists():
         print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)

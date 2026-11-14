@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "TH_SMETERBUF")(type "KiCad")(uri "${KIPRJMOD}/TH_SMETERBUF.kicad_sym")(options "")(descr "Local MCP6002 PDIP8 high-Z lab schematic library"))
+)
