@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #170 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #172 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #172 MERGED: primo S-meter analogico PCB-FRONT standalone THT con ERC nativo
+
+**[PR #172](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/172) MERGED** su `main`, commit `81ed7c5a0e8c7cd1a727c726ca92be612e84ded3`, head finale `c0b78cd57138ea9978cc7af43444bab4d8add562`. [Actions #43629578707](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43629578707): **FAST/FULL/required SUCCESS 3/3**; log FULL verificato: `SMETER_KICAD_ERC Found 0 violations`, `PASS_KICAD9_FRONT_SMETER_ERC0_PASSIVE_THT_LIMITER_NETLIST_NO_FSD_NO_FAB_NO_TX`, **9 pin/4 reti** da esportazione KiCad9 e **111 comandi storici**. La prima [run #43629312062](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43629312062) fallì giustamente per 5 avvisi KiCad librerie simboli/impronte mancanti; corretto tramite vere librerie `TH_FRONT.kicad_sym`, `TH_SMETER.kicad_sym`, `sym-lib-table`, `fp-lib-table` e file progetto, senza waiver.
+
+Nuovo schematico standalone `04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch`, con `J1801` input drive/return, `RV1801` potenziometro THT 10k provvisorio, `R1801` resistenza serie 100kΩ THT provvisoria e `J1802` collegamento coil/return. Test `03_Verifiche/V2.7/verify_front_smeter_native.py`, gate `ci/full_regressions.py`, report `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`. **NON è ancora un driver S-meter qualificato:** nessun MPN movimento, resistenza bobina, corrente fondo scala, drive MAIN misurato, calibrazione o protezione ESD/EMI; footprint potenziometro **PROVISIONAL DO NOT FAB**. Master MAIN V2.6 sette fogli/138 riferimenti invariato, nessuna PCB-FRONT o PCB-MAIN reale, DRC PCB non applicabile, BOM non approvata. Restano aperti issue #141, PR #123 e #143. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #170 MERGED: IF455 S2P con sorgente Thevenin complessa
 
