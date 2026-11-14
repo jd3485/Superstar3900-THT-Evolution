@@ -1,3 +1,13 @@
+## R1903 100kΩ 1W DIN0411 THT: ridimensionamento termico candidato, corrente 2mA ancora non qualificata
+
+Nel banco KiCad9 R1903 ora è specificata **100kΩ/1%/1W THT candidata**, footprint KiCad ufficiale `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal` (1W nominale): https://kicad.github.io/footprints/Resistor_THT.html. La topologia non cambia, né numero di reti e pin: **13 componenti / 7 reti / 32 pin**, controllati dal gate KiCad9. È necessario individuare un MPN commerciale con dati verificati su tensione massima di esercizio, derating termico, potenza a caldo, resistenza alle sovratensioni impulsive e dimensioni: la sola libreria di impronte non certifica le caratteristiche elettriche reali.
+
+Con modello DC di clamp negativo D1903 `Vf=0,7V` a guasto `−200V`, il dissipato resta `(200−0,7)²/100k≈0,397205W`: ora inferiore alla **potenza nominale 1W**, rispetto al precedente 0,25W, ma non è qualificazione a temperatura ambiente elevata o impulsi. Per tolleranza `Rmin=99kΩ`, clamp illustrativo `Vf=0,2V` e `−200V`, la corrente stimata è `199,8/99k≈2,018mA`, **superiore alla soglia di stress assoluto 2mA indicata dal datasheet MCP6002**; la soglia non è un valore consentito in normale funzionamento, e la corrente può ripartirsi diversamente fra il clamp esterno e quello interno. Per `−400V` ipotetici la resistenza dissipa `(400−0,7)²/100k≈1,594W`, superando perfino 1W. Protezione contro 200/400V, PVT, ESD e funzionamento a circuito spento **non approvati**.
+
+Il gate `verify_smeter_mcp6002_highz_native.py` richiede footprint e valore reali aggiornati, calcola potenza nominale e worst corner, e registra `MCP6002_HIGHZ_R1903_1W_THT_DERATING_STILL_UNQUALIFIED` senza waiver. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## D1903 DO-35 clamp inferiore THT: stress negativo candidato, non ESD certificato
 
 Schema KiCad9 di banco: aggiunto `D1903=1N4148 DO-35 THT`, **anodo/pad2 verso GND** e **catodo/pad1 su `AM_ENV_AFTER_R1903`** (pin MCP6002 U1901/3), dopo `R1903=100kΩ/0,25W`. Il diodo esterno è candidato per limitare l'escursione negativa e deviare parte della corrente dal clamp interno MCP6002; NON assicura ripartizione di corrente né protezione della giunzione interna, PVT, risposte impulsive e ESD.
