@@ -39,7 +39,7 @@ def main():
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
     assert s.count('(property "Footprint" "Resistor_THT:')>=4
     assert '(property "Value" "4k7_1PCT_0P25W_RAIL_BLEEDER_THT_CANDIDATE"' in s
-    assert '(property "Value" "100k_1PCT_1W_INPUT_FAULT_LIMIT_DERATING_CANDIDATE"' in s
+    assert '(property "Value" "120k_1PCT_1W_INPUT_FAULT_LIMIT_MARGIN_CANDIDATE"' in s
     assert '(property "Footprint" "Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal" (at 81.28 213.36 0)' in s
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
@@ -79,8 +79,8 @@ def main():
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
     rbias=22000000
-    rseries=100000
-    # The 100k series resistance lies upstream of the 22M input-bias
+    rseries=120000
+    # The 120k series resistance lies upstream of the 22M input-bias
     # return; this is an ideal DC loading estimate, NOT ESD clamp testing.
     loss=(rdet+rseries)/(rdet+rbias+rseries)
     assert loss<0.01
@@ -94,7 +94,7 @@ def main():
     r_thevenin=1/(1/rbias+1/(rdet+rseries))
     f_3db=1/(2*math.pi*r_thevenin*c_rf)
     attenuation=lambda f:1/math.sqrt(1+(f/f_3db)**2)
-    assert 1000<f_3db<1200
+    assert 900<f_3db<1000
     assert attenuation(455000)<0.003
     assert attenuation(10)>0.9999
     assert math.isclose(0.1*rbias/(rdet+rbias+rseries),
@@ -148,10 +148,10 @@ def main():
         p_series=isink*isink*rseries
         neg_results[source_v]=(round(isink*1000,6),round(p_series,6))
         if source_v==-20.0:
-            assert 0.00019<isink<0.0002 and p_series<0.005
+            assert 0.00015<isink<0.00017 and p_series<0.005
         if source_v==-200.0:
-            assert 0.0019<isink<ds_input_abs_current
-            assert 0.25<p_series<1.0 # old 0.25W exceeded; NEW 1W nominally holds
+            assert 0.0016<isink<ds_input_abs_current
+            assert 0.25<p_series<1.0 # original 0.25W exceeded; 1W nominally holds
     # A 1W footprint is a nominal power capability, NOT a certified
     # resistor MPN, working voltage, power derating or shock tolerance.
     rated_power=1.0
@@ -161,9 +161,10 @@ def main():
     worst_200v_1pct_current=(200-0.2)/(rseries*0.99)
     assert original_power<nominal_200v_power<rated_power
     assert worst_200v_1pct_power<rated_power
-    # At the tolerance corner even the 2mA absolute current stress
-    # bound is EXCEEDED: do NOT approve -200V DC based on 1W alone.
-    assert worst_200v_1pct_current>ds_input_abs_current
+    # 120k/1% nominal model places -200V current below the 2mA
+    # absolute stress bound, NOT a normal-use specification.
+    # Higher faults, diode PVT and resistor pulse ratings remain unsafe.
+    assert worst_200v_1pct_current<ds_input_abs_current
     severe_400v_power=((400-0.7)**2)/rseries
     assert severe_400v_power>rated_power
     print("MCP6002_HIGHZ_R1903_1W_THT_DERATING_STILL_UNQUALIFIED",{
@@ -175,6 +176,34 @@ def main():
         "input_abs_current_bound_mA":ds_input_abs_current*1000,
         "R1903_400V_nominal_W":round(severe_400v_power,6),
         "temperature_derating_voltage_MPN_ESD_qualified":False,
+        "no_fab":True},flush=True)
+    # Margin must account for 1% tolerance and low assumed clamp Vf.
+    # Source short-circuit = 200V is an illustrative DC bench event.
+    rmin=rseries*0.99
+    fault_v=200.0
+    vf_floor_example=0.2
+    icorner=(fault_v-vf_floor_example)/rmin
+    pcorner=((fault_v-vf_floor_example)**2)/rmin
+    imargin=ds_input_abs_current-icorner
+    assert 0<imargin<0.0004
+    assert pcorner<1.0
+    # Faults above 240V DC still violate the 2mA ceiling in this
+    # model. Rate/duration, physical resistor MPN, PCB and diode
+    # leakage/thermal effects remain entirely unqualified.
+    max_model_fault_for_2mA=vf_floor_example+ds_input_abs_current*rmin
+    assert 230<max_model_fault_for_2mA<240
+    assert (250-vf_floor_example)/rmin>ds_input_abs_current
+    assert loss<0.01
+    assert 900<f_3db<1000
+    print("MCP6002_HIGHZ_R1903_120K_200V_STRESS_MARGIN_STILL_UNQUALIFIED",{
+        "R1903_ohm":rseries,
+        "worst_negative_200V_input_mA":round(icorner*1000,6),
+        "margin_below_2mA_mA":round(imargin*1000,6),
+        "R1903_worst_200V_W":round(pcorner,6),
+        "fault_2mA_model_threshold_V":round(max_model_fault_for_2mA,6),
+        "nominal_47k_source_loading_percent":round(loss*100,6),
+        "RC_3dB_Hz":round(f_3db,4),
+        "qualified_for_real_overvoltage_ESD_PVT":False,
         "no_fab":True},flush=True)
     # The external clamp does not eliminate internal ESD current share.
     # 25nA * 146kOhm is an illustrative DC error; high temperature
@@ -210,7 +239,7 @@ def main():
     # Real R1904 is a passive 4k7 bleeder, not a qualified power-off
     # rail clamp: model diode as fixed 0.7V (NOT guaranteed PVT).
     # For a floating lab 5V rail with only 4k7 DC load, solve
-    # (Vin - Vfd - Vrail)/100k = Vrail/4k7, with off regulator = open.
+    # (Vin - Vfd - Vrail)/120k = Vrail/4k7, with off regulator = open.
     r_bleeder=4700
     vfd_assumed=0.7
     for vin in (12.0,20.0,40.0,200.0):
@@ -241,7 +270,7 @@ def main():
         "abs_max_fault_stress_qualified":False,
         "no_fab":True},flush=True)
     # Vishay BZX55C5V6 datasheet: VZ 5.2..6.0V guaranteed at IZT=5mA
-    # and 25C. The 100k source cannot supply IZT=5mA for moderate
+    # and 25C. The 120k source cannot supply IZT=5mA for moderate
     # source faults. Therefore 5.6V is NOT a qualified clamp at e.g.
     # +20V or +200V: this is deliberately fail-closed.
     zener_izt=0.005
