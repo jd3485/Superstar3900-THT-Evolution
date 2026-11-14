@@ -15,9 +15,9 @@ SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HI
 REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901","D1902"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
- "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","1")},
- "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2"),("D1902","1")},
- "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","2"),("R1904","1"),("D1902","2")},
+ "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","2")},
+ "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2"),("D1902","2")},
+ "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","1"),("R1904","1"),("D1902","1")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
  "SMBUF_VOUT_BENCH":{("R1902","2"),("J1902","1")},
@@ -43,6 +43,14 @@ def main():
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Connector_PinHeader_2.54mm:')>=3
+    # KiCad9 standard DO-35 footprint pad 1 is the K-marked cathode;
+    # pad 2 is the anode. This MUST match the custom embedded symbol,
+    # otherwise board build would reverse both clamps even if ERC=0.
+    diode_pin_k='(name "K" (effects (font (size 1 1)))) (number "1"'
+    diode_pin_a='(name "A" (effects (font (size 1 1)))) (number "2"'
+    assert diode_pin_k in s and diode_pin_a in s
+    assert diode_pin_k in library and diode_pin_a in library
+    assert '(property "Footprint" "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"' in s
     assert s.count('(property "Footprint" "Diode_THT:')>=2
     assert '(property "Value" "BZX55C5V6_DO35_ZENER_5V6_RAIL_CANDIDATE_UNQUALIFIED"' in s
     assert '(property "Value" "1N4148_DO35_UPPER_CLAMP_CANDIDATE_NOT_QUALIFIED"' in s
