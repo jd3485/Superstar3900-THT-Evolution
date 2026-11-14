@@ -21,7 +21,9 @@ LOADS=(1500,2000)
 EXPECTED=len(FREQUENCIES)*len(CAPS_PF)*len(LOADS)*len(BETAS)
 
 def solve(folder,beta,load,frequency,cap_pf):
-    deck=circuit("KSP10",beta,load,cap_pf)
+    deck=circuit("KSP10",beta,load,10)
+    assert deck.count("CIN out input 10p")==1
+    deck=deck.replace("CIN out input 10p",f"CIN out input {cap_pf}p")
     old="ac lin 2 455000 455001"
     assert deck.count(old)==1
     deck=deck.replace(old,f"ac lin 2 {frequency} {frequency+1}")
