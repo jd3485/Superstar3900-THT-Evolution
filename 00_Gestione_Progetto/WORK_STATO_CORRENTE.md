@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 13 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026. **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #126 MERGED: contratto nativo mixer SBL-1+ IF → filtro IF455
+
+**[PR #126](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/126) MERGED**, merge commit `f2b6d60b7d63b0bbe47bbdc16c625f93cbfd6c5e`, head verificato `c9b539f9b8cdd8e7b1e9873de4116c3c20572898`. [Actions #43571786977](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43571786977) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; 111 regressioni storiche, log `PASS_NATIVE_KICAD9_MIXER_TO_IF455_TWO_PIN_IF3_IF4_TIED_C1601_REACTANCE_NO_MATCH_NO_FAB_NO_TX`. Nuovo verificatore reale `03_Verifiche/V2.7/verify_mixer_if455_interface_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_MIXER_TO_IF455_INTERFACE_THT_DRAFT.md`, test aggiunto a `ci/full_regressions.py`.
+
+Il test usa **due esportazioni di netlist KiCad9 effettive**, non string matching, e verifica proposta **solo banco** `MX1701/3,MX1701/4→J1703/1→J1601/1→C1601/1` e `J1703/2→J1601/2` massa, oltre alle reti RF/LO, LC IF455, uscita J1602 e assenza di corti/rail vietati. `C1601=10pF` ha reattanza in serie ideale **34.979,108Ω a 455kHz**, non è prova di adattamento a impedenza RF 50Ω, né misura del mixer. Mancano **Zout complessa/nonlineare del mixer IF, LO reale +7dBm, load/diplexer, amplificazione IF, rumore e selettività**, più qualifica dell'OEM A06; **PR #123** rimane DRAFT aperta NON MERGED con meccanica TOP/BOTTOM e drill ancora da validare. La MAIN V2.6 a 7 fogli /138 refs e le PCB MAIN e FRONT non sono state modificate; routing 0%, nessun DRC PCB o release BOM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 14 novembre 2026 — PR #124 MERGED: contratto nativo VCO → mixer SBL-1+ LO (nessuna qualifica hardware)
 
