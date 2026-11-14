@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #174 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #176 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #176 MERGED: isolamento cablaggio S-meter FRONT vs audio
+
+**[PR #176](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/176) MERGED** su `main`, commit `1a91b42792e2f326661dafb7a6748e6c3e10f083`, head tecnico `734af024c24a8d95052ce3b223a7484a281d98ab`. [Actions #43631671307](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43631671307): **FAST/FULL/required SUCCESS 3/3**; log FULL verificato `SMETER_KICAD_ERC Found 0 violations`, `PASS_NATIVE_KICAD9_FRONT_SMETER_AUDIO_DOMAIN_ISOLATION_NO_MAIN_DRIVER_NO_FAB_NO_TX`, **111 comandi storici**.
+
+Nuovo gate nativo obbligatorio `03_Verifiche/V2.7/verify_smeter_front_harness_isolation_native.py` richiamato da `ci/full_regressions.py`, report `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` esteso. Esporta e verifica **tre netlist KiCad9 reali** (FRONT S-meter, FRONT volume, pilot MAIN audio), controlla esattamente 4 reti/9 pin dello S-meter e 3 reti frontali audio, rileva corto/assegnazione impropria di reti e verifica domini e ritorni isolati. Boundary solo lato FRONT: `J1801/1=METER_DRIVE_CANDIDATE`, `J1801/2=METER_RETURN`, **nessuna origine/pin MAIN S-meter progettata**, nessun ponte automatico verso `AF_GND`, no potenza/rail/TX, connettori mating e cablaggio non qualificati. Master MAIN V2.6, PCB-MAIN/PCB-FRONT reali assenti, nessun PCB DRC. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #174 MERGED: S-meter THT controllo correnti Thevenin/KCL e guasti
 
