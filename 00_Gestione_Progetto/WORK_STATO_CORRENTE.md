@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #188 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #190 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #190 MERGED: filtro RF C1902 C0G THT sul buffer MCP6002 da banco
+
+**[PR #190](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/190) MERGED** su `main`, commit `7beda5bf0efe6949d34cf00e416fc3c2f1260e6e`, head tecnico `1e9beef7396314c5bbe709ace0e1e1670929eac1`. [Actions #43638630337](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43638630337): **FAST/FULL/required SUCCESS 3/3**, controllo nativo KiCad9 `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema reale KiCad9 isolato `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto C1902=1nF/50V C0G/NP0 **THT candidato** tra `AM_ENV_AFTER_R1903` al pin3 U1901 e `SMBUF_BENCH_GND`; 9 componenti, 7 reti, 24 pin esatti verificati da esportazione netlist nativa ed ERC0. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` esteso con `MCP6002_HIGHZ_RC_RF_LAB_ONLY`: con sorgente ideale Rdet=47kΩ, R1903=100kΩ, R1901=22MΩ, Rth≈146024Ω e fc≈1089,92Hz, guadagno lineare relativo a DC a 455kHz≈0,0023954; NON è test EMI reale, modellazione rivelatore AM nonlineare o validazione di cablaggio e PCB. Rapporto FRONT aggiornato. Restano non qualificati accuratezza assoluta sotto 1% a 100mV, offset/bias PVT, ESD/OVP e alimentazione spenta, sorgente AGC MAIN, driver bobina S-meter e FSD/Rcoil, MPN finali e due PCB fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #188 MERGED: modello PVT MCP6002, accuracy assoluta 1% non qualificata
 
