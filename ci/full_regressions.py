@@ -513,6 +513,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_coupling_tradeoff_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # KSP10 isolation resistor 0/1k/4k7/10k/47k in 10nF input series,
+    # true KiCad9 KSP10/IF455 net guards and thirty native ngspice AC tests.
+    print("::group::KSP10 IF455 30 RESISTIVE ISOLATION AC CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_series_isolation_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
