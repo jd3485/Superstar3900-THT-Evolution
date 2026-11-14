@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #192 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #194 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #194 MERGED: D1901 DO35 THT clamp superiore candidato, backfeed e leakage ancora NON qualificati
+
+**[PR #194](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/194) MERGED** su `main`, commit `399de599e33fe50f826c1d02274548c91d7ba420`, head tecnico `b2af4342a7519f8c1db6dd8063a571a7b1d4ef70`. [Actions #43640317607](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43640317607): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1901_UPPER_DIODE_CANDIDATE_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS26_LAB_ONLY_NO_FAB_NO_TX` e 111 regressioni storiche PASS.
+
+Schema vero KiCad9 standalone `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: `D1901` candidato **1N4148 DO-35 THT**, simbolo reale in `TH_SMETERBUF.kicad_sym`, anodo (`D1901/1`) su `AM_ENV_AFTER_R1903` (pin U1901/3) e catodo (`D1901/2`) su `VLAB5_BUFFER`; `R1903=100kΩ` upstream. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py`: ERC KiCad9 0, **10 componenti / 7 reti / 26 pin**, modello ipotetico +20V porta 143µA al rail acceso e 193µA spento con Vf assunta 0,7V. Con solo 100nF di bypass, backfeeding di 1V possibile idealmente in ~0,518ms se alimentatore non assorbe; leakage *illustrativo* 25nA produrrebbe 3,65mV di offset equivalente a 146kΩ e 0,55V a connettore aperto con 22MΩ. Non sono prestazioni certificate del diodo reale in PVT. Report FRONT aggiornato.
+
+**Blocker**: il solo D1901 non qualifica protezione ESD/OVP e power-off; mancano sink/clamp del rail, reverse leakage PVT dell'MPN THT esatto, budget di accuratezza e test reali; mancano sorgente MAIN RX AGC, S-meter FSD/Rcoil, driver bobina, interconnessioni e PCB native. Buffer solo da banco, MASTER MAIN invariato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #192 MERGED: rischio sovratensione positiva MCP6002 esplicitamente bloccato
 
