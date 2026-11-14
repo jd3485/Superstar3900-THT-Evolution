@@ -436,6 +436,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # L1601 assumed ideal 1mH: explore hypothetical winding capacitance
+    # at 455kHz/1MHz/30MHz, with 12 ngspice vs nodal complex-Z checks.
+    print("::group::IF455 COIL PARASITIC SRF SENSITIVITY NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_coil_parasitic_srf_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
