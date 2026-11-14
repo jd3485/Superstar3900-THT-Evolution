@@ -31,6 +31,14 @@ def main():
         assert f'(pad "{pad}" thru_hole ' in mod
     fp_table=(SCH.parent/"fp-lib-table").read_text(encoding="utf-8")
     assert 'TH_FRONT' in fp_table and 'TH_FRONT.pretty' in fp_table
+    sym_table=(SCH.parent/"sym-lib-table").read_text(encoding="utf-8")
+    assert 'TH_FRONT.kicad_sym' in sym_table and 'TH_SMETER.kicad_sym' in sym_table
+    assert (SCH.parent/"FRONT_SMETER_THT_V2_7_DRAFT.kicad_pro").exists()
+    frontend_symbols=(SCH.parent/"TH_FRONT.kicad_sym").read_text(encoding="utf-8")
+    resistor_symbols=(SCH.parent/"TH_SMETER.kicad_sym").read_text(encoding="utf-8")
+    assert '(symbol "POT_MONO_THT"' in frontend_symbols
+    assert '(symbol "AUDIO_2PIN"' in frontend_symbols
+    assert '(symbol "R"' in resistor_symbols
     with tempfile.TemporaryDirectory(prefix="tht_front_smeter_") as d:
         erc=Path(d)/"erc.rpt"
         process=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
