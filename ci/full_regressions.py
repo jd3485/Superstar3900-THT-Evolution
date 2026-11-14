@@ -147,6 +147,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_rx_smeter_source_trace_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # An actual AGC or S-meter buffer is not built yet: require a
+    # conservative high-Z boundary before creating a shared RX net.
+    print("::group::V2.7 RX S-METER HIGH-Z INPUT KCL CONTRACT",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_buffer_input_loading_contract.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
     if front.exists():
         print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)
