@@ -457,6 +457,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_channel_selectivity_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # NextGen FB ceramic 1500/2000 ohm OEM bench port condition:
+    # 12 native ngspice Rg+R1 voltage dividers, NOT real mixer/ceramic model.
+    print("::group::FB455 1500 2000 OHM BENCH INPUT LOADING NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_fb455_1500_2000_termination_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
