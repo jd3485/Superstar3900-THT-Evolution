@@ -391,8 +391,23 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_sbl1_mixer_bench_kicad_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
-    # A06 provisional native THT copper pads: static mechanical contract
-    # only; preserve the empty mixer footprint and the NO FAB gate.
+    # V2.7 mixer LO contract: exported KiCad9 native VCO+SBL-1+ nets and
+    # ideal 50-ohm sine power envelope. No claim of physical LO drive.
+    if (ROOT/"03_Verifiche/V2.7/verify_sbl1_lo_drive_budget_native.py").exists():
+        print("::group::SBL1 LO LEVEL7 VCO NATIVE PORT AND 50OHM ENVELOPE",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_sbl1_lo_drive_budget_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
+    # SBL-1+ IF3/4 physically tied -> IF455 passive input: independent
+    # native KiCad9 exported ports, NOT a matched or connected PCB.
+    if (ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py").exists():
+        print("::group::SBL1 MIXER TO IF455 FILTER TWO PORT NATIVE KICAD9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
+    # A06 provisional native THT footprint; does not qualify OEM fit or fabricate.
     if (ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py").exists():
         print("::group::SBL1 A06 PROVISIONAL THT PAD MAP AND NO FAB GATE",flush=True)
         subprocess.run([sys.executable,"-B",
