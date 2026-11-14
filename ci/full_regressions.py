@@ -527,6 +527,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_complex_input_port_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # KSP10 complex voltages and phases from the shared IF455 full tank:
+    # 72 real ngspice AC runs (3 generic BETA x 2 loads x 4 CIN x 3 f).
+    # Does not qualify semiconductor, LO-driven mixer or ceramic passband.
+    print("::group::KSP10 IF455 72 NATIVE FULL TANK COMPLEX TRANSFER",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_full_tank_complex_transfer_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
