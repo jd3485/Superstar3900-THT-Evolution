@@ -12,11 +12,11 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
-REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","C1901"}
+REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","C1901","C1902"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
- "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1")},
- "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2")},
+ "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1")},
+ "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2")},
  "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
@@ -39,7 +39,8 @@ def main():
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
     assert s.count('(property "Footprint" "Resistor_THT:')>=3
     assert '(property "Value" "100k_1PCT_0P25W_INPUT_FAULT_LIMIT_CANDIDATE"' in s
-    assert s.count('(property "Footprint" "Capacitor_THT:')>=1
+    assert s.count('(property "Footprint" "Capacitor_THT:')>=2
+    assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Connector_PinHeader_2.54mm:')>=3
     assert 'MICROCHIP_MCP6002_I_P_PDIP8_CANDIDATE' in s
     assert '(property "Value" "22MEG_1PCT_BIAS_TO_GND_THT"' in s
@@ -59,7 +60,7 @@ def main():
     for name,members in EXPECTED.items():
         require(nets,name,*sorted(members))
         assert set(nets[name])==members,("Unexpected pin-net assignment",name,nets[name])
-    assert sum(len(members) for members in nets.values())==22
+    assert sum(len(members) for members in nets.values())==24
     # 22M passive shunt in parallel with idealized 47k detector: only
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
@@ -72,6 +73,23 @@ def main():
     for v in (0.1,0.5,1,3,4):
         node=v*rbias/(rdet+rbias+rseries)
         assert math.isclose(node,v*(1-loss),rel_tol=1e-12)
+    # RC shunt after R1903: preserve the DC network, attenuate RF in
+    # a linear 47k Thevenin laboratory source. This is NOT a nonlinear
+    # 455kHz AM demodulator model and excludes pad/PCB/parasitic C.
+    c_rf=1e-9
+    r_thevenin=1/(1/rbias+1/(rdet+rseries))
+    f_3db=1/(2*math.pi*r_thevenin*c_rf)
+    attenuation=lambda f:1/math.sqrt(1+(f/f_3db)**2)
+    assert 1000<f_3db<1200
+    assert attenuation(455000)<0.003
+    assert attenuation(10)>0.9999
+    assert math.isclose(0.1*rbias/(rdet+rbias+rseries),
+                        0.1*(1-loss),rel_tol=1e-12)
+    print("MCP6002_HIGHZ_RC_RF_LAB_ONLY",{"C1902_F":c_rf,
+          "linear_Thevenin_ohm":round(r_thevenin,2),
+          "fc_Hz":round(f_3db,2),
+          "gain_455kHz_linear":round(attenuation(455000),7),
+          "envelope_demodulation_or_emi_qualification":False},flush=True)
     # If an IC clamp holds its input at the assumed rail+/-0.3V,
     # R1903 can LIMIT steady fault current; it does not prove safe
     # unpowered rail backfeed or protect against transients/ESD.
@@ -120,11 +138,11 @@ def main():
           "1pct_accuracy_at_100mV",False,
           "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
-          "pins":22,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
+          "pins":24,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
           "unqualified_input_ESD_OVP":True,
           "actual_RX_AGC_or_meter_driver":False},flush=True)
-    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS22_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
