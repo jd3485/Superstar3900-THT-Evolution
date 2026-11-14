@@ -12,12 +12,12 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
-REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901"}
+REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901","D1902"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
- "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","1")},
- "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2")},
- "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","2"),("R1904","1")},
+ "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","2")},
+ "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2"),("D1902","2")},
+ "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","1"),("R1904","1"),("D1902","1")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
  "SMBUF_VOUT_BENCH":{("R1902","2"),("J1902","1")},
@@ -43,7 +43,16 @@ def main():
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Connector_PinHeader_2.54mm:')>=3
-    assert s.count('(property "Footprint" "Diode_THT:')>=1
+    # KiCad9 standard DO-35 footprint pad 1 is the K-marked cathode;
+    # pad 2 is the anode. This MUST match the custom embedded symbol,
+    # otherwise board build would reverse both clamps even if ERC=0.
+    diode_pin_k='(name "K" (effects (font (size 1 1)))) (number "1"'
+    diode_pin_a='(name "A" (effects (font (size 1 1)))) (number "2"'
+    assert diode_pin_k in s and diode_pin_a in s
+    assert diode_pin_k in library and diode_pin_a in library
+    assert '(property "Footprint" "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"' in s
+    assert s.count('(property "Footprint" "Diode_THT:')>=2
+    assert '(property "Value" "BZX55C5V6_DO35_ZENER_5V6_RAIL_CANDIDATE_UNQUALIFIED"' in s
     assert '(property "Value" "1N4148_DO35_UPPER_CLAMP_CANDIDATE_NOT_QUALIFIED"' in s
     assert 'MICROCHIP_MCP6002_I_P_PDIP8_CANDIDATE' in s
     assert '(property "Value" "22MEG_1PCT_BIAS_TO_GND_THT"' in s
@@ -63,7 +72,7 @@ def main():
     for name,members in EXPECTED.items():
         require(nets,name,*sorted(members))
         assert set(nets[name])==members,("Unexpected pin-net assignment",name,nets[name])
-    assert sum(len(members) for members in nets.values())==28
+    assert sum(len(members) for members in nets.values())==30
     # 22M passive shunt in parallel with idealized 47k detector: only
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
@@ -175,6 +184,39 @@ def main():
         "regulator_or_rail_sink_qualified":False,
         "abs_max_fault_stress_qualified":False,
         "no_fab":True},flush=True)
+    # Vishay BZX55C5V6 datasheet: VZ 5.2..6.0V guaranteed at IZT=5mA
+    # and 25C. The 100k source cannot supply IZT=5mA for moderate
+    # source faults. Therefore 5.6V is NOT a qualified clamp at e.g.
+    # +20V or +200V: this is deliberately fail-closed.
+    zener_izt=0.005
+    zener_vmin_izt=5.2
+    zener_vmax_izt=6.0
+    def diode_current_if_rail(vin,vrail):
+        return max(0.0,(vin-vfd_assumed-vrail)/rseries)
+    for vin in (20.0,200.0):
+        available=diode_current_if_rail(vin,zener_vmax_izt)
+        assert available<zener_izt,(vin,available)
+        # Even the total source current falls below the 5mA rated
+        # test point: never infer Vz(125C) or transient performance.
+    assumed_zener_voltage=5.6
+    vin=200.0
+    current_from_input=diode_current_if_rail(vin,assumed_zener_voltage)
+    current_bleeder=assumed_zener_voltage/r_bleeder
+    current_zener=current_from_input-current_bleeder
+    assert 0<current_zener<zener_izt
+    p_zener=current_zener*assumed_zener_voltage
+    assert p_zener<0.005
+    # At +20V, the 4k7 bleeder holds Vrail<1V even without Zener.
+    # At +200V the 5.6V shunt MIGHT conduct, but its clamped voltage
+    # is not specified at the actual ~0.8mA -> no electrical approval.
+    print("MCP6002_HIGHZ_D1902_5V6_ZENER_LOW_CURRENT_UNQUALIFIED",{
+        "diode_ref":"D1902",
+        "VZ_datasheet_at_5mA_25C_V":(zener_vmin_izt,zener_vmax_izt),
+        "source_possible_mA_at_200V_Vrail6V":round(diode_current_if_rail(200.0,6.0)*1000,6),
+        "assumed_5V6_example_zener_mA_at_200V":round(current_zener*1000,6),
+        "actual_zener_voltage_at_fault_current_guaranteed":False,
+        "negative_fault_ESD_PVT_power_off_qualified":False,
+        "no_fab":True},flush=True)
     # Illustrative 25nA/20V/25C 1N4148 max reverse leakage from a
     # vendor data sheet (not MCP6002 bias!). Does not certify leak at
     # 5V, high temperatures or all manufacturer MPNs.
@@ -226,11 +268,11 @@ def main():
           "1pct_accuracy_at_100mV",False,
           "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
-          "pins":28,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
+          "pins":30,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
           "unqualified_input_ESD_OVP":True,
           "actual_RX_AGC_or_meter_driver":False},flush=True)
-    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS28_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS30_LAB_ONLY_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
