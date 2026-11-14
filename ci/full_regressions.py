@@ -140,6 +140,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_front_harness_isolation_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Detecting AM audio does not create a MAIN RX AGC or valid S-meter
+    # source. Trace native AM455 + FRONT netlists and all seven MAIN sheets.
+    print("::group::V2.7 RX S-METER SOURCE TRACE MAIN VS AM LAB",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_rx_smeter_source_trace_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
     if front.exists():
         print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)
