@@ -33,7 +33,7 @@ def make_deck(beta,load,freq,cap_pf,base_reference):
     deck=deck.replace("ac lin 2 455000 455001",f"ac lin 2 {freq} {freq+1}")
     old_data="wrdata transfer.dat vm(out) vm(bufferout) vm(input)"
     assert deck.count(old_data)==1
-    deck=deck.replace(old_data,"wrdata port.dat vr(port) vi(port) ir(vport) ii(vport)")
+    deck=deck.replace(old_data,"wrdata port.dat v(port) i(vport)")
     return deck
 
 def solve(folder,beta,load,freq,cap_pf,reference):
