@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #138 MERGED: Q a 790kHz NON è DCR/ESR RF a 455kHz, Delevan 2500-28J
+
+**[PR #138](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/138) MERGED**, verificato su main commit `db4815f187aa0dcc61ff8e2c3b861f799fd288c4`; head tecnico `d811e55831e2028b84d5acc78f857ccb2466938c`. [Actions #43590750543](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43590750543) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**, log FULL verificati con **111 comandi storici** e `PASS_NATIVE_KICAD9_NGSPICE_IF455_8_AC_LOSS_TRIALS_NO_Q455_INFERENCE_NO_FAB_NO_TX`.
+
+File `03_Verifiche/V2.7/verify_if455_2500_28j_q_vs_dcr_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_2500_28J_Q_VS_DCR_IF455_DRAFT.md`, suite FULL `ci/full_regressions.py`. Sul vero schematico KiCad9 standalone IF455 L1601 resta `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED`. Il distributore OEM elenca **DCR MAX 16,5Ω** e **Q=60 @790kHz**, non una misura ESR/QL a 455kHz. `2π×790000×0,001/60≈82,728607Ω` è solo equivalente ideale **alla frequenza 790kHz** e non un dato RF a 455kHz. Le 8 prove native ngspice in deck temporanei utilizzano 4 resistenze serie ipotetiche (16,5 / 41,3643 / 82,7286 / 165,4572Ω) × 2 carichi output ipotetici (100kΩ, gate RC passivo). Con sorgente 50Ω e carico 100kΩ: R16,5Ω→picco454750Hz, BW42556,7Hz, Vout/Vsrc455=0,835055562; R82,7286Ω→picco455750Hz, BW53697,9Hz, Vout/Vsrc455=0,667749442. Questi sono risultati **del modello**, non prestazioni OEM né canale RX completo. L'impiego fisico della DCR come resistenza di perdita RF è ancora **NON QUALIFICATO**, e non sono stati cambiati schemi/MPN/BOM/PCB.
+
+**Stato invariato:** master V2.6 sette fogli, 138 refs, frontend/mixer/IF V2.7 isolati, PCB MAIN/FRONT non progettate (routing 0%), DRC PCB non applicabile; no release BOM. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) ancora DRAFT bench-only, CI verde ma footprint non assegnato fino a qualifica meccanica reale. Prossima attività sostanziale: definire la banda IF obiettivo per modalità AM/FM/SSB e verificare se un singolo tank da banda 40–60kHz può mai costituire selettività di canale, prima della selezione filtro THT reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #136 MERGED: IF455 1mH THT, sensibilità capacità parassita e SRF
 
 **[PR #136](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/136) MERGED**, main commit `1c6b92b32f71b85d0d8cf1dbcc93f28c77d2470c`; HEAD tecnico `63e0fe54d8bacbdb20a0aedc92555281723d487f`. [Actions #43589919230](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43589919230) **FAST, FULL native KiCad9/ngspice e required gate 3/3 SUCCESS**, verificati log: `PASS_NATIVE_KICAD9_IF455_COIL_12_PARASITIC_AC_COMPLEX_Z_CROSSCHECK_SRF_UNQUALIFIED_NO_FAB_NO_TX`; **12 simulazioni ngspice reali** con 12 confronti indipendenti di algebra nodale complessa e 111 comandi legacy FULL.
