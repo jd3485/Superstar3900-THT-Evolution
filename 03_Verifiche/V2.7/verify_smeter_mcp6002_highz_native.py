@@ -12,12 +12,12 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
-REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","C1901","C1902","D1901"}
+REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","R1904","C1901","C1902","D1901"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
  "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","1")},
- "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2")},
- "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","2")},
+ "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2"),("R1904","2")},
+ "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","2"),("R1904","1")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
  "SMBUF_VOUT_BENCH":{("R1902","2"),("J1902","1")},
@@ -37,7 +37,8 @@ def main():
         assert '(symbol "'+k+'"' in library
     assert s.count("(symbol (lib_id ")==len(REFS)
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
-    assert s.count('(property "Footprint" "Resistor_THT:')>=3
+    assert s.count('(property "Footprint" "Resistor_THT:')>=4
+    assert '(property "Value" "4k7_1PCT_0P25W_RAIL_BLEEDER_THT_CANDIDATE"' in s
     assert '(property "Value" "100k_1PCT_0P25W_INPUT_FAULT_LIMIT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
@@ -62,7 +63,7 @@ def main():
     for name,members in EXPECTED.items():
         require(nets,name,*sorted(members))
         assert set(nets[name])==members,("Unexpected pin-net assignment",name,nets[name])
-    assert sum(len(members) for members in nets.values())==26
+    assert sum(len(members) for members in nets.values())==28
     # 22M passive shunt in parallel with idealized 47k detector: only
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
@@ -141,6 +142,39 @@ def main():
     one_volt_charge=supply_capacitance*1.0
     seconds_to_rail_rise=one_volt_charge/injected[(20.0,0.0)]
     assert 0<seconds_to_rail_rise<0.001
+    # Real R1904 is a passive 4k7 bleeder, not a qualified power-off
+    # rail clamp: model diode as fixed 0.7V (NOT guaranteed PVT).
+    # For a floating lab 5V rail with only 4k7 DC load, solve
+    # (Vin - Vfd - Vrail)/100k = Vrail/4k7, with off regulator = open.
+    r_bleeder=4700
+    vfd_assumed=0.7
+    for vin in (12.0,20.0,40.0,200.0):
+        vrail=max(0,(vin-vfd_assumed)*r_bleeder/(rseries+r_bleeder))
+        injection=max(0,(vin-vfd_assumed-vrail)/rseries)
+        pbleeder=vrail*vrail/r_bleeder
+        assert math.isclose(injection,vrail/r_bleeder,rel_tol=1e-12)
+        if vin==20.0:
+            assert vrail<1.0
+            assert pbleeder<0.0003
+        if vin==200.0:
+            assert vrail>5.0 # rail overvoltage remains, NOT protected
+            assert pbleeder>0.01
+    nominal_bleeder_current=5.0/r_bleeder
+    nominal_bleeder_power=25/r_bleeder
+    assert 0.001<nominal_bleeder_current<0.0011
+    assert nominal_bleeder_power<0.01
+    # C1901 has 100nF and R1904 nominal tau 0.47ms. The diode and
+    # DC source may still exceed absolute maximum at other faults.
+    assert math.isclose(r_bleeder*supply_capacitance,0.00047,rel_tol=1e-12)
+    print("MCP6002_HIGHZ_R1904_RAIL_BLEEDER_CANDIDATE",{
+        "bleeder_ohm":r_bleeder,
+        "VDD5_bleeder_A":round(nominal_bleeder_current,8),
+        "VDD5_bleeder_W":round(nominal_bleeder_power,7),
+        "VDDoff_Vin20V_model_rail_V":round((20-vfd_assumed)*r_bleeder/(rseries+r_bleeder),7),
+        "VDDoff_Vin200V_model_rail_V":round((200-vfd_assumed)*r_bleeder/(rseries+r_bleeder),7),
+        "regulator_or_rail_sink_qualified":False,
+        "abs_max_fault_stress_qualified":False,
+        "no_fab":True},flush=True)
     # Illustrative 25nA/20V/25C 1N4148 max reverse leakage from a
     # vendor data sheet (not MCP6002 bias!). Does not certify leak at
     # 5V, high temperatures or all manufacturer MPNs.
@@ -192,11 +226,11 @@ def main():
           "1pct_accuracy_at_100mV",False,
           "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
-          "pins":26,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
+          "pins":28,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
           "unqualified_input_ESD_OVP":True,
           "actual_RX_AGC_or_meter_driver":False},flush=True)
-    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS26_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS28_LAB_ONLY_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
