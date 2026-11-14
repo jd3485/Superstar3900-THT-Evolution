@@ -1,3 +1,15 @@
+## Revisione D1901: diodo alto THT reale da banco, protezione finale ancora BLOCCATA
+
+Realizzato nel progetto KiCad9 isolato il diodo `D1901` **candidato 1N4148 in DO-35 THT**, anodo pin 1 su `AM_ENV_AFTER_R1903` (MCP6002 pin 3), catodo pin 2 su `VLAB5_BUFFER`. Libreria locale reale `TH_SMETERBUF:D` più simbolo incorporato, impronta `Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal`. La resistenza `R1903=100kΩ` è a monte del diodo, `R1901=22MΩ`, C1902=1nF C0G e bypass 100nF a 5V invariati. Nuovo gate completo KiCad9: **10 ref, 7 reti, 26 pin** nativi e ERC reale. Modifica **solo** al banco S-meter, non MAIN o FRONT.
+
+**Il diodo non qualifica la sicurezza.** Modello di fault con Vf **ipotizzata** di 0,7V: con J1901=+20V e rail esterno ideale 5V, D1901 inietta `(20−5−0,7)/100k≈143µA` nella linea 5V. A VDD=0V circa 193µA: se il regolatore non assorbe corrente, il rail si **autoalimenta** per backfeed; il solo C1901 100nF impiegherebbe idealmente ~0,52ms a salire di 1V iniziale. Non si può promettere che l'alimentatore possa assorbire corrente, né che il clamp resti sotto il limite assoluto d'ingresso in ogni PVT/fault o con il circuito spento. Il diodo non protegge automaticamente dai guasti negativi, ESD impulsiva, sovratensioni di alimentazione, −200V persistenti o energia parassita.
+
+**Leakage critico**: il datasheet Taiwan Semiconductor [1N4148 SERIES K2301](https://services.taiwansemi.com/storage/resources/datasheet/1N4148%20SERIES_K2301.pdf) riporta `I_R≤25nA` **a VR=20V, TA=25°C**; è un esempio di limite ad una specifica condizione, NON il leakage a 5V né massimo su tutta la temperatura o su ogni OEM. Usando 25nA come *scenari di sensibilità* su Rth≈146kΩ collegato: **3,65mV** (3,65% di 100mV), e con connettore aperto su 22MΩ: **0,55V**. La polarità effettiva del leakage e gli effetti sull'amplificatore dipendono dai nodi reali. Sono numeri di allerta, non prove. Il diodo va selezionato con curve garantite di leakage a VR≈5V e PVT (es. 85/125°C), capacità, Vf alla corrente reale, regime power-off, produzione OEM attiva e prove di banco. MCP6002 [Microchip DS20001733L §4.1.2](https://www.microchip.com/en-us/product/MCP6002) richiede la gestione dell'iniezione verso VDD.
+
+**Decisione progettuale:** candidato disegnato, verificabile e **non qualificato per MAIN, bobina S-meter o fabbricazione**. Prima di completare la rete occorrono clamp reale del rail alimentazione o corrente assorbita garantita, budget di leakage a temperature estreme, prova ESD, stress temporali, calcolo perdita 100mV e possibile scelta di diodo più adatto. La presenza fisica di D1901 non annulla il blocco **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 
 ## AVVISO DI SICUREZZA: assunzione di clamp positivo MCP6002 rettificata
 
