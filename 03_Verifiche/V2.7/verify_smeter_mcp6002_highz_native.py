@@ -12,12 +12,12 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
-REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","C1901","C1902"}
+REFS={"U1901","J1901","J1902","J1903","R1901","R1902","R1903","C1901","C1902","D1901"}
 EXPECTED={
  "AM_ENV_DC_BENCH":{("J1901","1"),("R1903","1")},
- "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1")},
+ "AM_ENV_AFTER_R1903":{("R1903","2"),("U1901","3"),("R1901","1"),("C1902","1"),("D1901","1")},
  "SMBUF_BENCH_GND":{("J1901","2"),("J1902","2"),("J1903","2"),("U1901","4"),("U1901","5"),("R1901","2"),("C1901","2"),("C1902","2")},
- "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1")},
+ "VLAB5_BUFFER":{("J1903","1"),("U1901","8"),("C1901","1"),("D1901","2")},
  "SMBUF_A_FB":{("U1901","1"),("U1901","2"),("R1902","1")},
  "SMBUF_B_FB":{("U1901","6"),("U1901","7")},
  "SMBUF_VOUT_BENCH":{("R1902","2"),("J1902","1")},
@@ -33,7 +33,7 @@ def main():
     library=(SCHEMATIC.parent/"TH_SMETERBUF.kicad_sym").read_text(encoding="utf-8")
     assert '(name "TH_SMETERBUF")' in table
     assert 'KIPRJMOD}/TH_SMETERBUF.kicad_sym' in table
-    for k in ("J","R","C","U"):
+    for k in ("J","R","C","U","D"):
         assert '(symbol "'+k+'"' in library
     assert s.count("(symbol (lib_id ")==len(REFS)
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
@@ -42,6 +42,8 @@ def main():
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Connector_PinHeader_2.54mm:')>=3
+    assert s.count('(property "Footprint" "Diode_THT:')>=1
+    assert '(property "Value" "1N4148_DO35_UPPER_CLAMP_CANDIDATE_NOT_QUALIFIED"' in s
     assert 'MICROCHIP_MCP6002_I_P_PDIP8_CANDIDATE' in s
     assert '(property "Value" "22MEG_1PCT_BIAS_TO_GND_THT"' in s
     assert 'NO MAIN AGC/FSD' in s
@@ -60,7 +62,7 @@ def main():
     for name,members in EXPECTED.items():
         require(nets,name,*sorted(members))
         assert set(nets[name])==members,("Unexpected pin-net assignment",name,nets[name])
-    assert sum(len(members) for members in nets.values())==24
+    assert sum(len(members) for members in nets.values())==26
     # 22M passive shunt in parallel with idealized 47k detector: only
     # predicts nominal static DC loading, NOT opamp input leakage or PVT.
     rdet=47000
@@ -122,18 +124,40 @@ def main():
     severe_power=(severe_negative-assumed_vclamp)**2/rseries
     assert severe_current<ds_input_abs_current
     assert severe_power>0.25
-    # In an unpowered unit, even a *hypothetical EXTERNAL* upper diode
-    # must have a controlled path for supply injection/backfeeding.
-    no_external_diode=not ('(symbol (lib_id "TH_SMETERBUF:D")' in s)
-    assert no_external_diode,"A real diode was added: requalify source, leakage, clamp voltage and rail sinking"
-    assert upper_results[(20.0,0.0)]>ds_analog_abs_above_rail
-    print("MCP6002_HIGHZ_POSITIVE_OVP_BLOCKED_NO_UPPER_CLAMP",
-          {"upper_unclamped_pin_V":upper_results,
-           "low_side_assumed_minus20V_current_A":round(negative_current,7),
-           "severe_minus200V_series_power_W":round(severe_power,5),
-           "external_upper_diode_present":False,
-           "no_fab_no_power_off_qualification":True,
-           "datasheet":"Microchip DS20001733L section 4.1.2 figures 4-1 and 4-2"},flush=True)
+    # Real D1901 is on the CAD netlist but does NOT make the upstream
+    # 5V rail capable of absorbing injection, especially if unpowered.
+    assert '(symbol (lib_id "TH_SMETERBUF:D")' in s
+    assumed_vf=0.7 # modelling assumption at tiny positive fault current
+    injected={}
+    for source_v,rail_v in upper_fault_cases:
+        if source_v>rail_v+assumed_vf:
+            current=(source_v-rail_v-assumed_vf)/rseries
+            injected[(source_v,rail_v)]=current
+            assert current<ds_input_abs_current
+    assert (20.0,0.0) in injected
+    # Capacitor C1901 (100nF) is not a DC current sink. If the regulator
+    # cannot sink current, input injection raises VDD, including at OFF.
+    supply_capacitance=100e-9
+    one_volt_charge=supply_capacitance*1.0
+    seconds_to_rail_rise=one_volt_charge/injected[(20.0,0.0)]
+    assert 0<seconds_to_rail_rise<0.001
+    # Illustrative 25nA/20V/25C 1N4148 max reverse leakage from a
+    # vendor data sheet (not MCP6002 bias!). Does not certify leak at
+    # 5V, high temperatures or all manufacturer MPNs.
+    assumed_diode_reverse_leakage=25e-9
+    connected_leakage_err=assumed_diode_reverse_leakage*r_thevenin
+    open_leakage_err=assumed_diode_reverse_leakage*rbias
+    assert connected_leakage_err>0.003
+    assert open_leakage_err>0.5
+    print("MCP6002_HIGHZ_D1901_UPPER_DIODE_CANDIDATE_UNQUALIFIED",
+          {"assumed_Vf_V":assumed_vf,
+           "upper_diode_current_A":{str(k):round(v,9) for k,v in injected.items()},
+           "unpowered_1V_rail_rise_s_if_no_sink":round(seconds_to_rail_rise,7),
+           "illustrative_25nA_reverse_leak_connected_V":round(connected_leakage_err,7),
+           "illustrative_25nA_reverse_leak_open_V":round(open_leakage_err,4),
+           "external_upper_diode_present":True,
+           "rail_sink_backfeed_or_leakage_qualified":False,
+           "no_fab_no_power_off_qualification":True},flush=True)
     # MCP6002 DS-20001733L: data-sheet Vos up to +/-4.5mV,
     # Ibias example 1pA at 25C, 19pA at 85C, 1100pA at 125C.
     # Bias examples are not guaranteed maxima; temperature qualification
@@ -168,11 +192,11 @@ def main():
           "1pct_accuracy_at_100mV",False,
           "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
-          "pins":24,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
+          "pins":26,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
           "unqualified_input_ESD_OVP":True,
           "actual_RX_AGC_or_meter_driver":False},flush=True)
-    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    print("PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS26_LAB_ONLY_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
