@@ -492,6 +492,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_native_dc_bias.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # onsemi KSP10BU THT native KiCad9 27 generic BJT bench runs:
+    # 3 rails, 3 betas, 100k/2k/1.5k ceramic resistive dummy loads.
+    print("::group::KSP10 IF455 CERAMIC DUMMY LOADING GENERIC BJT",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_ceramic_load_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
