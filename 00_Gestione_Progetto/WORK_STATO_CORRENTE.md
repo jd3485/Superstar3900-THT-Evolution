@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #130 MERGED: IF455 C1601 native passband/source sensitivity
+
+**[PR #130](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/130) MERGED**, verified main commit `898d75a453359e2980973082ce2ada97271ae759`, technical head `608f8d1ae8fe0b59f63c2349a9aa47dd0ad68e0d`. [Actions #43586012507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586012507) FAST, FULL KiCad9/ngspice, required gate **3/3 SUCCESS**, native FULL logs audited: **111 legacy commands** plus `PASS_NGSPICE_IF455_C1601_15_CASES_BRACKETED_OR_EXPLICITLY_OUT_OF_WINDOW_NO_VENDOR_MIXER_NO_FAB_NO_TX`.
+
+New native test `03_Verifiche/V2.7/verify_if455_c1601_bandwidth_native.py` and report `03_Verifiche/V2.7/RAPPORTO_C1601_BANDWIDTH_SOURCE_DRAFT.md`; test included in `ci/full_regressions.py`. 15 native ngspice linear AC sweeps 300–650kHz (1401 steps), C1601 10/47/100/470/1000 pF × hypothetical Rs 50/1000/10000Ω. **11/15** transfer curves have two bracketed -3dB crossings; **4/15** (470/1000pF × 50/1000Ω) do not have full -3dB bandwidth inside the requested span and are reported with **null boundaries/BW**, not made-up Q. Nominal 10pF / Rs50Ω: peak **454750Hz**, two -3dB boundaries **435080.8Hz** and **477637.5Hz**, modeled bandwidth **42556.7Hz**, Vout/Vsource at 455kHz **0.835055562**. For 47pF/Rs50Ω peak shifts to **398250Hz**; for 100pF/Rs50Ω to **344750Hz**: selection by response *only at 455kHz* is unjustified.
+
+First [Actions #43584881817](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43584881817) **FAIL** on unbracketed response at sweep left edge; corrected classification and preserved all runs without bypassing real failure. The final run #43586012507 3/3 PASS is the **only gate credited**. No real SBL-1+ complex IF source impedance/nonlinear model; source Rs and filter losses are bench assumptions only. **C1601 remains 10pF in unchanged real schematic**, V2.6 master still 7 sheets/138 refs; no PCB MAIN/FRONT, no actual DRC or production BOM. PR #123 A06 footprint remains unqualified DRAFT, not merged. Next technical focus: OEM IF port loading/LO conversion vs source-matched IF455 topology, detector load and noise with vendor/physical qualification. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #128 MERGED: native ngspice sweep accoppiamento C1601 IF455
 
 **[PR #128](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/128) MERGED** e verificata su main commit `d403412915c5abe26bdb36b8e9bce7768e7f3dad`; head tecnico `06585aaa5cb0fd3fc5659ef5c4de652d81d15e27`. [Actions #43583597932](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43583597932) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; log FULL verificato con 111 comandi storici e `PASS_NGSPICE_IF455_C1601_15_CANDIDATE_SOURCE_CASES_NO_MIXER_MODEL_NO_FAB_NO_TX`.
