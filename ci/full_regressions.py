@@ -116,6 +116,15 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_audio_draft_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Standalone FRONT S-meter interface: provisional, not a qualified
+    # movement or driver; require native KiCad9 ERC and pin/net/footprint check.
+    smeter=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch"
+    assert smeter.exists(),"Missing FRONT S-meter draft required by native CI"
+    print("::group::V2.7 FRONT S-METER THT BENCH ERC AND NETLIST",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_smeter_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     front=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
     if front.exists():
         print("::group::V2.7 FRONT_VOLUME THT NATIVE KiCad9",flush=True)
