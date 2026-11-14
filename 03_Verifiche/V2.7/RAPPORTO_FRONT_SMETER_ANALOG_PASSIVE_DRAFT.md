@@ -1,3 +1,13 @@
+## R1903 MPN OEM Yageo 120kΩ 1W THT: prima verifica dati elettrici, derating 130°C FAIL
+
+Assegnato al banco KiCad9 il **candidato commerciale esatto** `Yageo MFR1WSDRE52-120K`: 120kΩ **±0,5%**, 1W, metal film assiale MFR1WS, corpo **L 9,0±0,5mm × D 3,3±0,3mm**, compatibilità geometrica *nominale* con footprint DIN0411 L9,9/D3,6/P12,7 (la lunghezza pad-pitch e piegatura reofori restano da confermare), non soluzione autorizzata per PCB finale. Fonte produttore: https://yageogroup.com/content/datasheet/asset/file/YAGEO-MFR_DATASHEET (rev. 2024-04-03 v4, pp. 2–4); corrispondenza codice/prodotto commerciale: https://www.lcsc.com/product-detail/C1759108.html. Non attribuire ai singoli articoli una certificazione di impulso/ESD che non possiedono.
+
+Dati serie MFR1WS: **1W a 70°C**, **massima tensione di lavoro 400V**, ma tensione continua ammissibile effettiva `RCWV=min(400V, √(Pderated·R))` e **non** 400V a ogni resistenza e temperatura. Curva datasheet: 100% fino a 70°C, diminuisce linearmente a 0% a 155°C. A −200V e D1903 Vf ipotetica 0,2V: `Rmin=119,4kΩ`, `I≈1,673mA`, `P≈0,3343W`. A **125°C** il rating teorico disponibile ≈0,35294W, RCWV≈205,3V e il modello risulta appena sotto; a **130°C** rating ≈0,29412W, RCWV≈187,4V, quindi **guasto continuo −200V NON qualificato**. Ad alte temperature servono margini termici, temperatura corpo, condizioni montaggio, tolleranze, temperatura massima del driver e transienti. Il dato 2mA MCP6002 è stress assoluto e non una condizione operativa ammissibile. Protezione generale ESD/OVP e circuiti MAIN/FRONT sempre non qualificati.
+
+Gate nativo `MCP6002_HIGHZ_R1903_YAGEO_120K_1W_OEM_PVT_LIMITS_UNQUALIFIED` verifica l'esatto MPN presente nello schema e impone esplicitamente il FAIL a 130°C. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## R1903 passa da 100kΩ a 120kΩ/1%/1W DIN0411 THT: margine corrente −200V candidato
 
 Revisione del **vero schema KiCad9 isolato da banco**: R1903 diventa **120kΩ/1%/1W THT** nell'impronta `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal`, già presente; 13 componenti / 7 reti / 32 pin invariati. La priorità è ridurre la corrente teorica durante un guasto negativo continuo senza perdere il budget nominale dell'1% di carico dell'inviluppo AM, non ottenere una qualifica ESD o certificare un resistore OEM.

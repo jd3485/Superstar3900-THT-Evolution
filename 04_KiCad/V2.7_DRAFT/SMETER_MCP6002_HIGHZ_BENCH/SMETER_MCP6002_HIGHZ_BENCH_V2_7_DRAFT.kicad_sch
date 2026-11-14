@@ -140,7 +140,7 @@
 
 (symbol (lib_id "TH_SMETERBUF:R") (at 81.28 213.36 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "ab200001-2026-4000-8000-000000000070")
 (property "Reference" "R1903" (at 81.28 184.15 0) (effects (font (size 1 1))))
-(property "Value" "120k_1PCT_1W_INPUT_FAULT_LIMIT_MARGIN_CANDIDATE" (at 81.28 241.3 0) (effects (font (size 1 1))))
+(property "Value" "120k_0P5PCT_1W_YAGEO_MFR1WSDRE52-120K_CANDIDATE" (at 81.28 241.3 0) (effects (font (size 1 1))))
 (property "Footprint" "Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal" (at 81.28 213.36 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "ab200001-2026-4000-8000-000000000071"))
 (pin "2" (uuid "ab200001-2026-4000-8000-000000000072"))
@@ -209,4 +209,4 @@
 (label "SMBUF_BENCH_GND" (at 320.04 269.24 0) (effects (font (size 1 1))) (uuid "ab200001-2026-4000-8000-000000000109"))
 (wire (pts (xy 340.36 269.24) (xy 345.44 269.24)) (stroke (width 0) (type default)) (uuid "ab200001-2026-4000-8000-000000000110"))
 (label "AM_ENV_AFTER_R1903" (at 345.44 269.24 0) (effects (font (size 1 1))) (uuid "ab200001-2026-4000-8000-000000000111"))
-(text "MCP6002 PDIP8: channel A 1/2/3 follower; B 7/6/5 idle at GND. R1903 120k 1W DIN0411 THT input current limiting/derating candidate; R1901 22M shunt and C1902 1nF C0G RF shunt after R1903; D1901 external high-side diode A=IN K=5V candidate, R1904 4k7 bleeder candidate to GND; D1902 5V6 Zener rail-to-GND candidate, knee/PVT unqualified; D1903 external lower clamp A=GND K=IN candidate, reverse leakage and severe negative fault unqualified; no rail-sink or power-off protection qualified. SUPPLY LAB 5V ONLY. OUT IS VOLTAGE BENCH, NOT A MOVING COIL DRIVER. NO MAIN AGC/FSD, NO FAB, NO TX." (at 98 191 0) (effects (font (size 1 1))) (uuid "ab200001-2026-4000-8000-000000000069")))
+(text "MCP6002 PDIP8: channel A 1/2/3 follower; B 7/6/5 idle at GND. R1903 YAGEO MFR1WSDRE52-120K 120k 0.5pct 1W DIN0411 THT OEM candidate MPN/PVT unqualified; R1901 22M shunt and C1902 1nF C0G RF shunt after R1903; D1901 external high-side diode A=IN K=5V candidate, R1904 4k7 bleeder candidate to GND; D1902 5V6 Zener rail-to-GND candidate, knee/PVT unqualified; D1903 external lower clamp A=GND K=IN candidate, reverse leakage and severe negative fault unqualified; no rail-sink or power-off protection qualified. SUPPLY LAB 5V ONLY. OUT IS VOLTAGE BENCH, NOT A MOVING COIL DRIVER. NO MAIN AGC/FSD, NO FAB, NO TX." (at 98 191 0) (effects (font (size 1 1))) (uuid "ab200001-2026-4000-8000-000000000069")))
