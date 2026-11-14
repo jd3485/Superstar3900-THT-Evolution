@@ -542,6 +542,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_hypothetical_complex_rc_load_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Real ceramic two-port data MUST be measured externally. This verifies
+    # parsing RI/MA/DB .s2p and 27 synthetic series-network terminations
+    # against independent Kirchhoff algebra; never label fixture OEM.
+    print("::group::IF455 TOUCHSTONE TWO PORT TERMINATION 27 ANALYTICAL CHECKS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
