@@ -499,6 +499,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_ceramic_load_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # J113/KSP10 generic cross-comparison on IDENTICAL IF455 tank and source;
+    # 54 real native ngspice cases 10p/10n and 100k/2k/1.5k loads.
+    print("::group::J113 KSP10 SHARED IF455 TANK COUPLING 54 NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_ksp10_shared_tank_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
