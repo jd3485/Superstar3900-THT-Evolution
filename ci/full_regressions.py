@@ -478,6 +478,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_ceramic_load_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # J113 existing onsemi-only THT source follower: three hypothetical
+    # self-bias resistor values × six NJF generic corners × two IF loads.
+    print("::group::J113 SOURCE SELF BIAS RESISTOR CERAMIC DUMMY 36 CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_source_bias_load_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
