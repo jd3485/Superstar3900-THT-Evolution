@@ -24,6 +24,10 @@ EXPECTED={
 
 def main():
     s=SCHEMATIC.read_text(encoding="utf-8")
+    # KiCad9 CLI recognizes project-local symbol tables only when the
+    # same-basename .kicad_pro exists beside the standalone schematic.
+    project=SCHEMATIC.with_suffix(".kicad_pro")
+    assert project.is_file(),("Missing KiCad9 project for local symbols",project)
     table=(SCHEMATIC.parent/"sym-lib-table").read_text(encoding="utf-8")
     library=(SCHEMATIC.parent/"TH_SMETERBUF.kicad_sym").read_text(encoding="utf-8")
     assert '(name "TH_SMETERBUF")' in table
