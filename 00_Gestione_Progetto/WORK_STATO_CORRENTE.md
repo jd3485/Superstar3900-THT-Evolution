@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #134 MERGED: port IF, ammettenza complessa di carichi RC a 3 frequenze
+
+**[PR #134](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/134) MERGED**, commit su main verificato `0f38454bda541e7eb8bf22749c7c03445e1304cc`, HEAD tecnico `9caf5dd6988796254e843b81adbc2d6a4fc0820f`. [Actions #43588038836](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43588038836) **FAST/FULL native KiCad9/ngspice/required gate 3/3 SUCCESS**; log FULL verificato: **111 comandi legacy**, **12 simulazioni ngspice native** con `PASS_NATIVE_KICAD9_IF_PORT_12_NGSPICE_COMPLEX_ADMITTANCE_CASES_NO_REAL_DIPLEXER_NO_FAB_NO_TX`. Nuovo verificatore `03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF_PORT_SHUNT_FREQUENCY_DRAFT.md`, script obbligatorio in `ci/full_regressions.py`.
+
+Il verificatore esporta le vere netlist KiCad9 di mixer SBL-1+ e filtro IF455, preserva IF3+IF4 e J1601/1→C1601/1, poi prova quattro configurazioni di porta IF **solo modello** (nessuna terminazione; 50Ω a massa; 50Ω+100pF in serie; 50Ω+1nF in serie) × **455kHz, 1MHz, 30MHz**. Per ciascuna misura complessa di impedenza, controlla con algebra indipendente `Y_shunt=1/Z_loaded−1/Z_unloaded` contro ammettenza analitica R/C. Un 50Ω+100pF serie a 30MHz comporta `Zin` dell'intero modello ≈ **41,684−j51,893Ω**, modulo **66,562Ω**, non è garanzia di matching a 50Ω del mixer reale. Le simulazioni fino a 30MHz sono ideali e non modellano SRF bobina 1mH, parassiti THT, layout, leakage e non linearità mixer.
+
+Prima CI [#43587582419](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43587582419) **FAIL** sul parser che richiedeva due righe ngspice anziché un unico campione valido ad una frequenza; corretto il controllo accettando 1–2 righe finite e imponendo prima riga alla frequenza esatta, senza inventare valori. L'unica CI finale accreditata è #43588038836 **3/3 PASS**. Nessun vero diplexer selezionato né alcuna modifica a V2.6 master/PCB/BOM; mixer IF reale e resistenza di terminazione restano **non qualificati**, PR #123 footprint OEM A06 ancora DRAFT. PCB MAIN/FRONT non esistono, DRC PCB non applicabile; routing **0%**. Prossima fase: qualificare risposta OEM SBL-1+ a carichi complessi e LO reale +7dBm, poi topologia biforcata IF/broadband e noise/gain/armoniche senza usare un semplice RC come diplexer verificato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #132 MERGED: contratto nativo terminazione porta IF SBL-1+ → IF455
 
 **[PR #132](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/132) MERGED**, verificato su main commit `844ecd4caadebd99ceb07bb92487b70cd09e091b`, ultimo head tecnico `e31dcaf3f5de4118f021b5aac9bfa95613adcd83`. [Actions #43586879554](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586879554) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log FULL verificati con 111 comandi storici, 9 sweep ngspice AC nativi e `PASS_NATIVE_KICAD9_MIXER_IF_PORT_AND_9_NGSPICE_TERMINATION_CASES_NO_OEM_LOAD_QUALIFICATION_NO_FAB_NO_TX`.
