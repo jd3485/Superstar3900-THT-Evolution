@@ -422,6 +422,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_bandwidth_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # OEM mixer IF termination is NOT currently implemented in native KiCad.
+    # Nine 455kHz test-only loading cases; no nonlinear SBL-1+ mixer model.
+    print("::group::MIXER IF 50OHM TERMINATION PORT CONTRACT AND TEST LOAD",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_mixer_if_termination_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
