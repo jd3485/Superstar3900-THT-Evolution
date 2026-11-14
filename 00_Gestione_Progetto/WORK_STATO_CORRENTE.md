@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #180 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #182 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #182 MERGED: contratto alta impedenza buffer S-meter AM455 (ancora solo analitico)
+
+**[PR #182](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/182) MERGED** su `main`, commit `bd4be948a1fbadcf9ee30c33512945c65ca0b110`, head tecnico `f068fe258fce973608da2d817b63db67c814b122`. [Actions #43634509632](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43634509632): **FAST/FULL/required SUCCESS 3/3**, log FULL `PASS_AM455_ENVELOPE_32_KCL_BUFFER_INPUT_IMPEDANCE_GATE_NO_REAL_DRIVER_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+Nuovo `03_Verifiche/V2.7/verify_smeter_buffer_input_loading_contract.py` obbligatorio in FULL CI: verifica netlist KiCad9 AM455 da banco, confronta 32 casi numerici KCL (8 carichi, 4 livelli) con formula chiusa indipendente. Con `R1501=47kΩ`, `C1501=1nF` e sorgente Norton *ideale* richiede `Rin_eff >=4.653MΩ` per errore statico da carico <=1%; **target preliminare >=10MΩ effettivi**, includendo ingressi/bias/leakage/cablaggio, non MPN approvato. Trim FRONT 10k diretto ridurrebbe livello ideale ~82.46%, spostando taglio equivalente 3.39→19.3kHz; **non** è modellazione di rivelazione nonlineare. Rapporto S-meter V2.7 esteso.
+
+Non esiste ancora alcun buffer THT reale progettato né una sorgente AGC MAIN, livello RX FM/SSB, FSD/Rcoil/MPN del movimento, driver di corrente, connettore/cavo qualificato o PCB MAIN/FRONT. Prossimo lavoro: sviluppare buffer reale **isolato da banco** con KiCad9 ERC/netlist, limiti comuni, PVT, rumore, carichi e difetti, prima di connettere all'architettura RX. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #180 MERGED: tracciamento sorgente reale S-meter RX e blocco falsa AGC
 
