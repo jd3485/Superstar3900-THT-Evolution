@@ -407,6 +407,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # C1601 input series coupling: 15 real ngspice AC cases across five
+    # experimental values and three hypothetical source resistances.
+    # No KiCad/BOM edit and no vendor mixer impedance asserted.
+    print("::group::IF455 C1601 NATIVE SOURCE AND CAPACITANCE SWEEP",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_source_sweep_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
