@@ -76,6 +76,25 @@ def terminated_port(row,z0,zload):
     transfer=s21*(1+gamma)/(2*denominator)
     return zin,transfer
 
+def source_and_load_terminated_port(row,z0,zsource,zload):
+    """Two-port voltage transfer for a finite Thevenin source and complex load.
+
+    Zsource and Zload may be complex passive impedances with positive real
+    parts, while the Touchstone reference z0 must be real positive. This
+    is a linear small-signal model; the actual LO-driven mixer source Z
+    must be measured separately and is NOT supplied by this function.
+    """
+    assert math.isfinite(zsource.real) and math.isfinite(zsource.imag)
+    assert math.isfinite(zload.real) and math.isfinite(zload.imag)
+    assert zsource.real>0 and zload.real>0
+    zin,matched_transfer=terminated_port(row,z0,zload)
+    assert abs(zin+zsource)>1e-9
+    # The voltage transfer from input port voltage to output voltage
+    # does not depend on source termination. Recover it from the
+    # matched-source transfer and the matched input voltage divider.
+    vload_over_vin=matched_transfer*(z0+zin)/zin
+    return zin,vload_over_vin*zin/(zsource+zin)
+
 def synthetic_series_twoport(r,z0,f):
     # Series-only reciprocal two-port, reference z0 on BOTH ports.
     return (f,complex(r/(2*z0+r)),complex(2*z0/(2*z0+r)),
@@ -112,7 +131,18 @@ def selftest():
                     assert abs(zin-expected_zin)<1e-6,(encoding,zin,expected_zin)
                     assert abs(transfer-expected_transfer)<1e-9,(
                         encoding,transfer,expected_transfer)
-                    samples+=1
+                    # Match and mismatch of the driving mixer port are
+                    # independent dimensions: this is not an OEM model.
+                    for source in (100+0j,2000+0j,1000+400j):
+                        zin2,transfer2=source_and_load_terminated_port(
+                            row,z0,source,load)
+                        expected=load/(source+100+load)
+                        assert abs(zin2-expected_zin)<1e-6
+                        assert abs(transfer2-expected)<1e-9,(
+                            encoding,source,load,transfer2,expected)
+                        if source==z0:
+                            assert abs(transfer2-transfer)<1e-10
+                        samples+=1
         bad=root/"truncated.s2p"
         bad.write_text("# Hz S RI R 2000\n455000 0 0 1 0 1\n",encoding="utf-8")
         try:
@@ -121,13 +151,15 @@ def selftest():
             pass
         else:
             raise AssertionError("Incomplete measurement accepted")
-    assert samples==27
-    print("PASS_IF455_TOUCHSTONE_TWO_PORT_27_ANALYTICAL_TERMINATION_TESTS_NO_OEM_NO_FAB_NO_TX",
+    assert samples==81
+    print("PASS_IF455_TOUCHSTONE_TWO_PORT_81_COMPLEX_SOURCE_LOAD_TESTS_NO_OEM_NO_FAB_NO_TX",
           {"analytical_crosschecks":samples,"synthetic_only":True},flush=True)
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--measurement",type=Path,help="External calibrated .s2p; never treated as OEM qualified automatically")
+    p.add_argument("--source-real-ohm",type=float,default=2000)
+    p.add_argument("--source-imag-ohm",type=float,default=0)
     p.add_argument("--load-real-ohm",type=float,default=2000)
     p.add_argument("--load-imag-ohm",type=float,default=0)
     args=p.parse_args()
@@ -137,13 +169,16 @@ def main():
         assert 100e3<=records[0][0]<=records[-1][0]<=10e6
         assert len(records)>=3,"Need multiple measured frequency points"
         load=complex(args.load_real_ohm,args.load_imag_ohm)
+        source=complex(args.source_real_ohm,args.source_imag_ohm)
         for row in records:
-            zin,gain=terminated_port(row,z0,load)
+            zin,gain=source_and_load_terminated_port(row,z0,source,load)
             assert math.isfinite(zin.real) and math.isfinite(zin.imag)
             print("IF455_EXTERNAL_UNQUALIFIED_S2P_TERMINATED",{
                 "frequency_Hz":row[0],"Zin_real_ohm":zin.real,
                 "Zin_imag_ohm":zin.imag,"loaded_gain_mag":abs(gain),
                 "loaded_gain_phase_deg":math.degrees(cmath.phase(gain)),
+                "source_Z_real_ohm":source.real,
+                "source_Z_imag_ohm":source.imag,
                 "requires_sample_calibration_oem_review":True},flush=True)
 
 if __name__=="__main__":
