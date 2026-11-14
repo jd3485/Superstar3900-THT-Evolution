@@ -399,6 +399,14 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_sbl1_lo_drive_budget_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # SBL-1+ IF3/4 physically tied -> IF455 passive input: independent
+    # native KiCad9 exported ports, NOT a matched or connected PCB.
+    if (ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py").exists():
+        print("::group::SBL1 MIXER TO IF455 FILTER TWO PORT NATIVE KICAD9",flush=True)
+        subprocess.run([sys.executable,"-B",
+                        str(ROOT/"03_Verifiche/V2.7/verify_mixer_if455_interface_native.py")],
+                       cwd=ROOT,check=True)
+        print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
