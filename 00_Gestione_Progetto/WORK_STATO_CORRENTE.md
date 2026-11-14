@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #194 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #196 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #196 MERGED: R1904 4k7 THT scarico rail 5V da banco, power-off ancora NON qualificato
+
+**[PR #196](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/196) MERGED** su `main`, commit `6117047f975152c7112fb5a62bad0027568b9b3c`, head tecnico `049c4d780a79317feb6534ff2dbdbf384ce40140`. [Actions #43641067469](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43641067469): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1904_RAIL_BLEEDER_CANDIDATE`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS28_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 isolato `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto `R1904=4k7Ω/1%/0,25W` assiale THT da `VLAB5_BUFFER` a `SMBUF_BENCH_GND`, scarico/bias rail candidato. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py`: **11 refs / 7 reti / 28 pin**, ERC0. Con alimentazione 5V: I≈1,06383mA, dissipazione≈5,3191mW; modello ipotetico con R1903=100kΩ, D1901 Vf=0,7V, alimentatore spento aperto: guasto +20V genera Vrail≈**0,86638V** (NON qualificato per circuito spento), mentre +200V genera Vrail≈**8,94661V**, oltre il massimo assoluto 7V del MCP6002. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato.
+
+**Blocker**: scarico passivo non sostituisce protezione ESD/OVP/rail certificata; mancano definizione e tolleranze del reale rail/regolatore sink e stato spento, I/V PVT del diodo D1901, accuratezza a bassi livelli, sorgente AGC MAIN, FSD/driver della bobina, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #194 MERGED: D1901 DO35 THT clamp superiore candidato, backfeed e leakage ancora NON qualificati
 
