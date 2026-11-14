@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #182 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #184 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #184 MERGED: buffer alta impedenza S-meter MCP6002 PDIP8 THT isolato da banco
+
+**[PR #184](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/184) MERGED** su `main`, commit `fdd242d121489bb0cb6184acba29719bd223e060`, head tecnico `d413f71b2c9a6d75686e05315524ca9d660ad979`. [Actions #43635972860](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43635972860): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS20_LAB_ONLY_NO_FAB_NO_TX`, 111 comandi storici PASS. Due precedenti run FULL falliti su libreria locale non registrata: corretti mediante `TH_SMETERBUF.kicad_sym`, `sym-lib-table` e progetto `.kicad_pro`; nessun waiver.
+
+CAD KiCad9 reale `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: `U1901` MCP6002-I/P candidato THT PDIP-8, A buffer a guadagno unitario con pin 1/2 in feedback e ingresso pin3; B parcheggiato a massa pin5 e pin6/7 in feedback; pin8 alimentazione **5V di banco**, pin4 GND; R1901 22MΩ bias ingresso; R1902 1kΩ uscita; C1901 100nF bypass; J1901/J1902/J1903 connettori banco THT. **7 componenti, 6 reti, 20 pin** controllati contro netlist KiCad9 nativa + simboli footprint; perdita lineare idealizzata 47k||22M circa **0.213%**. Nuovo gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` in FULL. MPN, disponibilità e parametri PVT ancora da qualificare sul codice esatto prima della BOM release.
+
+**Blocker**: uscita `SMBUF_VOUT_BENCH` **solo tensione di laboratorio**, NON driver bobina S-meter; ingresso `AM_ENV_DC_BENCH` NON connesso ad `AM_RECTIFIED_ENV` del detector né a MAIN RX. Mancano AGC sorgente MAIN reale, protezioni di input ESD/OVP/reverse, impedenza effettiva PVT, corrente massima e fault, noise, saturazione rail, FSD/Rcoil/MPN e taratura movimento, interboard cable e due PCB vere. Master MAIN V2.6 invariato, prototipo isolato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #182 MERGED: contratto alta impedenza buffer S-meter AM455 (ancora solo analitico)
 
