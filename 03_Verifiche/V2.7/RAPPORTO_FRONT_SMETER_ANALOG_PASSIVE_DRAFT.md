@@ -1,3 +1,13 @@
+## D1902 Zener 5V6 THT sul rail: candidato NON qualificato sotto corrente di ginocchio
+
+Inserito nello **schema KiCad9 standalone di banco** `D1902` **BZX55C5V6 candidato** in DO-35 THT: anodo pin1 sul nodo `SMBUF_BENCH_GND`, catodo pin2 su `VLAB5_BUFFER`, in parallelo a `R1904=4k7Ω` e `C1901=100nF`. Simbolo KiCad `TH_SMETERBUF:D` e footprint `Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal`. Netlist nativa attesa **12 componenti / 7 reti / 30 pin** con ERC effettivo (nessuna nuova net). Schema MAIN e S-meter FRONT invariati.
+
+**Limitazione critica del datasheet:** la tabella del produttore [Vishay BZX55 series](https://www.vishay.com/docs/85604/bzx55.pdf) per BZX55C5V6 fornisce `Vz=5.2..6.0V` a `Iz=5mA` in condizioni specificate, **non a ~0.75mA**. Con ingresso +200V persistente, R1903=100kΩ e D1901 assunto Vf=0.7V, una ipotetica linea 5.6V riceve `(200−0.7−5.6)/100k≈1.937mA`; R1904 assorbe `5.6/4.7k≈1.191mA` e rimangono **~0.746mA** al diodo Zener. Non è verificata tensione Zener a tale corrente, a PVT, o in circuito spento. La sola presenza del simbolo D1902 **non dimostra** VDD sotto 7V o immunità ESD. A +20V il precedente scarico resistivo produce ~0.866V nel semplice modello, senza affidarsi alla conduzione Zener. Va verificata la curva I-V a correnti sub-mA, valore dinamico, corrente di perdita a 5V, tolleranze, potenza, transitori, hot-plug, datasheet dell'MPN OEM e disponibilità in produzione.
+
+Il gate `verify_smeter_mcp6002_highz_native.py` introduce `MCP6002_HIGHZ_D1902_5V6_ZENER_LOW_CURRENT_UNQUALIFIED`: controlli di pin/net THT reali e `Iz_available<5mA` nel caso +20/+200V, quindi **vietata qualsiasi dichiarazione di rail clamp o power-off già qualificato**. Altri blocchi invariati: D1901 leakage alta T, accuratezza 100mV, protezione negativa, AGC RX MAIN, driver bobina/FSD e due PCB native. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## R1904 4,7kΩ THT — scarico passivo del rail 5V durante backfeed da D1901, candidato SOLO banco
 
 Aggiunto `R1904=4,7kΩ 1%/0,25W THT` tra `VLAB5_BUFFER` e `SMBUF_BENCH_GND` nel vero schematico KiCad9 standalone. D1901 rimane anodo su ingresso MCP6002 dopo R1903 100kΩ, catodo sul rail 5V. Con alimentazione presente il bleeder richiede `5V/4,7kΩ≈1,064mA`, dissipando `≈5,32mW`; questo **carico aggiuntivo** richiede verifica della disponibilità e stabilità di un'alimentazione reale, non ancora definita. La costante `R1904·C1901` isolata è ~0,47ms.
