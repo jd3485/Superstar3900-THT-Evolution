@@ -535,6 +535,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_full_tank_complex_transfer_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Candidate ceramic input is UNKNOWN: 72 native AC load R||C proxy
+    # cases; no filter transfer function or OEM impedance is asserted.
+    print("::group::KSP10 IF455 HYPOTHETICAL COMPLEX RC LOAD 72 AC",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_hypothetical_complex_rc_load_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
