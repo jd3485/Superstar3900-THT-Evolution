@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #186 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #188 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #188 MERGED: modello PVT MCP6002, accuracy assoluta 1% non qualificata
+
+**[PR #188](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/188) MERGED** su `main`, commit `361ba8d0c1e9898bcb4169385356639bc631c1a5`, head tecnico `1a197369586f72e030a088eb14332ac0793a1a7f`. [Actions #43637735275](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43637735275): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`; `MCP6002_HIGHZ_PVT_UNQUALIFIED` presente; `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS22_LAB_ONLY_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+Nuovo gate quantitativo in `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`: distingue carico ideale ingresso 47k+100k verso R1901=22M da errore assoluto con offset opamp. Sulla sorgente idealtipica **100mV**, perdita resistiva **0,66375%** ma offset Microchip MCP6002 fino a ±4,5mV produce **≥5,16%** errore peggior segno includendo campioni di bias; a **125°C** usando solo dato di bias esemplificativo 1,1nA, ~**5,32%**, non un worst-case garantito. `Rth` detector collegato ~146kΩ contro **22MΩ** a J1901 scollegato: 1,1nA di bias causa ~0,161mV o 24,2mV rispettivamente. Scenari di corrente clamp e perdita resistore sono **solo modello ipotetico**; nessuna ESD/OVP reale, clamp verificato, sequenza off/on, modello RF, driver bobina S-meter o AGC MAIN completati. CAD e netlist invariati **8 refs / 7 reti / 22 pin**. La conformità all'1% **assoluto** non è dimostrata e non va rivendicata.
+
+**Blocker**: prima di collegare il ramo a MAIN o FRONTPANEL servono curva di trasferimento misurata, budget errore e calibrazione ammessa su FSD reale, verifica alimentazione e protezioni, MPN esatti correnti produzione e due PCB native. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #186 MERGED: R1903 THT ingresso MCP6002 e modello fault limitato
 
