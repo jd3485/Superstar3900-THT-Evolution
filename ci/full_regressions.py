@@ -485,6 +485,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_source_bias_load_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native KiCad9 J113 6V source self-bias DC operating-point check:
+    # 18 generic NJF corners and independent Vsource/R versus rail KCL.
+    print("::group::J113 18 GENERIC DC SOURCE BIAS AND KCL CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_native_dc_bias.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
