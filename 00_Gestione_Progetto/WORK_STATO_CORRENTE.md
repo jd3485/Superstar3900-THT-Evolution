@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #166 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #168 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #168 MERGED: contratto Touchstone IF455 a due porte
+
+**[PR #168](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/168) MERGED** su `main`, commit `bfedde80315a5948f47de224c858c20e643b4c50`, head tecnico `f33423c39235b54be54084417867c1cfa6fcccdd`. [Actions #43627531475](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43627531475) **FAST/FULL/required SUCCESS 3/3**, log FULL ispezionato: `PASS_IF455_TOUCHSTONE_TWO_PORT_27_ANALYTICAL_TERMINATION_TESTS_NO_OEM_NO_FAB_NO_TX`, **27 verifiche analitiche sintetiche**; `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES`, **111 comandi storici**; nessun errore nei log FULL.
+
+Script `03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py`: accetta misure esterne Touchstone v1 `.s2p` RI/MA/DB, rete a due porte S11/S21/S12/S22, terminazione ZL complessa, Zin e trasferimento Vload/Vsource con sorgente adattata Z0. Fixture di test sintetica: R serie 100Ω, Z0 2kΩ, 445/455/465kHz, carichi resistivi e complessi; 27 crosscheck con algebra indipendente, **non sono misure OEM né 27 simulazioni SPICE**. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_S2P_TWO_PORT_MEASUREMENT_CONTRACT_DRAFT.md`. FULL CI obbligatoria. **Non esiste tuttora alcun campione misurato o file S2P calibrato**; catalogo non identifica una funzione complessa unica né autorizza scelta del filtro/impedenza. Necessaria qualifica OEM e misure mixer LO-driven. Master V2.6 7 fogli/138 refs invariato; PCB/DRC assenti; BOM non qualificata. Issue #141 e PR draft #123/#143 ancora aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #166 MERGED: sensibilità IF455/KSP10 a carico complesso RC ipotetico, 72 AC native
 
