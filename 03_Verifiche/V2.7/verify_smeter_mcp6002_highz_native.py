@@ -80,6 +80,45 @@ def main():
         v_clamp=vdd+edge if v_in>vdd else edge
         i=abs(v_in-v_clamp)/rseries
         assert i<0.002,(v_in,vdd,i)
+    # MCP6002 DS-20001733L: data-sheet Vos up to +/-4.5mV,
+    # Ibias example 1pA at 25C, 19pA at 85C, 1100pA at 125C.
+    # Bias examples are not guaranteed maxima; temperature qualification
+    # would require device-specific guaranteed limits and measurements.
+    # Distinguish connected 47k detector from an OPEN connector. Unlike
+    # the floating case, the detector shunts the 22M bias network.
+    vos_max=0.0045
+    bias_examples={25:1e-12,85:19e-12,125:1100e-12}
+    low_level=0.1
+    results={}
+    for temp,ib in bias_examples.items():
+        rth_connected=1/(1/rbias+1/(rdet+rseries))
+        rth_open=rbias
+        node_connected=low_level*rbias/(rbias+rdet+rseries)
+        input_shift_connected=ib*rth_connected
+        input_shift_open=ib*rth_open
+        worst_output_error_abs=abs(low_level-node_connected)+vos_max+input_shift_connected
+        worst_output_error_frac=worst_output_error_abs/low_level
+        results[temp]={"bias_A_example":ib,
+                       "connected_bias_shift_V":round(input_shift_connected,9),
+                       "open_bias_shift_V":round(input_shift_open,9),
+                       "worst_signed_offset_error_fraction":round(worst_output_error_frac,6)}
+        assert input_shift_connected<input_shift_open
+        # The 1% envelope specification is NOT certified at 100mV:
+        # 4.5mV maximum data-sheet offset alone consumes 4.5%.
+        assert worst_output_error_frac>0.01
+    assert math.isclose(results[125]["open_bias_shift_V"],0.0242,rel_tol=1e-9)
+    # The nominal 1% loading check above excludes offset and leakage.
+    # ±20V fault resistor power is conditional on an assumed clamp;
+    # a 0.25W marking does not approve prolonged fault or ESD service.
+    for v_in,vdd,edge in hypothetical_faults:
+        v_clamp=vdd+edge if v_in>vdd else edge
+        p=((v_in-v_clamp)**2)/rseries
+        assert p<0.005
+    print("MCP6002_HIGHZ_PVT_UNQUALIFIED",results,
+          "VOS_MAX_V",vos_max,
+          "reference","Microchip DS-20001733L; 1/19/1100pA are example temperature figures, not guaranteed maxima",
+          "1pct_accuracy_at_100mV",False,
+          "ESD_OVP_unpowered_qualified",False,flush=True)
     print("MCP6002_HIGHZ_NATIVE",{"components":len(REFS),"nets":len(nets),
           "pins":22,"R_BIAS":rbias,"R_SERIES":rseries,"theoretical_R47k_load_loss_fraction":round(loss,7),
           "vendor_pinout_MCP6002_PDIP8":"1=OUTA 2=-A 3=+A 4=VSS 5=+B 6=-B 7=OUTB 8=VDD",
