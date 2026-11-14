@@ -464,6 +464,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_fb455_1500_2000_termination_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Mixer IF source to ceramic-input dummy: 48 native ngspice AC tests,
+    # resistive bench, ideal L match or ideal unity buffer (NO OEM model).
+    print("::group::IF455 PASSIVE MATCH AND UNITY BUFFER IDEAL INTERFACES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_three_interface_topologies_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
