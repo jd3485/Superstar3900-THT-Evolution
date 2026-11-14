@@ -471,6 +471,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_three_interface_topologies_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Already documented OEM onsemi J113 THT bench: native KiCad9
+    # 18 generic NJF AC load corners (100k vs resistive 2k/1.5k).
+    print("::group::J113 SOURCE FOLLOWER 1500 2000 OHM OUTPUT LOAD AC",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_ceramic_load_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
