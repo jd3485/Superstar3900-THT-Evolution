@@ -7,6 +7,16 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #132 MERGED: contratto nativo terminazione porta IF SBL-1+ → IF455
+
+**[PR #132](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/132) MERGED**, verificato su main commit `844ecd4caadebd99ceb07bb92487b70cd09e091b`, ultimo head tecnico `e31dcaf3f5de4118f021b5aac9bfa95613adcd83`. [Actions #43586879554](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586879554) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log FULL verificati con 111 comandi storici, 9 sweep ngspice AC nativi e `PASS_NATIVE_KICAD9_MIXER_IF_PORT_AND_9_NGSPICE_TERMINATION_CASES_NO_OEM_LOAD_QUALIFICATION_NO_FAB_NO_TX`.
+
+Nuovo verificatore `03_Verifiche/V2.7/verify_mixer_if_termination_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_MIXER_IF_TERMINATION_PORT_DRAFT.md`, registrazione obbligatoria in `ci/full_regressions.py`. Due esportazioni vere KiCad9 controllano connessioni SBL-1+ IF3/IF4 su J1703/1, masse e J1601/1→C1601/1; verificano che **non esiste** alcuna terminazione fisica nella candidata. Nove modelli temporanei per Rs upstream ipotetica 50Ω/1kΩ/10kΩ × shunt IF nessuno/50Ω/100Ω. A 455kHz, con Rs50Ω, `Vout/Vsource` senza shunt=**0,835055562**, shunt50Ω=**0,417791658**, shunt100Ω=**0,556938244**. Con Rs1kΩ senza=0,815223437, shunt50Ω=0,039766943. Numeri del **solo modello passivo** a sorgente Thevenin, NON prova che lo SBL-1+ presenti Zout resistiva 50Ω o che una terminazione 50Ω sia corretta in circuito reale. Nessun diplexer, analisi di prodotti fuori banda, rumore/linearità o conversion loss OEM qualificati.
+
+**Stato CAD:** MAIN V2.6 7 fogli/138 riferimenti invariata; mixer+IF455 V2.7 rimangono schematici standalone; C1601=10pF e nessuna resistenza di terminazione assegnata. PCB MAIN e FRONT reali non esistono, nessuna DRC PCB, routing 0%; BOM non rilasciata. [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) ancora DRAFT, footprint A06 non approvata. Prossima attività: ottenere modello o caratterizzazione verificabile della sorgente IF reale sotto LO+7dBm e carichi, valutare diplexer/carico rispetto al rumore e livello IF, solo dopo modificare lo schematico. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #130 MERGED: IF455 C1601 native passband/source sensitivity
 
 **[PR #130](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/130) MERGED**, verified main commit `898d75a453359e2980973082ce2ada97271ae759`, technical head `608f8d1ae8fe0b59f63c2349a9aa47dd0ad68e0d`. [Actions #43586012507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586012507) FAST, FULL KiCad9/ngspice, required gate **3/3 SUCCESS**, native FULL logs audited: **111 legacy commands** plus `PASS_NGSPICE_IF455_C1601_15_CASES_BRACKETED_OR_EXPLICITLY_OUT_OF_WINDOW_NO_VENDOR_MIXER_NO_FAB_NO_TX`.
