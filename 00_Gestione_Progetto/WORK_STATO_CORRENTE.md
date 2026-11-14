@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #176 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #178 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #178 MERGED: doppia resistenza serie THT per S-meter analogico FRONT
+
+**[PR #178](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/178) MERGED** su `main`, commit `c58db4a0570008109dfd5f2eac1e6fbbe7020f6b`, head tecnico `a1bc4b658e24d3b183fa384570ecce9902100187`. [Actions #43632571437](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43632571437): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `SMETER_KICAD_ERC Found 0 violations`, `PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX`, `PASS_FRONT_SMETER_135_KCL_DUAL_LIMITERS_SINGLE_FAULT_NO_FSD_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_FRONT_SMETER_AUDIO_DOMAIN_ISOLATION_NO_MAIN_DRIVER_NO_FAB_NO_TX`, **111 comandi storici**.
+
+CAD KiCad9 standalone reale `04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` aggiornato: aggiunto `R1802` resistenza assiale THT 100kΩ candidata in serie a `R1801` THT 100kΩ su nodo distinto `METER_LIMIT_STAGE1`; **5 componenti, 5 reti, 11 pin** imposti da verifica netlist nativa, più gate isolamento FRONT/audio. `03_Verifiche/V2.7/verify_front_smeter_current_fault_envelope.py` mantiene 135 crosscheck KCL indipendenti e aggiunge guasti singolo/doppio corto. Controesempi *ipotetici* con bobina cortocircuitata e sorgente ideale: 6V -> 30µA nominali, 60µA con un solo corto; 20V -> 100µA nominali, 200µA con un solo corto; doppio corto con bobina fittizia da 100Ω e 6V -> circa 60mA. Nuova ridondanza **non è safety qualification**, né dimostra il FSD o la calibrabilità di un movimento reale. Mancano sorgente e limiti MAIN, MPN/FSD/Rcoil, stress tolleranze/termica, connettori mating e cavo, ESD/EMI. Master MAIN V2.6 immutato; PCB-MAIN/FRONT reali assenti, DRC non applicabile. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #176 MERGED: isolamento cablaggio S-meter FRONT vs audio
 
