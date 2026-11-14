@@ -520,6 +520,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_series_isolation_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # KSP10 generic 6V IF455 port complex impedance, independent base
+    # measurement versus known series-capacitor reactance, 144 AC solves.
+    print("::group::KSP10 144 NATIVE COMPLEX INPUT IMPEDANCE CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_complex_input_port_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
