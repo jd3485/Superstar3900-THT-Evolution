@@ -19,3 +19,7 @@ Esempio futuro: `python3 -B 03_Verifiche/V2.7/verify_if455_touchstone_twoport_co
 ## Gate e decisioni
 
 Registrato nella FULL CI esistente; qualsiasi PR tecnica richiede PASS FAST/FULL/required. Il master KiCad V2.6 non cambia, nessuna footprint THT candidata viene approvata, nessun filtro è elettricamente selezionato. Per issue #141 restano aperte le specifiche multi-mode AM/FM/USB/LSB/CW e i criteri RX; PR #123 e #143 restano draft. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+## Estensione V2.7 — impedenza sorgente complessa (PR successiva alla #168)
+
+La sorgente adattata non rappresenta necessariamente il mixer LO-driven. Il verificatore ora espone `source_and_load_terminated_port`, che calcola `Vout/Vs` per impedenza Thevenin `Zs` e carico `ZL` **complessi e passivi** usando `Vout/Vs = [S21(1+Gamma_L)/(1-S22 Gamma_L)(1+Gamma_in)] [Zin/(Zs+Zin)]`. La formula per `Zs=Z0` deve restituire il trasferimento precedente; l'altra forma, `ZL/(Zs+Rserie+ZL)`, verifica indipendentemente il caso sintetico di resistenza serie. Questa implementazione contiene **81 crosscheck** (RI/MA/DB × 445/455/465 kHz × tre carichi × tre sorgenti, incluso `Zs=1000+j400 Ω`), non 81 AC ngspice né dati OEM. `--source-real-ohm` e `--source-imag-ohm` sono opzioni analitiche. Nessuna impedenza effettiva del mixer è nota: necessarie misure al drive LO e in varie condizioni PVT; per la banda RX non si dichiara alcuna qualifica.
