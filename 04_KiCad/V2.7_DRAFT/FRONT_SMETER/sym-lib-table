@@ -1,0 +1,4 @@
+(sym_lib_table
+ (lib (name "TH_FRONT") (type "KiCad") (uri "${KIPRJMOD}/TH_FRONT.kicad_sym") (options "") (descr "Isolated FRONT THT draft symbols"))
+ (lib (name "TH_SMETER") (type "KiCad") (uri "${KIPRJMOD}/TH_SMETER.kicad_sym") (options "") (descr "Isolated S-meter resistor symbol"))
+)
