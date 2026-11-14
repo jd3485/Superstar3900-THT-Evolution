@@ -7,6 +7,18 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 14 novembre 2026 — PR #160 MERGED: isolamento resistivo KSP10/tank IF455, 30 simulazioni native
+
+**[PR #160](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/160) MERGED**, commit verificato su `main` `aca6a6b18b12a21a874274d046c2b3208a0fb69e`, HEAD tecnico `f4ea1168a7b3ced08b9ae6c20f996ef736941984`. [Actions #43601637470](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43601637470) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**: log FULL verificati con **30 casi reali ngspice**, **111 comandi storici** e marker `PASS_NATIVE_KICAD9_KSP10_30_IF455_SERIES_ISOLATION_RESISTOR_TANK_OUTPUT_CASES_NO_OEM_NO_FAB_NO_TX`.
+
+Nuovo script `03_Verifiche/V2.7/verify_if455_ksp10_series_isolation_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_KSP10_SERIES_ISOLATION_IF455_DRAFT.md`, registrazione FULL obbligatoria `ci/full_regressions.py`. Il benchmark mantiene le netlist native KiCad9 KSP10 e IF455, il modello BJT **generico** e il banco di [PR156](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/156) (sorgente 50Ω ipotetica, tank IF455 con L1mH e R16,5Ω utilizzata come proxy RF non qualificata, alimentazione 6V, CIN10nF, COUT10nF, resistori fittizi carico ingresso filtro ceramico 1,5/2kΩ). Varia **solo in deck ngspice temporaneo** una resistenza serie fra `out` del tank e condensatore ingresso CIN: `0,1k,4,7k,10k,47kΩ` × beta BJT generici `40/80/160` × dummy 1,5k/2kΩ = 30 casi AC a 455kHz. Verifica anche il precedente riferimento exact PR156 beta80/2kΩ/Riso0 `Vtank=0,124579814` e `Vbuffer=0,119093670`.
+
+**Risultati beta80/2kΩ**: `Riso0→Vtank 0,124579814, Vout 0,119093670`; `1kΩ→0,140982744 / 0,116557353`; `4,7kΩ→0,195952289 / 0,107989227`; `10kΩ→0,261694324 / 0,097601337`; `47kΩ→0,504815190 / 0,057810637` (rapporti V/V su generatore 1V AC). Isolare resistivamente il tank aumenta Vtank nel banco ma **abbassa il segnale effettivo in uscita**; la perdita resistiva introduce anche rumore termico non studiato. Non approvare una Riso sulla sola tensione di tank o uscita: richiede vero Z(f) del filtro ceramico, Zout LO-driven del mixer SBL-1+, modelli OEM KSP10 e figure di rumore, intermodulazione, banda/selectivity, dinamica, tolleranze e PVT.
+
+**Stato hardware invariato:** nessuna resistenza serie aggiunta allo schema; KSP10 resta con CIN10nF originale nello standalone, nessun dispositivo buffer qualificato. Master MAIN V2.6 sette fogli e 138 riferimenti invariato, PCB MAIN/FRONT non progettate, nessun DRC PCB, BOM non rilasciata. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) RX AM/FM/USB/LSB/CW resta aperta; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano DRAFT per qualifica footprint fisica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 14 novembre 2026 — PR #158 MERGED: KSP10 accoppiamento tank IF455, 48 simulazioni e tradeoff d'ingresso
 
 **[PR #158](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/158) MERGED**, commit tecnico `main` `2d8c5a4827aa9dbaaec21d0ec2ad62873ccf909a`, HEAD PR `7a21fc471f697bb3fb2f8acf161571879f38d8d9`. [Actions #43600719889](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43600719889) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log FULL controllati: **48 simulazioni ngspice AC native**, **111 comandi storici**, marker `PASS_NATIVE_KICAD9_KSP10_48_IF455_CIN_PF_TANK_VS_OUTPUT_TRADEOFF_NO_VENDOR_NO_FAB_NO_TX`.
