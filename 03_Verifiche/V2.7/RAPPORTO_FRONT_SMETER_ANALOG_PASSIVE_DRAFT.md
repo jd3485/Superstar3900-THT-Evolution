@@ -1,3 +1,13 @@
+## R1903 passa da 100kΩ a 120kΩ/1%/1W DIN0411 THT: margine corrente −200V candidato
+
+Revisione del **vero schema KiCad9 isolato da banco**: R1903 diventa **120kΩ/1%/1W THT** nell'impronta `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal`, già presente; 13 componenti / 7 reti / 32 pin invariati. La priorità è ridurre la corrente teorica durante un guasto negativo continuo senza perdere il budget nominale dell'1% di carico dell'inviluppo AM, non ottenere una qualifica ESD o certificare un resistore OEM.
+
+**Modello dichiaratamente illustrativo**: in guasto `−200V`, R1903 minimo `118,8kΩ` (−1%) e Vf di D1903 supposta `0,2V`, `I=(200−0,2)/118,8k≈1,682mA`, inferiore al valore di stress assoluto 2mA riportato per MCP6002; `P≈0,336W` sotto 1W solo nominale e prima di ogni derating. La soglia teorica di 2mA in quelle condizioni è ~237,8V; a `−250V` il medesimo modello **oltrepassa 2mA**. Mancano ancora part number reale, tensione di lavoro massima del resistore 120k/1W, prova termica a caldo, tensione transitoria, leakage e ripartizione di corrente fra diodo esterno e diodo interno MCP6002. Non attribuire al 2mA assoluto alcun margine operativo sicuro.
+
+**Budget segnale** con sorgente detector 47kΩ, shunt 22MΩ e C1902=1nF: perdita statica nominale `(47k+120k)/(22M+47k+120k)≈0,7534%` contro il limite **solo nominale** 1%; frequenza di taglio del modello Thevenin `≈960Hz` (ridotta rispetto ai precedenti ~1,09kHz), da verificare per dinamica effettiva AGC/S-meter. Sono esclusi offset MCP6002, leakage PVT di D1901/D1903, calibrazione a 100mV, comportamento reale AGC MAIN, ESD e rail spento. Gate nativo `MCP6002_HIGHZ_R1903_120K_200V_STRESS_MARGIN_STILL_UNQUALIFIED`; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## R1903 100kΩ 1W DIN0411 THT: ridimensionamento termico candidato, corrente 2mA ancora non qualificata
 
 Nel banco KiCad9 R1903 ora è specificata **100kΩ/1%/1W THT candidata**, footprint KiCad ufficiale `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal` (1W nominale): https://kicad.github.io/footprints/Resistor_THT.html. La topologia non cambia, né numero di reti e pin: **13 componenti / 7 reti / 32 pin**, controllati dal gate KiCad9. È necessario individuare un MPN commerciale con dati verificati su tensione massima di esercizio, derating termico, potenza a caldo, resistenza alle sovratensioni impulsive e dimensioni: la sola libreria di impronte non certifica le caratteristiche elettriche reali.
