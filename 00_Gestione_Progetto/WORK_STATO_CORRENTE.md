@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #184 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #186 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #186 MERGED: R1903 THT ingresso MCP6002 e modello fault limitato
+
+**[PR #186](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/186) MERGED** su `main`, commit `21eb37d7f5c30c546ab17ef05722edeb47f7efd4`, head tecnico `980b9b42b60271a3aee311d9cf8b8c968de2b292`. [Actions #43636869212](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43636869212): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS22_LAB_ONLY_NO_FAB_NO_TX`, 111 comandi regressivi PASS.
+
+CAD reale KiCad9 `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto `R1903=100kΩ/1%/0,25W` THT in serie tra ingresso `AM_ENV_DC_BENCH` del J1901 e nodo `AM_ENV_AFTER_R1903` al pin3 U1901 MCP6002 e `R1901=22MΩ` a GND. Gate nativo `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` controlla **8 riferimenti, 7 reti, 22 pin**, ERC0, impronte e modello resistivo; rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato. Stima ideale attenuazione su ingresso opamp 47k/(47k+100k+22M) più caduta serie complessiva = **0,66375%**; distinta dalla sola perdita detector circa **0,2122%**. R serie soltanto *candidato limitatore di corrente*: il modello a clamp ipotetico ±0,3V presso rail non verifica corrente di injection ammessa, diodi ESD fisici, back-power quando U1901 spento, leakage PVT, offset, RF/EMI, fault energetici o tensioni reali.
+
+**Blocker**: componenti e protezioni ESD/OVP esterne non approvati, alimentazione e sequenza spento ancora non qualificate, sorgente AGC RX MAIN non presente, driver bobina e movimento FSD/Rcoil sconosciuti, front/main PCB non completate. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #184 MERGED: buffer alta impedenza S-meter MCP6002 PDIP8 THT isolato da banco
 
