@@ -415,6 +415,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_source_sweep_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # C1601 455kHz coupling tradeoff must also evaluate full response shape,
+    # not just nominal scalar amplitude. Hypothetical source Rs only.
+    print("::group::IF455 C1601 PASSBAND SOURCE DEPENDENCE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_c1601_bandwidth_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
