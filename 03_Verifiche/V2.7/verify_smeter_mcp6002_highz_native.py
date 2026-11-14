@@ -90,14 +90,50 @@ def main():
           "fc_Hz":round(f_3db,2),
           "gain_455kHz_linear":round(attenuation(455000),7),
           "envelope_demodulation_or_emi_qualification":False},flush=True)
-    # If an IC clamp holds its input at the assumed rail+/-0.3V,
-    # R1903 can LIMIT steady fault current; it does not prove safe
-    # unpowered rail backfeed or protect against transients/ESD.
-    hypothetical_faults=((20.0,5.0,0.3),(-20.0,0.0,-0.3),(20.0,0.0,0.3))
-    for v_in,vdd,edge in hypothetical_faults:
-        v_clamp=vdd+edge if v_in>vdd else edge
-        i=abs(v_in-v_clamp)/rseries
-        assert i<0.002,(v_in,vdd,i)
+    # Microchip DS20001733L section 4.1.2 + Figures 4-1/4-2:
+    # INTERNAL low-side ESD diodes exist; the datasheet calls for
+    # EXTERNAL diodes to VDD to prevent high-side overvoltage.
+    # The old hypothetical +0.3V upper clamp is NOT present in CAD!
+    # Absolute max VIN is VSS-1V..VDD+1V; input +/-2mA is a stress
+    # ceiling, never a normal-use specification. Resistive source model
+    # demonstrates a dangerous high-positive fault without D1.
+    ds_analog_abs_negative=-1.0
+    ds_analog_abs_above_rail=1.0
+    ds_input_abs_current=0.002
+    def upper_unclamped_dc(vsrc):
+        return vsrc*rbias/(rbias+rseries)
+    upper_fault_cases=((20.0,5.0),(20.0,0.0),(12.0,5.0))
+    upper_results={}
+    for vsrc,vdd in upper_fault_cases:
+        vpin=upper_unclamped_dc(vsrc)
+        violates=vpin>vdd+ds_analog_abs_above_rail
+        assert violates,(vsrc,vdd,vpin)
+        upper_results[(vsrc,vdd)]=round(vpin,4)
+    # Negative clamp model is illustrative only: actual diode forward
+    # drop and dynamic current are not guaranteed by Figure 4-1.
+    neg_src=-20.0
+    assumed_vclamp=-0.3
+    negative_current=abs(neg_src-assumed_vclamp)/rseries
+    assert 0<negative_current<ds_input_abs_current
+    # 200V hypothetical *sustained* event is beyond the 100k/0.25W
+    # resistor power budget even if current remains near 2mA.
+    severe_negative=-200.0
+    severe_current=abs(severe_negative-assumed_vclamp)/rseries
+    severe_power=(severe_negative-assumed_vclamp)**2/rseries
+    assert severe_current<ds_input_abs_current
+    assert severe_power>0.25
+    # In an unpowered unit, even a *hypothetical EXTERNAL* upper diode
+    # must have a controlled path for supply injection/backfeeding.
+    no_external_diode=not ('(symbol (lib_id "TH_SMETERBUF:D")' in s)
+    assert no_external_diode,"A real diode was added: requalify source, leakage, clamp voltage and rail sinking"
+    assert upper_results[(20.0,0.0)]>ds_analog_abs_above_rail
+    print("MCP6002_HIGHZ_POSITIVE_OVP_BLOCKED_NO_UPPER_CLAMP",
+          {"upper_unclamped_pin_V":upper_results,
+           "low_side_assumed_minus20V_current_A":round(negative_current,7),
+           "severe_minus200V_series_power_W":round(severe_power,5),
+           "external_upper_diode_present":False,
+           "no_fab_no_power_off_qualification":True,
+           "datasheet":"Microchip DS20001733L section 4.1.2 figures 4-1 and 4-2"},flush=True)
     # MCP6002 DS-20001733L: data-sheet Vos up to +/-4.5mV,
     # Ibias example 1pA at 25C, 19pA at 85C, 1100pA at 125C.
     # Bias examples are not guaranteed maxima; temperature qualification
@@ -126,12 +162,6 @@ def main():
         assert worst_output_error_frac>0.01
     assert math.isclose(results[125]["open_bias_shift_V"],0.0242,rel_tol=1e-9)
     # The nominal 1% loading check above excludes offset and leakage.
-    # ±20V fault resistor power is conditional on an assumed clamp;
-    # a 0.25W marking does not approve prolonged fault or ESD service.
-    for v_in,vdd,edge in hypothetical_faults:
-        v_clamp=vdd+edge if v_in>vdd else edge
-        p=((v_in-v_clamp)**2)/rseries
-        assert p<0.005
     print("MCP6002_HIGHZ_PVT_UNQUALIFIED",results,
           "VOS_MAX_V",vos_max,
           "reference","Microchip DS-20001733L; 1/19/1100pA are example temperature figures, not guaranteed maxima",
