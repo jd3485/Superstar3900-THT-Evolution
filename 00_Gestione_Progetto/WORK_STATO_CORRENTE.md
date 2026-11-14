@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #200 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #202 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #202 MERGED: R1903 100k 1W DIN0411 THT ridimensionamento candidato, stress 2mA non qualificato
+
+**[PR #202](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/202) MERGED** su `main`, commit `20ec41238e1821f3714d8a3e20cfaeb2c25d75ad`, head tecnico `45a5988288e65bb3beef8e21f7b6670fa0214666`. [Actions #43643997643](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43643997643): **FAST/FULL/required SUCCESS 3/3**, log FULL `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1903_1W_THT_DERATING_STILL_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 standalone: `R1903=100kΩ/1%/1W` THT, impronta `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal`, candidate power derating dopo stress negativo di PR200; stessa rete: **13 componenti / 7 reti / 32 pin**, ERC0. Modello teorico `−200V` e Vf(D1903)=0,7V => dissipazione nominale ~**0,397205W** (<1W); scenario R1903=99k e Vf=0,2V => I≈**2,018182mA**, supera limite assoluto 2mA del MCP6002; `−400V` => 1,594405W nominali (>1W). L'impronta non qualifica tensione massima di lavoro del resistore, MPN OEM, derating a caldo, impulsi o ESD. **Guasto −200V ancora NON qualificato**, dispositivo solo da banco.
+
+**Blocker**: validare modello sorgente, soglia stress interna/diode sharing, MPN di R1903 con working voltage e pulse rating, ESD/PVT, rail spento; mancano AGC MAIN, S-meter FSD/driver, PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #200 MERGED: D1903 DO35 clamp inferiore ingresso MCP6002 candidato, guasto −200V NON tollerato
 
