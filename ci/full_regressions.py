@@ -429,6 +429,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_mixer_if_termination_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Three-frequency RF-facing IF port shunt sensitivity; native KiCad
+    # netlists + twelve ngspice complex-admittance checks only. No diplexer.
+    print("::group::SBL1 IF PORT TEST SHUNT 12 COMPLEX ADMITTANCE CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
