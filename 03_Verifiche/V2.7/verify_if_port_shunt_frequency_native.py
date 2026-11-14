@@ -62,7 +62,10 @@ def get_z(folder,freq,case):
     data=folder/"zin.dat"
     assert data.is_file(),("missing native AC data",freq,case)
     rows=[list(map(float,line.split())) for line in data.read_text().splitlines() if line.strip()]
-    assert len(rows)==2,(freq,case,rows)
+    # ngspice may collapse this almost-zero-width two-point AC range to
+    # one exported row (confirmed by first FULL CI failure). We require
+    # at least the exact requested frequency, never fabricate a second row.
+    assert 1<=len(rows)<=2,(freq,case,rows)
     for row in rows:
         assert len(row)==3 and all(math.isfinite(x) for x in row),(freq,case,row)
     assert abs(rows[0][0]-freq)<1,(freq,case,rows[0])
