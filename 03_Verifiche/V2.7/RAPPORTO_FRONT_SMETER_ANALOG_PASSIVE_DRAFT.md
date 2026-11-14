@@ -1,3 +1,13 @@
+## R1904 4,7kΩ THT — scarico passivo del rail 5V durante backfeed da D1901, candidato SOLO banco
+
+Aggiunto `R1904=4,7kΩ 1%/0,25W THT` tra `VLAB5_BUFFER` e `SMBUF_BENCH_GND` nel vero schematico KiCad9 standalone. D1901 rimane anodo su ingresso MCP6002 dopo R1903 100kΩ, catodo sul rail 5V. Con alimentazione presente il bleeder richiede `5V/4,7kΩ≈1,064mA`, dissipando `≈5,32mW`; questo **carico aggiuntivo** richiede verifica della disponibilità e stabilità di un'alimentazione reale, non ancora definita. La costante `R1904·C1901` isolata è ~0,47ms.
+
+**Modello resistivo solo preliminare**: con alimentatore da banco scollegato a circuito spento e sorgente di guasto ideale +20V, R1903=100k, D1901 a `Vf=0,7V` *assunta costante* e R1904=4,7k, KCL fornisce `Vrail=(20−0,7)×4,7k/(100k+4,7k)≈0,867V`, corrente iniezione/bleeder ~184µA; differisce dal precedente modello a rail fisso a 0V e dal caso senza bleeder. Questo **non** dimostra che l'IC o il resto del circuito spento tolleri una tensione residua di quasi 0,9V, né che la giunzione del diodo abbia Vf=0,7V in tutte le temperature e correnti. Alla sorgente ipotetica persistente **+200V**, lo stesso modello solleva il rail a ~8,95V (**supera i 7V assoluti MCP6002**), mentre ulteriori eventi, risalite e impulsi possono superare il rating di R1903. Né 4,7kΩ né il solo 1N4148 sono una protezione ESD qualificata, e la corrente assorbibile dal regolatore a VDD on/off non è specificata.
+
+**Gate**: verifica KiCad9 ERC e netlist esatta **11 refs / 7 reti / 28 pin**; `MCP6002_HIGHZ_R1904_RAIL_BLEEDER_CANDIDATE` calcola assorbimento 5V, DC +12/+20/+40/+200V spento, errore KCL e condizione di insuccesso a +200V. Evitare di confondere **attenuazione di un guasto scelto** con **sicurezza completa**. Restano leakage di D1901 e U1901, precisione a 100mV, FSD/driver, AGC MAIN, rail/PCB reali e test fisici. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## Revisione D1901: diodo alto THT reale da banco, protezione finale ancora BLOCCATA
 
 Realizzato nel progetto KiCad9 isolato il diodo `D1901` **candidato 1N4148 in DO-35 THT**, anodo pin 1 su `AM_ENV_AFTER_R1903` (MCP6002 pin 3), catodo pin 2 su `VLAB5_BUFFER`. Libreria locale reale `TH_SMETERBUF:D` più simbolo incorporato, impronta `Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal`. La resistenza `R1903=100kΩ` è a monte del diodo, `R1901=22MΩ`, C1902=1nF C0G e bypass 100nF a 5V invariati. Nuovo gate completo KiCad9: **10 ref, 7 reti, 26 pin** nativi e ERC reale. Modifica **solo** al banco S-meter, non MAIN o FRONT.
