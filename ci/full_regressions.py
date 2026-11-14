@@ -457,6 +457,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_channel_selectivity_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # NextGen 5-pin FB455 Case11070, OEM bottom-view to temporary
+    # KiCad9 THT pad map and native footprint SVG parser; no PCB release.
+    print("::group::NEXTGEN FB455 5PIN PROVISIONAL NATIVE FOOTPRINT NO FAB",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_fb455_case11070_provisional_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":

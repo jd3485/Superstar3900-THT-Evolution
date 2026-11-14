@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "FB455_CANDIDATE")(type "KiCad")(uri "${KIPRJMOD}/FB455_CANDIDATE.pretty")(options "")(descr "NOT QUALIFIED NextGen 455kHz 5 pin NO FAB"))
+)
