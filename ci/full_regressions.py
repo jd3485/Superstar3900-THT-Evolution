@@ -436,6 +436,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # A06 OEM TOP M-over-pin2 provisional pad map (no PCB qualification).
+    # This is a native KiCad9 footprint parser/export and no-assignment gate.
+    print("::group::SBL1 A06 TOP M-OVER-PIN2 PROVISIONAL NO FAB",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_sbl1_a06_provisional_footprint.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
