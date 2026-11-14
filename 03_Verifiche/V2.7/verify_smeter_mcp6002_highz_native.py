@@ -39,7 +39,8 @@ def main():
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
     assert s.count('(property "Footprint" "Resistor_THT:')>=4
     assert '(property "Value" "4k7_1PCT_0P25W_RAIL_BLEEDER_THT_CANDIDATE"' in s
-    assert '(property "Value" "100k_1PCT_0P25W_INPUT_FAULT_LIMIT_CANDIDATE"' in s
+    assert '(property "Value" "100k_1PCT_1W_INPUT_FAULT_LIMIT_DERATING_CANDIDATE"' in s
+    assert '(property "Footprint" "Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal" (at 81.28 213.36 0)' in s
     assert s.count('(property "Footprint" "Capacitor_THT:')>=2
     assert '(property "Value" "1nF_50V_C0G_NP0_RF_FILTER_THT_CANDIDATE"' in s
     assert s.count('(property "Footprint" "Connector_PinHeader_2.54mm:')>=3
@@ -128,13 +129,14 @@ def main():
     assumed_vclamp=-0.3
     negative_current=abs(neg_src-assumed_vclamp)/rseries
     assert 0<negative_current<ds_input_abs_current
-    # 200V hypothetical *sustained* event is beyond the 100k/0.25W
-    # resistor power budget even if current remains near 2mA.
+    # 200V hypothetical *sustained* event is beyond the original
+    # 100k/0.25W thermal rating but below the NEW 1W bench candidate.
+    # This still does NOT qualify V(max), mounting or temperature.
     severe_negative=-200.0
     severe_current=abs(severe_negative-assumed_vclamp)/rseries
     severe_power=(severe_negative-assumed_vclamp)**2/rseries
     assert severe_current<ds_input_abs_current
-    assert severe_power>0.25
+    assert 0.25<severe_power<1.0
     # D1903 is now an EXTERNAL 1N4148 DO35 low-side clamp with
     # cathode pin1 on analog input and anode pin2 on VSS/GND.
     # Unlike the earlier illustrative -0.3V internal-diode assumption,
@@ -149,7 +151,31 @@ def main():
             assert 0.00019<isink<0.0002 and p_series<0.005
         if source_v==-200.0:
             assert 0.0019<isink<ds_input_abs_current
-            assert p_series>0.25 # R1903 exceeds its declared 0.25W
+            assert 0.25<p_series<1.0 # old 0.25W exceeded; NEW 1W nominally holds
+    # A 1W footprint is a nominal power capability, NOT a certified
+    # resistor MPN, working voltage, power derating or shock tolerance.
+    rated_power=1.0
+    original_power=0.25
+    nominal_200v_power=((200-0.7)**2)/rseries
+    worst_200v_1pct_power=((200-0.2)**2)/(rseries*0.99)
+    worst_200v_1pct_current=(200-0.2)/(rseries*0.99)
+    assert original_power<nominal_200v_power<rated_power
+    assert worst_200v_1pct_power<rated_power
+    # At the tolerance corner even the 2mA absolute current stress
+    # bound is EXCEEDED: do NOT approve -200V DC based on 1W alone.
+    assert worst_200v_1pct_current>ds_input_abs_current
+    severe_400v_power=((400-0.7)**2)/rseries
+    assert severe_400v_power>rated_power
+    print("MCP6002_HIGHZ_R1903_1W_THT_DERATING_STILL_UNQUALIFIED",{
+        "R1903_nominal_ohm":rseries,
+        "R1903_nominal_rating_W":rated_power,
+        "R1903_200V_nominal_W":round(nominal_200v_power,6),
+        "R1903_200V_Rminus1pct_Vf0P2_W":round(worst_200v_1pct_power,6),
+        "input_current_200V_Rminus1pct_Vf0P2_mA":round(worst_200v_1pct_current*1000,6),
+        "input_abs_current_bound_mA":ds_input_abs_current*1000,
+        "R1903_400V_nominal_W":round(severe_400v_power,6),
+        "temperature_derating_voltage_MPN_ESD_qualified":False,
+        "no_fab":True},flush=True)
     # The external clamp does not eliminate internal ESD current share.
     # 25nA * 146kOhm is an illustrative DC error; high temperature
     # diode leakage and input operating range are NOT characterized.
@@ -160,7 +186,8 @@ def main():
         "pin2":"A=SMBUF_BENCH_GND",
         "assumed_forward_clamp_V":external_vclamp,
         "negative_fault_source_V_to_mA_and_R1903_W":neg_results,
-        "R1903_0P25W_survives_200V":False,
+        "R1903_old_0P25W_survives_200V":False,
+        "R1903_new_1W_nominal_power_below_rating_at_200V":True,
         "ESD_hot_temp_leakage_and_PVT_qualified":False,
         "no_fab":True},flush=True)
     # Real D1901 is on the CAD netlist but does NOT make the upstream
