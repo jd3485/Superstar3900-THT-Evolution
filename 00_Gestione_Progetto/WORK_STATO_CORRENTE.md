@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #204 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #206 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #206 MERGED: R1903 OEM Yageo MFR1WSDRE52-120K, derating 130°C FAIL
+
+**[PR #206](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/206) MERGED** su main, commit `76da7f9fecf2a3b7102e5d542cdc38b928bcc761`, head tecnico `6f237fbf23643b75747f1cd620126ffb8a99b9e7`. [Actions #43645624151](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43645624151): tre job FAST/FULL/required **SUCCESS** verificati, inclusa esecuzione di suite KiCad9/ngspice; nessuna prova fisica. Main precedente `e08965c524a187bf5451ec17fcb2f0764aca08e8`, checkpoint PR205 già integrato.
+
+Modificato realmente schema KiCad9 standalone S-meter MCP6002, valore R1903 `120k_0P5PCT_1W_YAGEO_MFR1WSDRE52-120K_CANDIDATE`, rapporto tecnico e verificatore nativo; **nessuna modifica al master V2.6 e nessuna PCB**. MPN OEM candidato: MFR1WS 120kΩ ±0,5%, 1W @70°C, max nominale 400V limitato da RCWV/derating a 155°C. Modello ipotetico guasto continuo −200V, Vf=0,2V, Rmin=119,4kΩ: 0,334W; a 130°C P consentita ≈0,294W e RCWV≈187V: **FAIL**, NON qualificato. Limite 2mA MCP6002 = stress assoluto, non condizione operativa. Restano non verificati stato produttivo OEM effettivo MPN, lead forming, working voltage in assemblaggio, ESD/impulsi, temperatura corpo, leakage e power-off.
+
+**Prossimi gate:** valutare topologie fail-closed per stress/ESD/rail spento, accoppiamento AGC MAIN, interfaccia/driver bobina S-meter FRONT; completamento due schede, qualifica componenti vendor e prove fisiche. PR #143/#123 draft da trattare separatamente; non scambiare green CI per qualifica hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #204 MERGED: R1903 120k 1W THT, margine teorico negativo −200V ancora non qualificato
 
