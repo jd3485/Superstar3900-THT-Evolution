@@ -24,6 +24,12 @@ EXPECTED={
 
 def main():
     s=SCHEMATIC.read_text(encoding="utf-8")
+    table=(SCHEMATIC.parent/"sym-lib-table").read_text(encoding="utf-8")
+    library=(SCHEMATIC.parent/"TH_SMETERBUF.kicad_sym").read_text(encoding="utf-8")
+    assert '(name "TH_SMETERBUF")' in table
+    assert 'KIPRJMOD}/TH_SMETERBUF.kicad_sym' in table
+    for k in ("J","R","C","U"):
+        assert '(symbol "'+k+'"' in library
     assert s.count("(symbol (lib_id ")==len(REFS)
     assert s.count('(property "Footprint" "Package_DIP:DIP-8_W7.62mm"')>=1
     assert s.count('(property "Footprint" "Resistor_THT:')>=2
