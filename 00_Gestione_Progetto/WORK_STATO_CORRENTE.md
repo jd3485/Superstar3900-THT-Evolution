@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 14 novembre 2026 (PR #172 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 14 novembre 2026 (PR #174 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 14 novembre 2026 — PR #174 MERGED: S-meter THT controllo correnti Thevenin/KCL e guasti
+
+**[PR #174](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/174) MERGED** su `main`, commit `151389087b21296367bb1c194084f88a9744b536`, head tecnico `ad4f21f49285dce4bf7442782cc273ad312679fa`. [Actions #43630698739](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43630698739): **FAST/FULL/required SUCCESS 3/3**; log FULL conferma `SMETER_KICAD_ERC Found 0 violations`, `PASS_FRONT_SMETER_135_INDEPENDENT_KCL_FAULT_ENVELOPE_NO_FSD_NO_FAB_NO_TX`, e **111 comandi storici**. Nuovo `03_Verifiche/V2.7/verify_front_smeter_current_fault_envelope.py`, eseguito obbligatoriamente in `ci/full_regressions.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato.
+
+Controlli fisici **analitici ipotetici** a valori provvisori 10kΩ pot/100kΩ limitatore: 135 crosscheck con equazioni nodali indipendenti per tre tensioni, tre impedenze sorgente, tre Rcoil e cinque posizioni cursore; endstop e guasti open/short. Controesempi: a 6V ideali con bobina short 60µA massimi (non raggiunge FSD da 100µA); a 20V 200µA (sovracorrente per FSD da 50µA); limitatore short a 6V con Rcoil 100Ω ~60mA; pot pista ideale 40mW a 20V. **NON** significa misura OEM, ngspice specifico, funzionalità del vero AGC/MAIN, rating verificato, protezione ESD, FSD noto o sicurezza del circuito: attendere dati di campo/datasheet, progettare driver, limiter fail-safe e interfaccia reale. Nessuna modifica ai componenti/nets del master MAIN V2.6 o a PCB-FRONT/PCB-MAIN (inesistenti). **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 14 novembre 2026 — PR #172 MERGED: primo S-meter analogico PCB-FRONT standalone THT con ERC nativo
 
