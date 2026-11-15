@@ -1,11 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #257 MERGED: 75 casi guasto apertura contatto basso RV1301, KCL KiCad9 nativa; FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #257 SHA `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`; checkpoint PR #258 integrato su main `cf923333692705c344c8ebf91797cda42f77316e`.
+**Aggiornato:** 15 novembre 2026 (PR #259 MERGED: 375 casi di guardia cursore RV1301, KiCad9 nativo + KCL doppia; CI FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #259 SHA `c83a2cfc3f9474be88783e2f5dccec69b561fa61`; checkpoint PR #258 su main `cf923333692705c344c8ebf91797cda42f77316e`.
 
-## 15 novembre 2026 — Rguard cursore FRONT 375 simulazioni analitiche, in revisione
+## 15 novembre 2026 — PR #259 MERGED: Rguard cursore FRONT, 375 punti AC indipendenti
 
-Branch `engineering/v27-front-volume-guard-shunt-tradeoff-20261115` da main `cf923333692705c344c8ebf91797cda42f77316e`. Screening di un **resistore candidato indipendente** da wiper RV1301 a AF_GND, testati 100/330/1000/3300/10000 Ω con 375 punti frequenza/posizione/Rin e riduzione vs KCL autonome, endpoint originali KiCad9 controllati. A 1kHz/Rin50k/volume 1%, guasto pin basso senza guardia 0,714219, con guardia 100Ω ~0,008192 ma volume massimo sano scende a 6,35% dell'originale; con guardia 10kΩ massimo sano ~95,19% ma guasto rimane ~0,384526. **Nessun valore è soluzione fail-safe approvata** e nessuna modifica allo schematico/PCB. FULL gate e report sul branch, CI PR ancora da verificare. Prossimo passo: mute fail-closed indipendente con verifiche KiCad9/fault più realistiche. NO FAB/TX/BATTERIA/VEICOLO.
+**[PR #259](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/259) MERGED** su main `c83a2cfc3f9474be88783e2f5dccec69b561fa61`, final technical SHA `859a0311ad11bb830ccf38b138606c37562756ea`. [Actions #43758027167](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43758027167): FAST/FULL/Required **SUCCESS 3/3**, 111 legacy checks, prova `PASS_FRONT_WIPER_GUARD_SHUNT_375_DUAL_KCL_CASES_NATIVE_PIN_MAP_NOT_FAILSAFE_RELEASE` presente nei log; nessun Traceback. Screening di cinque Rguard indipendenti da wiper RV1301 verso AF_GND (100/330/1000/3300/10000 Ω): 375 combinazioni frequenza/posizione/Rin e KCL a tre nodi contro riduzione passiva indipendente. 1kHz/Rin 50k/volume 1%: guasto terminale basso senza guardia `0,714219`, con Rguard 100Ω `0,008192` ma volume massimo sano scende al **6,35%** dell'originale; con 10kΩ il massimo sano è **95,19%**, ma guasto `0,384526`. **Nessuna Rguard è qualificata fail-safe, nessun candidato inserito in schemi/PCB**; apertura AF_GND esterno o guard resistor interrompe protezione. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_VOLUME_GUARD_WIPER_375_CASES_DRAFT.md`; FRONT board 13THT/28pad/12reti/35 piste invariata.
+
+**Prossimo passo tecnico:** progettare mute indipendente normalmente attivo su fault/startup come candidato THT, con alimentazione/driver e comportamento in guasto verificati, qualificando soprattutto contatti a bassissimo segnale, cablaggio GND, tempo di rilascio e assenza di mute bypass. Non usare relay senza qualifica OEM minima corrente/contatto, e non affermare funzione di sicurezza certificata. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 
