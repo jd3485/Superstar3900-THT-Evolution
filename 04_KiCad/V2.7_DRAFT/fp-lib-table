@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name "TH_FRONT") (type "KiCad") (uri "${KIPRJMOD}/FRONT_VOLUME/TH_FRONT.pretty") (options "") (descr "provisional volume potentiometer THT NOT FOR FAB"))
+  (lib (name "TH_FRONT_ILLUM_LAB") (type "KiCad") (uri "${KIPRJMOD}/FRONT_ILLUM_BENCH/TH_FRONT_ILLUM_LAB.pretty") (options "") (descr "LAB ONLY THT LED footprints NOT FOR FAB"))
+)
