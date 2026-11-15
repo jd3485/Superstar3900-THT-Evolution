@@ -39,7 +39,7 @@ def numeric(log,label):
 def make_deck(is_string:str,cjo_string:str):
     # Two separate instances: forward current forced, reverse bias forced.
     # No rectifier power rail or real IF chain is energized by this test.
-    return f"""VREV cath_rev 0 DC -20
+    return f"""VREV source_rev 0 DC -20\nRSENSE source_rev cath_rev 100k
 DREV cath_rev 0 DSYN
 IFORCE 0 anode_fwd DC 10m
 DFWD anode_fwd 0 DSYN
@@ -48,7 +48,7 @@ DFWD anode_fwd 0 DSYN
 set noaskquit
 op
 print v(anode_fwd)
-print vrev#branch
+print v(cath_rev)
 quit
 .endc
 .end
@@ -78,11 +78,11 @@ def main():
                     cwd=folder,capture_output=True,text=True,timeout=90)
                 log=logpath.read_text(encoding="utf-8",errors="replace") if logpath.exists() else ""
                 run.check_returncode()
-                assert "Error:" not in log and "fatal" not in log.lower(),(name,log[-1600:])
+                assert "Error:" not in log and "fatal" not in log.lower(),(name,log[-1600:])\n                assert "TEMP = 25.000000" in log,(name,"SPICE must solve at datasheet Tamb 25C",log[-1200:])
                 vf=numeric(log,"v(anode_fwd)")
                 # Bias -20V: ngspice source branch current is opposite to
                 # the reverse diode current in the chosen direction.
-                leakage=abs(numeric(log,"vrev#branch"))
+                reverse_node=numeric(log,"v(cath_rev)")\n                # 100k test resistor: indirect DC current via native node voltage.\n                # At 25nA, its 2.5mV drop alters VR by only 0.0125%.\n                assert -20 < reverse_node < -19.99,(name,reverse_node)\n                leakage=abs((-20.0-reverse_node)/100000.0)
                 assert 0<vf<VF10MA_MAX,(name,vf)
                 assert 0<leakage<=IR20V_MAX_A,(name,leakage)
                 cjo_pf=float(cjo_string[:-1])
