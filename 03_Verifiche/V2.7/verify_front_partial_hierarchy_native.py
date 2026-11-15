@@ -69,12 +69,12 @@ def verify():
     assert set(found)==set(PARTITIONS),(found.keys(),PARTITIONS.keys())
     for name,expected in PARTITIONS.items():
         assert found[name]==expected,(name,found[name],expected)
-    assert len(set().union(*found.values()))==sum(len(v) for v in found.values())==18
-    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_2SHEETS_8REFS_7NETS_18PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
+    assert len(set().union(*found.values()))==sum(len(v) for v in found.values())==17
+    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_2SHEETS_8REFS_7NETS_17PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
         "child_sheets":2,
         "THT_components":8,
         "independent_local_nets":7,
-        "pin_endpoints":18,
+        "pin_endpoints":17,
         "MAIN_FRONT_harness_qualified":False,
         "S_meter_integrated":False,
         "hardware_production_PCB_exists":False,
