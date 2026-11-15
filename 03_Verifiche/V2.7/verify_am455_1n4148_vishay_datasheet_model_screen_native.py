@@ -39,11 +39,14 @@ def numeric(log,label):
 def make_deck(is_string:str,cjo_string:str):
     # Two separate instances: forward current forced, reverse bias forced.
     # No rectifier power rail or real IF chain is energized by this test.
-    return f"""VREV source_rev 0 DC -20\nRSENSE source_rev cath_rev 100k
+    return f"""* Synthetic DGENERIC reverse leakage and forward VF at Vishay 25C reference
+VREV source_rev 0 DC -20\nRSENSE source_rev cath_rev 100k
 DREV cath_rev 0 DSYN
 IFORCE 0 anode_fwd DC 10m
 DFWD anode_fwd 0 DSYN
 .model DSYN D(Is={is_string} N=1.9 Rs=0.6 Cjo={cjo_string} Vj=0.75 Tt=4n)
+.temp 25
+.options TEMP=25 TNOM=25
 .control
 set noaskquit
 op
