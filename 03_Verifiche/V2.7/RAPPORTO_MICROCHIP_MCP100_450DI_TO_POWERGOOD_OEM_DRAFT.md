@@ -64,6 +64,24 @@ l'ingegneria di esclusione e le connessioni KiCad sono
 **correttamente rilevate**, non che si possa integrare
 questo MPN in K1901/PCB o sostituire l'alimentazione.
 
+
+## Screening addizionale dei guasti, 216 casi (branch successivo a PR #268)
+
+Il verificatore nativo ora esegue una matrice separata di **216 stati logici**:
+6 tensioni di ingresso × 3 resistenze bobina × 3 cadute ipotetiche ×
+4 modalità (nominale, uscita bloccata HIGH, uscita bloccata LOW,
+massa del segnale aperta). Attesi **27** casi HIGH erroneo sotto/o
+alla soglia massima per guasto stuck-HIGH, **27** casi di consenso
+non disponibile sopra soglia con stuck-LOW e **54** riferimenti
+indefiniti con massa aperta. La zona di soglia 4,25–4,50 V non
+viene classificata arbitrariamente come livello OEM garantito.
+I risultati sono classificazioni logiche dei guasti, non simulazione
+transitoria SPICE/vendor, né verifica dell'effettiva energizzazione
+di bobina o posizione di contatto. **Output stuck-HIGH e apertura
+di massa impediscono di proclamare fail-closed**; restano esclusi
+collasso sotto 1 V, saldatura del contatto NO, tempi di release e
+dati di dispersione/carichi AF. Il blocco di fabbricazione resta invariato.
+
 ## Problemi ancora aperti
 
 Scegliere relè THT SPDT con vera specifica dry-contact audio
