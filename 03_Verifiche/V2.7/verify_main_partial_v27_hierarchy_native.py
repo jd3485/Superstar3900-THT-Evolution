@@ -84,11 +84,32 @@ def main():
     expected=Counter(list(old_parts)+list(aud_parts))
     # Count the KEYS, not dict values (which are native net-name strings).
     actual=Counter(list(all_parts))
-    assert expected==actual,(
-        "V2.6 MAIN or RX audio pin-net partition changed or unintended short",
-        "missing",[(sorted(p),n) for p,n in (expected-actual).items()][:12],
-        "extra",[(sorted(p),n) for p,n in (actual-expected).items()][:12])
-    assert sum(map(len,all_parts))==sum(map(len,old_parts))+sum(map(len,aud_parts))
+    # Native KiCad9 nested hierarchy omits isolated single-pin NC nets when
+    # a source sheet becomes a child. This is NOT permission to alter any
+    # electrically connected net: every multi-pin group must match exactly.
+    # The eight known NC/isolated pins are an explicit reviewed allowlist;
+    # do not generalize this exception or mask extra/missing connected pins.
+    omitted_known_nc={
+        ("U402","9"),("U402","8"),
+        ("U520","6"),("U520","8"),("U520","10"),("U520","12"),
+        ("U1201","1"),("U1201","8")
+    }
+    omitted=expected-actual
+    added=actual-expected
+    assert not added,("New or rewired MAIN nets",[(sorted(p),n) for p,n in added.items()])
+    assert all(len(p)==1 and n==1 for p,n in omitted.items()),(
+        "Missing connected net",[(sorted(p),n) for p,n in omitted.items()])
+    missing_singletons={next(iter(p)) for p in omitted}
+    assert missing_singletons==omitted_known_nc,(
+        "Unexpected KiCad9 nested-only NC pin difference",missing_singletons)
+    assert len(all_parts)==len(old_parts)+len(aud_parts)-len(omitted_known_nc)
+    assert sum(map(len,all_parts))==(
+        sum(map(len,old_parts))+sum(map(len,aud_parts))-len(omitted_known_nc))
+    print("MAIN_PARTIAL_HIERARCHY_NC_NETLIST_DIFFERENCE",{
+        "nested_omitted_single_pin_nets":sorted(omitted_known_nc),
+        "electrically_connected_nets_preserved":True,
+        "NC_pins_reclassified_as_connected":False,
+    },flush=True)
     print("MAIN_PARTIAL_V27_KICAD9_NATIVE",{
         "V26_original_refs":len(old_refs),
         "RX_audio_temporary_refs":len(aud_refs),
