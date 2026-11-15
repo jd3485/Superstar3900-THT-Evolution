@@ -16,6 +16,8 @@ KICAD=ROOT/"04_KiCad"
 MASTER=KICAD/"V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch"
 V26=KICAD/"V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch"
 AUDIO=KICAD/"V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
+IF455=KICAD/"V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch"
+AM455=KICAD/"V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch"
 
 
 def native_nets(sch,destination):
@@ -46,9 +48,11 @@ def native_nets(sch,destination):
 
 def main():
     s=MASTER.read_text(encoding="utf-8")
-    assert s.count('(sheet (at ')==2
+    assert s.count('(sheet (at ')==4
     assert '../V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch' in s
     assert '"AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"' in s
+    assert '"IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch"' in s
+    assert '"AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch"' in s
     assert '(wire ' not in s and '(junction ' not in s
     assert 'NO FAB' in s and 'NO TX' in s
     assert MASTER.with_suffix(".kicad_pro").is_file()
@@ -71,17 +75,25 @@ def main():
         cp.check_returncode()
         a=native_nets(V26,d/"v26.net")
         b=native_nets(AUDIO,d/"audio.net")
+        d_if=native_nets(IF455,d/"if455.net")
+        d_am=native_nets(AM455,d/"am455.net")
         c=native_nets(MASTER,d/"wrapper.net")
 
     old_refs,old_parts=a
     aud_refs,aud_parts=b
+    if_refs,if_parts=d_if
+    am_refs,am_parts=d_am
     all_refs,all_parts=c
     assert len(old_refs)==138,(len(old_refs),sorted(old_refs))
     assert len(aud_refs)==12,(len(aud_refs),sorted(aud_refs))
-    assert old_refs.isdisjoint(aud_refs),("Reference collision",old_refs&aud_refs)
-    assert all_refs==(old_refs|aud_refs),(all_refs-(old_refs|aud_refs),(old_refs|aud_refs)-all_refs)
+    assert len(if_refs)==9,(len(if_refs),sorted(if_refs))
+    assert len(am_refs)==7,(len(am_refs),sorted(am_refs))
+    separate=[old_refs,aud_refs,if_refs,am_refs]
+    assert sum(map(len,separate))==len(set().union(*separate)), "Duplicate reference between MAIN children"
+    baseline_refs=set().union(*separate)
+    assert all_refs==baseline_refs,(all_refs-baseline_refs,baseline_refs-all_refs)
     # All net groups must be conserved with no accidental audio↔RF ground ties.
-    expected=Counter(list(old_parts)+list(aud_parts))
+    expected=Counter(list(old_parts)+list(aud_parts)+list(if_parts)+list(am_parts))
     # Count the KEYS, not dict values (which are native net-name strings).
     actual=Counter(list(all_parts))
     # Native KiCad9 nested hierarchy omits isolated single-pin NC nets when
@@ -102,9 +114,9 @@ def main():
     missing_singletons={next(iter(p)) for p in omitted}
     assert missing_singletons==omitted_known_nc,(
         "Unexpected KiCad9 nested-only NC pin difference",missing_singletons)
-    assert len(all_parts)==len(old_parts)+len(aud_parts)-len(omitted_known_nc)
+    assert len(all_parts)==sum(map(len,(old_parts,aud_parts,if_parts,am_parts)))-len(omitted_known_nc)
     assert sum(map(len,all_parts))==(
-        sum(map(len,old_parts))+sum(map(len,aud_parts))-len(omitted_known_nc))
+        sum(sum(map(len,p)) for p in (old_parts,aud_parts,if_parts,am_parts))-len(omitted_known_nc))
     print("MAIN_PARTIAL_HIERARCHY_NC_NETLIST_DIFFERENCE",{
         "nested_omitted_single_pin_nets":sorted(omitted_known_nc),
         "electrically_connected_nets_preserved":True,
@@ -113,14 +125,18 @@ def main():
     print("MAIN_PARTIAL_V27_KICAD9_NATIVE",{
         "V26_original_refs":len(old_refs),
         "RX_audio_temporary_refs":len(aud_refs),
+        "IF455_tank_temporary_refs":len(if_refs),
+        "AM455_envelope_temporary_refs":len(am_refs),
         "combined_original_reference_count":len(all_refs),
         "V26_net_partitions_unchanged":True,
         "audio_net_partitions_unchanged":True,
+        "IF455_tank_net_partitions_unchanged":True,
+        "AM455_envelope_net_partitions_unchanged":True,
         "no_unintended_audio_RFPll_power_ground_tie":True,
         "product_radio_MAIN_PCB_exists":False,
         "RF_IF_PLL_TX_and_supply_qualified":False,
         "NO_FAB_NO_TX":True},flush=True)
-    print("PASS_KICAD9_MAIN_PARTIAL_150REFS_ALL_V26_AND_AUDIO_PIN_NETS_UNCHANGED_ERC0_NO_FAB",flush=True)
+    print("PASS_KICAD9_MAIN_PARTIAL_166REFS_FOUR_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB",flush=True)
 
 
 if __name__=="__main__":
