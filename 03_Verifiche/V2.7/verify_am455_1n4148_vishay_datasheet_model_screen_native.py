@@ -49,6 +49,7 @@ DFWD anode_fwd 0 DSYN
 .options TEMP=25 TNOM=25
 .control
 set noaskquit
+set numdgt=15
 op
 print v(anode_fwd)
 print v(cath_rev)
