@@ -7,6 +7,12 @@ non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
 
+## 15 novembre 2026 — candidato servo S-meter: KiCad9 THT + ngspice, PR #212 in validazione
+
+Nella PR **[#212](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/212)** branch `v27-smeter-active-current-sink-spice-20261115` è stato aggiunto un vero schema **KiCad9 standalone** `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/SMETER_ACTIVE_SINK_BENCH_V2_7_DRAFT.kicad_sch`: U2101 MCP6002 PDIP8, Q2101 2N3904 TO-92 onsemi E1/B2/C3, R2101 10k sense, R2102 10k base, R2103 100k pulldown e 3 connettori THT; topologia di sink di corrente ad anello chiuso **senza limitazione FSD certificata**, banco separato senza connessione MAIN-FRONT. Aggiunto `verify_smeter_active_sink_native.py` per ERC KiCad9 e partizioni previste **8 componenti, 8 reti, 23 pin**, richiamato in `verify_front_smeter_native.py`, più netlist ngspice comportamentale e test parametrici di VSET/coil/off. **Attendere FULL/FAST/required sul HEAD finale prima di dichiarare ERC o ngspice PASS e prima del merge.** Confronto SPICE ↔ opamp OEM, FSD/Rcoil, stabilità, fault e PCB non verificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — PR #211 MERGED; corrente attiva S-meter SPICE candidato (branch da verificare)
 
 **[PR #211](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/211) MERGED**, main commit `ea2745ea2c6d9613bd42f145f75f07cb97695b73`. [Actions #43657363232](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43657363232): FAST+required **SUCCESS**, FULL correttamente skipped su diff solo documentazione. Il checkpoint PR210 precedentemente pending è ora su main. **La PR211 non costituisce una nuova revisione CAD.**
