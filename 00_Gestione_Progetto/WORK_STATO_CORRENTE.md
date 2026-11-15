@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #219 integrata; primo LAB PCB THT verificato DRC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #220 integrata; master gerarchico FRONT parziale in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #220 MERGED, nuovo master gerarchico FRONT parziale in branch CI pending
+
+**[PR #220](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/220) MERGED**, main `871829df886056057ff7d9bf64eae35175bef8a5`, head checkpoint `22fbbaf637fa49f83f05f4f5bc2dd2dd8859d151`, [Actions #43664390045](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664390045): FAST e required **SUCCESS 2/2**, FULL skipped correttamente per sole modifiche documentali. PR219 primo PCB reale solo LAB rimane DRC0 su FAST/FULL/required [#43663912790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43663912790). Main verificato live prima delle modifiche.
+
+**In branch NON integrato:** `v27-front-integrated-volume-illum-hierarchy-20261115` da main SHA sopra. Nuovo **master KiCad9 gerarchico parziale FRONT**, `04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`, comprende tramite sheet references i due sottoschemi autonomi **FRONT_VOLUME** (3 riferimenti/3 reti/7 terminali) e **FRONT_ILLUM_BENCH** (5 riferimenti/4 reti/10 terminali). Il nuovo `03_Verifiche/V2.7/verify_front_partial_hierarchy_native.py`, lanciato nel gate nativo FRONT esistente, controlla ERC effettivo e partizioni 8 riferimenti/7 reti/17 pin netlist KiCad9, tenendo disgiunte audio e illuminazione. **Gate FULL/required sul HEAD finale da verificare, non rivendicare ERC0.** S-meter/driver/rail reali, cavo/PCB FRONT meccanica/fabbricazione tutti da risolvere; PCB lab LED esistente NON è la FRONT. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #219 MERGED, primo PCB KiCad9 THT fisico SOLO LAB con DRC0 verificato
 
