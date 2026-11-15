@@ -203,6 +203,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_front_loaded_nonlinear_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # 54 ngspice native nonlinear detector transient parameter screens.
+    # Is/Cjo are synthetic alternatives, NEVER an OEM 1N4148 PVT promise.
+    print("::group::V2.7 IF455 AM455 FRONT LM386 54 SYNTHETIC DIODE PARAMETER TRANSIENTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
