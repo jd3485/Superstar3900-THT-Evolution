@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #222 integrata; FRONT master 3 fogli ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #223 integrata; nuovo schema interboard AF in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #223 MERGED, KiCad9 MAIN↔FRONT AF harness schematico in branch
+
+**[PR #223](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/223) MERGED** su main `c6000bc7a3158bcca7d8b58b74d6da2aa4aded52`, doc head `3361efefcb2dc3d93c1eed3b3af82d3f644fd12c`. [Actions #43666104190](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666104190): FAST/required **SUCCESS 2/2**, FULL correttamente skipped per solo checkpoint. Il main precedente PR #222 ha 3 fogli FRONT, ERC0 e netlist 13 refs/12 nets/28 pins.
+
+**In branch NON integrato** `v27-main-front-audio-harness-native-20261115` da main SHA sopra: nuovo **schema KiCad9 nativo reale del contratto elettrico a due conduttori audio MAIN↔FRONT** `04_KiCad/V2.7_DRAFT/INTERBOARD_AUDIO_HARNESS_V2_7_DRAFT.kicad_sch` + progetto. J2401 e J2402 rappresentano i due capi della tratta fra FRONT J1302 e MAIN J1202, due wire AF_WIPER_LINK (pin1↔1) / AF_RETURN_LINK (pin2↔2). Il verificatore esistente `03_Verifiche/V2.7/verify_interboard_audio_contract_native.py` ora controlla anche ERC/partizione netlist nativa 2 reti/4 pin e coerenza con netlist dei due schemi. **CI FAST/FULL/required sul final HEAD necessaria**. Non è ancora cavo qualificato con due header maschi, non connettore polarizzato, nessun test EMC/meccanica o fonte di alimentazione trasferita. Corretto rapporto: rail audio J1201 corrente `AUDIO_6V_LAB`, precedenti diciture `AUDIO_5V` storiche. Il file PCB reale nel repo resta solo FRONT LED LABONLY DRC0, non i due PCB radio. **NO FAB/NO TX/NO BATTERIA/NO VEICOLO**.
+
+---
 
 ## 15 novembre 2026 — PR #222 MERGED: FRONT gerarchico a TRE fogli KiCad9 nativi ERC0
 
