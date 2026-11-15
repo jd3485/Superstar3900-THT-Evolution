@@ -23,3 +23,25 @@ La [PR #254](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/254) è 
 - La PCB-FRONT attuale rimane **13 footprint THT/28 pad/12 reti/35 piste** ma senza Edge.Cuts e DRC0 di prodotto, con le vecchie due impronte **PROVISIONAL**; nessun assemblaggio autorizzato.
 
 Nessuna approvazione di fabbricazione, trasmissione, batteria o veicolo. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+
+## Schermatura geometrica pad THT (studio successivo, 15 novembre 2026)
+
+Il gate `verify_front_ptv09a4_oem_pitch_candidate_native.py` ora calcola anche il
+margine geometrico preliminare dei tre pad nella libreria candidata, senza
+cambiare il PCB di studio: diametro rame **1,8 mm**, foro finito
+**provvisorio 1,0 mm**, anello radiale nominale **0,4 mm**, passo adiacente
+**2,5 mm** e distanza minima nominale rame-rame **0,7 mm**.
+Controlli fail-closed: numerosità/pin 1-2-3, quota 5,00 mm, forma
+circolare/rettangolare, dimensioni/fori immutati, anello minimo
+0,4 mm, separazione rame almeno 0,5 mm e permanenza delle 35
+piste/footprint precedenti nella board NONFAB.
+
+Questo è uno **screen geometrico nominale** sui parametri della libreria,
+non un valore garantito dal produttore, non una prova delle tolleranze di
+foratura/registrazione/solder-mask, non DRC e non autorizza sostituzione
+del potenziometro. Il fabbricante del PCB e l'OEM del componente devono
+qualificare foro, lead e quote meccaniche, taper audio, ambiente e stato
+produttivo dell'MPN esatto. KiCad9 SVG nativo va eseguito nella FULL CI
+sull'HEAD finale della PR; nessuna verifica KiCad locale è stata dichiarata.
+**NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
