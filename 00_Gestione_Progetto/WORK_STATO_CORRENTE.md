@@ -3,6 +3,12 @@
 **Aggiornato:** 15 novembre 2026 (PR #230 MERGED: contratto KiCad9 IF455→AM455→FRONT a 4 reti/8 pin; ERC0 e 111 verifiche FULL PASS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Ultimo merge tecnico PR #230: `8d7222607259389f0bcbb4bf8fac6e6fbd0d84c6`; aggiornamento checkpoint tramite PR successiva.
 
+## 15 novembre 2026 — AM455→FRONT→LM386, carico AF/KCL su branch tecnico (CI pending)
+
+Branch `v27-af-loaded-pot-lm386-kcl-20261115` da HEAD main `13fc1fe6a050e372426d1f7106bd5ba6cb3c7789` (PR #231 merged). Nuovo `03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py` integrato nel gate `ci/full_regressions.py`: 75 combinazioni frequenza/posizione potenziometro/Rin (25/50/75kΩ), trasferimento passivo complesso e doppio confronto analitico↔solutore nodale KCL indipendente, controllo reti/pin KiCad9 originali C1502-R1502, RV1301, C1201-R1201-U1201. Rapporto `03_Verifiche/V2.7/RAPPORTO_AF_AM455_FRONT_LM386_CARICO_AC_KCL_DRAFT.md` con valori e limiti. Rin=50k tipico OEM; 25/75k scenari ipotetici, non corner garantiti. Non è stato modificato alcun collegamento master MAIN, nessuna simulazione OEM/LM386 attivo/noise/THD o qualifica carico diodo IF455, ground/chassis, cavi. **CI ancora da eseguire/verificare sul final HEAD; NON merged, nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 15 novembre 2026 — PR #230 MERGED: contratto KiCad9 IF455→AM455→FRONT
 
 **[PR #230](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/230) MERGED** su main `8d7222607259389f0bcbb4bf8fac6e6fbd0d84c6`, final head `12f0e4e65a6d1136ec5db8a3a277c023d85dfb5b`. [Actions #43699560216](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43699560216): FAST/FULL/required **SUCCESS 3/3**, `IF_AM_FRONT_HARNESS_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_IF_AM_FRONT_4NETS_8PINS_ERC0_BENCH_PIN_CONTRACT_NO_FAB_NO_TX`, FULL **111 comandi storici** superati. Nuovo `04_KiCad/V2.7_DRAFT/IF_AM_FRONT_TWO_LINK_HARNESS_V2_7_DRAFT.kicad_sch` con quattro rappresentazioni di terminali header THT J2501..J2504 e quattro reti distinte su **otto pin**: IF455 J1602/1→AM455 J1501/1 (455 kHz), J1602/2→J1501/2 (ritorno IF), AM455 J1502/1→FRONT J1301/1 (AF demod), J1502/2→J1301/2 (ritorno AF). Il tratto FRONT J1302→MAIN LM386 J1202 resta documentato separatamente dal precedente contratto (PR #224). Lo schema è **solo contratto di cablaggio sperimentale**, non circuiti MAIN/FRONT connessi internamente, né cable/PCB producibile.
