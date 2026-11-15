@@ -1,11 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #256 MERGED: screening geometria rame/anello Bourns PTV09A-4; PR seguente: analisi guasto volume FRONT). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #256 SHA `ac7f804511810a5220cac282368716e8b6fb8057`; prossimo studio di guasto in branch, non ancora integrato.
+**Aggiornato:** 15 novembre 2026 (PR #257 MERGED: 75 casi guasto apertura contatto basso RV1301, KCL KiCad9 nativa; FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #257 SHA `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`; checkpoint finale in revisione documentale.
 
-## 15 novembre 2026 — FRONT RV1301 open low contact, 75 KCL case PR IN REVISIONE
+## 15 novembre 2026 — PR #257 MERGED: FRONT RV1301 open-low, 75 casi AC KCL
 
-Branch `engineering/v27-front-pot-wiper-low-open-fault-20261115` da main `ac7f804511810a5220cac282368716e8b6fb8057`. Nuovo modello analitico di guasto pin basso RV1301 disconnesso, con verifica endpoint KiCad9 nativa sana, **75 frequenze/posizioni/Rin**, soluzioni indipendenti riduzione e KCL, limiti e rischio di perdita attenuazione a basso volume nel rapporto `RAPPORTO_FRONT_RV1301_OPEN_LOW_FAULT_75_CASES_DRAFT.md`. FULL CI aggiornata. **PR tecnica e CI finale non ancora integrate; nessuna modifica alla PCB.** Necessaria valutazione fail-safe e qualifica OEM. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+**[PR #257](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/257) MERGED** su main `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`, final technical SHA `5a2753010050e3bd3f380c14c568bda4bbcd284e`. [CI #43756011096](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43756011096): FAST/FULL/Required **SUCCESS 3/3**, FULL 111 verifiche legacy PASS e gate nuovo `PASS_FRONT_POT_OPEN_LOW_75_INDEPENDENT_AC_KCL_FAULT_CASES_NATIVE_KICAD_PIN_CONTRACT_NO_FAB_NO_TX` su netlist KiCad9 nativa; nessun Traceback. Regime 1 kHz, LM386 Rin ipotetica 50 kΩ, cursore 1%: `V(pin3)/V(AF ingresso)` passa da **0,008192 sano** a **0,714219 con terminale basso aperto** (~**87,184×**), solo nel modello passivo ideale. Sono state eseguite due risoluzioni indipendenti (riduzione e KCL), 5 frequenze × 5 cursori × 3 Rin. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_RV1301_OPEN_LOW_FAULT_75_CASES_DRAFT.md`. **Rischio fail-safe volume aperto da progettare**; né comportamento del componente OEM, né speaker, né limiti acustici sono stati qualificati. CAD PCB 13 THT/28 pad/12 reti/35 piste invariato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+**Prossimo passo:** valutare implementazioni di attenuazione fail-safe senza compromettere il volume nominale, verificare sorgenti AF e carico reale, poi qualifica OEM, percorso interboard e integrazione KiCad con ERC/CI.
 
 ---
 
