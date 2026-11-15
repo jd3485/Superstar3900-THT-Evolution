@@ -172,6 +172,13 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_interboard_audio_contract_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # Native candidate signal harness maps standalone IF455->AM455->FRONT
+    # without joining independent grounds, power nets or modifying the MAIN root.
+    print("::group::V2.7 IF455 AM455 FRONT TWO LINK NATIVE PIN MAP",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if_am_front_two_link_harness_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
