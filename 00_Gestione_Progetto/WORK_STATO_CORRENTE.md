@@ -1,11 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #238 MERGED, audit OEM Vishay 1N4148-TAP e 9 casi DC SPICE; CI FAST/FULL/required PASS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #238 SHA `45b0d569334715d1df873fb1c5a182448a3fe82a`; checkpoint in revisione documentale.
+**Aggiornato:** 15 novembre 2026 (PR #240 MERGED: MAIN V2.7 176 refs/ERC0; nuovo confronto KSP10 vs diretto al pin3 LM386 da validare). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #240 SHA `87ab4d40ba22020abf1179d839283e404690ee1e`; ulteriore branch IF/AF in corso, non integrato.
 
-## 15 novembre 2026 — gerarchia MAIN 176 refs, aggiunto follower KSP10 IF455 isolato (branch CI pending)
+## 15 novembre 2026 — confronto numerico IF455 diretto vs KSP10 con carico FRONT/LM386 (branch CI pending)
 
-Branch `v27-main-isolated-ksp10-if-buffer-176refs-20261115` da main `c28755813fb5b7f90883282f51c479b43708e9ec`. Nuovo quinto figlio KiCad9 sul master V2.7: **IF455_KSP10_FOLLOWER** THT da 10 riferimenti J1701/2/3, C1701/2, R1701/2/3/4, Q1701, con libreria TH_IFBUF registrata nel root; 166 refs precedenti + 10 = **176 riferimenti**. Il follower è **completamente isolato** e alimentato solo con 6V LAB nel proprio foglio, non collegato a tank, rivelatore, o rail MAIN; nessuna assunzione sulla sua efficacia o su BJT OEM. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque export standalone + master, ERC0 nativo e partizioni multi-pin intatte, allowlist NC storica invariata. CI da verificare sul final SHA; nessuna PCB, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+**Branch** `v27-ksp10-am-front-loaded-comparison-20261115` da main `87ab4d40ba22020abf1179d839283e404690ee1e` dopo PR #240. Nuovo deck `03_Verifiche/V2.7/spice/if455_ksp10_am455_front_lm386_loaded_generic_comparison.cir` confronta in **6 veri transienti ngspice** due tank IF455/455kHz identici separatamente pilotati, con ramo diretto vs buffer BJT KSP10 generico; entrambi i rivelatori AM DGENERIC alimentano **lo stesso modello passivo di carico** RV1301 10k + C1201 100n + R1201 10k + Rin LM386 tipica 50k, misurando Vpp **pin3**, non solo AF su R1502 100k. Il test `03_Verifiche/V2.7/verify_if455_ksp10_am455_front_loaded_comparison_native.py` è aggiunto alla FULL e controlla partizioni endpoint KiCad9 buffer Q1701 e identità delle carte SPICE storiche. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_VS_DIRECT_LOADED_FRONT_LM386_DRAFT.md`. **CI del final SHA non ancora verificata**; nessuna integrazione elettrica del buffer nel MAIN, rail LAB 6 V isolato, nessun modello BJT/diodo OEM, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #240 MERGED: gerarchia MAIN 176 refs, buffer KSP10 isolato
+
+**[PR #240](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/240) MERGED** su main `87ab4d40ba22020abf1179d839283e404690ee1e`, final technical head `2c6737b7443b3bc664d08ebd050bbf145c6a4166`. [Actions #43706251084](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43706251084) FAST/FULL/required **SUCCESS 3/3**, ERC KiCad9 `Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_176REFS_FIVE_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB`, FULL **111 comandi storici**. Nuovo quinto figlio KiCad9 sul master V2.7: **IF455_KSP10_FOLLOWER** THT da 10 riferimenti J1701/2/3, C1701/2, R1701/2/3/4, Q1701, con libreria TH_IFBUF registrata nel root; 166 refs precedenti + 10 = **176 riferimenti**. Il follower è **completamente isolato** e alimentato solo con 6V LAB nel proprio foglio, non collegato a tank, rivelatore, o rail MAIN; nessuna assunzione sulla sua efficacia o su BJT OEM. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque export standalone + master, ERC0 nativo e partizioni multi-pin intatte, allowlist NC storica invariata. CI finale verificata sul final HEAD; nessuna PCB, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 
