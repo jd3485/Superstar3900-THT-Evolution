@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #215 integrata; doppio sink SPICE in revisione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #216 integrata; guasto riferimento comune in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #216 MERGED; nuovo test guasti di riferimento comune in branch
+
+**[PR #216](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/216) MERGED** su main `a37d859367f51dbb8b2cd62e75eaea726c53ce72`, HEAD tecnico `3166d19a9464ffc069c7a2d6ec25a61f14dd91a1`. [Actions #43661238764](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661238764): FAST/FULL/required **SUCCESS 3/3**, verifica log nativa: ngspice vero **39,58742µA** normale, **44,54994µA** con QMAIN corto C-E, **39,58905µA** con QGUARD corto C-E, doppi corti **227,2727µA a 2kΩ** e **125µA a 20kΩ**. Circuito SOLO SPICE due regolatori ideali, non KiCad; nessuna PCB/qualifica vendor/FSD/loop/power-off.
+
+**Nuovo branch non integrato** `v27-smeter-dual-common-reference-fault-20261115` da main SHA sopra: aggiorna il test ngspice nel gate FRONT per cause comuni di guasto con **VSETMAIN=VSETGUARD=1V**, vdd12V artificiale, controlli di un solo setpoint alto e OFF di un solo loop; il sistema può eccedere 50µA ipotetici anche con BJT integri, quindi **non fail-closed** su riferimento comune. Modifiche al rapporto tecnico e a questo checkpoint. **PR e FULL/required CI sul final HEAD ancora necessari**; niente nuovo CAD KiCad, nessun hardware dichiarato sicuro. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) resta aperta per movimento/driver reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 15 novembre 2026 — PR #215 MERGED, nuovo banco SPICE di protezione a doppio sink indipendente (branch)
 

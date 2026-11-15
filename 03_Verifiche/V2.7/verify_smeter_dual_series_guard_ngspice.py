@@ -71,6 +71,16 @@ def main():
     off_main_fault=simulate(vmain=0,vguard=0,short_main=True)
     off_guard_fault=simulate(vmain=0,vguard=0,short_guard=True)
     vdd0=simulate(vdd=0,short_main=True)
+    # Shared/reference failures can defeat *both* ideal independent loops:
+    # both commands high models an overvoltage common control/reference.
+    shared_reference_high=simulate(vmain=1.0,vguard=1.0)
+    main_reference_high=simulate(vmain=1.0,vguard=0.45)
+    guard_reference_high=simulate(vmain=0.4,vguard=1.0)
+    common_reference_high_supply12=simulate(vdd=12,vmain=1.0,vguard=1.0)
+    # With only the main loop ON and guard command 0, output should go off
+    # within this idealized DC model. It is NOT an open-circuit transient test.
+    independent_guard_off=simulate(vmain=1.0,vguard=0)
+    independent_main_off=simulate(vmain=0,vguard=1.0)
     # Only behavioral model checks. Not a real-world fail-closed guarantee.
     assert 35 < normal < 43,normal
     assert 40 < main_ce < 50,main_ce
@@ -81,6 +91,15 @@ def main():
     assert 110 < two_ce_20k < 130,two_ce_20k
     assert abs(off) < .5 and abs(off_main_fault) < .5 and abs(off_guard_fault) < .5
     assert abs(vdd0) < .5
+    # Fail-closed gate is a negative result, NOT an accepted 50uA limit.
+    assert shared_reference_high > 75, shared_reference_high
+    assert common_reference_high_supply12 > 75, common_reference_high_supply12
+    assert 35 < main_reference_high < 50,main_reference_high
+    assert 35 < guard_reference_high < 50,guard_reference_high
+    assert abs(independent_guard_off) < .5,independent_guard_off
+    assert abs(independent_main_off) < .5,independent_main_off
+    assert shared_reference_high > main_reference_high
+    assert shared_reference_high > guard_reference_high
     # Independent two-fault resistor-network cross-check.
     assert math.isclose(two_ce, 5/(2000+20000)*1e6, rel_tol=.03)
     assert math.isclose(two_ce_20k, 5/(20000+20000)*1e6, rel_tol=.03)
@@ -96,6 +115,14 @@ def main():
         "off_command_main_CE_short_uA":off_main_fault,
         "off_command_guard_CE_short_uA":off_guard_fault,
         "lab_supply_off_main_short_uA":vdd0,
+        "shared_reference_high_1V_both_uA":shared_reference_high,
+        "shared_reference_high_1V_both_supply12_uA":common_reference_high_supply12,
+        "only_main_reference_high_1V_uA":main_reference_high,
+        "only_guard_reference_high_1V_uA":guard_reference_high,
+        "guard_command_0_main_high_uA":independent_guard_off,
+        "main_command_0_guard_high_uA":independent_main_off,
+        "shared_reference_overvoltage_fail_closed":False,
+        "independent_reference_and_supply_verified":False,
         "guard_current_is_OEM_FSD_qualified":False,
         "two_single_short_cases_tested":True,
         "dual_short_fail_closed":False,
