@@ -1,7 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 **Aggiornato:** 15 novembre 2026 (PR #262 MERGED: 64 stati guasto NC mute con verifica KiCad9 nativa; FAST/FULL/Required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #262 SHA `8dbe79f1108b3c67596265a92b39ef48be20d277`; checkpoint post-merge in revisione documentale.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #262 SHA `8dbe79f1108b3c67596265a92b39ef48be20d277`; checkpoint PR #263 integrato main `16ea6a5745755a1bbcfc80d24944c86bdf509b94`.
+
+## 15 novembre 2026 — DRIVER COIL MUTE THT DOPPIO CONSENSO, PR IN REVISIONE
+
+Da main `16ea6a5745755a1bbcfc80d24944c86bdf509b94` branch `engineering/v27-nc-mute-dual-enable-coil-driver-native-20261115`: creato schema KiCad9 editabile isolato `04_KiCad/V2.7_DRAFT/FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch` con **due NPN THT in serie** su ritorno coil K1901, due resistenze base 1k5 e due pulldown 10k, flyback a polarità dichiarata, ingressi lab `ENABLE_AUDIO_LAB`, `POWER_GOOD_LAB` separati; 4 port a 2 pin. Collegamento a contatto K1901 definito attraverso J1914 ↔ J1903 senza toccare PCB FRONT originale. Nuova FULL CI verifica ERC/netlist KiCad9 8 reti e screening DC ipotetico 48 casi (4 valori bobina, 3 rail, 2 ingressi, 2 saturazioni), **non vendor-SPICE né relè qualificato**. Report `RAPPORTO_FRONT_MUTE_DUAL_ENABLE_COIL_DRIVER_NATIVE_DRAFT.md`. **CI finale PR non ancora verificata; nessun merge anticipato.** Il power-good è solo input di banco, manca supervisore reale; possibile guasto transistor/contatto welded NO, audio GND/cavo. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #261 MERGED: vero schematico KiCad9 contatto NC mute THT
 
