@@ -1,11 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #265 MERGED: OEM Omron G5V-1 DC5 rifiutato come qualificazione attuale, 36 corner analitici; FAST/FULL/Required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #262 SHA `8dbe79f1108b3c67596265a92b39ef48be20d277`; checkpoint PR #263 integrato main `16ea6a5745755a1bbcfc80d24944c86bdf509b94`.
+**Aggiornato:** 15 novembre 2026 (PR #266 checkpoint MERGED, power-good LM393/TL431 THT in PR di verifica KiCad9). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #265 SHA `18994d6b054ad8fa3e7bb8bff55aeda3fcf23497`; checkpoint PR #266 MERGED su main `c1770d72ea0987c02b6d01687cea1b79e613dad8`.
 
-## 15 novembre 2026 — DRIVER COIL MUTE THT DOPPIO CONSENSO, PR IN REVISIONE
+## 15 novembre 2026 — TL431 + LM393 THT power-good vero, PR tecnica in verifica
 
-Da main `16ea6a5745755a1bbcfc80d24944c86bdf509b94` branch `engineering/v27-nc-mute-dual-enable-coil-driver-native-20261115`: creato schema KiCad9 editabile isolato `04_KiCad/V2.7_DRAFT/FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch` con **due NPN THT in serie** su ritorno coil K1901, due resistenze base 1k5 e due pulldown 10k, flyback a polarità dichiarata, ingressi lab `ENABLE_AUDIO_LAB`, `POWER_GOOD_LAB` separati; 4 port a 2 pin. Collegamento a contatto K1901 definito attraverso J1914 ↔ J1903 senza toccare PCB FRONT originale. Nuova FULL CI verifica ERC/netlist KiCad9 8 reti e screening DC ipotetico 48 casi (4 valori bobina, 3 rail, 2 ingressi, 2 saturazioni), **non vendor-SPICE né relè qualificato**. Report `RAPPORTO_FRONT_MUTE_DUAL_ENABLE_COIL_DRIVER_NATIVE_DRAFT.md`. **CI finale PR non ancora verificata; nessun merge anticipato.** Il power-good è solo input di banco, manca supervisore reale; possibile guasto transistor/contatto welded NO, audio GND/cavo. NO FAB/TX/BATTERIA/VEICOLO.
+Branch `engineering/v27-front-tl431-lm393-powergood-native-20261115` da main `c1770d72ea0987c02b6d01687cea1b79e613dad8`, PR #266 già MERGED. Nuovo **schema KiCad9 THT autonomo reale** `04_KiCad/V2.7_DRAFT/FRONT_MUTE_POWER_GOOD/FRONT_LM393_TL431_POWER_GOOD_THT_V2_7_DRAFT.kicad_sch`: LM393 PDIP8 pinout OEM 1OUTA/2IN−/3IN+/4GND/5INB+/6INB−/7OUTB/8VCC e TL431 LP TO92 1K/2A/3REF, polarizzazione 1k, partitore 10k/12k, pullup OC 1k5, bypass 100n, J2001/J2002 lab. 5 reti attese, soglia ideale 4,574V. Test FULL nativo ERC/netlist 5 reti e **135 corner** VIN/REF/Rdiv. Evidenzia: TL431 IKA non regolata in brownout, LM393 input common-mode fuori range a VIN basso, pull-up 1k5 caricato dalla base R1912 produce logic HIGH **non garantito** (a VIN5,5 Vout modellato max 3,15V); nessuna qualifica power-good fail-safe. Rapporto `RAPPORTO_FRONT_LM393_TL431_POWERGOOD_THT_CANDIDATO.md`. **PR non integrata; CI finale da verificare, nessuna modifica alla PCB.** NO FAB/TX/BATTERIA/VEICOLO.
 
 ---
 
