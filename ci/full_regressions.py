@@ -225,6 +225,13 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_if455_ksp10_am455_front_loaded_comparison_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Compare high-impedance 10p J113 JFET with direct tank at actual FRONT
+    # pot+LM386 loaded input; six native 25ns transient cases, OEM unqualified.
+    print("::group::V2.7 J113 IF455 VS DIRECT FULLY LOADED FRONT LM386",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_am455_front_loaded_comparison_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
