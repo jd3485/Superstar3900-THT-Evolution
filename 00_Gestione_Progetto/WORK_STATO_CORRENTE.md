@@ -1,11 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #235 MERGED; 9 transienti IF455-AM455-FRONT-LM386 DGENERIC verificati; screening 54 parametri in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. HEAD tecnico PR #235 MERGED `77ba66cdaa5fcbf89e6a833542207f875dd38763`; nuova PR parametrica non integrata in attesa di CI.
+**Aggiornato:** 15 novembre 2026 (PR #236 MERGED; 54 scenari sintetici del diodo non lineare più 9 transienti con carico FRONT, tutti verificati). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #236 SHA `65cbfe021aa8c36a69f6d8aea16612631bbcfca2`.
 
-## 15 novembre 2026 — screening 54 scenari di parametri DGENERIC, branch tecnico (CI pending)
+## 15 novembre 2026 — PR #236 MERGED: 54 scenari DGENERIC Is/Cjo, CI verde
 
-**Branch** `v27-if-am-loaded-diode-param-sweep-20261115` da main SHA `77ba66cdaa5fcbf89e6a833542207f875dd38763` dopo PR #235. Script `03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py` aggiunto in FULL: **54 transienti ngspice** (Is 0,25/2,5/25nA × Cjo 2/4/8pF × input 0,5/2V picco × volume 10/50/90%) sullo stesso banco IF455→AM455→FRONT→LM386; parametri DGENERIC **sintetici, NON corner OEM 1N4148**. Output pp e rapporti, bande di sensitività, non guadagno LM386 attivo. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_DIODE_SYNTHETIC_CORNERS_DRAFT.md`; aggiornato rapporto PR #235 con evidenze CI quantitative. **CI sul final HEAD da verificare, nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**[PR #236](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/236) MERGED** su main `65cbfe021aa8c36a69f6d8aea16612631bbcfca2`, final head `508a1969f6fafd6f3fac8fa1232d3328cc9067e5`; [CI #43702519024](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43702519024) FAST/FULL/required **SUCCESS 3/3**, 111 step legacy, `PASS_NGSPICE_54_IF455_AM455_FRONT_LOADED_SYNTHETIC_DIODE_IS_CJO_CORNER_TRANSIENTS_NOT_OEM_NO_FAB_NO_TX`. Script `03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py` aggiunto in FULL: **54 transienti ngspice** (Is 0,25/2,5/25nA × Cjo 2/4/8pF × input 0,5/2V picco × volume 10/50/90%) sullo stesso banco IF455→AM455→FRONT→LM386; parametri DGENERIC **sintetici, NON corner OEM 1N4148**. Output pp e rapporti, bande di sensitività, non guadagno LM386 attivo. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_DIODE_SYNTHETIC_CORNERS_DRAFT.md`; aggiornato rapporto PR #235 con evidenze CI quantitative. **Risultati modello:** sorgente 0,5 Vpicco e volume 90%, ingresso LM386 1,934–6,216mVpp (estremi Is/Cjo sintetici, rapporto ~3,21×); a 2 Vpicco 29,915–36,817mVpp (~1,23×). CI verificata sul final HEAD; nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
