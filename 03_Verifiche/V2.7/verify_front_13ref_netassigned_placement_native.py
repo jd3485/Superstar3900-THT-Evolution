@@ -189,6 +189,44 @@ def verify():
     assert len([x for x in parsed if x[0] in (1,2,3)])==10
     assert len([x for x in parsed if x[0] in (4,5,6,7)])==13
     assert len([x for x in parsed if x[0] in (8,9,10,11,12)])==12
+    # Independent 2-D copper clearance guard for this provisional layout.
+    # All footprints here are THT, therefore their pads intersect both Cu
+    # layers. 1 mm is a conservative radius bound for listed 1.8/2.0 mm pads.
+    # This verifies candidate copper geometry, NOT OEM courtyard fit/DRC0.
+    from math import hypot
+    def point_to_seg(pt,a,b):
+        vx,vy=b[0]-a[0],b[1]-a[1]
+        length=vx*vx+vy*vy
+        assert length>0
+        fraction=max(0.,min(1.,((pt[0]-a[0])*vx+(pt[1]-a[1])*vy)/length))
+        return hypot(pt[0]-a[0]-fraction*vx,pt[1]-a[1]-fraction*vy)
+    def orientation(a,b,c):
+        return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
+    def intersects(a,b,c,d):
+        p,q=orientation(a,b,c),orientation(a,b,d)
+        u,v=orientation(c,d,a),orientation(c,d,b)
+        return (p*q<0 and u*v<0)
+    def dist_seg(a,b,c,d):
+        if intersects(a,b,c,d): return 0.
+        return min(point_to_seg(a,c,d),point_to_seg(b,c,d),
+                   point_to_seg(c,a,b),point_to_seg(d,a,b))
+    pad_count=sum(map(len,pads_by_net.values()))
+    assert pad_count==len(EXPECTED_PINS)==28
+    for net,layer,a,b in parsed:
+        for other_net,positions in pads_by_net.items():
+            if net==other_net: continue
+            for pos in positions:
+                # 1.0 pad radius + 0.25 half-trace + 0.2 clearance
+                assert point_to_seg(pos,a,b)>1.45,(
+                    "Copper approaches or shorts a different THT pad",
+                    net,other_net,layer,a,b,pos)
+    for i,(net,layer,a,b) in enumerate(parsed):
+        for other_net,other_layer,c,d in parsed[i+1:]:
+            if net==other_net or layer!=other_layer:continue
+            # Both 0.5mm traces, minimum edge clearance 0.2mm.
+            assert dist_seg(a,b,c,d)>0.7,(
+                "Copper-to-copper cross-net collision/clearance",
+                net,other_net,layer,a,b,c,d)
     with tempfile.TemporaryDirectory(prefix="tht_front_13place_") as td:
         pos=Path(td)/"front_13tht.pos"
         cp=subprocess.run(["kicad-cli","pcb","export","pos",
