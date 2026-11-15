@@ -98,19 +98,27 @@ def main():
                 assert 0 < abs(scaled_drop) < 10000,(name,scaled_drop)
                 leakage=abs(scaled_drop)/(1e6*100000.0)
                 assert 0<vf<VF10MA_MAX,(name,vf)
-                assert 0<leakage<=IR20V_MAX_A*(1+1e-4),(name,leakage)
+                assert leakage>0,(name,leakage)
+                leakage_outside=leakage>IR20V_MAX_A
+                # Is=25n synthetic variant produces about 25.02nA at 25C;
+                # do not waive or label it an OEM-conforming 25nA corner.
+                assert leakage_outside==(is_string=="25n"),(name,leakage,leakage_outside)
                 cjo_pf=float(cjo_string[:-1])
                 stress_outside=cjo_pf*1e-12>CD_ZERO_MAX_F
                 assert stress_outside==(cjo_string=="8p"),(name,stress_outside)
-                results.append((name,vf,leakage,stress_outside))
+                results.append((name,vf,leakage,stress_outside,leakage_outside))
                 print("VISHAY_1N4148_NON_OEM_SYNTHETIC_SPICE_DC_SCREEN",{
                     "Is_string":is_string,"Cjo_string":cjo_string,
                     "VF10mA_V":round(vf,7),"IR20V_A":leakage,
                     "Cjo_exceeds_datasheet_zero_bias_CD_max":stress_outside,
+                    "IR_exceeds_datasheet_25nA_at_20V_25C":leakage_outside,
+                    "both_point_tests_and_Cjo_pass":not(stress_outside or leakage_outside),
                     "Cjo_is_NOT_measured_total_CD":True,
                     "vendor_model":False,"OEM_production_qualified":False},flush=True)
     assert len(results)==9
     assert sum(x[3] for x in results)==3
+    assert sum(x[4] for x in results)==3
+    assert sum(not(x[3] or x[4]) for x in results)==4
     print("VISHAY_1N4148_DOCUMENT_81857_REV_1P6",{
         "VF_max_at_10mA_25C_V":VF10MA_MAX,
         "IR_max_at_VR20V_25C_A":IR20V_MAX_A,
@@ -120,7 +128,7 @@ def main():
         "OEM_forward_reverse_only_screen":True,
         "OEM_diode_model_available_here":False,
         "NO_FAB_NO_TX":True},flush=True)
-    print("PASS_NGSPICE_9_VISHAY_DATASHEET_DC_MODEL_SCREEN_8PF_OUT_OF_SPEC_NOT_VENDOR_MODEL_NO_FAB_NO_TX",flush=True)
+    print("PASS_NGSPICE_9_VISHAY_DATASHEET_SCREEN_8PF_AND_25NA_SYNTHETIC_OUTSIDE_OEM_LIMITS_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
     main()
