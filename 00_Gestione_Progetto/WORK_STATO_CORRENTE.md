@@ -1,11 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #259 MERGED: 375 casi di guardia cursore RV1301, KiCad9 nativo + KCL doppia; CI FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #259 SHA `c83a2cfc3f9474be88783e2f5dccec69b561fa61`; checkpoint PR #260 MERGED su main `5b9ea07a940287b5ff08cb98b72127e52ce00ee7`.
+**Aggiornato:** 15 novembre 2026 (PR #261 MERGED: NC contact THT in KiCad9 con ERC0 e pin-net reali; nuova matrice 64 guasti in PR). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #261 SHA `acfae8f0041d90b8bd9b398adb6832a3e5632480`; checkpoint per #261 e matrice guasti in revisione.
 
-## 15 novembre 2026 — candidato mute NC THT, nuova gerarchia autonoma NONFAB
+## 15 novembre 2026 — PR #261 MERGED: vero schematico KiCad9 contatto NC mute THT
 
-Dal main `5b9ea07a940287b5ff08cb98b72127e52ce00ee7` branch `engineering/v27-front-nc-relay-muted-contact-native-20261115`: creato **schema KiCad9 THT standalone reale** `FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch` con K1901 SPDT 5 pin (NC verso AF_GND, COM verso ingresso amp, NO dal volume), tre connettori 2 pin J1901/J1902/J1903, bobina separata e cinque net nominate. Nuovo test FULL esegue ERC/netlist nativa su FRONT/MAIN/candidato, con partizioni esatte e protezione della PCB FRONT esistente. **Schema nuovo candidato in PR: prima CI #43759196685 FAST PASS, FULL/Required FAIL per quattro lib_symbol_issues; seconda CI #43759661720 ancora FAIL per tabella non risolta senza progetto .kicad_pro; aggiunto .kicad_pro nativo oltre TH_MUTE.kicad_sym e sym-lib-table; CI finale DA VERIFICARE. Nessun MPN/footprint bobina qualificato, driver e power-good ancora assenti.** Il contatto NC è solo ipotesi di topologia, non prova sicurezza; apertura massa e incollaggio/contatto ossidato non mitigati. Vedi `RAPPORTO_FRONT_MUTE_NC_RELAY_CAD_CANDIDATO_DRAFT.md`. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+**[PR #261](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/261) MERGED** su main `acfae8f0041d90b8bd9b398adb6832a3e5632480`, final technical HEAD `61c9d76e4eff7ecf5612c75907a986cec88786f1`. [Actions #43760083956](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43760083956): FAST/FULL/Required **SUCCESS 3/3**, 111 legacy PASS, marker `PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB`, `Found 0 violations`; due run di sviluppo #43759196685 e #43759661720 falliti per `TH_MUTE` library irrisolta, **risolti** con libreria fisica, tabella e progetto locale `.kicad_pro`, nessun waiver. Nuovo circuito KiCad9 standalone editabile `04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch` con K1901 SPDT (COM J1902/1, NC AF_GND, NO volume, bobina isolata su J1903), tre connettori 2 pin. **Non è driver coil, non è una funzione fail-safe qualificata**: relay OEM MPN, contatti minimi e massa aperta irrisolti, PCB non alterata. Report `RAPPORTO_FRONT_MUTE_NC_RELAY_CAD_CANDIDATO_DRAFT.md`. NO FAB/TX/BATTERIA/VEICOLO.
+
+## 15 novembre 2026 — matrice 64 stati contatto NC, PR in revisione
+
+Branch `engineering/v27-nc-relay-contact-fault-matrix-checkpoint-20261115` dal merge PR261. Aggiunto gate FULL `verify_front_nc_relay_contact_fault_matrix_native.py` su 64 combinazioni (coil/contatto/NO weld/GND/wiper) con grafo di raggiungibilità versus logica booleana indipendente e ancoraggio ai veri pin-net esportati KiCad9; rapporto `RAPPORTO_FRONT_MUTE_NC_RELAY_64_FAULT_STATES_DRAFT.md`. **FULL finale da verificare prima dell'integrazione.** Il contatto NO saldato può bypassare mute e AF_GND esterna aperta lascia input flottante: nessuna qualifica sicurezza. Prossimo passo: circuito coil + power-good e ridondanza mute. NO FAB/TX/BATTERIA/VEICOLO.
 
 ---
 
