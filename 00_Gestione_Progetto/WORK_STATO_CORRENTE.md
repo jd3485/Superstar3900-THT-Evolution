@@ -1,7 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #242 MERGED; J113 high-Z vs IF diretto con carico FRONT/LM386: 6 transienti, CI 3/3). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico verificato PR #242 SHA `c14875520edea25321414d622183c4deb2de5225`; checkpoint post-merge su branch documentale.
+**Aggiornato:** 15 novembre 2026 (PR #242 e #243 MERGED: J113 a IF basso penalizzato; sweep C1801 basso livello in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge PR #243 `5baf2ee3468b7b9450023da125000bb8bd52e8e1` documentale; ultimo merge tecnico #242 `c14875520edea25321414d622183c4deb2de5225`.
+
+## 15 novembre 2026 — J113 C1801: screening IF basso livello con carico FRONT/LM386, branch CI PENDING
+
+**Branch** `v27-j113-low-if-c1801-coupling-sweep-20261115` da main `5baf2ee3468b7b9450023da125000bb8bd52e8e1` dopo PR #243. Il nuovo controllo `03_Verifiche/V2.7/verify_if455_j113_c1801_lowdrive_loaded_native.py` esegue **12 transienti ngspice** a 455 kHz AM (sorgenti 0,10/0,25/0,50V picco × accoppiamento J113 C1801=2,2/4,7/10/22pF), tutte con FRONT RV1301 10k wiper 90%, C1201 100n/R1201 10k/Rin LM386 50k tipica; riferimenti diretti invariati e gate sulle netlist reali KiCad9 J113. Solo **10pF** è il valore schematico effettivo; alternative **solo SPICE**, nessuna modifica master 176-ref. Test obbligatorio FULL, rapporto `03_Verifiche/V2.7/RAPPORTO_J113_C1801_BASSO_LIVELLO_AM455_CON_CARICO_DRAFT.md`. **CI finale da verificare, nessun modello OEM/rumore/SINAD/THD, nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 15 novembre 2026 — PR #242 MERGED: J113 IF455 vs diretto con carico FRONT/LM386
 
