@@ -179,6 +179,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if_am_front_two_link_harness_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Complete isolated AM detector -> FRONT volume -> LM386 input linear
+    # load contract: 75 frequency/wiper/Rin points, independent nodal KCL.
+    # Native KiCad pin-net anchoring; not an active LM386/detector OEM model.
+    print("::group::V2.7 AM455 FRONT LM386 PASSIVE LOADED AC 75 KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
