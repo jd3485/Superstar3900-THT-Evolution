@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #223 integrata; nuovo schema interboard AF in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #224 integrata; interboard AF KiCad9 ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #224 MERGED: schema nativo interboard audio MAIN↔FRONT verificato ERC0
+
+**[PR #224](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/224) MERGED** main SHA `2c57d50974a85872b4247a926a060f78761d93b3`, head tecnico `390af1c43d8c763a13548a1616edb5ee913e8701`. [Actions #43666448081](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666448081) FAST/FULL/required **SUCCESS 3/3**, log KiCad9 reale `AUDIO_HARNESS_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_RX_MAIN_FRONT_HARNESS_2CONDUCTOR_2NETS_4PINS_ERC0_NO_POWER_NO_FAB`, e contratto nativo schemi MAIN/FRONT PASS. Creato `04_KiCad/V2.7_DRAFT/INTERBOARD_AUDIO_HARNESS_V2_7_DRAFT.kicad_sch`: **due connettori simbolici THT J2401/J2402, due fili, due reti, quattro pin**. Associazione concreta: FRONT J1302 pin1 → MAIN J1202 pin1 (`AF_WIPER_LINK`), FRONT J1302 pin2 → MAIN J1202 pin2 (`AF_RETURN_LINK`). Nessuna linea 5V/6V/20V/TX attraversa il cablaggio. L'errore storico nella nota del rail audio J1201 è stato segnalato: net MAIN corrente `AUDIO_6V_LAB`, NON `AUDIO_5V`.
+
+Il nuovo disegno **è un contratto elettrico verificato, NON un cavo producibile**, entrambi i connettori delle schede sono header maschi e mancano contatti accoppiabili, polarizzazione, cablaggio schermato, filtro EMI/RF/ESD, scelta massa/chassis e dimensioni chassis. Master MAIN V2.6 invariato, master FRONT V2.7 a tre fogli standalone invariato; nessuna vera PCB MAIN/FRONT realizzata, resta solo LED LAB PCB DRC0. **NO FAB/NO TX/NO BATTERIA/NO VEICOLO**.
+
+**Prossimo passo tecnico:** integrare sottosezioni MAIN radio in una gerarchia V2.7 preservando le 138 connessioni/componenti V2.6 e qualificare il collegamento AF reale senza falsi ponti massa o alimentazione.
+
+---
 
 ## 15 novembre 2026 — PR #223 MERGED, KiCad9 MAIN↔FRONT AF harness schematico in branch
 
