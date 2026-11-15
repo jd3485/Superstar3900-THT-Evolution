@@ -311,6 +311,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_tl431_lm393_powergood_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Microchip MCP100-450DI/TO real D-bondout THT reset supervisor:
+    # native KiCad9 ERC3 nets and 54 OEM threshold/VOH/base-drive cases;
+    # explicitly rejects 167 ohm relay with existing dual NPN driver.
+    print("::group::V2.7 FRONT MCP100 OEM THT SUPERVISOR 54 CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_mcp100_450_oem_powergood_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
