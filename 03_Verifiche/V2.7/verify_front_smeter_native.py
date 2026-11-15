@@ -13,6 +13,7 @@ from verify_interboard_audio_contract_native import exported_nets, require
 from verify_front_smeter_fsd_fault_screen import verify as verify_fsd_fault_screen
 from verify_smeter_main_front_voltage_contract import verify as verify_main_front_contract
 from verify_smeter_active_sink_ngspice import main as verify_active_sink_ngspice
+from verify_smeter_dual_series_guard_ngspice import main as verify_dual_guard_ngspice
 from verify_smeter_active_sink_native import main as verify_active_sink_native
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -81,6 +82,8 @@ def main():
     # Separate generic SPICE candidate; NOT an electrical connection to FRONT.
     verify_active_sink_native()
     verify_active_sink_ngspice()
+    # Independent two-stage fail-closed CONCEPT: ideal generic models only.
+    verify_dual_guard_ngspice()
     print("PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":

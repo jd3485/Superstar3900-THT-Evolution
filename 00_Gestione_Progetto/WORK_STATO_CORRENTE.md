@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #214 integrata; guasto C-E in revisione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #215 integrata; doppio sink SPICE in revisione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #215 MERGED, nuovo banco SPICE di protezione a doppio sink indipendente (branch)
+
+**[PR #215](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/215) MERGED** su main `e011be889546891ea79eac74e9b9493056251f24`, head tecnico `81026ec1eed9d99366f0d6086aae4305c866338a`. [Actions #43660456890](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43660456890): FAST/FULL/required **SUCCESS 3/3**; log FULL KiCad9 standalone ERC0/8 refs/8 reti/23 pin e ngspice: corto Q2101 C-E a VSET OFF su carico 20kΩ **166,6667µA**, 2kΩ **416,6666µA**, 500Ω **476,1904µA**. Fallisce requisito fail-closed. Velleman indica 20kΩ e TME 2kΩ per AIM60005, entrambi NON qualificati, issue #213. Nessuna PCB.
+
+**Lavoro tecnico in branch NON integrato** `v27-smeter-dual-series-guard-spice-20261115`, base main SHA sopra: nuovo circuito SPICE **due sink di corrente NPN in serie**, due riferimenti/comandi analogici indipendenti `VSETMAIN=0,4V` e `VSETGUARD=0,45V`, due resistori sense 10kΩ, due servo BAMP ideali (non vendor). `verify_smeter_dual_series_guard_ngspice.py` nel gate FRONT testa due singoli corti C-E, doppio corto, comando zero e VDD OFF, carichi 2k/20k/500Ω; confronto analitico doppio corto ~227,27µA a 2k e 125µA a 20k. **Non dichiarare test ngspice completati finché CI FULL del final HEAD non è verde**. Nessun nuovo KiCad di questa topologia, nessuna protezione fisica o qualifica opamp/BJT/coil. Richiesti schematico KiCad9 candidato, fault study di cause comuni, limitazione indipendente, vendor OEM e prova fisica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 15 novembre 2026 — PR #214 MERGED, singolo guasto Q2101 C–E: nuovo gate fail-closed da validare
 
