@@ -1,3 +1,15 @@
+## Aggiornamento 15/11/2026 — KiCad9, vera netlist elettrica del cablaggio AF
+
+**Nuovo CAD schematico nativo** `04_KiCad/V2.7_DRAFT/INTERBOARD_AUDIO_HARNESS_V2_7_DRAFT.kicad_sch`: due connettori astratti THT a 2 pin (J2401 FRONT J1302; J2402 MAIN J1202) e **due conduttori fisicamente cablati nello schematico**, con reti indipendenti `AF_WIPER_LINK` pin1↔pin1 e `AF_RETURN_LINK` pin2↔pin2. NON un connettore fisicamente accoppiabile approvato: entrambi i lati esistenti del progetto sono header maschi; J2401/J2402 rappresentano gli estremi del cavo da qualificare. Distinti schemi MAIN e FRONT non vengono uniti in un falso PCB comune. Nessun rail 5/6/20V, né TX, né schermo/chassis, aggiunto sul percorso. I pinout dei due sottoschemi sono riconfrontati con le rispettive netlist native.
+
+Il gate `verify_interboard_audio_contract_native.py` ora esegue anche **KiCad9 ERC --exit-code-violations**, esporta netlist del cablaggio, impone esattamente **2 nets/4 terminali, 2 wires, 2 refs** e verifica assenza di ponti segnale/ritorno. Vanno ancora verificati mating contacts, polarizzazione, lunghezza, ESD, RF/EMI, cavo schermato, massa stellare e loop di ritorno, tensioni audio reali, affidabilità vibrazioni e il potenziometro OEM. **NON chiamare ERC0 prima del gate FULL/required CI sul final HEAD.**
+
+**Correzione contestuale:** dove le parti storiche di questo rapporto indicano il rail audio `AUDIO_5V` / “J1201 +5 V”, trattarle come **dato storico superato**: lo schema audio KiCad9 MAIN corrente e `verify_interboard_audio_contract_native.py` identificano `AUDIO_6V_LAB` all'ingresso J1201. Il cablaggio audio J1302→J1202 NON trasporta né 5 V né 6 V; nessuna fonte LAB è approvata per l'alimentazione reale della radio.
+
+**NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 # CONTRATTO ELETTRICO AUDIO MAIN ↔ FRONT, bozza V2.7 (12/11/2026)
 
 ## Stato e perimetro
