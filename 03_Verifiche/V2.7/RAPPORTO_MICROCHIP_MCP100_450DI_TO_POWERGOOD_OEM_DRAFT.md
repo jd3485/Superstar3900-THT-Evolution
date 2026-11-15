@@ -104,3 +104,11 @@ PCB FRONT 13THT/28pad/12net/35 piste e MAIN intatti.
 ## Gate analitico aggiuntivo: resistenza minima bobina, 9 corner (16/11/2026)
 
 Con `R1912=1k5`, `R1914=10k`, `VBE=0,8V` **illustrativa**, VOH garantito `VDD−0,7V` a prova OEM `IOH=3mA` e forced β10, la condizione **necessaria** per il driver esistente è `Rcoil >= (VDD−2·VCEsat)/(10·[(VDD−0,7−0,8)/1500−0,8/10000])`. Su 3 rail sopra soglia (4,6/5/5,5V) e 3 cadute ipotetiche (0,15/0,2/0,3V), il peggiore limite è **216,443Ω**. La bobina Omron nominale da 167Ω non supera nessuno dei nove corner; una bobina idealizzata da 220Ω supera **soltanto questa disuguaglianza**, non la qualifica OEM né le condizioni di pickup, dropout, temperatura, transistor, flyback, contatti microsegnale o PVT. Non è una distinta componenti né proposta di collegamento hardware; `NO FAB / NO TX / NO BATTERIA / NO VEICOLO`.
+
+## Screening incrociato OEM Omron DC5/DC6 — 54 corner (16/11/2026)
+
+Fonte primaria [Omron G5V-1](https://omronfs.omron.com/en_US/ecb/products/pdf/en-g5v_1.pdf), tabella bobine: G5V-1 DC5 **167Ω** e DC6 **240Ω**, resistenza **±10% a 23°C**; tensione *must operate* **80% massimo** della nominale (4,0V per DC5, 4,8V per DC6, solo a 23°C). Il modello attraversa 3 rail MCP100 rilasciate (4,6/5/5,5V), 3 cadute ipotetiche **per ciascuno dei due NPN** (0,15/0,2/0,3V) e 3 resistenze bobina (90/100/110%): **27 stati per MPN, 54 totali**. Con Rbase1k5, pull-down10k, VBE0,8V e beta10 ipotetici:
+
+- **DC5**: pilotaggio base insufficiente in **27/27**; bobina al di sotto dei 4,0V di pickup OEM in **3/27**.
+- **DC6**: base insufficiente in **1/27**, nonostante 240Ω nominali oltre il limite analitico di 216,443Ω, perché il minimo di tolleranza è **216Ω**; bobina al di sotto dei **4,8V** minimi richiesti per garantire il pickup in **18/27**.
+- La variante a 6V non è una sostituzione qualificata a rail 5V. **Il superamento della condizione di resistenza non garantisce energizzazione né contatto NO.** Le grandezze VCEsat, beta e VBE sono illustrative; temperatura, pickup effettivo, correnti minime dei contatti audio, interconnessione e transitori non sono validati. Nessun circuito rilasciato; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
