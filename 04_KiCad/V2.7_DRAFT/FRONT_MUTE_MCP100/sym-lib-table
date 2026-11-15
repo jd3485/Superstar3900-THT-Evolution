@@ -1,0 +1,3 @@
+(sym_lib_table
+ (lib (name "TH_MCP100") (type "KiCad") (uri "${KIPRJMOD}/TH_MCP100.kicad_sym") (options "") (descr "MCP100-450DI/TO candidate THT D bondout supervisor"))
+)
