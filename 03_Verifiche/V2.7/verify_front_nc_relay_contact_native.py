@@ -23,6 +23,9 @@ def main():
     # CI attempt exposed four KiCad9 missing-library ERC violations; this
     # local registration fixes the *cause*, never waives warnings.
     local=SCH.parent
+    project=SCH.with_suffix(".kicad_pro")
+    assert project.exists(), "KiCad9 project required to load local sym-lib-table"
+    assert '"schematic": {}' in project.read_text(encoding="utf-8")
     table=(local/"sym-lib-table").read_text(encoding="utf-8")
     library=(local/"TH_MUTE.kicad_sym").read_text(encoding="utf-8")
     assert '(name "TH_MUTE")' in table
