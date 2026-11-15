@@ -1,3 +1,13 @@
+## 15 novembre 2026 — MAIN/FRONT S-meter: incompatibilità potenziale follower 5V / bobina analogica
+
+Confronto tecnico **solo fra i due schemi KiCad9 separati**: uscita tensione di banco MCP6002 `J1902/1 SMBUF_VOUT_BENCH` e ingresso bobina FRONT candidato `J1801/1 METER_DRIVE_CANDIDATE`. **NON esiste collegamento progettato, autorizzato o verificato tra loro.** Il follower non è un driver di corrente della bobina. Script `verify_smeter_main_front_voltage_contract.py` invocato dal gate KiCad9 FRONT dopo il contratto pin-net: incrocia i nomi e le proprietà reali degli schemi, il limite conservativo del precedente test FSD, e segnala esplicitamente che manca il MAIN AGC reale.
+
+In modello **ottimistico** si ipotizza che il follower abbia 5V disponibili all'uscita (alimentazione di banco 5V; escursione effettiva di uscita NON garantita) e che bobina, cavo e resistenza d'uscita siano 0Ω: i due resistori FRONT da 100kΩ ciascuno al -5% illustrativo limiterebbero la corrente massima di ramo a **26,316µA**. Per una bobina **puramente ipotetica** da 50µA FSD, il medesimo percorso richiederebbe almeno **9,5V** anche al minimo resistivo (10V nominali), quindi una sorgente a 5V non sarebbe sufficiente per fondo scala. Una bobina ipotetica da 20µA potrebbe invece essere sovraccaricata nello scenario ideale: non si può fissare il driver prima della scelta/qualifica dell'indicatore. Anche corti dei resistori, spostamenti del trimmer, impedenza e guasti connettori/cavo, offset e transitori non sono qualificati.
+
+La conclusione NON è aumentare arbitrariamente tensione del driver: definire prima MPN attivo dell'indicatore THT, FSD, Rcoil, durata/sovracorrente massima tollerabile, curva di risposta e requisito AGC; quindi progettare driver **di corrente controllata e limitata, fail-closed**, con riferimento e massa/cavo adeguati, senza dare al banco MCP6002 il ruolo di driver. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 15 novembre 2026 — FRONT S-meter: modello fail-closed FSD e corti R1801/R1802
 
 Nuovo script `verify_front_smeter_fsd_fault_screen.py`, integrato **dopo** esportazione/ERC/netlist nativa nel gate `verify_front_smeter_native.py`, valuta una **sorgente DC ideale limitata in tensione** a scopo esclusivamente illustrativo, la catena reale KiCad `J1801/1 → RV1801/2 → R1801 → R1802 → J1802/1`, il ritorno `J1802/2 → J1801/2`, due resistenze candidate 100kΩ/0,25W THT, tolleranza **ipotizzata** del 5% prima della selezione degli MPN, bobina con Rcoil minima 0Ω. L'avvolgimento RV1801/1–3 resta uno shunt sulla sorgente: lo script non qualifica corrente assorbita dal potenziometro, capacità del driver, resistenza del cavo, guasti wiper/avvolgimento, impulsi o tensione ai connettori.
