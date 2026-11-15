@@ -89,3 +89,5 @@ significa che il supervisore sia fail-safe/adeguato alla bobina.
 ## Primo gate nativo CI e correzione CAD (15/11/2026)
 
 La prima [Actions #43766197158](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766197158) sullo SHA `75dbc7b48cb2c5abe429909f7a1295bdd21f2612` ha FAST **SUCCESS**, ma FULL/required **FAILED**: KiCad9 `ERC Found 12 violations`, **0 errori / 12 warning** `endpoint_off_grid`, concentrati sui pin/fili R2002, R2003, R2004 e J2002. Corretti *nello schematico* i centri/pin di queste quattro posizioni ai multipli di **1,27 mm** (grid connection), senza waiver o modifica di net/pin-intent. Deve essere rieseguita la FULL sul nuovo HEAD; non assimilare la prima CI fallita a una qualifica.
+
+Correzione CAD integrativa sullo stesso branch: 12 segmenti di collegamento pin disegnati diagonalmente dal generatore (senza significato elettrico aggiuntivo) sono stati ortogonalizzati; i due endpoint J2002 residui a X=207,645 mm riallineati a X=208,28 mm. Verifica statica preventiva: **0 endpoint wire XY fuori multipli di 1,27 mm** sullo schematico aggiornato. Verifica KiCad9/ERC FULL sullo SHA finale rimane obbligatoria.
