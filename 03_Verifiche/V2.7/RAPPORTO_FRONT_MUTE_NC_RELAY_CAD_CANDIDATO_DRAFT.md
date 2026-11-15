@@ -67,3 +67,7 @@ Il test viene aggiunto alla FULL CI e non concede waiver ERC.
 
 **Stato:** candidato di topologia del contatto; **non approvato
 come circuito di sicurezza**. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+## Correzione tecnica CI obbligatoria prima del merge
+
+Il primo run PR #261, [Actions #43759196685](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43759196685), ha **FAILED FULL/Required** per **4 violazioni ERC `lib_symbol_issues`**: la libreria `TH_MUTE` embedded nel file schematico non era registrata nella configurazione KiCad9; FAST verde non bastava. Sullo stesso branch sono stati aggiunti **`TH_MUTE.kicad_sym` nativo editabile** e `sym-lib-table` locale; il test ora li esige entrambi prima dell'ERC. La FULL deve essere rieseguita e risultare verde su HEAD finale prima del merge, senza suppress o waiver. Nessuna qualifica di relay/driver è implicita.
