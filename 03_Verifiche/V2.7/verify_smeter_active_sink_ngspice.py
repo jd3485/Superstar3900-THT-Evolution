@@ -14,7 +14,7 @@ CIR = Path(__file__).with_name("SMETER_ACTIVE_SINK_BENCH_V2_7.cir")
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def simulate(vdd, vset, rcoil=500, beta=100):
+def simulate(vdd, vset, rcoil=500, beta=100, ce_short=False):
     if not all(math.isfinite(x) for x in (vdd, vset, rcoil, beta)):
         raise ValueError("non-finite case")
     if vdd < 0 or vset < 0 or rcoil <= 0 or beta < 1:
@@ -37,6 +37,12 @@ def simulate(vdd, vset, rcoil=500, beta=100):
     assert src.count("VDD VDD 0 ") == 1
     assert src.count("VSET CMD 0 ") == 1
     assert src.count("RCOIL VDD METER_LOW ") == 1
+    # Deliberate single-fault test: collector-emitter hard short bypasses
+    # transistor drive control. Retain the transistor so the circuit model
+    # otherwise remains identical to the clean bench. This is not an ESD test.
+    if ce_short:
+        assert src.count(".op\n.end\n") == 1
+        src = src.replace(".op\n.end\n", "RCE_SHORT METER_LOW SENSE 0.001\n.op\n.end\n")
     src = src.replace(".op\n.end\n",
         ".control\nset noaskquit\nop\nlet meter_ua = -i(vdd)*1e6\n"
         "print meter_ua\nquit\n.endc\n.end\n")
@@ -64,6 +70,13 @@ def main():
     candidate_meter = simulate(5, 0.5, rcoil=20000)
     beta40 = simulate(5, 0.5, beta=40)
     beta200 = simulate(5, 0.5, beta=200)
+    # Fail-closed counterexample on the real ngspice circuit topology:
+    # even with command held at ZERO, a single Q2101 C-E short supplies
+    # dangerous coil current from VDD. The 20k load is an OEM-candidate
+    # INPUT resistance, not verified winding resistance or overload rating.
+    ce_short_candidate = simulate(5, 0, rcoil=20000, ce_short=True)
+    ce_short_low_impedance = simulate(5, 0, rcoil=500, ce_short=True)
+    ce_short_poweroff_ideal = simulate(0, 0, rcoil=20000, ce_short=True)
     # This checks the assumed ideal servo only. It is NOT a measured
     # current tolerance, output compliance or fault isolation guarantee.
     assert 45 < baseline < 55, baseline
@@ -77,6 +90,16 @@ def main():
     # BF=40/200 here are model sweeps, NOT 2N3904 guaranteed hFE at 50uA.
     assert beta40 < baseline < beta200, (beta40, baseline, beta200)
     assert 47 < beta40 < 50 and 49 < beta200 < 50
+    # Independent resistor-network cross-check, not vendor device proof:
+    # 5V / (Rcoil + RSENSE) ignores 1mohm shorts and tiny leakage.
+    expected_ce_short_20k_uA = 5/(20000+10000)*1e6
+    expected_ce_short_500_uA = 5/(500+10000)*1e6
+    assert math.isclose(ce_short_candidate, expected_ce_short_20k_uA, rel_tol=0.03)
+    assert math.isclose(ce_short_low_impedance, expected_ce_short_500_uA, rel_tol=0.03)
+    assert ce_short_candidate > 3*50  # hypothetical 50uA meter is NOT protected
+    assert ce_short_low_impedance > 8*50
+    assert abs(ce_short_poweroff_ideal) < 0.1
+    assert zero < 0.5 and ce_short_candidate > 150  # OFF command cannot isolate fault
     for beta_bad in (0, -1, float('inf'), float('nan')):
         try:
             simulate(5, 0.5, beta=beta_bad)
@@ -97,6 +120,11 @@ def main():
         "velleman_AIM60005_candidate_modeled_coil_current_uA": candidate_meter,
         "BJT_generic_beta40_coil_uA": beta40,
         "BJT_generic_beta200_coil_uA": beta200,
+        "Q2101_CE_SHORT_CMD0_5V_20k_candidate_uA": ce_short_candidate,
+        "Q2101_CE_SHORT_CMD0_5V_500ohm_lab_uA": ce_short_low_impedance,
+        "Q2101_CE_SHORT_CMD0_VDD0_ideal_uA": ce_short_poweroff_ideal,
+        "single_CE_short_fail_closed": False,
+        "independent_hard_current_disconnect_present": False,
         "vendor_hFE_at_50uA_guaranteed": False,
         "movement_OEM_active_status_and_overload_qualified": False,
         "BJT_model_is_vendor": False,
