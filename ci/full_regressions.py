@@ -239,6 +239,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_c1801_lowdrive_loaded_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Quantify unknown mixer IF port: 50/1k/10k ohm synthetic source into
+    # both direct tank and J113 candidate, 0.01/0.10 V generic AM at pin3.
+    # No OEM RF source impedance, real receiver sensitivity or PCB approval.
+    print("::group::V2.7 IF455 SIX MIXER SOURCE IMPEDANCE LOW-DRIVE TRANSIENTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_if455_mixer_source_impedance_lowdrive_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
