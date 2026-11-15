@@ -37,7 +37,12 @@ def main():
         # Actual schematic pin-net names are asserted by native related gate;
         # this comparison refuses to drift from the existing J113 candidate.
         parts=set(ref for pins in nets.values() for ref,pin in pins)
-        assert "J1801" in parts and "Q1801" in parts or "J1801" in parts,parts
+        assert parts=={"J1801","J1802","J1803","C1801","R1801",
+                      "Q1801","R1802","C1802","R1803"},parts
+        require(nets,"IF455_TANK_OUT",("J1801","1"),("C1801","1"))
+        require(nets,"JFET_GATE",("C1801","2"),("Q1801","3"))
+        require(nets,"JFET_AC_OUT",("C1802","2"),("J1802","1"))
+        require(nets,"VLAB6_JFET_ONLY",("Q1801","1"),("J1803","1"))
         for drive in LEVELS:
             rows=[]
             for pos in POSITIONS:
