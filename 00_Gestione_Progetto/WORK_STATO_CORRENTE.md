@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #270 MERGED: MCP100 source-current gate, NO FAB; nuova analisi coil-bound in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #270 SHA `4afd922ebf355a38d89dee8f5ef228958f385974`; aggiornamento checkpoint sulla revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #271 MERGED: coil-bound 9 corner; nuova verifica incrociata Omron in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #271 SHA `c7b6cbcdb89fd09d2760cc3b05c74e980900974f`; checkpoint del merge sulla revisione successiva.
+
+## 16 novembre 2026 — PR #271 MERGED; screening Omron DC5/DC6 in corso
+
+**Verificato su GitHub:** PR #271 MERGED, main SHA `c7b6cbcdb89fd09d2760cc3b05c74e980900974f`, workflow [#43773219018](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43773219018) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `MCP100_9CORNER_NECESSARY_COIL_IMPEDANCE_NOT_RELAY_QUALIFICATION`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, nessun Traceback; gate Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Nessun CAD/PCB modificato; limite matematico a 9 corner **216,443Ω**, non release.
+
+**Branch corrente non integrato:** `engineering/v27-omron-5v-6v-pickup-driver-oem-screen-20261116`. Nuova matrice con fonte primaria Omron G5V-1: **54 corner** (DC5/DC6 ×3 rail×3 drop×3 tolleranze); DC5 **27/27** con pilotaggio insufficiente, **3/27** sotto pickup; DC6 **1/27** pilotaggio insufficiente e **18/27** sotto pickup. Modello transistor non qualificato, test nativo CI sul nuovo HEAD da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 16 novembre 2026 — PR #270 integrata, MCP100 driver coil-bound in nuova revisione
 
