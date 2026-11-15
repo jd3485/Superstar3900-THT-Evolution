@@ -75,6 +75,9 @@ def main():
     # dangerous coil current from VDD. The 20k load is an OEM-candidate
     # INPUT resistance, not verified winding resistance or overload rating.
     ce_short_candidate = simulate(5, 0, rcoil=20000, ce_short=True)
+    # Distributor TME specifies 2kΩ for identical Velleman AIM60005;
+    # manufacturer page states 20kΩ, unresolved 10x contradiction.
+    ce_short_2k_distributor_case = simulate(5, 0, rcoil=2000, ce_short=True)
     ce_short_low_impedance = simulate(5, 0, rcoil=500, ce_short=True)
     ce_short_poweroff_ideal = simulate(0, 0, rcoil=20000, ce_short=True)
     # This checks the assumed ideal servo only. It is NOT a measured
@@ -94,8 +97,12 @@ def main():
     # 5V / (Rcoil + RSENSE) ignores 1mohm shorts and tiny leakage.
     expected_ce_short_20k_uA = 5/(20000+10000)*1e6
     expected_ce_short_500_uA = 5/(500+10000)*1e6
+    expected_ce_short_2k_uA = 5/(2000+10000)*1e6
     assert math.isclose(ce_short_candidate, expected_ce_short_20k_uA, rel_tol=0.03)
     assert math.isclose(ce_short_low_impedance, expected_ce_short_500_uA, rel_tol=0.03)
+    assert math.isclose(ce_short_2k_distributor_case, expected_ce_short_2k_uA, rel_tol=0.03)
+    assert ce_short_2k_distributor_case > 8*50
+    assert ce_short_candidate < ce_short_2k_distributor_case < ce_short_low_impedance
     assert ce_short_candidate > 3*50  # hypothetical 50uA meter is NOT protected
     assert ce_short_low_impedance > 8*50
     assert abs(ce_short_poweroff_ideal) < 0.1
@@ -122,6 +129,8 @@ def main():
         "BJT_generic_beta200_coil_uA": beta200,
         "Q2101_CE_SHORT_CMD0_5V_20k_candidate_uA": ce_short_candidate,
         "Q2101_CE_SHORT_CMD0_5V_500ohm_lab_uA": ce_short_low_impedance,
+        "Q2101_CE_SHORT_CMD0_5V_2k_distributor_uA": ce_short_2k_distributor_case,
+        "AIM60005_internal_ohms_OEM_vs_distributor_discrepancy": "OEM 20000 vs TME 2000, NOT QUALIFIED",
         "Q2101_CE_SHORT_CMD0_VDD0_ideal_uA": ce_short_poweroff_ideal,
         "single_CE_short_fail_closed": False,
         "independent_hard_current_disconnect_present": False,
