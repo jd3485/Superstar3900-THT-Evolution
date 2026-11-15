@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #206 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #208 verificata; revisione FRONT in lavorazione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #208 MERGED; nuova revisione FRONT FSD (branch, non ancora integrata)
+
+**[PR #208](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/208) MERGED** su `main` commit `10bef3ac3e96de8f7970e443021124f88a8e2ef9`, head tecnico `00a9d35106ecb761d5e6603fc868f09e2fdf0471`, [Actions #43655759379](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43655759379): FAST/FULL/required **3/3 SUCCESS**. Log FULL: ERC MCP6002 0 violazioni, `SMETER_R1903_YAGEO_FAULT_ENVELOPE_FAIL_CLOSED`, 13 riferimenti / 7 reti / 32 pin netlist standalone. R1903 cutoff modello DC −200V circa 126,5812°C: pass teorico 125°C, fail 130°C. Non prova hardware, ESD, temperatura corporea o MCP6002 stress.
+
+**In preparazione, NON integrato** branch `v27-front-smeter-fsd-drive-screen-20261115` da main SHA sopra: nuovo `verify_front_smeter_fsd_fault_screen.py` richiamato dopo ERC/netlist FRONT con screening DC guasti 0/1/2 resistori in corto, Rmin conservativa 95kΩ ciascuno e esempi FSD non selezionati. A 20V ipotetici senza Rcoil: ~105,263µA integri; ~210,526µA con un corto; nessun bound con due corti. Nessun MPN/FSD, driver, Rcoil, cavo o PCB qualificati. Attendere FAST/FULL/required CI sul commit finale e PR prima di integrare. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — V2.7 R1903 fault-envelope test in branch, NOT integrated until PR CI passes
 
