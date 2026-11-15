@@ -58,3 +58,7 @@ I circuiti THT attuali rimangono isolati e il PCB FRONT
 ## CI tecnica, correzione di una condizione test
 
 Il primo [run #43764261866](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43764261866) ha **FAST SUCCESS, FULL/Required FAIL**: l'asserzione finale di brownout confrontava per errore 5,0−0,3−0,3=4,4 V con 4,0 V, sebbene il caso che non garantisce pickup sia **rail minimo 4,5−0,3−0,3=3,9 V**. Corretto esclusivamente l'input alla verifica, senza attenuare le soglie o mascherare l'errore. FULL sul successivo HEAD obbligatoria; nessun merge di PR fallita.
+
+## Integrazione tecnica verificata (post-merge)
+
+**[PR #265](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/265) MERGED** su main `18994d6b054ad8fa3e7bb8bff55aeda3fcf23497`; final technical HEAD `62bd247b503b9c1128ab11891d2326615d4610e1`. [Actions #43764706299](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43764706299): FAST/FULL/Required **SUCCESS 3/3**, FULL 111 test legacy PASS e marker `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`; log controllato, nessun Traceback. Lo screen sui 36 corner ha trovato **29/36 casi** senza margine base sufficiente all'ipotesi forced β10 e **6/36 casi** con pickup OEM a 23°C non garantito. Questi sono **risultati di REIEZIONE progettuale** e NON condizioni di accettazione del relè. L'errore del primo run è stato corretto e documentato, senza waiver. PCB invariata.
