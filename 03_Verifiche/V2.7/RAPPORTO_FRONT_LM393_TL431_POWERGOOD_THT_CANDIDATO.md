@@ -85,3 +85,7 @@ significa che il supervisore sia fail-safe/adeguato alla bobina.
    solo di una PCB prodotto reale.
 
 **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Primo gate nativo CI e correzione CAD (15/11/2026)
+
+La prima [Actions #43766197158](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766197158) sullo SHA `75dbc7b48cb2c5abe429909f7a1295bdd21f2612` ha FAST **SUCCESS**, ma FULL/required **FAILED**: KiCad9 `ERC Found 12 violations`, **0 errori / 12 warning** `endpoint_off_grid`, concentrati sui pin/fili R2002, R2003, R2004 e J2002. Corretti *nello schematico* i centri/pin di queste quattro posizioni ai multipli di **1,27 mm** (grid connection), senza waiver o modifica di net/pin-intent. Deve essere rieseguita la FULL sul nuovo HEAD; non assimilare la prima CI fallita a una qualifica.
