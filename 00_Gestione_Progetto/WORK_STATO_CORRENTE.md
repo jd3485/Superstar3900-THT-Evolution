@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #218 integrata; primo PCB LAB THT in branch pending DRC). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #219 integrata; primo LAB PCB THT verificato DRC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #219 MERGED, primo PCB KiCad9 THT fisico SOLO LAB con DRC0 verificato
+
+**[PR #219](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/219) MERGED** su `main` SHA `efc4cb2e2e86ff966fff9a33663184b671351091`, final head tecnico `1b277e935ae280c22005c844f85327d8940ae878`. [Actions #43663912790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43663912790): FAST/FULL/required **SUCCESS 3/3**; audit log FULL nativo: `FRONT_ILLUM_ERC_STDOUT Found 0 violations`, `FRONT_ILLUM_LAB_PCB_DRC_STDOUT Found 0 violations`, `Found 0 unconnected items`, `PASS_KICAD9_FRONT_ILLUM_LAB_PCB_DRC0_SCHEMATIC_NETS4_PADS10_THT5_NO_FAB`. **Prima scheda KiCad9 realmente instradata** versione LAB `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb`, due strati, Edge.Cuts 80×55mm, **5 footprint THT / 10 pad / 4 reti / 12 segmenti rame**, DRC0 sul file reale e corrispondenza netlist pin↔pad. Tre footprint di laboratorio locali `TH_FRONT_ILLUM_LAB.pretty` registrati in `fp-lib-table` e assegnati anche allo schema; NON sono misure OEM qualificate.
+
+Tentativi precedenti nel branch: FAST #43663134638 e #43663198626 fallite per test storici V0.3/V0.4 che vietavano qualsiasi PCB anche laboratorio, corretti limitando esplicitamente la sola eccezione a questo LAB senza autorizzare PCB prodotto. FULL #43663285212 DRC rilevò **5 mismatch** tra geometrie custom e presunte librerie ufficiali, eliminati tramite libreria LAB locale. FULL #43663725824 rilevò **5 impronte non trovate** per progetto KiCad differente, risolto creando `FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pro` e impostando la directory DRC corretta. **Nessuna soppressione DRC o waiver**. La nuova PCB è esclusivamente esercizio EDA, NON costituisce la PCB-FRONT definitiva né PCB-MAIN radio. Manca qualifica LED OEM, alimentazione reale, EMI, meccanica pannello, cablaggi, S-meter e RF; NON fabbricare e NON produrre Gerber. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Passo successivo sostanziale:** proseguire integrazione elettrica/meccanica MAIN–FRONT e qualifica protezioni S-meter, quindi progettazione delle **due vere PCB** con chiusura OEM e DRC indipendenti, non riproporre il semplice board LAB come prodotto.
+
+---
 
 ## 15 novembre 2026 — PR #218 MERGED: schema FRONT ILLUM ERC0; prima PCB di banco separata in branch, DRC NON ANCORA APPROVATO
 
