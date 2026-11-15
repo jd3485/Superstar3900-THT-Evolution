@@ -1,11 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #232 MERGED, 75 punti AF/KCL verificati; nuovo studio impedenza sorgente AM455 da verificare). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico certo PR #232: `158152c6c683869c4a8221b259079f6182fa61fa`. Le modifiche successive rimangono sul branch fino a CI verde e merge.
+**Aggiornato:** 15 novembre 2026 (PR #233 MERGED: 300 casi sorgente AM455; PR #232 75 casi AF; CI finale PASS entrambe). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico verificato PR #233 SHA `ce4629768109befaf5bc003599913e7038f0ce55`. Checkpoint post-merge proposto su branch.
 
-## 15 novembre 2026 — studio impedenza equivalente sorgente AM455 300 casi, BRANCH (CI pending)
+## 15 novembre 2026 — PR #233 MERGED: studio impedenza sorgente AM455 300 casi
 
-Branch `v27-am-envelope-source-impedance-300cases-20261115` da main SHA `158152c6c683869c4a8221b259079f6182fa61fa`. Nuovo `03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py` aggiunto a FULL: carico di R1501=47k e C1501=1nF verificato con netlist KiCad9 AM455, più modello lineare illustrativo di resistenza di Thévenin a monte dell'inviluppo **1/10/47/100 kΩ** e circuito downstream di PR #232. Matrice 4 nodi KCL indipendente dalla riduzione serie/parallelo, 300 casi (4 Rsource × 5 frequenze × 5 wiper × 3 Rin). Il diodo **non** è un resistore nel circuito reale: questi scenari non sono min/max OEM e non equivalgono a sensibilità/SINAD, non comprendono IF455 RF, noise, THD o LM386 attivo. Report `03_Verifiche/V2.7/RAPPORTO_AM455_IMPEDENZA_SORGENTE_AF_300KCL_DRAFT.md`. **Nessun CI finale eseguito al momento del checkpoint branch, non merged, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**[PR #233](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/233) MERGED** su main `ce4629768109befaf5bc003599913e7038f0ce55`, head tecnico `9bee4c6f48db1c4886f5985080d2a7d23480b1ab`; [Actions #43701167950](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43701167950) FAST/FULL/required **SUCCESS 3/3**, log `PASS_KICAD9_AM455_ENVELOPE_300_RSOURCE_AC_KCL_CASES_NOT_DIODE_OEM_NO_FAB_NO_TX`, FULL 111 comandi storici. Nuovo `03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py` aggiunto a FULL: carico di R1501=47k e C1501=1nF verificato con netlist KiCad9 AM455, più modello lineare illustrativo di resistenza di Thévenin a monte dell'inviluppo **1/10/47/100 kΩ** e circuito downstream di PR #232. Matrice 4 nodi KCL indipendente dalla riduzione serie/parallelo, 300 casi (4 Rsource × 5 frequenze × 5 wiper × 3 Rin). Il diodo **non** è un resistore nel circuito reale: questi scenari non sono min/max OEM e non equivalgono a sensibilità/SINAD, non comprendono IF455 RF, noise, THD o LM386 attivo. Report `03_Verifiche/V2.7/RAPPORTO_AM455_IMPEDENZA_SORGENTE_AF_300KCL_DRAFT.md`. **CI finale eseguita e verificata sul final HEAD; master MAIN da 166 refs invariato; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
