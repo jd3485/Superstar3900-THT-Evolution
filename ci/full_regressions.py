@@ -210,6 +210,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Vishay OEM datasheet (81857 rev1.6) compared against synthetic
+    # generic D model .op VF/IR; Cjo=8p intentionally outside OEM 4pF max.
+    # Does NOT claim a manufacturer-supplied SPICE model or product release.
+    print("::group::V2.7 AM455 VISHAY 1N4148 GENERIC MODEL DATASHEET SCREEN",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_am455_1n4148_vishay_datasheet_model_screen_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
