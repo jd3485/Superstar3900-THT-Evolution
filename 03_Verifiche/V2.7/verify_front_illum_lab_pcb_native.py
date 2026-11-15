@@ -19,6 +19,10 @@ PCB=BASE/"FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb"
 def main():
     board=PCB.read_text(encoding="utf-8")
     assert "(kicad_pcb (version " in board
+    assert (BASE/"fp-lib-table").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_HEADER_2P54.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_RESISTOR_7P62.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_LED_2P54.kicad_mod").is_file()
     assert board.count("(footprint ")==5
     assert board.count("(pad \"")==10
     assert board.count("(segment ")==12
@@ -46,7 +50,13 @@ def main():
         assert ref in expected and ref not in found
         assert "(attr through_hole)" in chunk
         fp=chunk.split('(layer "F.Cu")',1)[0]
-        assert any(x in fp for x in ("Connector_PinHeader", "Resistor_THT", "LED_THT"))
+        assert fp.startswith('"TH_FRONT_ILLUM_LAB:LAB_'),fp
+        if ref.startswith("J"):
+            assert "LAB_HEADER_2P54" in fp
+        elif ref.startswith("R"):
+            assert "LAB_RESISTOR_7P62" in fp
+        elif ref.startswith("D"):
+            assert "LAB_LED_2P54" in fp
         pins=set()
         for number,net in re.findall(
                 r'\(pad "(\d+)" thru_hole.*?\(net \d+ "([^"]+)"\)',chunk,re.S):
