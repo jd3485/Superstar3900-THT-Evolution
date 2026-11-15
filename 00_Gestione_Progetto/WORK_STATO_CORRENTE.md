@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #221 integrata; terzo foglio S-meter passivo in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #222 integrata; FRONT master 3 fogli ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #222 MERGED: FRONT gerarchico a TRE fogli KiCad9 nativi ERC0
+
+**[PR #222](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/222) MERGED** su main SHA `996dd8cbb451ff7064accdaecf7cdb1c87cfdf24`, HEAD tecnico `f70c625c47fcdb6bdccd5c0c40659848fa8fd6bc`. [Actions #43665602919](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43665602919): FAST/FULL/required **SUCCESS 3/3**, audit log native `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_3SHEETS_13REFS_12NETS_28PINS_ERC0_NO_CROSS_RAIL_NO_FAB`. **Master gerarchico FRONT parziale reale** `04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`, tre fogli **FRONT_VOLUME** 3 refs/3 reti/7 pin + **FRONT_ILLUM_BENCH** 5 refs/4 reti/10 pin + **FRONT_SMETER** passivo 5 refs/5 reti/11 pin. Ciascuno in dominio separato; nessun collegamento elettrico fra domini, nessun connettore MAIN-FRONT o alimentatore effettivo autorizzato.
+
+S-meter passivo: R1801/R1802 100kΩ, trimmer RV1801 e due header sono **candidati non qualificati**; il driver attivo in banco separato NON è stato inserito nel master, la FSD/Rcoil/OEM e la protezione da fault del movimento restano aperte [issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213). La PCB THT instradata LED **LABONLY** DRC0 da PR #219 rimane **l'unico file PCB**; NON è la scheda FRONT definitiva né la PCB-MAIN radio. Manca ancora integrazione MAIN e UI front complete, connettori/meccanica, BOM produzione, RF e schemi MAIN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo passo concreto:** aggiungere e validare in KiCad9 le interfacce FRONT-MAIN in un contratto univoco (non ponticellare le masse/rail senza ESD/EMI), congelare componenti critici e progettare le due PCB funzionali; non replicare una PCB dimostrativa come radio completa.
+
+---
 
 ## 15 novembre 2026 — PR #221 MERGED, terzo foglio S-meter passivo aggiunto a FRONT su nuovo branch
 
