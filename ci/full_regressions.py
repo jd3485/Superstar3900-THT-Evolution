@@ -319,6 +319,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_mcp100_450_oem_powergood_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Real MAIN LM386 R1203 220k local-GND bias/bleeder (THT):
+    # KiCad9 ERC0 exact pin-net and 225 normal + 225 open-volume-low
+    # independent complex AC/KCL cases. Not certified mute or audio safety.
+    print("::group::V2.7 MAIN LM386 R1203 220K DC INPUT RETURN",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_main_lm386_r1203_bleeder_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
