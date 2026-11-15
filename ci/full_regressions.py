@@ -286,6 +286,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_nc_relay_contact_fault_matrix_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Isolated dual-enable THT relay coil driver candidate: native KiCad9
+    # ERC0 and exact eight partitions, 48 assumed DC current/beta checks.
+    # NO OEM relay or physical supervisor; never claim product fail-safe.
+    print("::group::V2.7 FRONT NC MUTE DUAL ENABLE COIL DRIVER KICAD9",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_nc_dual_enable_coil_driver_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
