@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #273 MERGED: D1911 CAD THT; screening RL 216 casi in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #273 SHA `4804b950e7894e354f88e927b22573daf8861f57`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #274 MERGED: D1911 RL 216 casi; resistori THT fisici su branch successivo). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #274 SHA `ed2c0e219ac79ea15c965c7467536b688fed32c0`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #274 MERGED; footprint fisici R1911–R1914 su branch successivo
+
+**Verificato GitHub:** PR #274 MERGED, main `ed2c0e219ac79ea15c965c7467536b688fed32c0`, workflow [#43775458662](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43775458662) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `FRONT_D1911_RL_DIODE_216_ELECTRICAL_DECAY_ONLY_NO_RELAY_RELEASE`, `PASS_FRONT_D1911_216_RL_ELECTRICAL_DECAY_ILLUSTRATIVE_NONFAB`, KiCad9 `Found 0 violations`, nessun Traceback/errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Analisi RL soltanto elettrica (NO prova tempo contatti).
+
+**Branch corrente** `engineering/v27-front-driver-four-resistor-tht-footprints-20261116`: assegnati in schema CAD KiCad R1911–R1914 tutti a `Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal`, controllo native gate dei quattro footprint. Non sono resistori elettricamente o termicamente qualificati, né l'attuale doppio NPN è un driver rilasciabile; PCB invariato; CI ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 16 novembre 2026 — PR #273 MERGED; RL elettrico D1911 su branch successivo
 
