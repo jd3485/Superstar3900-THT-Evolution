@@ -1,3 +1,13 @@
+## 15 novembre 2026 — primo file KiCad9 .kicad_pcb autentico: 5 componenti THT, **SOLO laboratorio illuminazione**
+
+[PR #218](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/218) integrata su main SHA `0d4133fab50a1c898a9b61515e01383c1b60422f`. [Actions #43662613171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43662613171) FAST/FULL/required **3/3 PASS**, FULL `FRONT_ILLUM_ERC_STDOUT Found 0 violations` e `PASS_KICAD9_FRONT_LED_ILLUM_THT5_NETS4_PINS10_ERC0_LAB_ONLY_NO_FAB_NO_TX`: il circuito di LED è uno schema vero ma NON un prodotto finale.
+
+Nuovo **layout nativo PCB KiCad9** `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb` sulla branch separata, con board Edge.Cuts nominale **80×55mm**, due strati F.Cu/B.Cu, **5 footprint passanti** (J2201 header 2 poli, R2201/R2202 assiali 7,62mm, D2201/D2202 LED5mm), **10 pad** tutti con net assegnata, 4 reti reali, 12 segmenti rame da 0,5mm e instradamento esplicito, senza via e senza piani di massa. La disposizione è provvisoria come **esercizio di controllo EDA** e NON dimensionata sulla geometria del frontalino. Geometria pad/fabbricazione e test 3D/meccanici non OEM; footprint embedded molto semplificati non ancora riconciliati con quelli lib ufficiali. NO Gerber, NO BOM release, NO ordine.
+
+Test nuovo `03_Verifiche/V2.7/verify_front_illum_lab_pcb_native.py`: legge la PCB, confronta ref/pad/net con netlist effettivamente esportata da KiCad9 dello schema, poi esegue **`kicad-cli pcb drc --exit-code-violations`** e si ferma su qualunque violazione nota, integrato nel gate esistente che controlla anche ERC. **Alla creazione del branch nessun pass DRC dichiarato:** occorre aspettare FAST/FULL/required sul commit finale ed esaminare il rapporto completo (eventuali errori CAD da correggere senza waiver). Anche con DRC0 non saranno dimostrate affidabilità hardware, 5V effettivi, alimentazione, energia guasti, FSD S-meter, EMI, cavi MAIN/FRONT, chassis o compatibilità produttiva. **La vera PCB-FRONT Evolution e la PCB-MAIN radio restano incompiute**. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — nuovo CAD KiCad9 nativo THT: FRONT retroilluminazione a due LED indipendenti, solo banco
 
 **PR217 MERGED** su main `d34b71676c6f816ce0e6b1251e9b119f9bb8adf3`, [Actions #43661830999](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661830999) FAST/FULL/required PASS. Risultato ngspice del **modello ideale, non hardware** a due sink S-meter: a VSETMAIN=VSETGUARD=1V 5V di banco, **98,01386µA** (con VDD guasto ipotetico 12V **98,09089µA**); la protezione a due loop NON è fail-closed su causa comune. La catena resta banco SPICE, non PCB.
