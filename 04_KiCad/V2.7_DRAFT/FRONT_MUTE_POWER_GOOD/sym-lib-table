@@ -1,0 +1,3 @@
+(sym_lib_table
+ (lib (name "TH_PGOOD") (type "KiCad") (uri "${KIPRJMOD}/TH_PGOOD.kicad_sym") (options "") (descr "Isolated 5V TL431+LM393 THT power good candidate"))
+)
