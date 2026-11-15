@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 from verify_interboard_audio_contract_native import exported_nets,require
+from verify_front_illum_lab_pcb_native import main as verify_bench_pcb_drc
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH"
@@ -70,6 +71,7 @@ def main():
          "FRONT_product_PCB_created":False,
          "NO_FAB_NO_TX":True},flush=True)
     print("PASS_KICAD9_FRONT_LED_ILLUM_THT5_NETS4_PINS10_ERC0_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    verify_bench_pcb_drc()
 
 
 if __name__=="__main__":
