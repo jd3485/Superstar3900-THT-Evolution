@@ -247,6 +247,13 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_if455_mixer_source_impedance_lowdrive_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native placement-only FRONT KiCad9 .kicad_pcb: 13 THT refs, all 28 pads
+    # and exact 12 independent schematic nets. No edge, copper or DRC0 claim.
+    print("::group::V2.7 FRONT 13REF NATIVE THT PLACEMENT NO-FAB CAD",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
