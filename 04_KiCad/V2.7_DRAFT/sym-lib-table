@@ -12,4 +12,6 @@
  (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/../V1.8/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431BCLP IRF9540N OVP pilot"))
  (lib (name "THT_V20") (type "KiCad") (uri "${KIPRJMOD}/../V2.0/THT_V20.kicad_sym") (options "") (descr "MC34063ABN DIP8 boost and LM317 THT VTUNE rail")) (lib (name "THT_V24") (type "KiCad") (uri "${KIPRJMOD}/../V2.6/THT_V24.kicad_sym") (options "") (descr "V2.4 Diotec 1N5352B 15V 5W Zener supervisor pilot THT"))
 
+ (lib (name "TH_TANK") (type "KiCad") (uri "${KIPRJMOD}/IF455_TANK/TH_TANK.kicad_sym") (options "") (descr "THT IF455 passive tank bench source"))
+ (lib (name "TH_DEMOD") (type "KiCad") (uri "${KIPRJMOD}/AM455_ENVELOPE/TH_DEMOD.kicad_sym") (options "") (descr "THT AM455 envelope detector bench source"))
 )
