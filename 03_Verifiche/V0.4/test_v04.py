@@ -112,9 +112,16 @@ class V04(unittest.TestCase):
     # FRONT LED lab-only PCB may coexist, with independent KiCad9 DRC gate.
     self.assertFalse(list((ROOT/'04_KiCad/V0.4').rglob('*.kicad_pcb')))
     boards={p.relative_to(ROOT).as_posix() for p in (ROOT/'04_KiCad').rglob('*.kicad_pcb')}
-    self.assertTrue(boards.issubset({
-        '04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'
-    }),('Unauthorized PCB outside known standalone LAB board',boards))
+    lab='04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'
+    placement='04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb'
+    self.assertEqual(boards,{lab,placement},('Unauthorized PCB outside two explicitly known NONFAB artifacts',boards))
+    candidate=(ROOT/placement).read_text(encoding='utf-8')
+    self.assertEqual(candidate.count('(footprint "'),13)
+    self.assertIn('NOT PRODUCTION PCB',candidate)
+    for forbidden in ('(segment ','(via ','(zone ','(layer "Edge.Cuts")'):
+        self.assertNotIn(forbidden,candidate)
+    # Native KiCad9 13 footprints / 28 pad↔net / 12 isolated nets,
+    # import and positional export are independently tested in FULL.
 
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
  def test_33_handoff_and_technical_report(self):
