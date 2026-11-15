@@ -23,12 +23,12 @@ CONTACT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
 EXPECTED={
  "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1")},
- "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","2")},
- "SERIES_MID":{("Q1911","3"),("Q1912","2")},
+ "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","1")},
+ "SERIES_MID":{("Q1911","3"),("Q1912","1")},
  "DRIVER_GND":{("Q1912","3"),("R1913","2"),("R1914","2"),
                ("J1911","2"),("J1912","2"),("J1913","2")},
- "DRIVE1_BASE":{("Q1911","1"),("R1911","2"),("R1913","1")},
- "DRIVE2_BASE":{("Q1912","1"),("R1912","2"),("R1914","1")},
+ "DRIVE1_BASE":{("Q1911","2"),("R1911","2"),("R1913","1")},
+ "DRIVE2_BASE":{("Q1912","2"),("R1912","2"),("R1914","1")},
  "ENABLE_AUDIO_LAB":{("J1912","1"),("R1911","1")},
  "POWER_GOOD_LAB":{("J1913","1"),("R1912","1")},
 }
@@ -40,6 +40,10 @@ def main():
     assert all('(symbol "'+s+'"' in library
                for s in ("NPN_ABSTRACT","RESISTOR","FLYBACK_DIODE","PORT2"))
     assert raw.count('(symbol (lib_id "TH_COIL:NPN_ABSTRACT")')==2
+    assert raw.count("BC33725BU_ONSEMI_CANDIDATE_NOT_DRIVER_RELEASE")==2
+    assert raw.count("Package_TO_SOT_THT:TO-92_Inline")==2
+    assert library.count('(name "B" (effects (font (size 1 1)))) (number "2"')==1
+    assert library.count('(name "C" (effects (font (size 1 1)))) (number "1"')==1
     assert raw.count('(symbol (lib_id "TH_COIL:RESISTOR")')==4
     assert raw.count('(symbol (lib_id "TH_COIL:FLYBACK_DIODE")')==1
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
@@ -76,7 +80,7 @@ def main():
     assert nets["COIL_PLUS_LAB"].isdisjoint(nets["COIL_MINUS_LAB"])
     assert ("D1911","1") in nets["COIL_PLUS_LAB"]
     assert ("D1911","2") in nets["COIL_MINUS_LAB"]
-    assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","2")}
+    assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","1")}
     # 4 logic control combinations; connected coil has no independent ground
     # unless BOTH switches conduct (idealized). Stuck-ON transistor cases
     # are explicitly NOT protected by this simple two-enable chain.
