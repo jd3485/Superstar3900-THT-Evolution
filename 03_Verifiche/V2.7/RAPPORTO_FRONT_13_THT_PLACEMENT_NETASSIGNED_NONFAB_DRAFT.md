@@ -34,6 +34,10 @@ Al precedente routing LED di laboratorio (13 segmenti, 4 reti) sono stati aggiun
 
 **Conservare divieto di produzione:** niente Edge.Cuts, fori chassis, alimentazione reale, EMC, validazione termica, Gerber o DRC0 di prodotto. Il controllo geometrico 2-D non sostituisce il DRC nativo su scheda definitiva con regole stackup, footprint OEM e geometria meccanica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
+## Verifica finale della PR #252
+
+**[PR #252](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/252) MERGED** su main `4194a1248b163e48d7c741804ffea8a3c0b09c96` (HEAD tecnico `284ceee28563bc12f98d986141500f205b6839ab`). [GitHub Actions #43735099946](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43735099946): **FAST/FULL/required SUCCESS 3/3**, 111 regressioni legacy, `PASS_KICAD9_FRONT_13THT_28PADS_ALL12_NETS_ROUTED_35_SEGMENTS_NO_OUTLINE_NO_DRC_NO_FAB`; `kicad-cli pcb export pos` ha esportato 13 posizioni. Gli 8 nodi AF+S-meter sono ora instradati con 22 ulteriori segmenti reali, oltre ai 13 LED LAB. Il controllo di clearance geometrica 2-D pista↔pad THT e piste di reti differenti è passato sul **layout candidato**, senza costituzione di gate DRC0 fabbricazione. Rimangono ignoti dimensioni e meccanica pannello, MPN/footprint finali, return e cablaggi MAIN, EMI/ESD e adattamento S-meter. Non generare Gerber/ordini.
+
 ## Gate CAD nativo e limiti di progetto
 
 `03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py` estrae strutturalmente dall'artefatto i 13 footprint, i relativi 28 pad e i loro codici rete, confrontando **tutte** le coppie ref/pad con le 12 partizioni dell'ERC/netlist del FRONT. Esegue inoltre **kicad-cli pcb export pos** nativo a garanzia che KiCad9 possa aprire il file e identificare le coordinate di tutti i componenti THT. Fallisce se trova segmenti diversi dai 13 tracciati LED LAB consentiti, via, rame riempito, outline di fabbricazione, pad SMD, riferimenti duplicati, pin↔net alterati o potenziometri non marcati come PROVISIONAL. Aggiunto come gate FULL.
