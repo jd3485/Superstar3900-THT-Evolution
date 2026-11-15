@@ -19,6 +19,17 @@ BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_N
 
 def main():
     raw=SCH.read_text(encoding="utf-8")
+    # Project symbol library is physically present and resolved. The first
+    # CI attempt exposed four KiCad9 missing-library ERC violations; this
+    # local registration fixes the *cause*, never waives warnings.
+    local=SCH.parent
+    table=(local/"sym-lib-table").read_text(encoding="utf-8")
+    library=(local/"TH_MUTE.kicad_sym").read_text(encoding="utf-8")
+    assert '(name "TH_MUTE")' in table
+    assert '${KIPRJMOD}/TH_MUTE.kicad_sym' in table
+    assert '(symbol "RELAY_SPDT_NC_MUTE_THT"' in library
+    assert '(symbol "LAB_2PIN"' in library
+    assert "NC=GND (NO POWER)" in library
     assert raw.count('(symbol (lib_id "TH_MUTE:RELAY_SPDT_NC_MUTE_THT")')==1
     assert raw.count('(symbol (lib_id "TH_MUTE:LAB_2PIN")')==3
     assert raw.count('(pin passive line ')==7
