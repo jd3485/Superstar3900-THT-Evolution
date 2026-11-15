@@ -82,7 +82,8 @@ def main():
     assert all_refs==(old_refs|aud_refs),(all_refs-(old_refs|aud_refs),(old_refs|aud_refs)-all_refs)
     # All net groups must be conserved with no accidental audio↔RF ground ties.
     expected=Counter(list(old_parts)+list(aud_parts))
-    actual=Counter(all_parts)
+    # Count the KEYS, not dict values (which are native net-name strings).
+    actual=Counter(list(all_parts))
     assert expected==actual,(
         "V2.6 MAIN or RX audio pin-net partition changed or unintended short",
         "missing",[(sorted(p),n) for p,n in (expected-actual).items()][:12],
