@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""KiCad9 hierarchical FRONT integration pilot, two isolated real THT sheets.
+"""KiCad9 hierarchical FRONT integration pilot, three isolated real THT sheets.
 
 Intended future FRONT parent but NOT an approved product schematic: existing
-volume and lab illumination sheets are included without making any power,
-return, cable or S-meter electrical interconnections. Fail on ERC violations
+volume, lab illumination and passive S-meter sheets are included without making power,
+return, cable or S-meter driver electrical interconnections. Fail on ERC violations
 and accidental net merging across child pages.
 """
 from pathlib import Path
@@ -16,6 +16,7 @@ SCH=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 CHILDREN=(
     ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch",
     ROOT/"04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_DRAFT.kicad_sch",
+    ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch",
 )
 PARTITIONS={
     "DEMOD_AUDIO":{("J1301","1"),("RV1301","1")},
@@ -25,15 +26,21 @@ PARTITIONS={
     "ILLUM_RETURN_LAB":{("J2201","2"),("D2201","1"),("D2202","1")},
     "ILLUM_LED1_A":{("R2201","2"),("D2201","2")},
     "ILLUM_LED2_A":{("R2202","2"),("D2202","2")},
+    "METER_DRIVE_CANDIDATE":{("J1801","1"),("RV1801","1")},
+    "METER_TRIM_OUTPUT":{("RV1801","2"),("R1801","1")},
+    "METER_LIMIT_STAGE1":{("R1801","2"),("R1802","1")},
+    "METER_POS_LIMITED":{("R1802","2"),("J1802","1")},
+    "METER_RETURN":{("J1801","2"),("RV1801","3"),("J1802","2")},
 }
 
 
 def verify():
     sch=SCH.read_text(encoding="utf-8")
-    assert sch.count("(sheet (at ")==2
-    assert sch.count('(property "Sheetfile"')==2
+    assert sch.count("(sheet (at ")==3
+    assert sch.count('(property "Sheetfile"')==3
     assert "FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch" in sch
     assert "FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_DRAFT.kicad_sch" in sch
+    assert "FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch" in sch
     assert all(x.exists() for x in CHILDREN)
     project=SCH.with_suffix(".kicad_pro")
     symtab=SCH.parent/"sym-lib-table"
@@ -41,7 +48,7 @@ def verify():
     assert project.is_file() and symtab.is_file() and fptab.is_file()
     sym=symtab.read_text(encoding="utf-8")
     fp=fptab.read_text(encoding="utf-8")
-    for item in ("TH_FRONT", "TH_FRONT_ILLUM", "TH_AUDIO"):
+    for item in ("TH_FRONT", "TH_FRONT_ILLUM", "TH_SMETER", "TH_AUDIO"):
         assert '(name "'+item+'")' in sym,item
     for item in ("TH_FRONT", "TH_FRONT_ILLUM_LAB"):
         assert '(name "'+item+'")' in fp,item
@@ -79,14 +86,15 @@ def verify():
     assert set(found)==set(PARTITIONS),(found.keys(),PARTITIONS.keys())
     for name,expected in PARTITIONS.items():
         assert found[name]==expected,(name,found[name],expected)
-    assert len(set().union(*found.values()))==sum(len(v) for v in found.values())==17
-    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_2SHEETS_8REFS_7NETS_17PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
-        "child_sheets":2,
-        "THT_components":8,
-        "independent_local_nets":7,
-        "pin_endpoints":17,
+    assert len(set().union(*found.values()))==sum(len(v) for v in found.values())==28
+    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_3SHEETS_13REFS_12NETS_28PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
+        "child_sheets":3,
+        "THT_components":13,
+        "independent_local_nets":12,
+        "pin_endpoints":28,
         "MAIN_FRONT_harness_qualified":False,
-        "S_meter_integrated":False,
+        "S_meter_passive_candidate_sheet_included":True,
+        "S_meter_driver_FSD_coil_qualified":False,
         "hardware_production_PCB_exists":False,
         "NO_FAB_NO_TX":True,
     },flush=True)
