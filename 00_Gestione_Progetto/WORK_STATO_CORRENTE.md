@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #271 MERGED: coil-bound 9 corner; nuova verifica incrociata Omron in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #271 SHA `c7b6cbcdb89fd09d2760cc3b05c74e980900974f`; checkpoint del merge sulla revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #272 MERGED: Omron OEM 54 corner; D1911 THT candidato CAD in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #272 SHA `c4fe6907ff838ce441b7a58b0c091dcd8aeaa195`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #272 MERGED; D1911 flyback CAD OEM candidato
+
+**Verificato su GitHub:** PR #272 MERGED su main `c4fe6907ff838ce441b7a58b0c091dcd8aeaa195`, [Actions #43773957936](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43773957936) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `OMRON_G5V1_5V6V_54CORNER_PICKUP_DRIVER_OEM_REJECTION_NOT_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, no Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Omron DC5/DC6 respinti allo screening di funzionamento, nessun MPN relè qualificato.
+
+**Revisione sul branch** `engineering/v27-front-flyback-1n4007-oem-candidate-20261116`: assegnato realmente in schema KiCad D1911 candidato Vishay `1N4007-E3/54` DO-41 THT con footprint `Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal`; pin K1 rail+ / A2 rail− controllati dal test native netlist. OEM full release e tempi di caduta mute NON qualificati; PCB invariato; CI del branch non ancora verificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 16 novembre 2026 — PR #271 MERGED; screening Omron DC5/DC6 in corso
 
