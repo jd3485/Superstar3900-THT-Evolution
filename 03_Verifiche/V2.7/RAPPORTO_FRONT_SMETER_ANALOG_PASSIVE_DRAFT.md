@@ -1,3 +1,13 @@
+## 15 novembre 2026 — causa comune: due riferimenti VSET contemporaneamente alti (doppio servo non qualificato)
+
+Dopo l'integrazione della **PR #216** su main SHA `a37d859367f51dbb8b2cd62e75eaea726c53ce72`, [Actions #43661238764](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661238764) **FAST/FULL/required 3/3 SUCCESS**. Log ngspice reale della topologia **comportamentale** con due sink e due sense in serie: corrente normale **39,58742µA**; **QMAIN C–E in corto 44,54994µA**; **QGUARD C–E in corto 39,58905µA**; doppi corti **227,2727µA (2kΩ)** / **125µA (20kΩ)**. Questi numeri NON sono tolleranze, limiti hardware, correnti OEM certificate o comportamento di opamp reali; nessuno schema KiCad9/PCB della topologia doppia è ancora disponibile.
+
+La nuova estensione tecnica di `verify_smeter_dual_series_guard_ngspice.py` esegue **ngspice reale** con i due comandi ideali entrambi portati a **1,0V** (overvoltage condiviso, sebbene il netlist li rappresenti con due generatori indipendenti). Un guasto di riferimento comune o una regolazione che alza entrambi i setpoint può imporre una corrente prossima a 100µA sul carico 2kΩ anche con transistor integri, dunque **doppio servo non dimostra fail-closed in caso di causa comune**. Si testano anche 12V di supply con entrambi i riferimenti alti e guasti di un solo setpoint alto o basso, per distinguere funzione nominale da guasti simultanei. La tensione 12V è un'iniezione artificiale di guasto, non un nuovo valore di progetto. **Attendere CI sul commit finale** per i valori ngspice effettivi.
+
+Per progettare vero hardware: due riferimenti realmente indipendenti e protetti, limitazione di corrente o interruttore normally-off indipendente, analisi dei corti dei resistori sense e dell'alimentazione comune, limiti di tensione di modo comune dell'amplificatore che legge la sense flottante, modelli OEM e prove di banco su carico fittizio. **Il fatto che il modello passasse singoli corti non autorizza un PCB fail-safe. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 15 novembre 2026 — nuova topologia indipendente a doppia limitazione serie (ngspice GENERIC, non hardware)
 
 **PR215 integrata** su main `e011be889546891ea79eac74e9b9493056251f24` dopo [Actions #43660456890](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43660456890) FAST/FULL/required SUCCESS. Il driver con un singolo Q2101 non è fail-closed al corto C-E e VSET spento: prove ngspice **166,6667µA** (carico 20kΩ ipotetico), **416,6666µA** (2kΩ ipotetico) e **476,1904µA** (500Ω banco), a 5V/RSENSE10kΩ. Nessun indicatore reale qualificato; OEM Velleman 20kΩ / TME 2kΩ in disaccordo, issue #213.
