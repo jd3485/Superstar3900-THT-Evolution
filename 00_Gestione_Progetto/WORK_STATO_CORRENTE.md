@@ -1,11 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #230 MERGED: contratto KiCad9 IF455→AM455→FRONT a 4 reti/8 pin; ERC0 e 111 verifiche FULL PASS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #230: `8d7222607259389f0bcbb4bf8fac6e6fbd0d84c6`; aggiornamento checkpoint tramite PR successiva.
+**Aggiornato:** 15 novembre 2026 (PR #232 MERGED, 75 punti AF/KCL verificati; nuovo studio impedenza sorgente AM455 da verificare). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico certo PR #232: `158152c6c683869c4a8221b259079f6182fa61fa`. Le modifiche successive rimangono sul branch fino a CI verde e merge.
 
-## 15 novembre 2026 — AM455→FRONT→LM386, carico AF/KCL su branch tecnico (CI pending)
+## 15 novembre 2026 — studio impedenza equivalente sorgente AM455 300 casi, BRANCH (CI pending)
 
-Branch `v27-af-loaded-pot-lm386-kcl-20261115` da HEAD main `13fc1fe6a050e372426d1f7106bd5ba6cb3c7789` (PR #231 merged). Nuovo `03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py` integrato nel gate `ci/full_regressions.py`: 75 combinazioni frequenza/posizione potenziometro/Rin (25/50/75kΩ), trasferimento passivo complesso e doppio confronto analitico↔solutore nodale KCL indipendente, controllo reti/pin KiCad9 originali C1502-R1502, RV1301, C1201-R1201-U1201. Rapporto `03_Verifiche/V2.7/RAPPORTO_AF_AM455_FRONT_LM386_CARICO_AC_KCL_DRAFT.md` con valori e limiti. Rin=50k tipico OEM; 25/75k scenari ipotetici, non corner garantiti. Non è stato modificato alcun collegamento master MAIN, nessuna simulazione OEM/LM386 attivo/noise/THD o qualifica carico diodo IF455, ground/chassis, cavi. **CI ancora da eseguire/verificare sul final HEAD; NON merged, nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+Branch `v27-am-envelope-source-impedance-300cases-20261115` da main SHA `158152c6c683869c4a8221b259079f6182fa61fa`. Nuovo `03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py` aggiunto a FULL: carico di R1501=47k e C1501=1nF verificato con netlist KiCad9 AM455, più modello lineare illustrativo di resistenza di Thévenin a monte dell'inviluppo **1/10/47/100 kΩ** e circuito downstream di PR #232. Matrice 4 nodi KCL indipendente dalla riduzione serie/parallelo, 300 casi (4 Rsource × 5 frequenze × 5 wiper × 3 Rin). Il diodo **non** è un resistore nel circuito reale: questi scenari non sono min/max OEM e non equivalgono a sensibilità/SINAD, non comprendono IF455 RF, noise, THD o LM386 attivo. Report `03_Verifiche/V2.7/RAPPORTO_AM455_IMPEDENZA_SORGENTE_AF_300KCL_DRAFT.md`. **Nessun CI finale eseguito al momento del checkpoint branch, non merged, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #232 MERGED: AM455→FRONT→LM386, 75 casi carico AF/KCL
+
+**[PR #232](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/232) MERGED** main `158152c6c683869c4a8221b259079f6182fa61fa`, final head `ca3930a45fdfe10475d9d6a0251ea3a027595acc`. [CI #43700553512](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43700553512) FAST/FULL/required SUCCESS 3/3, log `PASS_AF_AM455_FRONT_LM386_75_AC_KCL_CASES_NATIVE_KICAD_PIN_NETS_NO_FAB_NO_TX`, 111 comandi storici PASS. Nuovo `03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py` integrato nel gate `ci/full_regressions.py`: 75 combinazioni frequenza/posizione potenziometro/Rin (25/50/75kΩ), trasferimento passivo complesso e doppio confronto analitico↔solutore nodale KCL indipendente, controllo reti/pin KiCad9 originali C1502-R1502, RV1301, C1201-R1201-U1201. Rapporto `03_Verifiche/V2.7/RAPPORTO_AF_AM455_FRONT_LM386_CARICO_AC_KCL_DRAFT.md` con valori e limiti. Rin=50k tipico OEM; 25/75k scenari ipotetici, non corner garantiti. Non è stato modificato alcun collegamento master MAIN, nessuna simulazione OEM/LM386 attivo/noise/THD o qualifica carico diodo IF455, ground/chassis, cavi. **CI verificata sul final HEAD; nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
