@@ -14,6 +14,21 @@ Il gate `03_Verifiche/V2.7/verify_if455_mixer_source_impedance_lowdrive_native.p
 | Carico audio | RV1301 10k 90%, C1201 100n, R1201 10k, Rin 50k tipica |
 | Diodo/JFET | modelli generici DGENERIC/JGEN non forniti dai fabbricanti |
 
+## Evidenze CI finali e risultati del modello
+
+**[PR #246](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/246) MERGED** su main SHA `76d8ec22fceeb4e16c3762142631dee27b5f1916`, final technical head `d0d68660705a8680cd4585d99b903a0a501b0d02`; [run #43721827904](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43721827904): FAST/FULL/required **3/3 SUCCESS**, 111 regressioni storiche e sei transienti nuovi verificati.
+
+| Sorgente 455kHz, picco | Rsource | Diretto LM386 pin3 | J113 LM386 pin3 | J113/diretto |
+|---:|---:|---:|---:|---:|
+| 10mV | 50Ω | 59,33µVpp | 40,91µVpp | 0,6894 |
+| 10mV | 1kΩ | 57,88µVpp | 39,92µVpp | 0,6898 |
+| 10mV | 10kΩ | 46,36µVpp | 31,96µVpp | 0,6894 |
+| 100mV | 50Ω | 0,5939mVpp | 0,4096mVpp | 0,6896 |
+| 100mV | 1kΩ | 0,5793mVpp | 0,3997mVpp | 0,6900 |
+| 100mV | 10kΩ | 0,4639mVpp | 0,3199mVpp | 0,6896 |
+
+**Decisione:** queste variazioni della resistenza serie del generatore **non recuperano** il deficit AF a basso segnale del J113 con C1801=10pF: circa 31% in meno nel modello. Un aumento di Rsource fino a 10k riduce in modo simile la tensione recuperata in entrambi i percorsi. Non è una misura dell'impedenza reale mixer/IF del Superstar né una vera sensibilità in µV antenna. La selezione del buffer e l'integrazione KiCad di prodotto restano bloccate fino alla qualifica RF/rumore/OEM.
+
 ## Gate tecnico prima di integrare hardware
 
 Qualsiasi differenza numerica con Rsource identifica una sensibilità del **modello**, non fissa da sola l'impedenza del mixer reale. Questi dati NON sono misure in microvolt dell'antenna né NF, SINAD, selettività RF, AGC, linearità in temperatura, distorsione AM/FM/SSB, protezioni ESD o capacità del layout RF. La rete LC con ESR 16,5Ω e 50Ω del benchmark è una rappresentazione parziale del banco; lo stadio mixer/trasformatore IF reale, accoppiamenti e impedenza di carico/matching non sono ancora qualificati.
