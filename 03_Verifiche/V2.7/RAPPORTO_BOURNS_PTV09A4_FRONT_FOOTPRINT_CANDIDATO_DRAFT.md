@@ -10,6 +10,10 @@ Dal disegno OEM PTV09A-4 si ricava l'**interasse complessivo di 5,0 mm** fra i t
 
 Il file candidato ha 3 pad THT, posizionati a -2,50/0/+2,50 mm con assegnazione **1=terminale, 2=wiper, 3=terminale**. **ATTENZIONE:** fori passanti 1,0 mm e corpo/courtyard sono **assunti per studio** e non approvati per PTV09A-4: non sono stati qualificati orientamento dei terminali deformati, ritenzione, ingombro alberino, interasse dei fissaggi e prospettiva del disegno OEM. Il codice impedisce che questo footprint ancora incompleto venga assegnato ai due RV del layout corrente. Il gate `03_Verifiche/V2.7/verify_front_ptv09a4_oem_pitch_candidate_native.py` verifica i tre pad, il passo esatto, i 35 segmenti del PCB invariati e richiede **esportazione SVG nativa KiCad9 dal footprint library** nella suite FULL.
 
+## Esito CI nativo verificato
+
+La [PR #254](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/254) è stata **MERGED** su main SHA `b62c56dc257354d24c3d29392531d0c49b04e211`, final HEAD `3d0d277e876b27cba42f62d5def39a0d64c4b624`. [Actions #43747364174](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43747364174): **FAST/FULL/required 3/3 SUCCESS**, 111 regressioni storiche e risultato `PASS_KICAD9_BOURNS_PTV09A4_3THT_PINS_5MM_CANDIDATE_SVG_NO_PRODUCT_SWAP_NO_FAB`. L'esportazione SVG di KiCad9 ha elaborato la libreria originale senza errori. **Questo convalida solo i 3 pad e la leggibilità CAD del candidato**, non corpo, albero, boccola, fori di fissaggio, affidabilità ambientale o disponibilità OEM; il file di placement FRONT resta con gli stessi due footprint temporanei da 5,08mm e 35 piste.
+
 ## Gate elettrico, termico e di prodotto
 
 - Datasheet OEM PTV09: **-10/+50 °C** operativo, 0,05 W nominali, 20 Vcc massimi, IP40, durata dichiarata 10.000 cicli, tolleranza nominale ±20%. Questi dati **non bastano** per garantire ambiente abitacolo assolato, condensa/vibrazione, escursioni in magazzino, resistenza al lavaggio o requisiti RF audio; necessaria specifica ambientale di prodotto.
