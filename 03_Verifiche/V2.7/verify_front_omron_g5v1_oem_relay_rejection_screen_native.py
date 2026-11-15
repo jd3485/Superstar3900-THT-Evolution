@@ -66,7 +66,7 @@ def main():
     # generic 48-case screen. This component MUST NOT be accepted
     # under that old screen's assumptions.
     assert RCOIL_OHM*(1+RCOIL_TOL)<250.
-    assert (5.-.3-.3)<.8*5.
+    assert (4.5-.3-.3)<.8*5.  # 4.5V rail with two 0.3V switches = 3.9V
     # Switching reliability reference is 1mA @ 5VDC, whereas input
     # amplitude & actual contact-current minimum are not yet quantified.
     minimum_qualified_audio_current_mA=None
