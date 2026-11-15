@@ -1,11 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #233 MERGED: 300 casi sorgente AM455; PR #232 75 casi AF; CI finale PASS entrambe). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico verificato PR #233 SHA `ce4629768109befaf5bc003599913e7038f0ce55`. Checkpoint post-merge proposto su branch.
+**Aggiornato:** 15 novembre 2026 (PR #235 MERGED; 9 transienti IF455-AM455-FRONT-LM386 DGENERIC verificati; screening 54 parametri in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. HEAD tecnico PR #235 MERGED `77ba66cdaa5fcbf89e6a833542207f875dd38763`; nuova PR parametrica non integrata in attesa di CI.
 
-## 15 novembre 2026 — IF455→AM455→FRONT→LM386, simulazione non lineare con carico effettivo (branch, CI da verificare)
+## 15 novembre 2026 — screening 54 scenari di parametri DGENERIC, branch tecnico (CI pending)
 
-**Branch** `v27-if-am-front-nonlinear-loaded-bench-20261115`, base main `8086af4b6076ac2759ba01052db8c8d29ba786e6` dopo PR #234. Nuovo deck `03_Verifiche/V2.7/spice/if455_am455_front_lm386_loaded_generic_diode.cir` e gate `03_Verifiche/V2.7/verify_if455_am455_front_loaded_nonlinear_native.py` incluso nella FULL: **9 transitori ngspice** su generatore 455 kHz AM con diodo **generico NON OEM** e tank duplicato, confrontando il precedente carico AF 100kΩ con R1502=100kΩ, RV1301=10kΩ FRONT e C1201=100nF/R1201=10kΩ/Rin LM386=50kΩ tipico. Livelli sorgente 0,5/1/2V picco e posizioni volume 10/50/90%; verifica reti KiCad native e tensioni pp in finestra 8–11ms. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_FRONT_LM386_NONLINEAR_LOADED_DRAFT.md`. **Non ancora PASS fino a log CI sul final HEAD; non attribuire livelli radio, distorsione, sensibilità o OEM diode.** Restano massa/chassis, cavo, EMI, PVT, stadio IF reale, LM386 attivo e FRONT/MAIN product PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Branch** `v27-if-am-loaded-diode-param-sweep-20261115` da main SHA `77ba66cdaa5fcbf89e6a833542207f875dd38763` dopo PR #235. Script `03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py` aggiunto in FULL: **54 transienti ngspice** (Is 0,25/2,5/25nA × Cjo 2/4/8pF × input 0,5/2V picco × volume 10/50/90%) sullo stesso banco IF455→AM455→FRONT→LM386; parametri DGENERIC **sintetici, NON corner OEM 1N4148**. Output pp e rapporti, bande di sensitività, non guadagno LM386 attivo. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_DIODE_SYNTHETIC_CORNERS_DRAFT.md`; aggiornato rapporto PR #235 con evidenze CI quantitative. **CI sul final HEAD da verificare, nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #235 MERGED: IF455→AM455→FRONT→LM386, 9 transienti non lineari generici
+
+**[PR #235](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/235) MERGED** main SHA `77ba66cdaa5fcbf89e6a833542207f875dd38763`, final technical head `b498db61fe631bb12150c35d6b6af7624b94fcae`. [CI #43701908041](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43701908041): FAST/FULL/required **SUCCESS 3/3**, 111 comandi storici, log `PASS_NGSPICE_9_GENERIC_DIODE_IF455_AM455_LOADED_FRONT_LM386_TRANSIENT_CASES_NOT_OEM_NO_FAB_NO_TX`. Nuovo deck `03_Verifiche/V2.7/spice/if455_am455_front_lm386_loaded_generic_diode.cir` e gate `03_Verifiche/V2.7/verify_if455_am455_front_loaded_nonlinear_native.py` incluso nella FULL: **9 transitori ngspice** su generatore 455 kHz AM con diodo **generico NON OEM** e tank duplicato, confrontando il precedente carico AF 100kΩ con R1502=100kΩ, RV1301=10kΩ FRONT e C1201=100nF/R1201=10kΩ/Rin LM386=50kΩ tipico. Livelli sorgente 0,5/1/2V picco e posizioni volume 10/50/90%; verifica reti KiCad native e tensioni pp in finestra 8–11ms. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_FRONT_LM386_NONLINEAR_LOADED_DRAFT.md`. **Risultato verificato:** in scenario sorgente 2V picco/wiper 90%, AF 100k standalone=0,173526Vpp, nodo AF caricato=0,049170Vpp, LM386 pin3=0,035411Vpp; nessun gain attivo, non è sensibilità reale/OEM.** Restano massa/chassis, cavo, EMI, PVT, stadio IF reale, LM386 attivo e FRONT/MAIN product PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
