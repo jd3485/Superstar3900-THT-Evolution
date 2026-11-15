@@ -254,6 +254,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # FRONT volume safety review: 75 linear AC cases with the low terminal
+    # of RV1301 open. Two independent KCL and circuit-reduction methods,
+    # native pin mapping check; this is NOT an OEM fault rating.
+    print("::group::V2.7 FRONT VOLUME OPEN-LOW FAULT 75 NATIVE AC KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_volume_open_low_fault_kcl_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
