@@ -1,3 +1,11 @@
+## 15 novembre 2026 — evidenze prime regressioni KiCad9/ngspice su PR212 (HEAD precedente alla correzione log)
+
+Prima esecuzione completa [Actions #43658250059](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658250059) **FAST/FULL/required PASS** su commit `f917b34fa2d69a0c046d8878032dee90b7d90157` (schema corretto 50mil), con **ERC0 nativo, 8 refs, 8 reti, 23 pin** e valori ngspice effettivi: VDD5, VSET0,5V, bobina 500Ω → **49,50385µA**; VSET0,1V → **9,891926µA**; bobina 5kΩ a VSET0,5V → **49,5026µA**; comando 1V → **99,01404µA (esempio sovracorrente potenziale, NON consentito per qualunque FSD non selezionata)**; VDD 0V → corrente circa 0 nell'IDEALE modello. Le verifiche non dimostrano la sicurezza di power-off con bobina esternamente alimentata né alimentazioni MAIN reali.
+
+Correzione successiva solo semantica dello script: `KiCad_native_schematic_for_this_active_sink_exists=True` e `KiCad_to_SPICE_equivalence_certified=False`, poiché lo schematico KiCad ora esiste ma usa opamp reale candidato mentre SPICE usa modello ideale. **Questa modifica è tecnica e richiede nuova FULL/required CI sul nuovo HEAD prima del merge**. Permangono FSD/Rcoil OEM, fault, stabilità anello, protezioni e PCB sconosciute. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — CAD KiCad9 vero per servo di corrente S-meter su banco separato
 
 Esteso il lavoro SPICE con un **vero schematico standalone KiCad 9** `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/SMETER_ACTIVE_SINK_BENCH_V2_7_DRAFT.kicad_sch`, libreria locale `TH_SMETERDRIVE.kicad_sym`, tabella simboli e progetto associato. Otto riferimenti THT candidati: **U2101 MCP6002 PDIP8, Q2101 2N3904 TO-92, J2101–J2103 e R2101–R2103 assiali**. Topologia reale a net etichettate: J2101 rail/GND, J2102 VSET/GND, J2103 alimentazione bobina/collettore Q, U2101 A (+)=VSET, (−)=SENSE, OUT=R2102→BASE; Q E→R2101 (sense 10kΩ)→GND e Q C→COIL_LOW; R2103 base pulldown 100kΩ; U2101 canale B parcheggiato con retroazione negativa e ingresso a GND. Lo schema è **candidato isolato**, non collega i due circuiti di prodotto e non ha alcun limite FSD indipendente.
