@@ -1,3 +1,13 @@
+## 15 novembre 2026 — terzo foglio nel master FRONT: S-meter passivo candidato, isolato e NON qualificato
+
+**PR221 integrata** su main `abd6ed1d93c8844d981155001dcb29a1136ec7d7` dopo [Actions #43664959183](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664959183) **FAST/FULL/required verdi**. Il nuovo master `FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch` ha due sheet Volume e LED verificati con KiCad9 ERC0, 8 refs, 7 reti indipendenti, 17 pin. Aveva inizialmente fallito [#43664684666](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664684666) per 14 simboli/footprint non registrati; risolti senza waiver tramite root `sym-lib-table`, `fp-lib-table` e progetto.
+
+**Nuova revisione gerarchica reale:** terzo Sheetfile `FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` nel master FRONT, usando lo **schema passivo esistente** (J1801, J1802, RV1801, R1801, R1802), non la catena attiva di laboratorio. Libreria `TH_SMETER` aggiunta al registro root. Il test nativo richiede ora **tre fogli, 13 refs THT, 12 reti locali distinte, 28 terminali**, partizioni esatte per ogni connettore/resistore/potenziometro e nessun ponte di alimentazione/ritorno da audio a retroilluminazione o S-meter. Non si tratta del driver S-meter sicuro: la rete ha due resistori da 100kΩ candidati, nessuna FSD/Rcoil o tensione MAIN garantita, e i guasti di corrente restano aperti (issue #213). Non esiste una PCB FRONT di produzione, solo il layout LED **LABONLY**.
+
+**Attendere FAST/FULL/required su HEAD finale prima di affermare ERC0 del master a tre fogli.** Ulteriori fogli, connettori, massa comune/filtri, alimentazione, RX detector/AGC e qualifiche OEM da definire. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — avvio schema gerarchico FRONT parziale, volume RX + illuminazione THT
 
 **PR #219** e relativo checkpoint **#220** sono integrati su main `871829df886056057ff7d9bf64eae35175bef8a5`; [Actions #43663912790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43663912790) conferma **FAST/FULL/required verdi**, ERC0 per 5 riferimenti illuminazione e DRC0 per la scheda **LAB ONLY** da 5 footprint THT, 10 pad, 4 reti, 12 segmenti rame. La scheda laboratorio non è PCB-FRONT e non va fabbricata.
