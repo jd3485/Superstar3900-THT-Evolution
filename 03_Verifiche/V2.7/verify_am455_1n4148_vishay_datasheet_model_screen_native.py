@@ -41,6 +41,8 @@ def make_deck(is_string:str,cjo_string:str):
     # No rectifier power rail or real IF chain is energized by this test.
     return f"""* Synthetic DGENERIC reverse leakage and forward VF at Vishay 25C reference
 VREV source_rev 0 DC -20\nRSENSE source_rev cath_rev 100k
+* Scale microvolt-range reverse-drop before printing: six-digit logs retain it.
+BDELTA scaled_drop 0 V={{(V(cath_rev)+20)*1e6}}
 DREV cath_rev 0 DSYN
 IFORCE 0 anode_fwd DC 10m
 DFWD anode_fwd 0 DSYN
@@ -53,6 +55,7 @@ set numdgt=15
 op
 print v(anode_fwd)
 print v(cath_rev)
+print v(scaled_drop)
 quit
 .endc
 .end
@@ -90,8 +93,10 @@ def main():
                 reverse_node=numeric(log,"v(cath_rev)")
                 # 100k test resistor: indirect DC current via native node voltage.
                 # At 25nA, its 2.5mV drop alters VR by only 0.0125%.
-                assert -20 < reverse_node < -19.99,(name,reverse_node)
-                leakage=abs((-20.0-reverse_node)/100000.0)
+                assert -20.01 < reverse_node < -19.99,(name,reverse_node)
+                scaled_drop=numeric(log,"v(scaled_drop)")
+                assert 0 < abs(scaled_drop) < 10000,(name,scaled_drop)
+                leakage=abs(scaled_drop)/(1e6*100000.0)
                 assert 0<vf<VF10MA_MAX,(name,vf)
                 assert 0<leakage<=IR20V_MAX_A*(1+1e-4),(name,leakage)
                 cjo_pf=float(cjo_string[:-1])
