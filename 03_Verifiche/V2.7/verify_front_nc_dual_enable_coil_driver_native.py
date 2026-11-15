@@ -111,5 +111,52 @@ def main():
         "no_powergood_supervisor_or_safety_cert":True,
         "no_independent_welded_NO_or_open_AF_GND_protection":True,
         "NO_FAB_NO_TX":True},flush=True)
+    # Analytical RL *electrical* decay only; NOT a contact release time.
+    # D1911 K is on COIL_PLUS and A on COIL_MINUS (verified above).
+    # With both NPN open and diode forward-biased: L di/dt + R i + Vf = 0.
+    # Unknown relay inductance and diode Vf: explicit illustrative scenarios.
+    # Coil resistances from OEM DC5/DC6 nominal +-10% at 23 C, but
+    # these MPNs already failed the independent drive/pickup screening.
+    release_states=0
+    elapsed_10=[]
+    energies=[]
+    for nominal_r,rail,tolerance,l_h,vf,drop in product(
+        (167.,240.),(4.6,5.,5.5),(.9,1.,1.1),
+        (.02,.1,.5),(.55,.9),(.15,.30)):
+        r=nominal_r*tolerance
+        i0=(rail-2*drop)/r
+        assert i0>0
+        assert l_h>0 and vf>0
+        # t(f) = L/R * ln[(I0 + Vf/R)/(f*I0 + Vf/R)].
+        def decay_time(f):
+            return l_h/r*math.log((i0+vf/r)/(f*i0+vf/r))
+        t50,t10=decay_time(.5),decay_time(.1)
+        assert 0<t50<t10
+        i50=(i0+vf/r)*math.exp(-r*t50/l_h)-vf/r
+        i10=(i0+vf/r)*math.exp(-r*t10/l_h)-vf/r
+        assert math.isclose(i50,i0*.5,rel_tol=1e-10)
+        assert math.isclose(i10,i0*.1,rel_tol=1e-10)
+        # Clamp with higher Vf hastens *electrical current decay*,
+        # without proving either contact timing or transistor peak voltage.
+        if vf==.55:
+            faster=l_h/r*math.log((i0+.9/r)/(.1*i0+.9/r))
+            assert faster<t10
+        elapsed_10.append(t10)
+        energies.append(.5*l_h*i0*i0)
+        release_states+=1
+    assert release_states==2*3*3*3*2*2==216
+    assert min(elapsed_10)>0 and max(elapsed_10)>min(elapsed_10)
+    print("FRONT_D1911_RL_DIODE_216_ELECTRICAL_DECAY_ONLY_NO_RELAY_RELEASE",{
+        "states":release_states,
+        "t10_electrical_current_ms_range":tuple(round(1000*x,5)
+            for x in (min(elapsed_10),max(elapsed_10))),
+        "initial_coil_magnetic_energy_mJ_range":tuple(round(1000*x,5)
+            for x in (min(energies),max(energies))),
+        "illustrative_L_H":(.02,.1,.5),
+        "illustrative_Vf_V":(.55,.9),
+        "NO_RELAY_CONTACT_RELEASE_TIME_QUALIFICATION":True,
+        "NO_TRANSISTOR_AVALANCHE_OR_DIODE_TRANSIENT_QUALIFICATION":True,
+        "NO_FAB_NO_TX":True},flush=True)
+    print("PASS_FRONT_D1911_216_RL_ELECTRICAL_DECAY_ILLUSTRATIVE_NONFAB",flush=True)
     print("PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX",flush=True)
 if __name__=="__main__":main()
