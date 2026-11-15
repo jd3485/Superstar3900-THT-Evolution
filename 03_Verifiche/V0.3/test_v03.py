@@ -107,7 +107,18 @@ class PLLV03(unittest.TestCase):
  def test_31_kicad_not_done(self):
     self.assertFalse(self.cfg['validation']['schematic_complete'])
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
-    self.assertFalse(list((ROOT/'04_KiCad').rglob('*.kicad_pcb')))
+    # Historical V0.3 must remain unlaid-out; a later isolated LED lab board
+    # is allowed ONLY at this exact path, never as the released radio PCB.
+    self.assertFalse(list((ROOT/'04_KiCad/V0.3').rglob('*.kicad_pcb')))
+    boards={p.relative_to(ROOT).as_posix() for p in (ROOT/'04_KiCad').rglob('*.kicad_pcb')}
+    allowed={'04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'}
+    self.assertTrue(boards.issubset(allowed),('Unexpected product/unqualified PCB file',boards-allowed))
+    if boards:
+        self.assertEqual(boards,allowed)
+        self.assertIn('FRONT_ILLUM',next(iter(boards)))
+        # Qualification requires separate native KiCad9 DRC + exact pad/net
+        # parity in verify_front_illum_lab_pcb_native.py; not a waiver here.
+
  def test_32_handoff_and_report(self):
     self.assertIn('V0.3',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text())
     self.assertTrue((ROOT/'03_Verifiche/V0.3/RAPPORTO_TECNICO_V0.3.md').exists())

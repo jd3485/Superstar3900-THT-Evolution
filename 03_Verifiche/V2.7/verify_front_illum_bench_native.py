@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 from verify_interboard_audio_contract_native import exported_nets,require
+from verify_front_illum_lab_pcb_native import main as verify_bench_pcb_drc
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH"
@@ -32,7 +33,17 @@ def main():
     assert "NO FAB / NO TX" in s
     for ref in ("J2201","R2201","R2202","D2201","D2202"):
         assert s.count('(property "Reference" "'+ref+'"')==1,ref
-    assert s.count("LED_THT:LED_D5.0mm")==3 # embedded lib default + two placements
+    for fp,n in (
+        ("TH_FRONT_ILLUM_LAB:LAB_HEADER_2P54",2),
+        ("TH_FRONT_ILLUM_LAB:LAB_RESISTOR_7P62",3),
+        ("TH_FRONT_ILLUM_LAB:LAB_LED_2P54",3)):
+        # one embedded symbol default plus one footprint per placement
+        assert s.count(fp)==n,(fp,s.count(fp),n)
+        assert fp in lib
+    assert (BASE/"fp-lib-table").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_HEADER_2P54.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_RESISTOR_7P62.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_LED_2P54.kicad_mod").is_file()
     assert '(symbol "LED"' in lib
     assert '(name "A" (effects (font (size 1 1)))) (number "2"' in lib
     assert '(name "K" (effects (font (size 1 1)))) (number "1"' in lib
@@ -70,6 +81,7 @@ def main():
          "FRONT_product_PCB_created":False,
          "NO_FAB_NO_TX":True},flush=True)
     print("PASS_KICAD9_FRONT_LED_ILLUM_THT5_NETS4_PINS10_ERC0_LAB_ONLY_NO_FAB_NO_TX",flush=True)
+    verify_bench_pcb_drc()
 
 
 if __name__=="__main__":

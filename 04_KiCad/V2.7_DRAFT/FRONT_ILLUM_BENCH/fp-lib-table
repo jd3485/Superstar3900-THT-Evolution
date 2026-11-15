@@ -1,0 +1,1 @@
+(fp_lib_table (lib (name "TH_FRONT_ILLUM_LAB")(type "KiCad")(uri "${KIPRJMOD}/TH_FRONT_ILLUM_LAB.pretty")(options "")(descr "LAB ONLY not OEM-qualified")))

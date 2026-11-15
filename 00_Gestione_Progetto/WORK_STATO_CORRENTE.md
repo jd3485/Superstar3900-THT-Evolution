@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #217 integrata; FRONT ILLUM KiCad9 branch pending CI). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #218 integrata; primo PCB LAB THT in branch pending DRC). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #218 MERGED: schema FRONT ILLUM ERC0; prima PCB di banco separata in branch, DRC NON ANCORA APPROVATO
+
+**[PR #218](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/218) MERGED** su main SHA `0d4133fab50a1c898a9b61515e01383c1b60422f`, HEAD tecnico `07c518cd430a146f428510a70dc21fc7d4a0bce3`, [Actions #43662613171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43662613171) FAST/FULL/required **SUCCESS 3/3**. Log KiCad9 reale `FRONT_ILLUM_ERC_STDOUT Found 0 violations`, 5 refs/4 reti/10 pin su nuovo schema standby FRONTALINO illuminazione LED THT con 2×680Ω, 2×LED5mm e header 2 pin. Solo 5V di laboratorio, non vero alimentatore MAIN/FRONT.
+
+**In branch NON integrato** `v27-front-illum-bench-pcb-layout-20261115` da head PR218 (merge commit main sopra contiene esattamente i file base). Novità CAD reale `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb`, **board KiCad9 a 2 strati 80×55mm**, 5 footprint THT, 10 pad, 4 reti, 12 segmenti instradati, outline chiuso. Nuovo `verify_front_illum_lab_pcb_native.py` confronta ogni pin/pad/net contro netlist nativa schematica ed esegue `kicad-cli pcb drc --exit-code-violations` sul file PCB. **Run #43663134638 FAST FAILED** per assert storico V0.3 che vietava tutte le PCB; **run #43663198626 FAST FAILED** per analogo assert V0.4. Entrambi corretti senza permettere schede di prodotto non autorizzate. **Run #43663285212 FAST PASS, FULL FAILED** per 5 `lib_footprint_mismatch` (footprint ufficiali dichiarati con geometria embedded semplificata), 0 pad non connessi. Soluzione in branch: nuova libreria locale `TH_FRONT_ILLUM_LAB.pretty/` con 3 geometrie provvisorie registrate in `fp-lib-table`, ogni footprint board riferito esplicitamente a libreria locale, nessun waiver. **Non dichiarare DRC0 prima della verifica FULL/required CI sul HEAD finale**, né qualifica OEM/meccanica/EMI. È un PCB laboratorio isolato, **non** PCB-FRONT definitiva e non PCB-MAIN. Nessun Gerber di produzione o fabbricazione; restano incompleti S-meter, driver, alimentazioni, interconnessione e RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 15 novembre 2026 — PR #217 MERGED; nuovo KiCad9 reale FRONT ILLUM sul branch, CI pending
 
