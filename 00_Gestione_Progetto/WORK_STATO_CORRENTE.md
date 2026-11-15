@@ -3,6 +3,14 @@
 **Aggiornato:** 15 novembre 2026 (PR #267 MERGED: LM393/TL431 THT reali con ERC0, 5 reti, 135 corner; MCP100 THT alternativo in PR). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Ultimo merge tecnico PR #267 SHA `640de1d16c1b5c3e42dd4212051635b0fd803441`; checkpoint integrato nella revisione successiva.
 
+## 15 novembre 2026 — nuova revisione draft: test 216 guasti MCP100, NON MERGED
+
+Main HEAD verificato prima del branch: `7851079067df5894e7b1da432faa3073610ff6fd`, merge PR #268. Il checkpoint main ancora riportava #268 aperta: questa annotazione corregge il passaggio **soltanto sul branch** finché i gate della nuova PR non siano verdi e il merge non avvenga. La CI di #268 non è stata riauditata con log di run tramite il connettore; evitare attribuzione di nuovi risultati.
+
+Branch `engineering/v27-mcp100-fault-coverage-20261115`: estensione del gate nativo MCP100 con matrice separata 216 stati (54 condizioni × reset nominale, stuck-HIGH, stuck-LOW, riferimento GND aperto); rapporto OEM aggiornato. Attesi 27 consensi falsi potenziali sotto soglia con stuck-HIGH, 27 consensi persi sopra soglia con stuck-LOW, 54 uscite riferite a GND indefinito. Logica fault injection **non equivale** a simulazione vendor, risposta fisica del relay o prova fail-safe. KiCad/PCB invariati. **GATE di questa revisione: FULL KiCad9, FAST e Required success sull'HEAD finale; non eseguiti localmente**. Proseguire qualificando driver e contatti; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — PR #267 MERGED: vero KiCad9 LM393+TL431 THT power-good
 
 **[PR #267](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/267) MERGED** su main `640de1d16c1b5c3e42dd4212051635b0fd803441`, final technical SHA `3a429f89a485bdab4561fdf29d3ca7f73788cb99`. [Actions #43766904063](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766904063) **FAST/FULL/Required SUCCESS 3/3**, 111 suite legacy PASS, ERC KiCad9 `Found 0 violations`, marker `PASS_KICAD9_THT_TL431_LM393_PGOOD_5NETS_ERC0_135_CORNERS_UNQUALIFIED` presente, nessun traceback. Schema THT autonomo LM393 PDIP8 e TL431 LP TO92, 4 R, 100n, due connettori lab, soglia ideale 4,574V e cinque reti native verificate; test 135 corner VIN, Vref, divisori. Prima [CI #43766197158](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766197158) **FULL FAIL** per 12 warning `endpoint_off_grid`, sistemati allineando posizioni, fili ortogonali e nuovi gate finali **senza waiver**. **Non è prodotto qualificato:** IKA TL431 e common-mode LM393 non validi ai rail bassi; out open collector caricato dalla base a valle scende a ~3,15V anche con rail5,5, manca vero fail-closed su brownout profondo. PCB invariata. Rapporto `RAPPORTO_FRONT_LM393_TL431_POWERGOOD_THT_CANDIDATO.md`. NO FAB/TX/BATTERIA/VEICOLO.
