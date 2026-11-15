@@ -172,6 +172,16 @@ def main()->None:
                         str(ROOT/"03_Verifiche/V2.7/verify_interboard_audio_contract_native.py")],
                        cwd=ROOT,check=True)
         print("::endgroup::",flush=True)
+    # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
+    # net partitions unchanged and electrically isolated RX LM386 lab block.
+    # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
+    parent=ROOT/"04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch"
+    assert parent.exists(),"MAIN V2.7 native partial hierarchy missing"
+    print("::group::V2.7 MAIN RX PLL V2.6 + AUDIO NATIVE HIERARCHY ERC PIN-NET PRESERVATION",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_main_partial_v27_hierarchy_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Independent 6V audio lab regulator, not connected to the master V2.6.
     psu=ROOT/"04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch"
     if psu.exists():
