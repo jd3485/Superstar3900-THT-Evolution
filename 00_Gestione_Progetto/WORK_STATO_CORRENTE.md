@@ -3,6 +3,12 @@
 **Aggiornato:** 15 novembre 2026 (PR #226 integrata; MAIN V2.7 gerarchico radio V2.6 + LM386, 150 refs, KiCad9 ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. SHA main dopo merge PR #226: `167c82d3f87e113e1275ca4dcec07f824df65185`.
 
+## 15 novembre 2026 — MAIN V2.7 quattro sottosezioni native, branch tecnico (CI DA VERIFICARE)
+
+**Branch** `v27-main-if455-am455-isolated-hierarchy-20261115`, basato su main `4401c466faccc5a30e8b657d3070a34a0266d4a2` dopo PR #227. Il master KiCad9 `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` aggiunge **IF455 tank THT (9 refs)** e **AM455 envelope detector THT (7 refs)** agli originali 138 radio V2.6 e 12 LM386 RX audio. Attesi **166 riferimenti** su quattro figli nativi, senza wire tra fogli e senza modificare sorgenti originali. La catena IF455→AM455 e AM455→audio NON è collegata: impedenza/carico diodo, massa/chassis e livelli AF non qualificati. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque esportazioni KiCad9 e confronto pin/net fail-closed, con allowlist immutata di otto NC V2.6. CI necessaria sul HEAD finale; nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — PR #226 MERGED: MAIN gerarchico KiCad9 con 150 refs
 
 **[PR #226](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/226) MERGED** main SHA `167c82d3f87e113e1275ca4dcec07f824df65185`, head tecnico `c74e85bbef558b398df33b36e35d093148da0874`. [CI #43667633925](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43667633925) su HEAD finale: FAST, FULL KiCad9 e required gate **SUCCESS 3/3**. Evidenze log: `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_150REFS_ALL_V26_AND_AUDIO_PIN_NETS_UNCHANGED_ERC0_NO_FAB`. Nuovo master `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` con due fogli: 138 refs V2.6 radio RX/PLL/VTUNE + 12 refs LM386 RX audio standalone, non interconnesse. Il test nativo verifica 3 esportazioni netlist, partizioni pin/net connesse intatte, nessun ponte massa/rail e otto pin NC singleton omessi nella gerarchia secondo allowlist stretta. `ci/full_regressions.py` include il gate nativo; librerie registrate nel progetto V2.7.
