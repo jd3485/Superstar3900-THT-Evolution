@@ -118,7 +118,7 @@ class V04(unittest.TestCase):
     candidate=(ROOT/placement).read_text(encoding='utf-8')
     self.assertEqual(candidate.count('(footprint "'),13)
     self.assertIn('NOT PRODUCTION PCB',candidate)
-    self.assertEqual(candidate.count('(segment '),13)
+    self.assertEqual(candidate.count('(segment '),35)
     for forbidden in ('(via ','(zone ','(layer "Edge.Cuts")'):
         self.assertNotIn(forbidden,candidate)
     # Native KiCad9 13 footprints / 28 pad↔net / 12 isolated nets,
