@@ -33,7 +33,17 @@ def main():
     assert "NO FAB / NO TX" in s
     for ref in ("J2201","R2201","R2202","D2201","D2202"):
         assert s.count('(property "Reference" "'+ref+'"')==1,ref
-    assert s.count("LED_THT:LED_D5.0mm")==3 # embedded lib default + two placements
+    for fp,n in (
+        ("TH_FRONT_ILLUM_LAB:LAB_HEADER_2P54",2),
+        ("TH_FRONT_ILLUM_LAB:LAB_RESISTOR_7P62",3),
+        ("TH_FRONT_ILLUM_LAB:LAB_LED_2P54",3)):
+        # one embedded symbol default plus one footprint per placement
+        assert s.count(fp)==n,(fp,s.count(fp),n)
+        assert fp in lib
+    assert (BASE/"fp-lib-table").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_HEADER_2P54.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_RESISTOR_7P62.kicad_mod").is_file()
+    assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_LED_2P54.kicad_mod").is_file()
     assert '(symbol "LED"' in lib
     assert '(name "A" (effects (font (size 1 1)))) (number "2"' in lib
     assert '(name "K" (effects (font (size 1 1)))) (number "1"' in lib
