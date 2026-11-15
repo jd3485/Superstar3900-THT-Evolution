@@ -3,4 +3,13 @@
   (lib (name "TH_FRONT") (type "KiCad") (uri "${KIPRJMOD}/FRONT_VOLUME/TH_FRONT.kicad_sym") (options "") (descr "existing isolated THT RX volume symbols"))
   (lib (name "TH_FRONT_ILLUM") (type "KiCad") (uri "${KIPRJMOD}/FRONT_ILLUM_BENCH/TH_FRONT_ILLUM.kicad_sym") (options "") (descr "existing lab THT LED symbols"))
   (lib (name "TH_SMETER") (type "KiCad") (uri "${KIPRJMOD}/FRONT_SMETER/TH_SMETER.kicad_sym") (options "") (descr "isolated S-meter passive R candidate, unqualified"))
+
+ (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))
+ (lib (name "THT_V11") (type "KiCad") (uri "${KIPRJMOD}/../V1.1/THT_V11.kicad_sym") (options "") (descr "THT PLL"))
+ (lib (name "THT_V14") (type "KiCad") (uri "${KIPRJMOD}/../V1.4/THT_V14.kicad_sym") (options "") (descr "THT VCO"))
+ (lib (name "THT_V15") (type "KiCad") (uri "${KIPRJMOD}/../V1.5/THT_V15.kicad_sym") (options "") (descr "THT power"))
+ (lib (name "THT_V17") (type "KiCad") (uri "${KIPRJMOD}/../V1.7/THT_V17.kicad_sym") (options "") (descr "THT fuse and TVS"))
+ (lib (name "THT_V18") (type "KiCad") (uri "${KIPRJMOD}/../V1.8/THT_V18.kicad_sym") (options "") (descr "THT LM393N TL431BCLP IRF9540N OVP pilot"))
+ (lib (name "THT_V20") (type "KiCad") (uri "${KIPRJMOD}/../V2.0/THT_V20.kicad_sym") (options "") (descr "MC34063ABN DIP8 boost and LM317 THT VTUNE rail")) (lib (name "THT_V24") (type "KiCad") (uri "${KIPRJMOD}/../V2.6/THT_V24.kicad_sym") (options "") (descr "V2.4 Diotec 1N5352B 15V 5W Zener supervisor pilot THT"))
+
 )
