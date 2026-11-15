@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #267 MERGED: LM393/TL431 THT reali con ERC0, 5 reti, 135 corner; MCP100 THT alternativo in PR). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #267 SHA `640de1d16c1b5c3e42dd4212051635b0fd803441`; checkpoint integrato nella revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #270 MERGED: MCP100 source-current gate, NO FAB; nuova analisi coil-bound in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #270 SHA `4afd922ebf355a38d89dee8f5ef228958f385974`; aggiornamento checkpoint sulla revisione successiva.
+
+## 16 novembre 2026 — PR #270 integrata, MCP100 driver coil-bound in nuova revisione
+
+**Verificato su GitHub:** PR #270 MERGED, main SHA `4afd922ebf355a38d89dee8f5ef228958f385974`; [Actions #43772174854](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43772174854) **FAST/FULL/Required SUCCESS 3/3**. Audit FULL: marker `MCP100_3MA_OEM_OUTPUT_SOURCE_FEASIBILITY_NOT_DRIVER_RELEASE`, `MCP100_216_FAULT_STATE_SCREEN_NOT_SAFETY_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`; nessun Traceback. Audit Required: `PASS_REQUIRED_CI_GATE (full_required=true)`. Test 9/27 stati di corrente source oltre la garanzia OEM 3mA; nessun driver o relè autorizzato.
+
+**Revisione corrente non ancora integrata:** branch `engineering/v27-mcp100-coil-impedance-necessary-screen-20261116`: gate aggiuntivo di **9 corner** VOH/driver per minima resistenza bobina necessaria con Rbase 1k5, beta10 e VBE0.8 illustrativi; massimo 216,443Ω. 167Ω fallisce ogni corner, 220Ω supera solo lo screening matematico, non costituisce MPN o qualifica. PR/CI della revisione corrente non ancora verificati; schema e PCB invariati, nessun rilascio hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 15 novembre 2026 — PR #269 integrata, passo successivo MCP100 source-current
 

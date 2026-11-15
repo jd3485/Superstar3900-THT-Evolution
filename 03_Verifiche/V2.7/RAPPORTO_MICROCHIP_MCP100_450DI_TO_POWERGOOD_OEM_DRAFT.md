@@ -100,3 +100,7 @@ ESD e transitori reali. Prove di banco indipendenti obbligatorie.
 PCB FRONT 13THT/28pad/12net/35 piste e MAIN intatti.
 
 **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## Gate analitico aggiuntivo: resistenza minima bobina, 9 corner (16/11/2026)
+
+Con `R1912=1k5`, `R1914=10k`, `VBE=0,8V` **illustrativa**, VOH garantito `VDD−0,7V` a prova OEM `IOH=3mA` e forced β10, la condizione **necessaria** per il driver esistente è `Rcoil >= (VDD−2·VCEsat)/(10·[(VDD−0,7−0,8)/1500−0,8/10000])`. Su 3 rail sopra soglia (4,6/5/5,5V) e 3 cadute ipotetiche (0,15/0,2/0,3V), il peggiore limite è **216,443Ω**. La bobina Omron nominale da 167Ω non supera nessuno dei nove corner; una bobina idealizzata da 220Ω supera **soltanto questa disuguaglianza**, non la qualifica OEM né le condizioni di pickup, dropout, temperatura, transistor, flyback, contatti microsegnale o PVT. Non è una distinta componenti né proposta di collegamento hardware; `NO FAB / NO TX / NO BATTERIA / NO VEICOLO`.

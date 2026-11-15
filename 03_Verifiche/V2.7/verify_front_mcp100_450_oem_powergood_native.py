@@ -118,6 +118,34 @@ def screen_driver_source_current_feasibility():
         "NO_FAB_NO_TX":True
     },flush=True)
 
+
+def screen_coil_impedance_necessary_condition():
+    """Necessary, not sufficient, resistance for beta10 and existing 1k5 drive.
+
+    Uses VOH lower bound at 3mA and an illustrative 0.8V VBE; assumes
+    two series transistor drops. No OEM relay, pickup or PVT qualification.
+    """
+    thresholds=[]
+    for vin,drop in product((4.6,5.0,5.5),(.15,.2,.3)):
+        available_base=(vin-.7-.8)/1500.0-.8/10000.0
+        assert 0<available_base<.003
+        necessary_coil_ohm=(vin-2*drop)/(10.0*available_base)
+        thresholds.append(necessary_coil_ohm)
+    assert len(thresholds)==9
+    worst=max(thresholds)
+    assert 216.0<worst<217.0,worst
+    assert all(167.0<threshold for threshold in thresholds)
+    assert all(220.0>threshold for threshold in thresholds)
+    print("MCP100_9CORNER_NECESSARY_COIL_IMPEDANCE_NOT_RELAY_QUALIFICATION",{
+        "cases":len(thresholds),
+        "worst_case_required_Rcoil_ohm":round(worst,3),
+        "illustrative_167ohm_pass":False,
+        "illustrative_220ohm_pass_necessary_condition":True,
+        "oem_pickup_and_contact_rating_unqualified":True,
+        "transistor_beta_vbe_vcesat_unqualified":True,
+        "no_fab_no_tx":True,
+    },flush=True)
+
 def main():
     assert SCH.with_suffix(".kicad_pro").is_file()
     assert '(name "TH_MCP100")' in (BASE/"sym-lib-table").read_text(encoding="utf-8")
@@ -179,6 +207,7 @@ def main():
     assert 150<=350<=700
     screen_reset_fault_states()
     screen_driver_source_current_feasibility()
+    screen_coil_impedance_necessary_condition()
     print("FRONT_MCP100_450_TO92_OEM_SCREEN",{
         "OEM_datasheet":OEM_PDF,
         "part_candidate":"MCP100-450DI/TO",
