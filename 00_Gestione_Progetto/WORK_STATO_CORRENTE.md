@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #272 MERGED: Omron OEM 54 corner; D1911 THT candidato CAD in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #272 SHA `c4fe6907ff838ce441b7a58b0c091dcd8aeaa195`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #273 MERGED: D1911 CAD THT; screening RL 216 casi in corso). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #273 SHA `4804b950e7894e354f88e927b22573daf8861f57`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #273 MERGED; RL elettrico D1911 su branch successivo
+
+**Verificato su GitHub:** PR #273 MERGED, main `4804b950e7894e354f88e927b22573daf8861f57`. Workflow [#43774695605](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43774695605) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun errore/Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. D1911 candidato Vishay `1N4007-E3/54` su CAD KiCad nativo DO-41, K1 rail+, A2 rail−, nessun PCB aggiornato; diodo non qualificato per rilascio fisico.
+
+**In corso su branch** `engineering/v27-front-flyback-rl-release-bound-20261116`: test Python di 216 scenari analitici RL del ricircolo D1911, t corrente 10% 0,10052–5,59395 ms, energia iniziale 0,002296–0,299246 mJ, **solo ipotesi L/Vf/VCEsat**. Non sono valori reali di contatto o relè; test CI ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 16 novembre 2026 — PR #272 MERGED; D1911 flyback CAD OEM candidato
 
