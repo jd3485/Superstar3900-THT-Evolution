@@ -35,6 +35,16 @@ def verify():
     assert "FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch" in sch
     assert "FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_DRAFT.kicad_sch" in sch
     assert all(x.exists() for x in CHILDREN)
+    project=SCH.with_suffix(".kicad_pro")
+    symtab=SCH.parent/"sym-lib-table"
+    fptab=SCH.parent/"fp-lib-table"
+    assert project.is_file() and symtab.is_file() and fptab.is_file()
+    sym=symtab.read_text(encoding="utf-8")
+    fp=fptab.read_text(encoding="utf-8")
+    for item in ("TH_FRONT", "TH_FRONT_ILLUM", "TH_AUDIO"):
+        assert '(name "'+item+'")' in sym,item
+    for item in ("TH_FRONT", "TH_FRONT_ILLUM_LAB"):
+        assert '(name "'+item+'")' in fp,item
     assert "(wire " not in sch and "(junction " not in sch
     assert "NO FAB / NO TX" in sch
     with tempfile.TemporaryDirectory(prefix="tht_front_partial_hierarchy_") as temp:
