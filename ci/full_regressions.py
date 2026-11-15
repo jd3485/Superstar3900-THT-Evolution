@@ -294,6 +294,15 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_nc_dual_enable_coil_driver_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Independent OEM Omron G5V-1 DC5 screen: do NOT assume that the
+    # previously passing 250-1000 ohm hypothetical coils bound a real
+    # 167 ohm 5V OEM relay. Explicitly fail release/acceptance and verify
+    # both transistor base and under-voltage pickup shortcomings.
+    print("::group::V2.7 FRONT OMRON G5V1 OEM COIL SCREEN EXPECTED UNQUALIFIED",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_omron_g5v1_oem_relay_rejection_screen_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
