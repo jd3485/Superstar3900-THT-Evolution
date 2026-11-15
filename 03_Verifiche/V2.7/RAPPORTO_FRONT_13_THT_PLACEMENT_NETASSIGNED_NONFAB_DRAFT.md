@@ -24,6 +24,8 @@ Il gate nativo dello stesso file è stato reso più restrittivo: corrispondenza 
 
 Il fatto che le quattro reti LED risultino connesse nel modello non rappresenta **DRC=0**, validazione EMI, illuminazione frontale approvata, termica o produzione. La meccanica e l'interfaccia MAIN/FRONT restano da qualificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
+**Esito reale PR #250:** [PR #250](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/250) MERGED main `afc56545b088d31024d00ca2610b1f885267d19d` dopo CI sul final technical SHA `8c8af37d06ecb7ebbfa618a6a58532ec68ccf8ca`. [GitHub Actions #43725076350](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43725076350): FAST/FULL/required **SUCCESS 3/3**, 111 regressioni storiche PASS, `PASS_KICAD9_FRONT_13THT_28PADS_12NETS_4_LED_LAB_NETS_ROUTED_13_SEGMENTS_AUDIO_SMETER_UNROUTED_NO_OUTLINE_NO_FAB`. Le quattro reti LED LAB passano il controllo indipendente di continuità pad→segmenti→pad; il resto non è sbrogliato e non esiste alcun DRC prodotto.
+
 ## Gate CAD nativo e limiti di progetto
 
 `03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py` estrae strutturalmente dall'artefatto i 13 footprint, i relativi 28 pad e i loro codici rete, confrontando **tutte** le coppie ref/pad con le 12 partizioni dell'ERC/netlist del FRONT. Esegue inoltre **kicad-cli pcb export pos** nativo a garanzia che KiCad9 possa aprire il file e identificare le coordinate di tutti i componenti THT. Fallisce se trova segmenti diversi dai 13 tracciati LED LAB consentiti, via, rame riempito, outline di fabbricazione, pad SMD, riferimenti duplicati, pin↔net alterati o potenziometri non marcati come PROVISIONAL. Aggiunto come gate FULL.
