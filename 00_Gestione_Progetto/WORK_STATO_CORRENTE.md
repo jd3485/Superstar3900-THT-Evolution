@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #220 integrata; master gerarchico FRONT parziale in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #221 integrata; terzo foglio S-meter passivo in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #221 MERGED, terzo foglio S-meter passivo aggiunto a FRONT su nuovo branch
+
+**[PR #221](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/221) MERGED** main `abd6ed1d93c8844d981155001dcb29a1136ec7d7`, head `db3130382ee59bddbee21325551880722b89f408`; [Actions #43664959183](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664959183): FAST/FULL/required **SUCCESS 3/3**, log nativo `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations` e `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_2SHEETS_8REFS_7NETS_17PINS_ERC0_NO_CROSS_RAIL_NO_FAB`. Master FRONT parziale KiCad9 reale con due fogli (Volume + LED), senza bridge fra domini. Prima FULL [#43664684666](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664684666) fallì per 14 warning librerie non registrate, corrette con tabelle root sym/fp senza waiver.
+
+**In branch NON integrato** `v27-front-partial-third-smeter-passive-20261115` da main SHA sopra: aggiunto terzo Sheetfile passivo `FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` a master FRONTALINO, libreria simboli `TH_SMETER` registrata in root, test KiCad9 ERC/netlist aggiornato per **13 riferimenti THT / 12 reti / 28 pin** in tre domini separati: audio, LED LAB, S-meter passivo candidato. **NESSUNA** connessione di energia/signal tra domini o MAIN; S-meter movement FSD/Rcoil, limitatore corrente, AGC e massa ancora non qualificati. **Richiedere FAST/FULL/required HEAD finale** prima di merge. L'unica `.kicad_pcb` resta LED LAB-only DRC0, non PCB-FRONT. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #220 MERGED, nuovo master gerarchico FRONT parziale in branch CI pending
 
