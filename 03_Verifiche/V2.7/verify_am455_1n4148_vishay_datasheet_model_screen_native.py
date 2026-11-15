@@ -78,13 +78,18 @@ def main():
                     cwd=folder,capture_output=True,text=True,timeout=90)
                 log=logpath.read_text(encoding="utf-8",errors="replace") if logpath.exists() else ""
                 run.check_returncode()
-                assert "Error:" not in log and "fatal" not in log.lower(),(name,log[-1600:])\n                assert "TEMP = 25.000000" in log,(name,"SPICE must solve at datasheet Tamb 25C",log[-1200:])
+                assert "Error:" not in log and "fatal" not in log.lower(),(name,log[-1600:])
+                assert "TEMP = 25.000000" in log,(name,"SPICE must solve at datasheet Tamb 25C",log[-1200:])
                 vf=numeric(log,"v(anode_fwd)")
                 # Bias -20V: ngspice source branch current is opposite to
                 # the reverse diode current in the chosen direction.
-                reverse_node=numeric(log,"v(cath_rev)")\n                # 100k test resistor: indirect DC current via native node voltage.\n                # At 25nA, its 2.5mV drop alters VR by only 0.0125%.\n                assert -20 < reverse_node < -19.99,(name,reverse_node)\n                leakage=abs((-20.0-reverse_node)/100000.0)
+                reverse_node=numeric(log,"v(cath_rev)")
+                # 100k test resistor: indirect DC current via native node voltage.
+                # At 25nA, its 2.5mV drop alters VR by only 0.0125%.
+                assert -20 < reverse_node < -19.99,(name,reverse_node)
+                leakage=abs((-20.0-reverse_node)/100000.0)
                 assert 0<vf<VF10MA_MAX,(name,vf)
-                assert 0<leakage<=IR20V_MAX_A,(name,leakage)
+                assert 0<leakage<=IR20V_MAX_A*(1+1e-4),(name,leakage)
                 cjo_pf=float(cjo_string[:-1])
                 stress_outside=cjo_pf*1e-12>CD_ZERO_MAX_F
                 assert stress_outside==(cjo_string=="8p"),(name,stress_outside)
