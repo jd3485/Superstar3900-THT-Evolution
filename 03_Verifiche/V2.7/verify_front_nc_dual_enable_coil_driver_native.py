@@ -42,8 +42,11 @@ def main():
     assert raw.count('(symbol (lib_id "TH_COIL:NPN_ABSTRACT")')==2
     assert raw.count("BC33725BU_ONSEMI_CANDIDATE_NOT_DRIVER_RELEASE")==2
     assert raw.count("Package_TO_SOT_THT:TO-92_Inline")==2
-    assert library.count('(name "B" (effects (font (size 1 1)))) (number "2"')==1
-    assert library.count('(name "C" (effects (font (size 1 1)))) (number "1"')==1
+    # Limit assertions to NPN: other library symbols also have a pin called B/2.
+    npn=library.split('(symbol "NPN_ABSTRACT_1_1"',1)[1].split('(symbol "RESISTOR"',1)[0]
+    assert npn.count('(name "B" (effects (font (size 1 1)))) (number "2"')==1
+    assert npn.count('(name "C" (effects (font (size 1 1)))) (number "1"')==1
+    assert npn.count('(name "E" (effects (font (size 1 1)))) (number "3"')==1
     assert raw.count('(symbol (lib_id "TH_COIL:RESISTOR")')==4
     assert raw.count('(symbol (lib_id "TH_COIL:FLYBACK_DIODE")')==1
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
