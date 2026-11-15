@@ -20,6 +20,7 @@ def main():
     board=PCB.read_text(encoding="utf-8")
     assert "(kicad_pcb (version " in board
     assert (BASE/"fp-lib-table").is_file()
+    assert (BASE/"FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pro").is_file()
     assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_HEADER_2P54.kicad_mod").is_file()
     assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_RESISTOR_7P62.kicad_mod").is_file()
     assert (BASE/"TH_FRONT_ILLUM_LAB.pretty/LAB_LED_2P54.kicad_mod").is_file()
@@ -73,7 +74,7 @@ def main():
         assert sum(len(p) for p in by_net.values())==10
         rpt=folder/"pcb_drc.rpt"
         cmd=["kicad-cli","pcb","drc","--exit-code-violations","-o",str(rpt),str(PCB)]
-        cp=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=120)
+        cp=subprocess.run(cmd,cwd=BASE,capture_output=True,text=True,timeout=120)
         print("FRONT_ILLUM_LAB_PCB_DRC_STDOUT",cp.stdout,cp.stderr,flush=True)
         if rpt.exists():
             print("FRONT_ILLUM_LAB_PCB_DRC_REPORT",rpt.read_text(encoding="utf-8"),flush=True)
