@@ -37,6 +37,28 @@ def main():
     assert abs(actual["1"][0]-actual["2"][0])==2.5
     assert abs(actual["3"][0]-actual["2"][0])==2.5
     assert len(set(p[0] for p in pads))==3
+    # Board-level manufacturability SCREEN ONLY (not a fab clearance rule).
+    # Each 1.8 mm circular copper pad around a provisional 1.0 mm finished
+    # drill has 0.4 mm radial annular ring. At 2.5 mm adjacent pitch, the
+    # mathematical pad-to-pad copper gap is 0.7 mm; mask/web, tolerance and
+    # OEM lead fit still require independent qualification.
+    xy={}
+    for pin,shape,x,y,sx,sy,drill in pads:
+        x,y,sx,sy,drill=map(float,(x,y,sx,sy,drill))
+        assert sx==sy==1.8 and drill==1.0,(pin,sx,sy,drill)
+        assert (sx-drill)/2 >= 0.4-1e-9,(pin,"annular ring")
+        xy[pin]=(x,y,sx,sy)
+    import math
+    for ia,a in enumerate(("1","2","3")):
+        for b in ("1","2","3")[ia+1:]:
+            xa,ya,wa,ha=xy[a]
+            xb,yb,wb,hb=xy[b]
+            # Conservative enclosing-radius check for circular copper pads.
+            center=math.hypot(xa-xb,ya-yb)
+            gap=center-(wa+wb)/2
+            assert gap>=0.5-1e-9,(a,b,gap)
+    assert abs(xy["1"][0]-xy["2"][0])-1.8==0.7
+    assert abs(xy["3"][0]-xy["2"][0])-1.8==0.7
     assert all(p[1] in ("rect","circle") for p in pads)
     board=BOARD.read_text(encoding="utf-8")
     assert board.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==2
@@ -60,6 +82,9 @@ def main():
         "terminal_span_mm":5.,
         "THT_electrical_pins":3,
         "provisional_drill_diameter_mm":1.,
+        "provisional_annular_ring_radial_mm":0.4,
+        "nominal_adjacent_pad_copper_gap_mm":0.7,
+        "copper_geometry_screen_only_not_fab_drc":True,
         "board_replaced":False,
         "panel_mount_geometry_qualified":False,
         "OEM_in_production_confirmed_by_manufacturer":False,
