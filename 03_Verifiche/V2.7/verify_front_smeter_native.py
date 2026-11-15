@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 
 from verify_interboard_audio_contract_native import exported_nets, require
+from verify_front_smeter_fsd_fault_screen import verify as verify_fsd_fault_screen
 
 ROOT=Path(__file__).resolve().parents[2]
 SCH=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch"
@@ -71,6 +72,8 @@ def main():
             ("J1802","1"),("J1802","2")}
         print("FRONT_SMETER_NATIVE_PIN_CONTRACT",
               {k:sorted(nets[k]) for k in relevant},flush=True)
+    # Conservative source fault/FSD analysis follows real KiCad9 pin contract.
+    verify_fsd_fault_screen()
     print("PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX",flush=True)
 
 if __name__=="__main__":
