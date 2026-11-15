@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #224 integrata; interboard AF KiCad9 ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #225 integrata; master MAIN V2.7 150 refs in branch CI pending). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #225 MERGED; vero master MAIN V2.7 a gerarchia V2.6 + audio RX in branch tecnico
+
+**[PR #225](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/225) MERGED** su main `3d0bdf6cefff9b35ebce77e8b679e2988ef1168f`, head doc `f2152415eefb52038d5f1380f45d08f530500d08`; [Actions #43666899879](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666899879): FAST e required **SUCCESS 2/2**, FULL skipped per solo checkpoint. Interboard J1302↔J1202 resta elettricamente verificato su [Actions #43666448081](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666448081) FAST/FULL/required 3/3 SUCCESS, ERC0.
+
+**In branch tecnico NON integrato** `v27-main-radio-hierarchical-v26-audio-isolation-20261115`, base main SHA sopra: nuovo master gerarchico KiCad9 autentico `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` con **due fogli**, V2.6 radio RX/PLL/VTUNE 138 riferimenti **originali senza modificare gli schemi** e `AUDIO_RX_MONO_LM386_V2_7_DRAFT` 12 riferimenti THT isolati, **150 riferimenti attesi**. Aggiunto `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_pro` e registrate le librerie simboli/footprint THT V2.6 nella directory root KiCad V2.7. Nuovo test `verify_main_partial_v27_hierarchy_native.py`, obbligatorio nel runner FULL, confronta attraverso **tre esportazioni reali KiCad9** tutte le partizioni pin↔net del master composto con le 138 refs V2.6 e le 12 refs audio originali; non autorizza alcuna connessione GND/rail/AF ipotetica tra i due blocchi. ERC sull'intera gerarchia `--exit-code-violations`, zero waiver. **Non dichiarare ERC0 o 150 ref PASS prima della CI sul final HEAD**. MAIN resta incompleto lato IF/demodulatore, interfaccia FRONT e potenze RX; **nessuna PCB-MAIN fisica**, unica PCB laboratorio LED separata. S-meter analogico e relative protezioni non qualificati, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #224 MERGED: schema nativo interboard audio MAIN↔FRONT verificato ERC0
 
