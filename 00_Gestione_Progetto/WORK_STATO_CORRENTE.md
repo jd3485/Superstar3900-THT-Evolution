@@ -1,7 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 **Aggiornato:** 15 novembre 2026 (PR #257 MERGED: 75 casi guasto apertura contatto basso RV1301, KCL KiCad9 nativa; FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #257 SHA `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`; checkpoint finale in revisione documentale.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #257 SHA `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`; checkpoint PR #258 integrato su main `cf923333692705c344c8ebf91797cda42f77316e`.
+
+## 15 novembre 2026 — Rguard cursore FRONT 375 simulazioni analitiche, in revisione
+
+Branch `engineering/v27-front-volume-guard-shunt-tradeoff-20261115` da main `cf923333692705c344c8ebf91797cda42f77316e`. Screening di un **resistore candidato indipendente** da wiper RV1301 a AF_GND, testati 100/330/1000/3300/10000 Ω con 375 punti frequenza/posizione/Rin e riduzione vs KCL autonome, endpoint originali KiCad9 controllati. A 1kHz/Rin50k/volume 1%, guasto pin basso senza guardia 0,714219, con guardia 100Ω ~0,008192 ma volume massimo sano scende a 6,35% dell'originale; con guardia 10kΩ massimo sano ~95,19% ma guasto rimane ~0,384526. **Nessun valore è soluzione fail-safe approvata** e nessuna modifica allo schematico/PCB. FULL gate e report sul branch, CI PR ancora da verificare. Prossimo passo: mute fail-closed indipendente con verifiche KiCad9/fault più realistiche. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #257 MERGED: FRONT RV1301 open-low, 75 casi AC KCL
 
