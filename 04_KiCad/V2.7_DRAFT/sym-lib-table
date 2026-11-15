@@ -14,4 +14,5 @@
 
  (lib (name "TH_TANK") (type "KiCad") (uri "${KIPRJMOD}/IF455_TANK/TH_TANK.kicad_sym") (options "") (descr "THT IF455 passive tank bench source"))
  (lib (name "TH_DEMOD") (type "KiCad") (uri "${KIPRJMOD}/AM455_ENVELOPE/TH_DEMOD.kicad_sym") (options "") (descr "THT AM455 envelope detector bench source"))
+ (lib (name "TH_IFBUF") (type "KiCad") (uri "${KIPRJMOD}/IF455_KSP10_FOLLOWER/TH_IFBUF.kicad_sym") (options "") (descr "THT isolated KSP10 IF buffer lab candidate, not connected or approved"))
 )
