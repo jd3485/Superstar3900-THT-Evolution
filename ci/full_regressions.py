@@ -303,6 +303,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_omron_g5v1_oem_relay_rejection_screen_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # THT power-good comparator and reference: real KiCad9 five-net
+    # LM393/TL431 package pinout plus 135 VIN/ref/divider corners.
+    # Fail closed on ERC; record deep-brownout CM and loaded OC blockers.
+    print("::group::V2.7 FRONT LM393 TL431 REAL PGOOD SCHEMATIC",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_tl431_lm393_powergood_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
