@@ -1,11 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #262 MERGED: 64 stati guasto NC mute con verifica KiCad9 nativa; FAST/FULL/Required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #264 MERGED: doppio NPN driver bobina THT KiCad9 ERC0; screen OEM Omron 167Ω in PR). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Ultimo merge tecnico PR #262 SHA `8dbe79f1108b3c67596265a92b39ef48be20d277`; checkpoint PR #263 integrato main `16ea6a5745755a1bbcfc80d24944c86bdf509b94`.
 
 ## 15 novembre 2026 — DRIVER COIL MUTE THT DOPPIO CONSENSO, PR IN REVISIONE
 
 Da main `16ea6a5745755a1bbcfc80d24944c86bdf509b94` branch `engineering/v27-nc-mute-dual-enable-coil-driver-native-20261115`: creato schema KiCad9 editabile isolato `04_KiCad/V2.7_DRAFT/FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch` con **due NPN THT in serie** su ritorno coil K1901, due resistenze base 1k5 e due pulldown 10k, flyback a polarità dichiarata, ingressi lab `ENABLE_AUDIO_LAB`, `POWER_GOOD_LAB` separati; 4 port a 2 pin. Collegamento a contatto K1901 definito attraverso J1914 ↔ J1903 senza toccare PCB FRONT originale. Nuova FULL CI verifica ERC/netlist KiCad9 8 reti e screening DC ipotetico 48 casi (4 valori bobina, 3 rail, 2 ingressi, 2 saturazioni), **non vendor-SPICE né relè qualificato**. Report `RAPPORTO_FRONT_MUTE_DUAL_ENABLE_COIL_DRIVER_NATIVE_DRAFT.md`. **CI finale PR non ancora verificata; nessun merge anticipato.** Il power-good è solo input di banco, manca supervisore reale; possibile guasto transistor/contatto welded NO, audio GND/cavo. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #264 MERGED: driver bobina mute doppio consenso KiCad9
+
+**[PR #264](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/264) MERGED** su main `6d48c05cf72ae267fd6decc14b011e1792ff727a`, final head tecnico `aa59b7c587b2cbd90a01e3fe164875a9aecc7b19`. [Actions #43763343305](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43763343305): FAST/FULL/Required **SUCCESS 3/3**, 111 comandi legacy PASS, marker `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun traceback. Schema KiCad9 THT autonomo `FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch` con due switch NPN in serie, due input `ENABLE_AUDIO_LAB` e `POWER_GOOD_LAB`, resistenze 1k5 base + 10k pulldown e flyback D1911 (cathode verso rail lab). Otto net esatte, quattro connettori. **Nessun supervisore power-good reale, relay OEM, package NPN o rail/tempo di rilascio qualificati; 48 casi DC soltanto ipotetici con bobine 250–1000 Ω.** PCB FRONT invariata, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+## 15 novembre 2026 — Omron G5V-1 DC5 OEM screen in revisione, NON QUALIFICATO
+
+Branch `engineering/v27-omron-g5v1-coil-contact-oem-screen-20261115` da main PR264. [Fonte OEM ufficiale](https://components.omron.com/eu-en/system/files/2023-01/datasheet_pdf/K048-E1.pdf), G5V-1 DC5: bobina nominale **167Ω±10%/30mA**, funzionamento pickup a 23°C **≤80% Vnom**, contatto reference failure rate **1mA a 5VDC**. **I 250–1000Ω ipotetici della PR264 NON coprono questo relè reale**; nessuna certificazione sul basso livello AF. Aggiunto test obbligatorio `verify_front_omron_g5v1_oem_relay_rejection_screen_native.py`: 36 scenari per individuare margini base/pickup non assicurati usando rete reale KiCad9, senza associare l'MPN a K1901. Report `RAPPORTO_OMRON_G5V1_RELAY_DC5_OEM_REJECTION_DRAFT.md`. **CI finale da verificare, no rilascio.** Prossimo passo: confronto OEM THT compatibili + driver/supervisore reale, fault mute e GND/contatto. NO FAB/TX/BATTERIA/VEICOLO.
 
 ---
 
