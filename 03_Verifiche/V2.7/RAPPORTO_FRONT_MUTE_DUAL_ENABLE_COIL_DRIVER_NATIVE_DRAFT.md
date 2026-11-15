@@ -28,3 +28,7 @@ Calcola `Icoil = (Vrail-2VCEsat)/Rcoil` e disponibilità di corrente base per en
 5. Non collegare questo CAD autonomo alla MAIN o alla FRONT PCB fisica finché non sono chiusi OEM e gate sopra.
 
 **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## 16/11/2026 — D1911 Vishay 1N4007-E3/54, candidato CAD THT (non rilasciato)
+
+Candidato **Vishay 1N4007-E3/54**, rettificatore assiale **DO-41 / DO-204AL**, 1 A IF(AV), 1000 V VRRM, non equivalente a un test reale di energia bobina. [Datasheet OEM Vishay](https://www.vishay.com/docs/88503/1n4001.pdf); [scheda del codice esatto e stato commerciale active presso DigiKey](https://www.digikey.com/en/products/detail/vishay-general-semiconductor-diodes-division/1N4007-E3-54/868990). Lo stato produttivo OEM dell'esatto MPN resta da verificare direttamente prima della BOM finale. In KiCad D1911/1=**K** su `COIL_PLUS_LAB`, D1911/2=**A** su `COIL_MINUS_LAB`; footprint candidato `Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal`. La polarità è intenzionalmente bloccante durante energizzazione. L'uso di un ricircolo semplice può aumentare il tempo di rilascio del relè: **misura reale, induttanza, corrente di guasto, impulso, dissipazione e risposta mute non qualificate**. Nessuna modifica PCB reale né rilascio al montaggio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
