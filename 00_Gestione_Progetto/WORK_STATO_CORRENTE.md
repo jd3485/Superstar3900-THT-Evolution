@@ -1,11 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #226 integrata; MAIN V2.7 gerarchico radio V2.6 + LM386, 150 refs, KiCad9 ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. SHA main dopo merge PR #226: `167c82d3f87e113e1275ca4dcec07f824df65185`.
+**Aggiornato:** 15 novembre 2026 (PR #228 MERGED; MAIN V2.7 quattro sottosezioni native, 166 refs, ERC0; CI finale PASS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. SHA main dopo PR #228: `701754bc0818b189b6f9e1b5b079b6b97218fa98`.
 
-## 15 novembre 2026 — MAIN V2.7 quattro sottosezioni native, branch tecnico (CI DA VERIFICARE)
+## 15 novembre 2026 — PR #228 MERGED: MAIN V2.7 166 riferimenti, IF455 + AM455 isolati
 
-**Branch** `v27-main-if455-am455-isolated-hierarchy-20261115`, basato su main `4401c466faccc5a30e8b657d3070a34a0266d4a2` dopo PR #227. Il master KiCad9 `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` aggiunge **IF455 tank THT (9 refs)** e **AM455 envelope detector THT (7 refs)** agli originali 138 radio V2.6 e 12 LM386 RX audio. Attesi **166 riferimenti** su quattro figli nativi, senza wire tra fogli e senza modificare sorgenti originali. La catena IF455→AM455 e AM455→audio NON è collegata: impedenza/carico diodo, massa/chassis e livelli AF non qualificati. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque esportazioni KiCad9 e confronto pin/net fail-closed, con allowlist immutata di otto NC V2.6. CI necessaria sul HEAD finale; nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+**[PR #228](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/228) MERGED** su main `701754bc0818b189b6f9e1b5b079b6b97218fa98`, head tecnico `103d15435487aaac50749e530a959132ad0baf63`; [CI #43698724725](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43698724725) su HEAD finale **FAST/FULL/required SUCCESS 3/3**, con evidenze `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_166REFS_FOUR_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB`. Le due precedenti FULL su head non finali hanno individuato librerie TH_DEMOD/TH_TANK simboli e impronte non registrate al root KiCad V2.7: corrette senza waiver. Il master KiCad9 `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` aggiunge **IF455 tank THT (9 refs)** e **AM455 envelope detector THT (7 refs)** agli originali 138 radio V2.6 e 12 LM386 RX audio. Attesi **166 riferimenti** su quattro figli nativi, senza wire tra fogli e senza modificare sorgenti originali. La catena IF455→AM455 e AM455→audio NON è collegata: impedenza/carico diodo, massa/chassis e livelli AF non qualificati. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque esportazioni KiCad9 e confronto pin/net fail-closed, con allowlist immutata di otto NC V2.6. CI finale verificata sullo SHA tecnico; nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 
