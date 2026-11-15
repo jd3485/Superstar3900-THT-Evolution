@@ -108,7 +108,14 @@ class V04(unittest.TestCase):
     self.assertTrue(all(('DIP' in r['contenitore_tht'] or 'TO-92' in r['contenitore_tht'] or 'THT' in r['contenitore_tht']) for r in self.bom))
     self.assertTrue(all('APPROVATO' not in r['stato_funzionale'] for r in self.bom))
  def test_32_no_pcb_and_no_erc(self):
-    self.assertFalse(list((ROOT/'04_KiCad').rglob('*.kicad_pcb')))
+    # The historical V0.4 *product* has never had a PCB. A single later
+    # FRONT LED lab-only PCB may coexist, with independent KiCad9 DRC gate.
+    self.assertFalse(list((ROOT/'04_KiCad/V0.4').rglob('*.kicad_pcb')))
+    boards={p.relative_to(ROOT).as_posix() for p in (ROOT/'04_KiCad').rglob('*.kicad_pcb')}
+    self.assertTrue(boards.issubset({
+        '04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'
+    }),('Unauthorized PCB outside known standalone LAB board',boards))
+
     self.assertEqual(self.cfg['validation']['kicad_erc'],'NOT_RUN')
  def test_33_handoff_and_technical_report(self):
     self.assertTrue((ROOT/'04_KiCad/V0.4/PLL_PRESCALER_RX_V0.4.kicad_sch').is_file())
