@@ -270,6 +270,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_volume_wiper_guard_tradeoff_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Standalone THT relay-contact audio-mute candidate: KiCad9 ERC0,
+    # complete five pin-net partitions and 3 two-pin lab connectors.
+    # NO qualified relay/driver, only NC contact functional hypothesis.
+    print("::group::V2.7 FRONT NC RELAY MUTE CONTACT NATIVE KICAD9",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_nc_relay_contact_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)

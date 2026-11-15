@@ -1,7 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 **Aggiornato:** 15 novembre 2026 (PR #259 MERGED: 375 casi di guardia cursore RV1301, KiCad9 nativo + KCL doppia; CI FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #259 SHA `c83a2cfc3f9474be88783e2f5dccec69b561fa61`; checkpoint PR #258 su main `cf923333692705c344c8ebf91797cda42f77316e`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #259 SHA `c83a2cfc3f9474be88783e2f5dccec69b561fa61`; checkpoint PR #260 MERGED su main `5b9ea07a940287b5ff08cb98b72127e52ce00ee7`.
+
+## 15 novembre 2026 — candidato mute NC THT, nuova gerarchia autonoma NONFAB
+
+Dal main `5b9ea07a940287b5ff08cb98b72127e52ce00ee7` branch `engineering/v27-front-nc-relay-muted-contact-native-20261115`: creato **schema KiCad9 THT standalone reale** `FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch` con K1901 SPDT 5 pin (NC verso AF_GND, COM verso ingresso amp, NO dal volume), tre connettori 2 pin J1901/J1902/J1903, bobina separata e cinque net nominate. Nuovo test FULL esegue ERC/netlist nativa su FRONT/MAIN/candidato, con partizioni esatte e protezione della PCB FRONT esistente. **Schema nuovo candidato in PR: prima CI #43759196685 FAST PASS, FULL/Required FAIL per quattro lib_symbol_issues; seconda CI #43759661720 ancora FAIL per tabella non risolta senza progetto .kicad_pro; aggiunto .kicad_pro nativo oltre TH_MUTE.kicad_sym e sym-lib-table; CI finale DA VERIFICARE. Nessun MPN/footprint bobina qualificato, driver e power-good ancora assenti.** Il contatto NC è solo ipotesi di topologia, non prova sicurezza; apertura massa e incollaggio/contatto ossidato non mitigati. Vedi `RAPPORTO_FRONT_MUTE_NC_RELAY_CAD_CANDIDATO_DRAFT.md`. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #259 MERGED: Rguard cursore FRONT, 375 punti AC indipendenti
 
