@@ -76,7 +76,8 @@ def main():
         "OPAMP_model_is_vendor": False,
         "current_cap_fsd_qualified": False,
         "unpowered_external_meter_supply_fault_qualified": False,
-        "KiCad_native_schematic_for_this_active_sink_exists": False,
+        "KiCad_native_schematic_for_this_active_sink_exists": True,
+        "KiCad_to_SPICE_equivalence_certified": False,
         "NO_FAB_NO_TX": True,
     }, flush=True)
 
