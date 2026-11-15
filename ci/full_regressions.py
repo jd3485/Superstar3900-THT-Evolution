@@ -262,6 +262,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_volume_open_low_fault_kcl_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Actual FRONT volume pin-net proof + candidate independent shunt
+    # guard 375 AC point KCL/reduction screen; never assert fail-safe
+    # hardware readiness or silently replace the provisional schematic.
+    print("::group::V2.7 FRONT VOLUME WIPER SHUNT 375 DUAL-KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_volume_wiper_guard_tradeoff_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
