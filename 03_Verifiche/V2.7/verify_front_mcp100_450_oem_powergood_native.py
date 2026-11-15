@@ -25,6 +25,55 @@ EXPECTED={
  "POWER_GOOD_LAB":{("U2101","1"),("J2102","1")}
 }
 OEM_PDF="https://ww1.microchip.com/downloads/en/devicedoc/11187f.pdf"
+
+def screen_reset_fault_states():
+    """216 illustrative supervisor fault cases; no safety release.
+
+    These are logical output/ground failure injections, NOT OEM guaranteed
+    electrical waveforms or measured relay response. A rail above VTRIP max
+    still cannot force a welded/stuck output to the intended state.
+    """
+    faults=("nominal","output_stuck_high","output_stuck_low","ground_open")
+    counts={name:0 for name in faults}
+    false_high_below_trip=0
+    unavailable_high_above_trip=0
+    ambiguous_ground=0
+    for vin,rcoil,vcesat,fault in product(
+        (3.5,4.25,4.5,4.6,5.0,5.5),
+        (150.3,167.0,183.7),(.15,.2,.3),faults
+    ):
+        counts[fault]+=1
+        assert rcoil>0 and 0<vcesat<vin
+        # An output logic state is not the same as guaranteed relay contact.
+        if fault=="nominal":
+            guaranteed_high=vin>4.5
+            guaranteed_low=1.0<=vin<4.25
+            if 4.25<=vin<=4.5:
+                assert not guaranteed_high and not guaranteed_low
+        elif fault=="output_stuck_high":
+            if vin<=4.5:
+                false_high_below_trip+=1
+        elif fault=="output_stuck_low":
+            if vin>4.5:
+                unavailable_high_above_trip+=1
+        else:
+            # Ground reference lost: reset signal is undefined at the load.
+            ambiguous_ground+=1
+    assert counts==dict.fromkeys(faults,54),counts
+    assert false_high_below_trip==27
+    assert unavailable_high_above_trip==27
+    assert ambiguous_ground==54
+    print("MCP100_216_FAULT_STATE_SCREEN_NOT_SAFETY_RELEASE",{
+        "cases":sum(counts.values()),
+        "false_high_below_or_at_trip_stuck_high":false_high_below_trip,
+        "unavailable_high_above_trip_stuck_low":unavailable_high_above_trip,
+        "undefined_ground_reference":ambiguous_ground,
+        "below_1V_unmodelled":True,
+        "contact_weld_not_modelled":True,
+        "relay_release_delay_not_qualified":True,
+        "no_fab_no_tx":True,
+    },flush=True)
+
 def main():
     assert SCH.with_suffix(".kicad_pro").is_file()
     assert '(name "TH_MCP100")' in (BASE/"sym-lib-table").read_text(encoding="utf-8")
@@ -84,6 +133,7 @@ def main():
     assert OEM_PDF.endswith("11187f.pdf")
     assert 4.25 < 4.375 < 4.5
     assert 150<=350<=700
+    screen_reset_fault_states()
     print("FRONT_MCP100_450_TO92_OEM_SCREEN",{
         "OEM_datasheet":OEM_PDF,
         "part_candidate":"MCP100-450DI/TO",
