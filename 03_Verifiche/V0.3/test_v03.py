@@ -111,13 +111,26 @@ class PLLV03(unittest.TestCase):
     # is allowed ONLY at this exact path, never as the released radio PCB.
     self.assertFalse(list((ROOT/'04_KiCad/V0.3').rglob('*.kicad_pcb')))
     boards={p.relative_to(ROOT).as_posix() for p in (ROOT/'04_KiCad').rglob('*.kicad_pcb')}
-    allowed={'04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'}
+    lab='04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'
+    placement='04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb'
+    allowed={lab,placement}
     self.assertTrue(boards.issubset(allowed),('Unexpected product/unqualified PCB file',boards-allowed))
     if boards:
         self.assertEqual(boards,allowed)
-        self.assertIn('FRONT_ILLUM',next(iter(boards)))
-        # Qualification requires separate native KiCad9 DRC + exact pad/net
-        # parity in verify_front_illum_lab_pcb_native.py; not a waiver here.
+        self.assertIn(lab,boards)
+        self.assertIn(placement,boards)
+        # The second board is only a real THT component-placement study.
+        # No Edge.Cuts outline, no copper routing, no product DRC0 claim.
+        candidate=(ROOT/placement).read_text(encoding='utf-8')
+        self.assertEqual(candidate.count('(footprint "'),13)
+        self.assertIn('NOT PRODUCTION PCB',candidate)
+        self.assertNotIn('(segment ',candidate)
+        self.assertNotIn('(via ',candidate)
+        self.assertNotIn('(zone ',candidate)
+        self.assertNotIn('(layer "Edge.Cuts")',candidate)
+        # Separate native KiCad9 position export and all 28 pad↔net checks
+        # are mandatory in verify_front_13ref_netassigned_placement_native.py.
+        # Original LED laboratory board remains separately DRC-verified.
 
  def test_32_handoff_and_report(self):
     self.assertIn('V0.3',(ROOT/'RIPRENDI_IN_UNA_NUOVA_CHAT.md').read_text())
