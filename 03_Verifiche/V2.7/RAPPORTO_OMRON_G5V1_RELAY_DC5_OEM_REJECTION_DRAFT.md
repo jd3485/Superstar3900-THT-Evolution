@@ -54,3 +54,7 @@ I circuiti THT attuali rimangono isolati e il PCB FRONT
 13THT/28pad/12net/35 piste non viene modificato.
 
 **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+## CI tecnica, correzione di una condizione test
+
+Il primo [run #43764261866](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43764261866) ha **FAST SUCCESS, FULL/Required FAIL**: l'asserzione finale di brownout confrontava per errore 5,0−0,3−0,3=4,4 V con 4,0 V, sebbene il caso che non garantisce pickup sia **rail minimo 4,5−0,3−0,3=3,9 V**. Corretto esclusivamente l'input alla verifica, senza attenuare le soglie o mascherare l'errore. FULL sul successivo HEAD obbligatoria; nessun merge di PR fallita.
