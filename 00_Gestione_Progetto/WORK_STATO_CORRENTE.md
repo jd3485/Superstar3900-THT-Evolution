@@ -1,11 +1,31 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #210 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #211 integrata; driver S-meter SPICE candidate pending CI). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #212: prima FULL valida su SHA precedente, attesa CI HEAD finale
+
+[Actions #43658055515](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658055515) inizialmente **FAILED** per 31 warning off-grid nel nuovo schema; riposizionati tutti i pin/wire/label su griglia nativa 1,27mm senza waiver. [Actions #43658250059](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658250059) su SHA `f917b34fa2d69a0c046d8878032dee90b7d90157` **FAST/FULL/required PASS**, log KiCad9 `ACTIVE_SINK_ERC_STDOUT Found 0 violations`, 8 refs/8 nets/23 pins e ngspice generic 49,50385µA a VSET0,5V (coil 500Ω), 99,01404µA a VSET1V non limitata per FSD. Corretto successivamente il report semantico di esistenza KiCad vs equivalenza modello ideale: **CI nuova sul final HEAD obbligatoria, PR212 ancora NON merged**. Nessuna qualifica fisica FSD, alimentazioni, fault, produzione; NO FAB/NO TX.
+
+---
+
+## 15 novembre 2026 — candidato servo S-meter: KiCad9 THT + ngspice, PR #212 in validazione
+
+Nella PR **[#212](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/212)** branch `v27-smeter-active-current-sink-spice-20261115` è stato aggiunto un vero schema **KiCad9 standalone** `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/SMETER_ACTIVE_SINK_BENCH_V2_7_DRAFT.kicad_sch`: U2101 MCP6002 PDIP8, Q2101 2N3904 TO-92 onsemi E1/B2/C3, R2101 10k sense, R2102 10k base, R2103 100k pulldown e 3 connettori THT; topologia di sink di corrente ad anello chiuso **senza limitazione FSD certificata**, banco separato senza connessione MAIN-FRONT. Aggiunto `verify_smeter_active_sink_native.py` per ERC KiCad9 e partizioni previste **8 componenti, 8 reti, 23 pin**, richiamato in `verify_front_smeter_native.py`, più netlist ngspice comportamentale e test parametrici di VSET/coil/off. **Attendere FULL/FAST/required sul HEAD finale prima di dichiarare ERC o ngspice PASS e prima del merge.** Confronto SPICE ↔ opamp OEM, FSD/Rcoil, stabilità, fault e PCB non verificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #211 MERGED; corrente attiva S-meter SPICE candidato (branch da verificare)
+
+**[PR #211](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/211) MERGED**, main commit `ea2745ea2c6d9613bd42f145f75f07cb97695b73`. [Actions #43657363232](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43657363232): FAST+required **SUCCESS**, FULL correttamente skipped su diff solo documentazione. Il checkpoint PR210 precedentemente pending è ora su main. **La PR211 non costituisce una nuova revisione CAD.**
+
+**Lavoro tecnico branch NON integrato** `v27-smeter-active-current-sink-spice-20261115` da `ea2745ea2c6d9613bd42f145f75f07cb97695b73`: netlist SPICE originale `03_Verifiche/V2.7/SMETER_ACTIVE_SINK_BENCH_V2_7.cir`, controllo operativo reale ngspice `verify_smeter_active_sink_ngspice.py` collegato a `verify_front_smeter_native.py`, e rapporto V2.7. BJT generic tipo 2N3904 TO92 (datasheet onsemi pin **1=E 2=B 3=C**, da qualificare con vera impronta), sink con RSENSE 10k, comando VSET 0,1/0,5V per 10/50µA ideali a 5V lab e bobina puramente ipotetica 500Ω. Comando 1V potenzialmente pericoloso (100µA ideali): manca clamp FSD indipendente. Modelli SPICE BJT/opamp NON OEM, analisi di stabilità transienti e guasti NON qualificate. **Nessun nuovo CAD KiCad per il driver, nessuna PCB.** Non dichiarare prove ngspice eseguite finché FULL sul final head non è verde. In assenza FSD/Rcoil OEM non selezionare corrente definitiva. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 15 novembre 2026 — PR #210 MERGED: incompatibilità potenziale S-meter 5V / FSD bobina; NO FAB
 

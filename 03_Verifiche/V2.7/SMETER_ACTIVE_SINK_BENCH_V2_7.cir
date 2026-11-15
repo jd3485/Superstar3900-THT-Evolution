@@ -1,0 +1,18 @@
+* Superstar3900 THT Evolution V2.7 - isolated current sink BENCH ONLY
+* Generic BJT and IDEAL behavioural servo: NOT a qualified onsemi/Microchip macro-model.
+* Signal command VSET MUST be limited to the unknown actual meter FSD;
+* input AGC, protection, powered-off behaviour, and real meter coil are unspecified.
+* VDD=5V BENCH ONLY; coil R500 illustrative; 10k sense is a CANDIDATE.
+VDD VDD 0 5
+VSET CMD 0 0.5
+* Idealized closed-loop error amplifier with bounded output (NOT guaranteed hardware)
+BAMP DRIVE 0 V = min(max(5000*(V(CMD)-V(SENSE)),0),max(V(VDD),0))
+RBASE DRIVE BASE 10000
+RPULL BASE 0 100000
+Q2101 METER_LOW BASE SENSE Q3904_GENERIC
+RSENSE SENSE 0 10000
+RCOIL VDD METER_LOW 500
+* Generic illustrative BJT, not 2N3904 vendor model; TO-92 pin/pad needs later qualification
+.model Q3904_GENERIC NPN(IS=6e-15 BF=100 VAF=80 CJE=12p CJC=4p)
+.op
+.end
