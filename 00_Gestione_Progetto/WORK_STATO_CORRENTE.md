@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #211 integrata; driver S-meter SPICE candidate pending CI). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #212 integrata; studio beta/FSD in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #212 MERGED; beta BJT / bobina candidata 50 µA in revisione
+
+**[PR #212](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/212) MERGED** su `main` commit `287650e972f426eed2ce851dd378fd8d75b7e03d`, head tecnico `5be6db5569a5fff49daaddc399b462020af23886`. [Actions #43658780504](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658780504): FAST/FULL/required **SUCCESS 3/3**; log FULL `ACTIVE_SINK_ERC_STDOUT Found 0 violations`, native KiCad9 **8 refs/8 reti/23 pin** e ngspice op-point generic `49,50385µA` (VSET0,5V 5V coil 500Ω), `99,01404µA` (VSET1V, possibile sovracorrente). Nuovo schematico KiCad9 THT standalone `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/`, relativo verificatore nativo e modello ngspice; **non** è un PCB, non integrato a MAIN/FRONT, opamp ideale BJT generic senza current limit sicuro, coil FSD non selezionata. Prima FULL #43658055515 fallì per 31 warning KiCad off-grid, corretti e riprovati senza waiver.
+
+**In lavorazione (branch NON integrato)** `v27-smeter-bjt-beta-coil-candidate-20261115` da main SHA sopra: nuova prova ngspice di sensibilità BF=40/100/200 (feedback su *corrente emettitore* vs uscita bobina al collettore), carico equivalente 20kΩ da candidato pannello [Velleman AIM60005](https://www.velleman.eu/products/view/analogue-current-panel-meter-50a-dc-60-x-47mm-aim60005/?id=340368&lang=en) 50µA FSD, dimensioni 60,5×47×37,3mm, **MPN/stato produzione/elettrico non qualificato**. onsemi `2N3904BU` TO92 con E1/B2/C3 candidato; pinout varia con OEM. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) aperta per scegliere e qualificare bobina e limitazione indipendente, quindi sicurezza e meccanica FRONT. **Attendere CI sul final HEAD e PR prima del merge**. Nessuna prova hardware, NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #212: prima FULL valida su SHA precedente, attesa CI HEAD finale
 
