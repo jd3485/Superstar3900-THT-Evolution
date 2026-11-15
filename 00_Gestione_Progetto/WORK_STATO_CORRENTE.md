@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #209 verificata; nuova revisione interfaccia in lavorazione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #210 verificata). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #210 MERGED: incompatibilità potenziale S-meter 5V / FSD bobina; NO FAB
+
+**[PR #210](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/210) MERGED** su `main` commit `918c38b9085ee29f0f10b496695265fa7bb33fa6`, head tecnico `2b00f8e56d99e36d269775c69b3461068926ef47`. [Actions #43656784381](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43656784381): FAST/FULL/required **SUCCESS 3/3**, verificato log FULL: `SMETER_KICAD_ERC Found 0 violations`, `SMETER_MAIN_FRONT_BENCH_VOLTAGE_DRIVE_UNQUALIFIED`, `PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX`. File tecnici reali: `03_Verifiche/V2.7/verify_smeter_main_front_voltage_contract.py`, integrazione nel gate nativo FRONT e rapporto tecnico. Schema KiCad standalone e master MAIN V2.6 **non modificati**. Nessuna PCB creata, nessuna DRC di scheda.
+
+Il test verifica che un follower di banco MCP6002 alimentato a 5V non sia assunto direttamente come driver di bobina su FRONT con 2×100kΩ: nel modello ideale (5V limite superiore, R a −5%, Rcoil=0) la corrente max calcolata è **26,315789µA**; FSD ipotetica 50µA richiederebbe almeno **9,5V**. Non si deduce la FSD reale, non è definita la connessione MAIN→FRONT e non è autorizzata maggiore tensione. Priorità: scegliere/qualificare OEM in produzione per bobina S-meter (FSD, Rcoil, danni/sovracorrente) e progettare driver corrente controllata THT fail-closed, quindi interfaccia AGC MAIN / cable/connector e vere PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 15 novembre 2026 — PR #209 MERGED; MAIN/FRONT S-meter 5V drive contract (branch non integrato)
 
