@@ -146,6 +146,54 @@ def screen_coil_impedance_necessary_condition():
         "no_fab_no_tx":True,
     },flush=True)
 
+
+def screen_omron_5v_6v_oem_pickup_and_driver():
+    """OEM G5V-1 5/6V coil table crossed with illustrative two-NPN path.
+
+    Omron: 5V=167ohm, 6V=240ohm, +/-10% at 23C, must-operate
+    voltage <=80% of nominal at 23C. Source:
+    https://omronfs.omron.com/en_US/ecb/products/pdf/en-g5v_1.pdf
+    No actual contact behavior, worst-temperature or transistor spec proven.
+    """
+    outcomes={}
+    for name,rated_v,nominal_r in (("G5V-1_DC5",5.0,167.0),
+                                    ("G5V-1_DC6",6.0,240.0)):
+        count=0
+        driver_fail=0
+        pickup_fail=0
+        both_fail=0
+        for rail,drop,tolerance in product((4.6,5.0,5.5),
+                                           (.15,.2,.3),(.9,1.0,1.1)):
+            count+=1
+            coil_ohm=nominal_r*tolerance
+            coil_v=rail-2*drop
+            coil_i=coil_v/coil_ohm
+            base_i=(rail-.7-.8)/1500.0-.8/10000.0
+            assert 0<base_i<.003
+            # Necessary forced-beta=10 only; two series NPNs not qualified.
+            insufficient_drive=base_i<coil_i/10.0
+            # Manufacturer must-operate threshold is 80% max at 23C;
+            # below this threshold coil pull-in is NOT assured.
+            pickup_not_guaranteed=coil_v<.8*rated_v
+            driver_fail+=int(insufficient_drive)
+            pickup_fail+=int(pickup_not_guaranteed)
+            both_fail+=int(insufficient_drive and pickup_not_guaranteed)
+        assert count==27
+        outcomes[name]=(driver_fail,pickup_fail,both_fail)
+    assert outcomes=={"G5V-1_DC5":(27,3,3),
+                      "G5V-1_DC6":(1,18,1)},outcomes
+    print("OMRON_G5V1_5V6V_54CORNER_PICKUP_DRIVER_OEM_REJECTION_NOT_RELEASE",{
+        "states_per_variant":27,
+        "G5V1_5V_driver_fail_pickup_fail_both":outcomes["G5V-1_DC5"],
+        "G5V1_6V_driver_fail_pickup_fail_both":outcomes["G5V-1_DC6"],
+        "OEM_80pct_pickup_at_23C_only":True,
+        "nominal_coil_ohms_at_23C":(167,240),
+        "coil_tolerance":.10,
+        "illustrative_VCEsat_and_beta10_not_OEM":True,
+        "no_relay_contacts_qualification":True,
+        "NO_FAB_NO_TX":True,
+    },flush=True)
+
 def main():
     assert SCH.with_suffix(".kicad_pro").is_file()
     assert '(name "TH_MCP100")' in (BASE/"sym-lib-table").read_text(encoding="utf-8")
@@ -208,6 +256,7 @@ def main():
     screen_reset_fault_states()
     screen_driver_source_current_feasibility()
     screen_coil_impedance_necessary_condition()
+    screen_omron_5v_6v_oem_pickup_and_driver()
     print("FRONT_MCP100_450_TO92_OEM_SCREEN",{
         "OEM_datasheet":OEM_PDF,
         "part_candidate":"MCP100-450DI/TO",
