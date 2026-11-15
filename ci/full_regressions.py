@@ -187,6 +187,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Source impedance at a detector output is UNKNOWN: sweep four illustrative
+    # source resistances through real AM455 RC and FRONT/LM386 input loading.
+    # Independent four-node complex KCL cross-check across 300 cases.
+    print("::group::V2.7 AM455 ENVELOPE UNKNOWN SOURCE IMPEDANCE 300 KCL CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
