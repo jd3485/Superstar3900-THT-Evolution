@@ -195,6 +195,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native NONLINEAR IF455/AM455 diode transient with a second identical
+    # tank/detector loaded by FRONT pot and LM386 passive input components.
+    # Generic diode ONLY, no OEM model or receiver sensitivity qualification.
+    print("::group::V2.7 IF455 AM455 FRONT LM386 NINE LOADED NONLINEAR TRANSIENTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_if455_am455_front_loaded_nonlinear_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
