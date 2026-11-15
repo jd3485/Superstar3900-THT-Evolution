@@ -82,6 +82,11 @@ di massa impediscono di proclamare fail-closed**; restano esclusi
 collasso sotto 1 V, saldatura del contatto NO, tempi di release e
 dati di dispersione/carichi AF. Il blocco di fabbricazione resta invariato.
 
+
+## Verifica aggiuntiva della corrente massima garantita dall'uscita OEM
+
+La specifica `VOH >= VDD-0.7V` è caratterizzata solo a 3mA di source corrente. Con il modello **illustrativo** di bobina 167Ω ±10%, due VCEsat ipotetiche e beta forzato 10, la corrente richiesta al supervisore è `Icoil/10 + 0.8V/10kΩ` (la seconda componente alimenta la pull-down del driver). Dei 27 stati sopra VTRIPMAX, **9 superano 3mA**: non esiste una semplice riduzione della resistenza di base che mantenga simultaneamente questa garanzia di carico OEM e l'ipotesi di beta10 in tutti gli stati. Gli altri 18 non sono automaticamente compatibili: il resistore da 1k5 resta insufficiente negli stati già documentati, VBE è ipotizzata, NPN/coil pickup/temperatura/transitori non qualificati. Non confondere 3mA di corrente di prova del VOH con un massimo assoluto di corrente ammissibile: il risultato è un limite alla **garanzia disponibile dal datasheet**, non prova di danneggiamento. Richiesta alternativa con buffer/driver THT qualificato oppure relè compatibile con carico e contatti audio.
+
 ## Problemi ancora aperti
 
 Scegliere relè THT SPDT con vera specifica dry-contact audio

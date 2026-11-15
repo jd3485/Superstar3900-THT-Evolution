@@ -3,6 +3,14 @@
 **Aggiornato:** 15 novembre 2026 (PR #267 MERGED: LM393/TL431 THT reali con ERC0, 5 reti, 135 corner; MCP100 THT alternativo in PR). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Ultimo merge tecnico PR #267 SHA `640de1d16c1b5c3e42dd4212051635b0fd803441`; checkpoint integrato nella revisione successiva.
 
+## 15 novembre 2026 — PR #269 integrata, passo successivo MCP100 source-current
+
+**Verificato su GitHub:** PR #269 MERGED, main SHA `635f2fcf966ef4f8c9446c1b6921893d12ba807e`. Actions run [#43771474863](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43771474863) FAST/FULL/Required SUCCESS 3/3, log nativo FULL marker `MCP100_216_FAULT_STATE_SCREEN_NOT_SAFETY_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, no Traceback. Revisioni KiCad schematico e PCB restano invariate; test 216 casi astratti NON equivale a safety release.
+
+**Revisione tecnica successiva, su branch** `engineering/v27-mcp100-oem-3ma-driver-feasibility-20261115`: aggiunto al gate FULL native MCP100 un controllo di compatibilità tra corrente base minima illustrativa (beta10, VBE0.8V) e garanzia di VOH OEM a 3mA. Su 27 corner sopra soglia, 9 richiedono più di 3mA incluso pull-down; altri 18 non dimostrano compatibilità driver. Nessun MPN o PCB qualificato; test nuovo e checkpoint sul branch, **CI della revisione successiva non ancora verificata**. Soluzione successiva: progettare buffer o relè THT diverso solo dopo qualifica OEM, mantenendo fault e contatti dry-audio in review. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 15 novembre 2026 — nuova revisione draft: test 216 guasti MCP100, NON MERGED
 
 Main HEAD verificato prima del branch: `7851079067df5894e7b1da432faa3073610ff6fd`, merge PR #268. Il checkpoint main ancora riportava #268 aperta: questa annotazione corregge il passaggio **soltanto sul branch** finché i gate della nuova PR non siano verdi e il merge non avvenga. La CI di #268 non è stata riauditata con log di run tramite il connettore; evitare attribuzione di nuovi risultati.
