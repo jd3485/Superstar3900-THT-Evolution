@@ -120,11 +120,11 @@ class PLLV03(unittest.TestCase):
         self.assertIn(lab,boards)
         self.assertIn(placement,boards)
         # The second board is only a real THT component-placement study.
-        # No Edge.Cuts outline, no copper routing, no product DRC0 claim.
+        # No Edge.Cuts outline, 13 LED LAB-only segments, no product DRC0 claim.
         candidate=(ROOT/placement).read_text(encoding='utf-8')
         self.assertEqual(candidate.count('(footprint "'),13)
         self.assertIn('NOT PRODUCTION PCB',candidate)
-        self.assertNotIn('(segment ',candidate)
+        self.assertEqual(candidate.count('(segment '),13)
         self.assertNotIn('(via ',candidate)
         self.assertNotIn('(zone ',candidate)
         self.assertNotIn('(layer "Edge.Cuts")',candidate)
