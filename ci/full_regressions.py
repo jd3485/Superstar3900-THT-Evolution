@@ -278,6 +278,14 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_nc_relay_contact_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Graph vs independent boolean enumeration of 64 operational contact
+    # states including NC/NO weld, loss of GND and coil continuity;
+    # strictly a candidate symbolic topological screen, NOT safety approval.
+    print("::group::V2.7 FRONT NC RELAY 64 CONTACT FAULT STATES",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_nc_relay_contact_fault_matrix_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
     # candidate; no replacement of existing nonfabricable FRONT prototype.
     print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
