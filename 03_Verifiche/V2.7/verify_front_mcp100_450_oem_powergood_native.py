@@ -74,6 +74,50 @@ def screen_reset_fault_states():
         "no_fab_no_tx":True,
     },flush=True)
 
+
+def screen_driver_source_current_feasibility():
+    """Manufacturer guaranteed VOH only at 3mA: screen upper NPN base load.
+
+    This does not demonstrate a physical driver, coil pull-in, VBE maximum,
+    transistor hFE or tolerance/temperature qualification.
+    """
+    states=0
+    impossible_at_oem_source_limit=0
+    achievable_in_illustrative_current_only_model=0
+    base_ohm=1500.0
+    pull_ohm=10000.0
+    for vin,rcoil,drop in product(
+        (4.6,5.0,5.5),(150.3,167.0,183.7),(.15,.2,.3)
+    ):
+        # Source must supply both the transistor base and the 10k pulldown.
+        # 0.8V VBE and two equal VCEsat drops are illustrative.
+        source_cap=0.003
+        pull_current=0.8/pull_ohm
+        required_base=(vin-2*drop)/(rcoil*10.0)
+        required_source=required_base+pull_current
+        if required_source>source_cap:
+            impossible_at_oem_source_limit+=1
+        else:
+            achievable_in_illustrative_current_only_model+=1
+        # Original nominal base resistor cannot be upgraded merely by
+        # choosing a smaller value: verify the allowed source-current region.
+        source_at_voh_min=(vin-0.7-0.8)/base_ohm
+        assert 0<source_at_voh_min<source_cap
+        states+=1
+    assert states==27
+    assert impossible_at_oem_source_limit>0
+    assert impossible_at_oem_source_limit+achievable_in_illustrative_current_only_model==27
+    print("MCP100_3MA_OEM_OUTPUT_SOURCE_FEASIBILITY_NOT_DRIVER_RELEASE",{
+        "states":states,
+        "oem_3mA_source_limit_incompatible_states":impossible_at_oem_source_limit,
+        "illustratively_current_feasible_states":achievable_in_illustrative_current_only_model,
+        "nominal_Rbase_ohm":base_ohm,
+        "assumed_VBE_V":0.8,
+        "source_current_bound_mA":3.0,
+        "NPN_OEM_and_transient_unqualified":True,
+        "NO_FAB_NO_TX":True
+    },flush=True)
+
 def main():
     assert SCH.with_suffix(".kicad_pro").is_file()
     assert '(name "TH_MCP100")' in (BASE/"sym-lib-table").read_text(encoding="utf-8")
@@ -134,6 +178,7 @@ def main():
     assert 4.25 < 4.375 < 4.5
     assert 150<=350<=700
     screen_reset_fault_states()
+    screen_driver_source_current_feasibility()
     print("FRONT_MCP100_450_TO92_OEM_SCREEN",{
         "OEM_datasheet":OEM_PDF,
         "part_candidate":"MCP100-450DI/TO",
