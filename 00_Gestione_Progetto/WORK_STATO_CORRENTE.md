@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #216 integrata; guasto riferimento comune in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #217 integrata; FRONT ILLUM KiCad9 branch pending CI). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #217 MERGED; nuovo KiCad9 reale FRONT ILLUM sul branch, CI pending
+
+**[PR #217](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/217) MERGED** main `d34b71676c6f816ce0e6b1251e9b119f9bb8adf3`, head tecnico `927c0745c778a7df5739cc1035a8175cf885d918`, [Actions #43661830999](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661830999): FAST/FULL/required **3/3 SUCCESS**. Log ngspice generic S-meter a doppi servo, riferimenti condivisi 1V: **98,01386µA** a VDD5V, **98,09089µA** a VDD12V ipotetico; fallisce fail-closed in guasto comune, non esiste nuovo KiCad di quel doppio servo. ERC0 del precedente driver MCP6002 standalone non costituisce qualifica MAIN/FRONT.
+
+**Nuovo branch NON integrato:** `v27-front-illumination-twin-led-kicad-20261115` base main sopra. Primo modulo concreto CAD THT separato per **retroilluminazione FRONT** `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/`: header 2 pin J2201 per 5V LAB e ritorno, due canali indipendenti ciascuno R680Ω/0,25W THT + LED rosso 5mm THT, con libreria locale e pin-pad presuntivi LED pin1=K/pin2=A. Gate reale `verify_front_illum_bench_native.py` incluso nel verifier FRONT, **5 riferimenti / 4 reti / 10 pin**, ERC/partizioni attese (non ancora verificate su CI del final HEAD), con 4,4mA nominali ideali a 5V/Vf2V. Fonte alimentazione, luce, corrente, MPN, interboard, EMI, LED/movement/pannello, cablaggi non qualificati. **Nessuna PCB FRONT né DRC**. Pubblicare PR e attendere FAST/FULL/required prima del merge. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 15 novembre 2026 — PR #216 MERGED; nuovo test guasti di riferimento comune in branch
 
