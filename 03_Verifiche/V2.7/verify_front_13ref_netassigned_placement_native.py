@@ -2,8 +2,9 @@
 """Native KiCad9 validation of FRONT 13-reference THT PLACEMENT-ONLY board.
 
 No Edge.Cuts, vias, ground tie, mechanical drawing or approved MPN.
-Only the four isolated 5V LAB LED nets may carry copper segments.
-This is a real physical footprint/pad/net and partial lab-LED routing artifact, NOT a complete PCB and
+All 12 isolated nets have copper segments: AF, 5V LAB LED and passive SMETER.
+The provisional geometry does NOT authorize manufacturability or layout DRC0.
+This is a real physical footprint/pad/net and provisionally routed laboratory-only artifact, NOT a complete PCB and
 NEVER a DRC0 or product manufacturability claim.
 """
 from pathlib import Path
@@ -30,7 +31,7 @@ def verify():
     assert BOARD.with_suffix(".kicad_pro").exists()
     assert raw.startswith("(kicad_pcb (version 20241229)")
     assert "(paper \"A3\")" in raw
-    assert "LED NETS ONLY ROUTED" in raw
+    assert "ALL 12 ISOLATED NETS" in raw
     assert "NO APPROVED PANEL GEOMETRY" in raw
     assert "NOT PRODUCTION PCB" in raw
     assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -83,9 +84,9 @@ def verify():
     assert all(zones[x]<110 for x in ("J1301","RV1301","J1302"))
     assert all(120<zones[x]<190 for x in ("J2201","R2201","D2201","R2202","D2202"))
     assert all(zones[x]>200 for x in ("J1801","RV1801","R1801","R1802","J1802"))
-    # ONLY four LED laboratory nets have copper. Full geometric topology is
-    # fail-closed, including layer, all 13 segment endpoints, and 0.5mm width.
-    # No audio/SMETER/power-to-MAIN nets, copper zones, vias or outline permitted.
+    # Exact fail-closed provisional copper topology for all 12 DISJOINT nets:
+    # 13 original LED LAB segments, 10 AF segments, 9 SMETER segments.
+    # No copper zones, vias, power/return ties or manufacturing outline.
     expected_route_defs=[
       (4,"F.Cu",(130,35),(140,35)),
       (4,"F.Cu",(140,35),(140,25)),
@@ -100,6 +101,28 @@ def verify():
       (5,"B.Cu",(190,48),(190,25)),
       (5,"B.Cu",(190,25),(177.54,25)),
       (5,"B.Cu",(190,48),(177.54,48)),
+      (1,"F.Cu",(30,35),(60,35)),
+      (3,"B.Cu",(62.54,35),(62.54,25)),
+      (3,"B.Cu",(62.54,25),(90,25)),
+      (3,"B.Cu",(90,25),(90,35)),
+      (2,"B.Cu",(30,37.54),(30,49)),
+      (2,"B.Cu",(30,49),(65.08,49)),
+      (2,"B.Cu",(65.08,49),(80,49)),
+      (2,"B.Cu",(80,49),(80,37.54)),
+      (2,"B.Cu",(80,37.54),(90,37.54)),
+      (2,"B.Cu",(65.08,35),(65.08,49)),
+      (8,"F.Cu",(220,35),(244,35)),
+      (9,"B.Cu",(246.54,35),(246.54,21)),
+      (9,"B.Cu",(246.54,21),(267,21)),
+      (9,"B.Cu",(267,21),(267,25)),
+      (10,"F.Cu",(274.62,25),(285,25)),
+      (11,"F.Cu",(292.62,25),(309,25)),
+      (11,"F.Cu",(309,25),(309,35)),
+      (12,"B.Cu",(220,37.54),(220,51)),
+      (12,"B.Cu",(220,51),(249.08,51)),
+      (12,"B.Cu",(249.08,51),(309,51)),
+      (12,"B.Cu",(309,51),(309,37.54)),
+      (12,"B.Cu",(249.08,35),(249.08,51)),
     ]
     from collections import Counter
     def key(t):
@@ -111,26 +134,39 @@ def verify():
              r'\(width ([\d.]+)\) \(layer "([^"]+)"\) '
              r'\(net (\d+)\) \(uuid "([^"]+)"\)\)')
     matches=re.findall(pattern,raw)
-    assert len(matches)==13,("Expected exactly 13 LED-only segments",len(matches))
+    assert len(matches)==35,("Expected exactly 35 permitted FRONT segments",len(matches))
     parsed=[]
     for x1,y1,x2,y2,width,layer,net,uuid in matches:
         assert float(width)==0.5 and layer in ("F.Cu","B.Cu")
-        assert int(net) in (4,5,6,7),("Unexpected copper outside lab",net)
+        assert int(net) in range(1,13),("Unexpected unqualified copper net",net)
         pts=((float(x1),float(y1)),(float(x2),float(y2)))
-        assert all(125<=x<=195 and 20<=y<=65 for x,y in pts)
+        if int(net) in (1,2,3):
+            assert all(25<=x<=95 and 20<=y<=55 for x,y in pts)
+        elif int(net) in (4,5,6,7):
+            assert all(125<=x<=195 and 20<=y<=65 for x,y in pts)
+        else:
+            assert all(215<=x<=315 and 18<=y<=55 for x,y in pts)
         assert pts[0]!=pts[1]
         parsed.append((int(net),layer,*pts))
     assert Counter(map(key,parsed))==expected_routes,(
         "PCB copper changed from verified LED-only topology",
         Counter(map(key,parsed))-expected_routes,
         expected_routes-Counter(map(key,parsed)))
-    # Each complete LED subnet is connected through real physical pad centers.
-    # The copper net partition remains disjoint from AUDIO / SMETER.
+    # All 12 independent nets are physically connected through pad centres.
+    # The three zones must remain electrically disjoint.
     pads_by_net={
         4:{(130,35),(150,25),(150,48)},
         5:{(130,37.54),(177.54,25),(177.54,48)},
         6:{(157.62,25),(175,25)},
-        7:{(157.62,48),(175,48)}
+        7:{(157.62,48),(175,48)},
+        1:{(30,35),(60,35)},
+        2:{(30,37.54),(65.08,35),(90,37.54)},
+        3:{(62.54,35),(90,35)},
+        8:{(220,35),(244,35)},
+        9:{(246.54,35),(267,25)},
+        10:{(274.62,25),(285,25)},
+        11:{(292.62,25),(309,35)},
+        12:{(220,37.54),(249.08,35),(309,37.54)}
     }
     for n,pads in pads_by_net.items():
         pairs=[(a,b) for net,ly,a,b in parsed if net==n]
@@ -148,7 +184,11 @@ def verify():
             todo.extend(graph.get(node,()))
         assert pads.issubset(visited),(n,pads-visited)
         assert set(graph)==visited,(n,"Disconnected dangling LED track",set(graph)-visited)
-    assert all(n not in (1,2,3,8,9,10,11,12) for n,ly,a,b in parsed)
+    assert set(pads_by_net)==set(range(1,13))
+    assert len(parsed)==35
+    assert len([x for x in parsed if x[0] in (1,2,3)])==10
+    assert len([x for x in parsed if x[0] in (4,5,6,7)])==13
+    assert len([x for x in parsed if x[0] in (8,9,10,11,12)])==12
     with tempfile.TemporaryDirectory(prefix="tht_front_13place_") as td:
         pos=Path(td)/"front_13tht.pos"
         cp=subprocess.run(["kicad-cli","pcb","export","pos",
@@ -160,16 +200,20 @@ def verify():
         content=pos.read_text(encoding="utf-8")
         for ref in EXPECTED_REFS:
             assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',content),(ref,content[:2000])
-    print("PASS_KICAD9_FRONT_13THT_28PADS_12NETS_4_LED_LAB_NETS_ROUTED_13_SEGMENTS_AUDIO_SMETER_UNROUTED_NO_OUTLINE_NO_FAB",{
+    print("PASS_KICAD9_FRONT_13THT_28PADS_ALL12_NETS_ROUTED_35_SEGMENTS_NO_OUTLINE_NO_DRC_NO_FAB",{
         "THT_footprints":len(refs),
         "real_pad_net_assignments":len(actual),
         "isolated_nets":len(PARTITIONS),
         "native_component_pos_export":True,
         "LED_LAB_routed_nets":4,
-        "LED_LAB_copper_segments":len(matches),
+        "LED_LAB_copper_segments":13,
+        "AUDIO_copper_segments":10,
+        "SMETER_copper_segments":12,
+        "all_physical_copper_segments":len(matches),
         "product_BOARD_outline_exists":False,
-        "fully_routed":False,
-        "AUDIO_SMETER_routed":False,
+        "all_12_circuit_nets_connected":True,
+        "product_qualified_routing":False,
+        "AUDIO_SMETER_routed":True,
         "DRC_claimed":False,
         "OEM_footprints_qualified":False,
         "NO_FAB_NO_TX":True
