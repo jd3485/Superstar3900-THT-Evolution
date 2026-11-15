@@ -254,6 +254,13 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native KiCad9 manufacturer-based Bourns PTV09A4 terminal pitch
+    # candidate; no replacement of existing nonfabricable FRONT prototype.
+    print("::group::V2.7 BOURNS PTV09A4 5MM THT FOOTPRINT OEM CANDIDATE",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_front_ptv09a4_oem_pitch_candidate_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
