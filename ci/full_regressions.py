@@ -232,6 +232,13 @@ def main()->None:
         str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_am455_front_loaded_comparison_native.py")],
         cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Low-level non-OEM J113 C1801 tuning candidates: 12 actual nonlinear
+    # IF455 AM455 FRONT LM386 ngspice sweeps, protect 10p native KiCad CAD.
+    print("::group::V2.7 J113 IF455 LOWDRIVE 12 COUPLING CAPACITOR TRANSIENTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+        str(ROOT/"03_Verifiche/V2.7/verify_if455_j113_c1801_lowdrive_loaded_native.py")],
+        cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # New true KiCad9 MAIN V2.7 partial hierarchy retaining 138-ref V2.6
     # net partitions unchanged and electrically isolated RX LM386 lab block.
     # Never infer a qualified MAIN PCB or tie GND/+5V/6V just to pass ERC.
