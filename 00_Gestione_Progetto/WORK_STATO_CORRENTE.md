@@ -1,11 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #254 MERGED: Bourns PTV09A-4 candidate THT 5mm, SVG native KiCad9; CI FAST/FULL/required SUCCESS). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #254 SHA `b62c56dc257354d24c3d29392531d0c49b04e211`; checkpoint successivo in revisione documentale.
+**Aggiornato:** 15 novembre 2026 (PR #256 MERGED: screening geometria rame/anello Bourns PTV09A-4; PR seguente: analisi guasto volume FRONT). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #256 SHA `ac7f804511810a5220cac282368716e8b6fb8057`; prossimo studio di guasto in branch, non ancora integrato.
 
-## 15 novembre 2026 — FRONT Bourns PTV09A-4 pad geometry screen, PR IN REVISIONE
+## 15 novembre 2026 — FRONT RV1301 open low contact, 75 KCL case PR IN REVISIONE
 
-Branch `engineering/v27-front-ptv09a4-pad-dfm-screen-20261115` da main `be03bd9f9e470446f84005d46131591d177d2cc1` (PR #255 checkpoint integrata). Esteso controllo KiCad9 nativo del footprint candidato Bourns PTV09A-4 per dimensione pad/foro, annular ring nominale 0,4 mm e gap nominale rame fra terminali 0,7 mm; conservati pin, passo 5 mm, PCB 13THT/28pad/12net/35 segmenti. Rapporto geometrico aggiornato. **Stato non integrato: CI finale e PR da verificare; non dichiarare test KiCad9 verdi prima di run su HEAD della PR.** Restano OEM/lead-fit/assi/ambiente/taper/produttività MPN e PCB FRONT non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+Branch `engineering/v27-front-pot-wiper-low-open-fault-20261115` da main `ac7f804511810a5220cac282368716e8b6fb8057`. Nuovo modello analitico di guasto pin basso RV1301 disconnesso, con verifica endpoint KiCad9 nativa sana, **75 frequenze/posizioni/Rin**, soluzioni indipendenti riduzione e KCL, limiti e rischio di perdita attenuazione a basso volume nel rapporto `RAPPORTO_FRONT_RV1301_OPEN_LOW_FAULT_75_CASES_DRAFT.md`. FULL CI aggiornata. **PR tecnica e CI finale non ancora integrate; nessuna modifica alla PCB.** Necessaria valutazione fail-safe e qualifica OEM. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #256 MERGED: screening pad/anello candidato Bourns PTV09A-4
+
+**[PR #256](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/256) MERGED** su main `ac7f804511810a5220cac282368716e8b6fb8057`, final technical HEAD `95acc2ee0442a54428122685e5420e9bc2e9b474`. [Actions #43755089176](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43755089176): FAST/FULL/Required **SUCCESS 3/3**, log FULL marker `PASS_KICAD9_BOURNS_PTV09A4_3THT_PINS_5MM_CANDIDATE_SVG_NO_PRODUCT_SWAP_NO_FAB` con output geometria nuova. Tre pad 1,8mm, fori 1,0mm **provvisori**, ring radiale nominale 0,4mm e spazio rame nominale 0,7mm per passo 2,5mm; verifiche fall-closed e SVG KiCad9 nativo. BOARD FRONT 13THT/28pad/12net/35 piste **invariata**, nessuna DRC di prodotto, OEM meccanica/ambientale/taper/produzione non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 
