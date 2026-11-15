@@ -1,7 +1,16 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #225 integrata; master MAIN V2.7 150 refs in branch CI pending). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
+**Aggiornato:** 15 novembre 2026 (PR #226 integrata; MAIN V2.7 gerarchico radio V2.6 + LM386, 150 refs, KiCad9 ERC0). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. SHA main dopo merge PR #226: `167c82d3f87e113e1275ca4dcec07f824df65185`.
+
+## 15 novembre 2026 — PR #226 MERGED: MAIN gerarchico KiCad9 con 150 refs
+
+**[PR #226](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/226) MERGED** main SHA `167c82d3f87e113e1275ca4dcec07f824df65185`, head tecnico `c74e85bbef558b398df33b36e35d093148da0874`. [CI #43667633925](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43667633925) su HEAD finale: FAST, FULL KiCad9 e required gate **SUCCESS 3/3**. Evidenze log: `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_150REFS_ALL_V26_AND_AUDIO_PIN_NETS_UNCHANGED_ERC0_NO_FAB`. Nuovo master `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` con due fogli: 138 refs V2.6 radio RX/PLL/VTUNE + 12 refs LM386 RX audio standalone, non interconnesse. Il test nativo verifica 3 esportazioni netlist, partizioni pin/net connesse intatte, nessun ponte massa/rail e otto pin NC singleton omessi nella gerarchia secondo allowlist stretta. `ci/full_regressions.py` include il gate nativo; librerie registrate nel progetto V2.7.
+
+**Prossimo sviluppo elettrico:** progettare contratto funzionale IF/demod→AF per integrare blocchi MAIN senza unire indiscriminatamente alimentazioni e masse; verificare interfaccia FRONT fisica, MPN attivi, EMI/ESD e rischi RF. **Nessuna PCB MAIN o FRONT definitiva, DRC di prodotto non eseguito, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
