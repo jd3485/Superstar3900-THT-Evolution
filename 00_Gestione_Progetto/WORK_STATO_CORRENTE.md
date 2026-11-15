@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #208 verificata; revisione FRONT in lavorazione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #209 verificata; nuova revisione interfaccia in lavorazione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #209 MERGED; MAIN/FRONT S-meter 5V drive contract (branch non integrato)
+
+**[PR #209](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/209) MERGED** su main `d4488b560235867ff5a254df362c06303d23e969`, head `23639a7de22cedcdfa955a7d4be20cd8da42c537`, [Actions #43656253619](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43656253619) FAST/FULL/required **SUCCESS 3/3**. Log FULL `SMETER_KICAD_ERC Found 0 violations`, `FRONT_SMETER_FSD_CURRENT_FAULT_SCREEN_FAIL_CLOSED` con 105,263µA modello 20V R1801/R1802 integre, 210,526µA un corto; nessun FSD/driver reale qualificato. Lo stesso FULL contiene limiti RF varactor esplicitamente FAIL nel modello bench: CI di regressione verde NON equivale a qualifica RF.
+
+**Prossima revisione su branch, NON integrata:** `v27-smeter-main-front-drive-interface-screen-20261115` base main SHA qui sopra. Confronta il banco follower MCP6002 a 5V con due resistori da 100k FRONT; a 5V ipotetici max 26,316µA, insufficiente per FSD puramente ipotetica 50µA (minimo 9,5V). Impone contratto di incompatibilità potenziale tra uscita tensione di banco e bobina di corrente, non connette fisicamente i moduli, e integra controllo nel gate nativo FRONT. **Attendere PR e CI FAST/FULL/required sul final head**. Serve FSD/Rcoil OEM reale, driver corrente limitata fail-closed, AGC reale e interboard cabling. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
 
 ## 15 novembre 2026 — PR #208 MERGED; nuova revisione FRONT FSD (branch, non ancora integrata)
 
