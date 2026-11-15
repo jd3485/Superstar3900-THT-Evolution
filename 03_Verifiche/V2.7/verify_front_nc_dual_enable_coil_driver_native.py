@@ -45,6 +45,8 @@ def main():
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
     assert raw.count("1k5_THT_BASERES")==2
     assert raw.count("10k_THT_PULLDOWN")==2
+    # Gate physical THT footprint on all four passive resistors (not a driver qualification).
+    assert raw.count("Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")==4
     # OEM diode cathode K=1 on COIL_PLUS, anode A=2 on COIL_MINUS.
     # 1N4007-E3/54 is a candidate only; clamp release-time unqualified.
     assert raw.count("1N4007-E3/54_CANDIDATE_NOT_RELEASED")==1
