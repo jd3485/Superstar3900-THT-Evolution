@@ -45,6 +45,11 @@ def main():
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
     assert raw.count("1k5_THT_BASERES")==2
     assert raw.count("10k_THT_PULLDOWN")==2
+    # OEM diode cathode K=1 on COIL_PLUS, anode A=2 on COIL_MINUS.
+    # 1N4007-E3/54 is a candidate only; clamp release-time unqualified.
+    assert raw.count("1N4007-E3/54_CANDIDATE_NOT_RELEASED")==1
+    assert raw.count("Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")==1
+    assert "(name \"K\"" in library and "(name \"A\"" in library
     assert "NO FAB / NO TX" in raw
     board=BOARD.read_text(encoding="utf-8")
     assert "Q1911" not in board and "Q1912" not in board
@@ -67,6 +72,8 @@ def main():
     require(contact,"COIL_PLUS_LAB",("J1903","1"),("K1901","4"))
     require(contact,"COIL_MINUS_LAB",("J1903","2"),("K1901","5"))
     assert nets["COIL_PLUS_LAB"].isdisjoint(nets["COIL_MINUS_LAB"])
+    assert ("D1911","1") in nets["COIL_PLUS_LAB"]
+    assert ("D1911","2") in nets["COIL_MINUS_LAB"]
     assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","2")}
     # 4 logic control combinations; connected coil has no independent ground
     # unless BOTH switches conduct (idealized). Stuck-ON transistor cases
