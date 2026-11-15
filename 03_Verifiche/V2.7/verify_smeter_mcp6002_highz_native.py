@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 from verify_interboard_audio_contract_native import exported_nets,require
+from verify_smeter_r1903_fault_envelope import verify as verify_r1903_fault_envelope
 
 ROOT=Path(__file__).resolve().parents[2]
 SCHEMATIC=ROOT/"04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch"
@@ -247,6 +248,9 @@ def main():
         "continuous_negative_200V_130C_qualified":False,
         "ESD_pulse_humidity_and_assembly_qualified":False,
         "no_fab":True},flush=True)
+    # Independent fail-closed resistor fault envelope for 25..155C.
+    # R1903 series source current cannot certify IC internal diode current.
+    verify_r1903_fault_envelope()
     # The external clamp does not eliminate internal ESD current share.
     # 25nA * 146kOhm is an illustrative DC error; high temperature
     # diode leakage and input operating range are NOT characterized.
