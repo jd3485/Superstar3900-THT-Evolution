@@ -1,11 +1,19 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 15 novembre 2026 (PR #212 integrata; studio beta/FSD in branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Aggiornato:** 15 novembre 2026 (PR #214 integrata; guasto C-E in revisione). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Questo file documenta l'ultima revisione verificata,
 non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
 [AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
 SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
 Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #214 MERGED, singolo guasto Q2101 C–E: nuovo gate fail-closed da validare
+
+**[PR #214](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/214) MERGED**, main `7e6a419c1a6def3596582d8f3eded3a21d944d85`, head tecnico `daf7c79bb768100b4cc321f626bb281119af46b8`. [Actions #43659700760](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43659700760): FAST/FULL/required **SUCCESS 3/3**, FULL KiCad9 ERC0 (8 refs/8 reti/23 pin, driver standalone), ngspice generic 5V VSET0,5: beta40 **48,81206µA**, beta200 **49,73882µA**, carico `20kΩ` candidato Velleman AIM60005 **49,49839µA**. Nessuna qualifica hFE OEM 50µA, ingresso movimento, eventuale corrente limite, transitori, PCB o interoperabilità MAIN/FRONT.
+
+**Branch tecnico NON integrato:** `v27-smeter-ce-short-failclosed-20261115` da main sopra: modifica verificatore ngspice già collegato al gate KiCad9, nuovo test di **Q2101 C–E SHORT anche con VSET=0V**, idealmente ~166,667µA su 20kΩ+10kΩ sense e ~476,19µA con 500Ω+10kΩ; esplicitamente FALSE la proprietà fail-closed, nodo e comando ON/OFF NON sicuri. Questi valori analitici non sono ancora risultati ngspice del nuovo commit: attendere PR/FAST/FULL/required sul final HEAD. Report tecnico aggiornato. Nessuna nuova PCB o schemi MAIN/FRONT. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) aperta per protezione indipendente e FSD reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 15 novembre 2026 — PR #212 MERGED; beta BJT / bobina candidata 50 µA in revisione
 
