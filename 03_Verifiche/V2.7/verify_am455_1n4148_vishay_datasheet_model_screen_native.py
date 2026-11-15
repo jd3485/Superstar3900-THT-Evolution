@@ -48,7 +48,7 @@ DFWD anode_fwd 0 DSYN
 set noaskquit
 op
 print v(anode_fwd)
-print i(vrev)
+print vrev#branch
 quit
 .endc
 .end
@@ -82,7 +82,7 @@ def main():
                 vf=numeric(log,"v(anode_fwd)")
                 # Bias -20V: ngspice source branch current is opposite to
                 # the reverse diode current in the chosen direction.
-                leakage=abs(numeric(log,"i(vrev)"))
+                leakage=abs(numeric(log,"vrev#branch"))
                 assert 0<vf<VF10MA_MAX,(name,vf)
                 assert 0<leakage<=IR20V_MAX_A,(name,leakage)
                 cjo_pf=float(cjo_string[:-1])
