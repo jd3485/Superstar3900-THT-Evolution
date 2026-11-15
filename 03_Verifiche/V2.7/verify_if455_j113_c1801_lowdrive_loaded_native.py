@@ -69,7 +69,10 @@ def main():
                 assert emitter_hi>emitter_lo and 0<emitter_hi<6.6
                 if direct_reference is None: direct_reference=direct
                 else:
-                    # Independent coupled branch changes adaptive integration meshes despite\n                    # invariant direct cards. Permit <=0.01% numerical Vpp drift;\n                    # circuit-card invariance is already a separate fail-closed check.\n                    assert abs(direct-direct_reference)/direct_reference<1e-4,(
+                    # Independent coupled branch changes adaptive integration meshes despite
+                    # invariant direct cards. Permit <=0.01% numerical Vpp drift;
+                    # circuit-card invariance is already a separate fail-closed check.
+                    assert abs(direct-direct_reference)/direct_reference<1e-4,(
                         "Direct path changed during coupling-only experiment",level,cap,direct,direct_reference)
                 row={"source_peak_V":level,"C1801_SPICE_only":cap,
                      "direct_LM386_pin3_pp_V":round(direct,10),
