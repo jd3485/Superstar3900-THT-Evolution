@@ -203,6 +203,12 @@ def main():
         assert '(name "'+pin_name+'"' in library
         assert '(number "'+str(pin_no)+'"' in library
     raw=SCH.read_text(encoding="utf-8")
+    # Physical THT candidate footprints, not OEM component/package qualification.
+    assert raw.count('(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline" (at 127 99.06 0)')==1
+    assert raw.count('(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" (at 88.9 137.16 0)')==1
+    assert raw.count('(name "RESET_N_PUSH_PULL" (effects (font (size 1 1))))(number "1"')==1
+    assert raw.count('(name "VDD" (effects (font (size 1 1))))(number "2"')==1
+    assert raw.count('(name "VSS" (effects (font (size 1 1))))(number "3"')==1
     assert raw.count('(symbol (lib_id "TH_MCP100:MCP100_450_D_BOND_TO92")')==1
     assert raw.count('(symbol (lib_id "TH_MCP100:CAP_THT")')==1
     assert raw.count('(symbol (lib_id "TH_MCP100:PORT2")')==2
