@@ -1,5 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #297 MERGED, carico sorgente S-meter
+
+PR #297 su main SHA `41511ccefc060a74f022fa88bf447cbea040a68d`, HEAD `53a1660a007c5b9847069745121d4911a5e755c4`, CI #43820280960 FAST/FULL/Required SUCCESS 3/3, marker log FULL `PASS_NATIVE_KICAD9_SMETER_675_SOURCE_LOADING_INDEPENDENT_KCL_CASES_NONFAB`. 675 condizioni, errore massimo relativo 2,28e-15. 11V ideali, 20kΩ coil, wiper max: Imetro=50µA, Ipot=1,1mA, Isource=1,15mA; a Rout=1kΩ Imetro=45,27µA. Manca driver MAIN/FSD OEM.
+
+---
+
+## 16 novembre 2026 — gate candidato: dissipazioni e doppio corto S-meter
+
+Branch `engineering/v27-smeter-fault-power-conservation-20261116` da main `41511ccefc060a74f022fa88bf447cbea040a68d`. Script `03_Verifiche/V2.7/verify_smeter_fault_power_native.py` nel FULL verifica 675 scenari di dissipazione su netlist vera FRONT e due identità di conservazione Ptotale. A 20V idealizzati, doppio corto R1801/R1802 e Rcoil ipotetica 1kΩ, cursore massimo: 400mW su coil (no rating approvato), 40mW pista potenziometro; rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FAULT_POWER_20261116.md`. CI ancora da verificare prima del merge. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #296 MERGED: FSD S-meter passivo 675 casi
 
 PR #296 integrata in main SHA `84dd756b8b7ff11003d8cb1c28343504b8d579c3`, HEAD `e7c3ee87e4442c0ebaad84579807540be06b6304`, CI #43818657921 FAST/FULL/Required SUCCESS 3/3. Marker FULL `PASS_NATIVE_KICAD9_SMETER_675_PASSIVE_FSD_SOURCE_COMPLIANCE_CASES_NONFAB`, 675 casi e 15 casi privi di limite ohmico per doppio corto con cursore 100%/Rcoil=0Ω. Sorgente e FSD OEM non qualificati. NO FAB/TX.
