@@ -328,6 +328,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_redundant_sense_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # THT LM2903P isolated redundant sensing: actual KiCad9 nets
+    # and 92160 two-resistor OPEN/SHORT faults; 48V hypothetical only.
+    print("::group::V2.7 LM2903P REDUNDANT 92160 DOUBLE FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_redundant_double_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
