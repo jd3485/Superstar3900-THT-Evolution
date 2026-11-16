@@ -37,7 +37,8 @@ def main():
         relay=exported_nets(CONTACT,d/"contact.net")
     require(drv,"COIL_PLUS_LAB",("J1914","1"),("D1911","1"))
     require(drv,"COIL_MINUS_LAB",("J1914","2"),("D1911","2"),("Q1911","1"))
-    require(drv,"DRIVE1_BASE",("Q1911","2"),("R1911","2"))
+    require(drv,"DRIVE1_BASE",("Q1911","2"),("R1911","2"),("R1913","1"))
+    require(drv,"SERIES_MID",("Q1911","3"),("Q1912","1"),("R1913","2"))
     require(drv,"DRIVE2_BASE",("Q1912","2"),("R1912","2"))
     require(relay,"COIL_PLUS_LAB",("K1901","4"),("J1903","1"))
     require(relay,"COIL_MINUS_LAB",("K1901","5"),("J1903","2"))
@@ -50,7 +51,7 @@ def main():
         # Omron or transistor maximum values / vendor SPICE models.
         vcoil=vrail-2*vcesat
         icoil=vcoil/rcoil
-        ibu=(vlogic-(VBE_ASSUMED+vcesat))/RBASE_OHM-(VBE_ASSUMED+vcesat)/RPULL_OHM
+        ibu=(vlogic-(VBE_ASSUMED+vcesat))/RBASE_OHM-VBE_ASSUMED/RPULL_OHM
         ibl=(vlogic-VBE_ASSUMED)/RBASE_OHM-VBE_ASSUMED/RPULL_OHM
         sufficient_drive=min(ibu,ibl)>=icoil/FORCED_BETA_TARGET
         pickup_guaranteed_at_23C=vcoil>=5.*MUST_PICKUP_FRACTION
