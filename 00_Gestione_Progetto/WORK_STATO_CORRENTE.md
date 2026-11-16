@@ -1,5 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #296 MERGED: FSD S-meter passivo 675 casi
+
+PR #296 integrata in main SHA `84dd756b8b7ff11003d8cb1c28343504b8d579c3`, HEAD `e7c3ee87e4442c0ebaad84579807540be06b6304`, CI #43818657921 FAST/FULL/Required SUCCESS 3/3. Marker FULL `PASS_NATIVE_KICAD9_SMETER_675_PASSIVE_FSD_SOURCE_COMPLIANCE_CASES_NONFAB`, 675 casi e 15 casi privi di limite ohmico per doppio corto con cursore 100%/Rcoil=0Ω. Sorgente e FSD OEM non qualificati. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — gate candidato: carico reale della sorgente S-meter passiva
+
+**Branch** `engineering/v27-smeter-drive-source-loading-native-20261116`, base main `84dd756b8b7ff11003d8cb1c28343504b8d579c3`. `03_Verifiche/V2.7/verify_smeter_passive_source_loading_native.py` registra 675 combinazioni di sorgente/impedenza/coil ipotetica/fault/cursore, doppia analisi KCL vs Thévenin e pin-net reali KiCad9, aggiunto a FULL. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_PASSIVE_SOURCE_LOADING_20261116.md`. Per 50µA ipotetici di movimento su 11 V, la sorgente deve alimentare anche pista RV1801: 1,15mA totali, 1,10mA su pista (cursore massimo). **CI da verificare sul branch, nessun merge in anticipo.** Nessun driver MAIN/MPN/FSD reale. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #295 MERGED: porte S-meter gerarchiche isolate
 
 PR #295 integrata in main SHA `f195388657fc934df4c8a787f6c2208dfec5e354`, HEAD PR `b4cf4ec67e2be407c25bff63ce1a5086958eefe8`, CI #43816231083 FAST/FULL/Required SUCCESS 3/3; log prova `SMETER_CONTEXTUAL_PARENT_KICAD_ERC Found 0 violations` e `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_22NETS_71PINS_4REAL_AUDIO_COIL_JOINS_ERC0_NONFAB`. Porte J1801 drive/return gerarchiche reali, isolate da AF_GND. FSD/OEM/MAIN non qualificati. NO FAB/TX.
