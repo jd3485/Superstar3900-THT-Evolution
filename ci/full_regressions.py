@@ -292,6 +292,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_r2102_pr01_native_derating.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Q806 CE short and R2102 open/short: native 27-pin/8-net schematic,
+    # 1080 ideal voltage/circuit faults; FAIL-CLOSED remains unqualified.
+    print("::group::V2.7 R2102 PR01 DRIVER 1080 FAULT CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_r2102_pr01_driver_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
