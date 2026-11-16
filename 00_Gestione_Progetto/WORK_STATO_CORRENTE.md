@@ -1,11 +1,26 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-
 ## 16 novembre 2026 — fix candidato bypass MAIN AUDIO MUTE, branch
 
 **Nuovo branch:** `engineering/v27-main-front-audio-harness-post-mute-20261116`, baseline main PR #288 MERGED (SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`, Actions #43809446368 FAST/FULL/Required SUCCESS 3/3, 22 reti FRONT). Individuato errore reale di contratto: cavo MAIN/FRONT J2401 precedentemente puntato a **J1302**, presa wiper **pre-mute**, bypassando K1901 se usata come uscita verso LM386 MAIN. Corretto schema del cavo per **J1902/1 AMP_INPUT_MUTED → J1202/1 AUDIO_IN** e **J1902/2 AF_GND → J1202/2 GND**; aggiornato verificatore nativo per imporre netlist del master FRONT, separazione tra J1302 e J1902, e pin endpoint. Rapporto `03_Verifiche/V2.7/RAPPORTO_INTERBOARD_AUDIO_POST_MUTE_BYPASS_FIX_20261116.md`. **CI non ancora conclusa: non fondere** senza FAST/FULL/Required verdi sul commit finale. Nessuna scheda reale o MPN relè qualificato; resta NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
 
 ---
+
+
+## 16 novembre 2026 — PR #288 MERGED: FRONT bobina gerarchica KiCad9
+
+**Merge verificato su main:** PR #288 SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`; CI #43809446368 FAST/FULL/Required **SUCCESS 3/3** su HEAD `8ff4c674ebee4425ade6937616dcf2babbc4e6f5`. KiCad9: ERC0; master FRONT 5 fogli, 32 ref, **22 reti**, **71 pin**, **4 collegamenti fra fogli** (2 audio/AF_GND, 2 bobina COIL_PLUS/MINUS_LAB); verificati 36 stati di guasto logici del dual NPN, non fail-safe. Nessun MPN relè o driver qualificato, niente PCB prodotto. PR #289, gate S-meter FSD, separata e in verifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
+## 16 novembre 2026 — safety gate analitico S-meter FSD single-fault su branch
+
+**Branch indipendente:** `engineering/v27-front-smeter-fsd-single-fault-bound-20261116` (da main `ab0a09bc11a21f442920af450f7c6999bc38eb1e`): estensione sostanziale del gate `03_Verifiche/V2.7/verify_front_smeter_fsd_fault_screen.py` che ricava tensione massima sorgente da FSD *ipotetica*, due resistenze da 100k con -5% e guasto singolo in corto. A 50 µA: **9,5 V** sani, **4,75 V** con un resistore corto; 20 V non qualificati. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FSD_VOLTAGE_SINGLE_SHORT_20261116.md`. Schemi FRONT/MAIN invariati; nessuna FSD OEM certificata. Questo gate non è prova di sicurezza o permesso di alimentare hardware. PR/CI da verificare sullo SHA finale. PR #288 sulla bobina rimane indipendente e draft. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+
 
 ## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
 
