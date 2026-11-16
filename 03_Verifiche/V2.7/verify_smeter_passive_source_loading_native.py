@@ -35,7 +35,7 @@ def reduction(v_open,r_source,r_coil,shorts,wiper):
     vw=terminal if rh==0 else terminal*parallel/zin
     meter=vw/rm
     source=terminal/zin
-    pot=terminal/POT
+    pot=source if rl==0 else vw/rl
     return terminal,source,meter,pot
 
 def kcl(v_open,r_source,r_coil,shorts,wiper):
@@ -55,7 +55,7 @@ def kcl(v_open,r_source,r_coil,shorts,wiper):
     if rl==0:
         # Wiper and return physically the same node.
         node=v_open if r_source==0 else v_open/(1+r_source/rh)
-        return node,node/rh,0.,node/POT
+        return node,node/rh,0.,node/rh
     # KCL on source terminal (T) and wiper (W).
     gs=1/r_source if r_source else 0.
     gh=1/rh
@@ -64,12 +64,12 @@ def kcl(v_open,r_source,r_coil,shorts,wiper):
     if r_source==0:
         t=v_open
         w=gh*t/(gh+gl+gm)
-        return t,(t-w)*gh,w*gm,t/POT
+        return t,(t-w)*gh,w*gm,w*gl
     a=gs+gh;b=-gh;c=gh+gl+gm
     det=a*c-b*b
     t=gs*v_open*c/det
     w=gs*v_open*gh/det
-    return t,(t-w)*gh,w*gm,t/POT
+    return t,(t-w)*gh,w*gm,w*gl
 
 def native():
     with tempfile.TemporaryDirectory(prefix="tht_smeter_loading_") as td:
@@ -106,11 +106,10 @@ def main():
         if rs:
             assert isclose(v-terminal,rs*isrc,rel_tol=1e-10,abs_tol=1e-10)
         else:assert isclose(v,terminal)
-        # The source must power both the meter branch and potentiometer track:
-        # it is not permissible to size MAIN driver from meter FSD alone.
+        # KCL split at wiper into meter branch and lower potentiometer
+        # branch; at wiper zero the return branch includes upper track.
+        assert isclose(isrc,ipot+im,rel_tol=1e-10,abs_tol=1e-10)
         assert isrc>=ipot-1e-12 and isrc>=im-1e-12
-        if w==1:
-            assert isclose(isrc,ipot+im,rel_tol=1e-10,abs_tol=1e-10)
         n+=1
     assert n==675
     t,source,meter,pot=reduction(11.,0.,20000.,0,1.)
