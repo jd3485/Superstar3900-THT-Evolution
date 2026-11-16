@@ -299,6 +299,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_r2102_pr01_driver_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # LM2903P PDIP8 THT independent supervisor candidate: 128 DC
+    # resistive threshold screens. NO CAD nor safe rail yet, as asserted.
+    print("::group::V2.7 LM2903P THT 128 PASSIVE WINDOW CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_secondary_window_passive.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
