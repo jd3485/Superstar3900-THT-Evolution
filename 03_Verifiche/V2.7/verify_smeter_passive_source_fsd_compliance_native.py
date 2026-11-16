@@ -30,10 +30,13 @@ def coil_current(v,coil,resistors_shorted,wiper_fraction,series_resistor_scale=1
     rh=POT*(1-wiper_fraction)
     rl=POT*wiper_fraction
     rload=(2-resistors_shorted)*R_NOM*series_resistor_scale+coil
-    # Exact endpoints; zero-ohm load short is not a valid current-limited
-    # circuit and must report unbounded current rather than fake 0A.
+    # When BOTH series resistors short and the hypothetical coil is 0 ohm,
+    # the pot's upper track still limits current unless the wiper is at
+    # 100% drive. At wiper=0, parallel zero-ohm paths make the branch
+    # split indeterminate; V/Rhigh is a conservative branch-current upper
+    # bound, not a claim that any particular fraction enters the coil.
     if rload==0:
-        return float("inf") if v and wiper_fraction else 0.
+        return abs(v)/rh if rh else (float("inf") if v else 0.)
     if rh==0:
         return abs(v)/rload
     if rl==0:
@@ -77,14 +80,14 @@ def main():
         curr=coil_current(v,coil,shorts,wiper)
         assert curr>=0 and (isfinite(curr) or curr==float("inf"))
         assert curr<=coil_current(v,coil,shorts,1.)+1e-16
-        if shorts==2 and coil==0 and wiper>0:
-            assert curr==float("inf")
+        if shorts==2 and coil==0:
+            assert (curr==float("inf")) == (wiper==1.)
         for fsd in FSD_A:
             required=source_required(fsd,coil,shorts,wiper_fraction=wiper)
             assert ((curr>=fsd) == (v+1e-10>=required)),(v,coil,shorts,wiper,fsd,curr,required)
             count+=1
             if curr==float("inf"):unbounded+=1
-    assert count==675 and unbounded==60
+    assert count==675 and unbounded==15
     assert isclose(coil_current(5.,20000.,0,1.),5/220000)
     assert isclose(coil_current(5.,0.,0,1.),25e-6)
     assert isclose(coil_current(5.,20000.,1,1.),5/120000)
@@ -101,6 +104,8 @@ def main():
     # Do not silently report finite current with two dead series
     # limiters and hypothetical zero coil ohms.
     assert coil_current(5.,0.,2,1.)==float("inf")
+    assert isclose(coil_current(5.,0.,2,.5),5./5000.)
+    assert isclose(coil_current(5.,0.,2,0.),5./10000.)
     for v in (float("nan"),float("inf")):
         try:coil_current(v,20000.,0,1.)
         except ValueError:pass
