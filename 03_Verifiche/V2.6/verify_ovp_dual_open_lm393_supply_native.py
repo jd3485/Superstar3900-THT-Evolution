@@ -64,14 +64,16 @@ def native():
         nets=exported_nets(SCH,Path(d)/"main.net")
     def same(name,*pairs):
         require(nets,name,*pairs)
-    same("OVP_CTL_VCC",("R1011","2"),("D806","1"),("R1001","1"),("U801","8"))
-    same("OVP_PRECLAMP",("R1011","1"),("D804","1"))
+    # On the real 7-sheet MAIN export, child-local nets carry the sheet
+    # hierarchy prefix. Do not silently alias standalone and parent labels.
+    same("FUSED_13V8_INPUT/OVP_CTL_VCC",("R1011","2"),("D806","1"),("R1001","1"),("U801","8"))
+    same("FUSED_13V8_INPUT/OVP_PRECLAMP",("R1011","1"),("D804","1"))
     same("GND",("D806","2"),("U801","4"),("U802","2"))
     # Zener & TL431 share return, but not their cathodes.
     a=[name for name,pins in nets.items() if ("U802","1") in pins]
     assert len(a)==1
     assert ("R1001","2") in nets[a[0]] and ("U802","3") in nets[a[0]]
-    assert a[0]!="OVP_CTL_VCC"
+    assert a[0]!="FUSED_13V8_INPUT/OVP_CTL_VCC"
     assert len(nets)==76
 
 def main():
