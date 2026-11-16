@@ -89,11 +89,33 @@ def main():
     assert cases==6*3**4*4==1944
     # NO generic guarantee: only the selected synthetic domain bounds this.
     assert maximum_single<20 and over_open_one==0
+    # OEM onsemi 1N4736AT/D, 1N4742A at Ta=25C: Vz=11.4..12.6V
+    # is specified at IZT=21mA. The dynamic ZZT<=9 ohm is measured at
+    # IZT; ZZK<=700 ohm is measured at IZK=0.25mA. None of these values
+    # guarantees Vz across this circuit's 0..3.9mA operating envelope.
+    # The 0.1/1/10 ohm assumed knee in solution() is SYNTHETIC only.
+    oem_izt_A=0.021
+    oem_izk_A=0.00025
+    oem_max_zzk_ohm=700.
+    max_possible_total_gate_path_A=(48.0-11.4)/9500.0
+    assert 0 < max_possible_total_gate_path_A < oem_izt_A
+    assert max_possible_total_gate_path_A < 0.004
+    # This is total series current, NOT per-diode Iz; two parallel
+    # branches can split unequally, and may both be below test IZT.
+    # Therefore model's <20V under ONE OPEN must NOT imply a guaranteed
+    # vendor clamp, independent of the synthetic model's passing result.
+    oem_clamp_qualified=False
+    assert oem_clamp_qualified is False
     assert maximum_double>20 and over_double_open>0
     print("Q806_TWIN_ZENER_IDEAL_STRESS",{
         "cases":cases,"native_pins":27,"native_nets":8,
         "one_zener_open_max_VGS_abs_V":round(maximum_single,6),
         "one_open_over_20V_cases":over_open_one,
+        "oem_1n4742a_test_current_mA":21.0,
+        "oem_1n4742a_knee_test_current_mA":0.25,
+        "oem_1n4742a_max_knee_impedance_ohm":700.0,
+        "total_source_to_gate_path_current_upper_mA":round(max_possible_total_gate_path_A*1000,6),
+        "zener_Vz_guaranteed_at_lab_current":False,
         "both_open_max_VGS_abs_V":round(maximum_double,6),
         "both_open_over_20V_cases":over_double_open,
         "shared_mechanical_electrical_faults_qualified":False,
