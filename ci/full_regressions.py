@@ -349,6 +349,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_common_reference_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Real native THT dual LM2903P separate external VREF header J2205:
+    # ERC 60 pins/14 nets, 33792 independent single-ref fault corners.
+    print("::group::V2.7 LM2903P SPLIT VREF 33792 CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
