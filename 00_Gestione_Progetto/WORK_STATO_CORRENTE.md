@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #282 MERGED; C1912 bulk polarizzato THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #282 SHA `e4348dab715756f0b3a3b65ae8454b79445d0ff1`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #283 MERGED; interconnessione KiCad9 FRONT DRIVER↔RELAY in nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #283 SHA `b977bf7853411491b67c867a09825f9fdc27d066`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #283 MERGED; interconnessione fisica KiCad9 laboratorio FRONT in branch
+
+**Verificato GitHub:** PR #283 MERGED su main SHA `b977bf7853411491b67c867a09825f9fdc27d066`; [Actions #43786640594](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43786640594) FAST/FULL/Required **SUCCESS 3/3**. FULL: `DUAL_ENABLE_COIL_DRIVER_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. C1912 10 µF/16 V polarizzato THT nativo aggiunto a driver bobina standalone, nessuna PCB modificata.
+
+**Branch corrente** `engineering/v27-front-relay-coil-harness-contract-20261116`: schema KiCad9 `FRONT_COIL_INTERCONNECT_PIN1_PIN2_NONFAB.kicad_sch` di collegamento fisico **J1921↔J1922** pin1=COIL_PLUS_LAB, pin2=COIL_MINUS_LAB; test ERC e netlist nativi a 2 reti, verifica indipendente incrociata ai pin J1914 driver e J1903 relè. È **harness laboratorio** non PCB prodotto, headers non keyati e MPN/polarizzazione qualificati; il blocco FRONT completo resta non integrato e non releasable. CI sul nuovo branch da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #282 MERGED; C1912 bulk rail bobina in branch
 
