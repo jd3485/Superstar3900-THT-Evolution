@@ -15,6 +15,10 @@ Componenti THT reali collocati nel banco:
 
 `03_Verifiche/V2.7/verify_lm2903p_pdip8_window_native.py` incluso in FULL richiede ERC KiCad9 nativa, **30 pin reali/8 reti**, verifica pin numerici dell'LM2903P e componenti del partitore, 128 casi PVT sintetici per soglie UVLO e OVP. Non esiste alcuna PCB e dunque nessun DRC PCB.
 
+## Correzione ERC sullo schematico reale
+
+La prima esecuzione native KiCad9 della PR #311 (run #43853071247) ha correttamente **FALLITO**: 2 errori `power_pin_not_driven` su U2201 VCC/GND, 9 warning `endpoint_off_grid` sulle connessioni U2201. Risoluzione progettuale nel banco (da ricontrollare in nuova CI): spostata la singola istanza U2201 e tutte le connessioni della finestra su griglia 2,54 mm; definito su J2202 un simbolo locale distinto `BENCH_SUPPLY_PORT_THT_2PIN` con pin di uscita di potenza **che rappresentano esplicitamente una sorgente esterna su connettore fisico**, sia VCC5V che RETURN. Non è un `PWR_FLAG` o un'alimentazione reale progettata: il simulatore/ERC vede solo il contratto formale della sorgente esterna presunta. **Non affermare supply qualificata, indipendenza dal MAIN, protezione rail o sicurezza**. Nessun waiver, nessuna esclusione delle violazioni ERC.
+
 ## Limite fisico immediato — critical input fault
 
 Se R2202 si apre, U2201 pin3/pin6 possono salire al valore VIN_raw ipotetico fino a **48V**, nonostante Vsense nominale a VIN48V sia ~2,286V. Non vi sono attualmente diodi di clamp ingresso, limitatori di corrente indipendenti, TVS/transient protection, hysteresis, né power-good sulla supply. **NON alimentare questo schema**, non connetterlo all'interruttore secondario né considerarlo protezione OVP funzionante. La mancanza di rail indipendente è esplicita.
