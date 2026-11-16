@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #305 MERGED, candidato Microchip 1N4106-1 THT 250µA in schema KiCad9 isolato
+
+PR [#305](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/305) **MERGED** su main SHA `b017466ccb381c09fd525b9676e5255f4adf739f`, run [#43842098135](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43842098135) su head finale `8048b40fb045e83d5da52b04c27eba1ca8e104b5`, FAST/FULL/Required **3/3 SUCCESS**. FULL marker `PASS_NATIVE_KICAD9_Q806_TWIN_ZENER_27PIN_8NET_1944_IDEAL_FAULT_CASES_NONFAB`, ERC0 zero warning, 27 pin/8 reti, 1944 scenari. **Conclusione OEM critica:** il vecchio Zener 1N4742A ha Vz specificato a IZT21mA, ma R2102=10k limita corrente del ramo a <=5,053mA a source48V; pertanto il passaggio dal modello ideale a protezione reale non è garantito. Master MAIN V2.6 e FRONT invariati.
+
+**Nuovo candidato branch** `engineering/v27-q806-low-current-microchip-clamp-lab-20261116`: schema nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_LOW_CURRENT_ZENER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_LOW_CURRENT_ZENER_LAB_V2_7_DRAFT.kicad_sch` sostituisce D2101/D2102 con **Microchip 1N4106-1 DO-35 THT** OEM status In Production, 12V ±5% nominale a IZT **250µA**, footprint generico DO-35 non ancora convalidato. Nuovo script nativo `03_Verifiche/V2.7/verify_q806_microchip_1n4106_low_current_native.py` in FULL: ERC0, 27 pin/8 reti, 1944 casi ipotetici, verifica del campo di corrente OEM e limiti espliciti dell'estrapolazione di ZZT=200Ω a IZT. Rapporto `03_Verifiche/V2.7/RAPPORTO_Q806_MICROCHIP_1N4106_250UA_20261116.md`. **PR/CI nuova DA VERIFICARE, NON INTEGRATA**. #27 sicurezza aperta: due clamp paralleli non risolvono Q806 C–E SHORT, fault comuni, reale curva I/V, supply/supervisore indipendente e review hardware. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #304 MERGED, doppio clamp D2101/D2102 THT in banco KiCad9 isolato
 
 PR [#304](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/304) MERGED su main SHA `bc490ba7768e57b4564a263ee780575140c4b4cf`. Run [#43839174161](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43839174161) sul final SHA `a5daa029290055b2b3601b6bc2daf67ddbf78aa2`: FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_Q806_GATE_810_KCL_ZENER_STRESS_CASES_NONFAB` (810 casi KCL, error massimo circa 1,8e-14 A). Modelli non OEM: picchi stimati R2102 0,1441W, D2101 0,0445W, guasto D2101 OPEN può eccedere |VGS|20V e Q806 C–E SHORT bypassa enable; nessuna qualifica hardware.
