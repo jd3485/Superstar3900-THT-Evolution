@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #321 MERGED; controllo pin-net e valori reali 16R in nuova revisione
+
+PR [#321](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/321) MERGED su main `3562ad8c455b499de6f734651c40d8c08207f593`, final head `2cdff864fe53d9ce7f36566d30593b9a0e5d973d`, run [#43896260492](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43896260492) FAST/FULL/Required 3/3 SUCCESS. Verificato pin↔net dei 16 resistori THT dei due canali LM2903P, nessuna PCB integrata.
+
+Nuovo branch `engineering/v27-native-16r-values-and-oem-input-guards-20261116`: regressione FULL esistente estesa al confronto tra valori dei 16 resistori nello schematico KiCad9 (100k, 10k, 116k, 20k, 185k), footprint THT e pull-up R2207, e i coefficienti dell'audit indipendente 25.952.256 corner DC. Previene falsi pass quando cambia il CAD ma non il modello di calcolo. **PR e CI nuove da verificare; non su main**. #27 safety aperta, 5V/VREF esterne, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #320 MERGED; nuovo controllo nativo pin↔net per 16 resistenze A/B
 
 PR [#320](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/320) MERGED su main `a6e33a4c36322a7e6724cf93b94fe47080bea06c`; final head `23e97f666a26afd11a7ffc18862e8c81656372d3`; run [#43894482289](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43894482289) FAST/FULL/Required 3/3 SUCCESS. KiCad9 isolato 60pin/14net; test matematico esatto 25.952.256 combinazioni e 231.760 falsi consensi teorici da riferimenti guasti, senza qualifica OEM.
