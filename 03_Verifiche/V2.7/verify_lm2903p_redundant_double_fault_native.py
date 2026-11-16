@@ -88,7 +88,7 @@ def main():
     }
     assert exposed_at_48==expected_abs,exposed_at_48
     assert over_abs==2*2**8
-    assert failed_window_high>0
+    # In this EXACT two-distinct-resistor OPEN/SHORT grid, no false\n    # window-high was found outside nominal 9..16V; this does NOT\n    # clear the 3072 single-fault false-good cases in PR #313.\n    assert failed_window_high==0
     print("LM2903P_REDUNDANT_DOUBLE_FAULT_NATIVE_MODEL",{
         "actual_native_pins":34,"actual_native_nets":9,
         "synthetic_2resistor_fault_cases":total,
