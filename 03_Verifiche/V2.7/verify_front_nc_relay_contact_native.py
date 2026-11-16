@@ -13,6 +13,7 @@ from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
 SCH=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch"
+PARENT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 FRONT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
 AUDIO=ROOT/"04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
@@ -50,11 +51,13 @@ def main():
     board=BOARD.read_text(encoding="utf-8")
     assert "K1901" not in board and board.count('(segment ')==35
     assert board.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==2
+    # Hierarchical ports require an enclosing parent for native ERC.
+    # Preserve child-only netlist audits below to catch inadvertent shorts.
     with tempfile.TemporaryDirectory(prefix="tht_front_nc_mute_") as td:
         d=Path(td)
         erc=d/"erc.rpt"
         run=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
-                            "-o",str(erc),str(SCH)],
+                            "-o",str(erc),str(PARENT)],
                            capture_output=True,text=True,cwd=ROOT,timeout=120)
         print("FRONT_RELAY_CANDIDATE_KICAD9_ERC",run.stdout,run.stderr,flush=True)
         if erc.exists():

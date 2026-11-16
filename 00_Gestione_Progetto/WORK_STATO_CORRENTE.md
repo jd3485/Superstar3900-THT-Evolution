@@ -1,7 +1,21 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #284 MERGED; master gerarchico FRONT 5 fogli THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #284 SHA `4d5467a87135698e755a2770cec663b75d8894ec`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #286, correzione test ERC figli gerarchici (branch draft)
+
+PR #286 HEAD iniziale `e5d4e15e321d6b9a30978c5935b93cbd5b318ce8`: Actions `43791229651` FAST SUCCESS, FULL/Required FAILURE: `verify_front_volume_native.py` lanciava `kicad-cli sch erc` sul solo child con due hierarchical labels, ottenendo `pin_not_connected` (manca il parent), non un difetto del master dimostrato. Aggiornati i verificatori volume e mute relay per applicare ERC nativo al **master FRONT cinque fogli** e mantenere esportazione/contratto pin-net dei child. Commit di correzione `f21d456eaec0455c40525fa886852984d4bfe1ed`; attendere FAST/FULL/Required su HEAD finale, riesaminare eventuali ulteriori failure e **non fare merge** con gate non verdi. Nessuna modifica ai conduttori elettrici dopo il commit originario; nessuna qualifica di relay, harness o PCB. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+**Aggiornato:** 16 novembre 2026 (PR #285 MERGED; collegamento reale volume→mute su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #285 SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #285 MERGED; primo collegamento elettrico reale FRONT sul branch
+
+**Verificato GitHub:** PR #285 MERGED su main SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; [Actions #43789747752](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43789747752) FAST/FULL/Required **SUCCESS 3/3**. FULL: `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_5SHEETS_32REFS_26NETS_71PINS_ERC0_NO_CROSS_RAIL_NO_FAB`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Riparata regressione indipendente di piazzamento 13ref.
+
+**Branch corrente** `engineering/v27-front-master-volume-to-mute-hierarchical-audio-20261116`: due vere connessioni KiCad9 nel master FRONT fra i fogli VOLUME e RELAY via pin gerarchici: `VOL_WIPER_TO_AMP` **J1302/1 ↔ J1901/1 ↔ K1901/3** e `AF_GND` **J1302/2 ↔ J1901/2 ↔ K1901/2**. Test netlist gerarchico aggiornato da 26 a **24 reti**, 71 endpoint pin; tutte le altre reti, incluse quelle bobina e LED, devono restare isolate. MPN relè e condizioni meccaniche non qualificati; niente interconnessione PCB MAIN, power/coil, routing/front PCB completo; nessun comportamento fail-safe certificato. Prima CI #43790882778 FAST SUCCESS, FULL/Required FAILURE: la nuova gerarchia KiCad9 **ERC0, 24 reti e 71 pin verificati**; test standalone del volume ancora vietava tutti gli hierarchical_label (`assert "(hierarchical_label " not in sch`). Corretto il gate per richiedere esattamente le due nuove porte passive `VOL_WIPER_TO_AMP` e `AF_GND`, mantenendo isolato `DEMOD_AUDIO`. Nuova CI sul commit aggiornato da verificare; merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #284 MERGED; master FRONT 5 sheet KiCad9 su branch
 
