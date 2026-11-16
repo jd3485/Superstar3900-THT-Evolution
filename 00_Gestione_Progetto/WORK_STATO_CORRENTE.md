@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — #319 MERGED; tolleranze 16 R A/B indipendenti in nuova revisione
+
+PR [#319](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/319) **MERGED** main `a1e6c0dca743136d4718be0fef732efaa6712891`; head `5963b655e682ad36098cb4c7fa4f028f260116ed`; run [#43893797542](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43893797542): FAST SUCCESS, Required SUCCESS, FULL skipped su diff documentale.
+
+Branch `engineering/v27-independent-ab-resistor-corners-20261116`: nuova regressione netlist KiCad9 THT 60 pin/14 reti e **25.952.256** combinazioni ideali DC con tolleranze indipendenti per 16 R A/B; **231.760 falsi GOOD matematici** a VREF A/B simultaneamente guaste, calcolati con conteggio cartesiano esatto (non SPICE). Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DUE_VREF_TOLLERANZE_INDIPENDENTI_25952256_20261116.md`; **nuova PR/CI da verificare**. Nessun 5V/reference OEM né fail-closed fisico, #27 APERTA, MAIN V2.6/FRONT invariati. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #318 MERGED; doppio guasto correlato VREF ancora insicuro
 
 PR [#318](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/318) **MERGED** main `2a4b83688a7830068b0eff482499b135b8064c00`, final head `5d721c2077e8061a2aca16234975e406ae79bdf2`, run [#43865228302](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43865228302): FAST/FULL/Required **3/3 SUCCESS**, jobs e steps verificati. Regressione netlist KiCad9 60 pin / 14 reti, **101.376 corner DC ipotetici**; **1.028 falsi GOOD** con VREF A/B entrambe 1,25 V o 5 V per VIN fuori 9..16 V. Nessun 5V/ref OEM indipendente né switch serie fail-OFF realizzato. MAIN V2.6/FRONT senza PCB; #27 aperta. Prossimo: alimentazione/riferimenti THT reali, fail-closed di due switch indipendenti, qualifica OEM e fault comuni. NO FAB/TX/BATTERIA/VEICOLO.
