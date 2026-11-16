@@ -21,12 +21,12 @@
 (symbol "LAB_PORT_2PIN_1_1" (pin passive line (at -12.7 2.54 0)(length 5.08)(name "SIGNAL" (effects (font (size 1 1))))(number "1" (effects (font (size 1 1)))))
 (pin passive line (at -12.7 -2.54 0)(length 5.08)(name "RETURN" (effects (font (size 1 1))))(number "2" (effects (font (size 1 1)))))))
 
-(symbol "NPN_2N3904_TO92" (pin_numbers (hide yes))(pin_names (offset 0.76))(in_bom yes)(on_board yes)
+(symbol "NPN_KSP42_TO92" (pin_numbers (hide yes))(pin_names (offset 0.76))(in_bom yes)(on_board yes)
 (property "Reference" "Q" (at 0 17.78 0) (effects (font (size 1 1))))
-(property "Value" "2N3904BU" (at 0 -17.78 0) (effects (font (size 1 1))))
+(property "Value" "KSP42BU" (at 0 -17.78 0) (effects (font (size 1 1))))
 (property "Footprint" "Package_TO_SOT_THT:TO-92_Inline" (at 0 0 0) (effects (font (size 1 1))))
-(symbol "NPN_2N3904_TO92_0_1" (rectangle (start -7.62 10.16)(end 7.62 -10.16)(stroke (width 0.254)(type default))(fill (type background))))
-(symbol "NPN_2N3904_TO92_1_1"
+(symbol "NPN_KSP42_TO92_0_1" (rectangle (start -7.62 10.16)(end 7.62 -10.16)(stroke (width 0.254)(type default))(fill (type background))))
+(symbol "NPN_KSP42_TO92_1_1"
 (pin passive line (at 12.7 -5.08 180)(length 5.08)(name "E" (effects (font (size 1 1))))(number "1" (effects (font (size 1 1)))))
 (pin input line (at -12.7 0 0)(length 5.08)(name "B" (effects (font (size 1 1))))(number "2" (effects (font (size 1 1)))))
 (pin passive line (at 12.7 5.08 180)(length 5.08)(name "C" (effects (font (size 1 1))))(number "3" (effects (font (size 1 1)))))
