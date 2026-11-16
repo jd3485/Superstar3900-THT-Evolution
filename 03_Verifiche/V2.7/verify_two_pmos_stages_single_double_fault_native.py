@@ -21,7 +21,12 @@ ALL_FAULTS=("Q806_CE_SHORT","Q816_CE_SHORT",
 
 def directed_path(en_a,en_b,faults):
     """Return forward and reverse reachability of ideal physical pin graph."""
-    # A shared upstream consent stuck HIGH is one COMMON-CAUSE failure,\n    # not two independent C-E faults. Even though the two KiCad9 enable\n    # nets are distinct, both inputs remain externally sourced.\n    common_enable="COMMON_ENABLE_STUCK_HIGH" in faults\n    driven_a=en_a or common_enable or "Q806_CE_SHORT" in faults\n    driven_b=en_b or common_enable or "Q816_CE_SHORT" in faults
+    # A shared upstream consent stuck HIGH is one COMMON-CAUSE failure,
+    # not two independent C-E faults. Even though the two KiCad9 enable
+    # nets are distinct, both inputs remain externally sourced.
+    common_enable="COMMON_ENABLE_STUCK_HIGH" in faults
+    driven_a=en_a or common_enable or "Q806_CE_SHORT" in faults
+    driven_b=en_b or common_enable or "Q816_CE_SHORT" in faults
     edges=[]
     for fet,(drain,source) in FETS.items():
         # Body diode of a P-channel device runs from drain to source.
@@ -60,7 +65,10 @@ def main():
     assert nets["COMMON_GATE_LAB"].isdisjoint(nets["COMMON_GATE_B_LAB"])
     assert nets["FLOATING_COMMON_SOURCE_LAB"].isdisjoint(nets["FLOATING_SOURCE_B_LAB"])
     assert ("Q806","3") in nets["DRIVER_SINK_LAB"]
-    assert ("Q816","3") in nets["DRIVER_SINK_B_LAB"]\n    assert nets["ENABLE_LOGIC_5V_LAB"].isdisjoint(nets["ENABLE_B_5V_LAB"])\n    assert ("J2103","1") in nets["ENABLE_LOGIC_5V_LAB"]\n    assert ("J2113","1") in nets["ENABLE_B_5V_LAB"]
+    assert ("Q816","3") in nets["DRIVER_SINK_B_LAB"]
+    assert nets["ENABLE_LOGIC_5V_LAB"].isdisjoint(nets["ENABLE_B_5V_LAB"])
+    assert ("J2103","1") in nets["ENABLE_LOGIC_5V_LAB"]
+    assert ("J2113","1") in nets["ENABLE_B_5V_LAB"]
 
     assert directed_path(False,False,set())==(False,False)
     assert directed_path(True,False,set())==(False,False)
@@ -94,14 +102,20 @@ def main():
     }
     assert leaks==expected,(leaks,expected)
 
-    # One shared stuck-HIGH enable upstream of the two independent\n    # physical connectors is a SINGLE common-cause loss of isolation.\n    assert directed_path(False,False,{"COMMON_ENABLE_STUCK_HIGH"})==(True,True)\n    assert directed_path(False,False,{"COMMON_ENABLE_STUCK_LOW"})==(False,False)\n\n    # Two driver-side shorts: both switch pairs commanded ON despite
+    # One shared stuck-HIGH enable upstream of the two independent
+    # physical connectors is a SINGLE common-cause loss of isolation.
+    assert directed_path(False,False,{"COMMON_ENABLE_STUCK_HIGH"})==(True,True)
+    assert directed_path(False,False,{"COMMON_ENABLE_STUCK_LOW"})==(False,False)
+
+    # Two driver-side shorts: both switch pairs commanded ON despite
     # both external enables OFF. This is a COMMON-CAUSE vulnerability.
     assert directed_path(False,False,{"Q806_CE_SHORT","Q816_CE_SHORT"})==(True,True)
     # Explicitly reject false claims of fail-OFF with any two faults.
     assert len(leaks)==7 and len(pairs)==15
     print("TWO_COMPLETE_PMOS_STAGE_FAULT_COVERAGE",{
       "native_components":24,"native_pins":54,"native_nets":14,
-      "single_independent_fault_cases":len(singles),\n      "one_common_enable_stuck_high_both_directions_energized":True,
+      "single_independent_fault_cases":len(singles),
+      "one_common_enable_stuck_high_both_directions_energized":True,
       "single_fault_directed_paths":sum(any(v) for v in singles.values()),
       "two_fault_cases":len(pairs),
       "two_fault_cases_with_at_least_one_direction_path":len(leaks),
