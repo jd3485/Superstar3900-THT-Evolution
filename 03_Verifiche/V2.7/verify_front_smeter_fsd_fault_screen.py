@@ -43,6 +43,14 @@ def screen(v_drive, shorted_resistors=0, coil_ohm=0.0, fsd_a=None):
     }
 
 
+def max_abs_drive_for_fsd(fsd_a, shorted_resistors=0, coil_ohm=0.0):
+    """Conditional analytical source-voltage limit, not meter qualification."""
+    if not isfinite(fsd_a) or fsd_a <= 0 or not isfinite(coil_ohm) or coil_ohm < 0:
+        raise ValueError("finite positive FSD and nonnegative coil required")
+    if shorted_resistors not in (0, 1, 2):
+        raise ValueError("unsupported resistor fault count")
+    return fsd_a * ((2-shorted_resistors)*R_LIMIT*(1-R_TOL_SCREEN)+coil_ohm)
+
 def verify():
     # PVT envelope examples: 20V ideal fixed voltage source; no meter
     # resistance provides worst-case current; 5% illustrative bound.
@@ -57,6 +65,24 @@ def verify():
     assert screen(0)["coil_current_upper_bound_A_ideal"] == 0
     assert screen(-20)["coil_current_upper_bound_A_ideal"] == healthy["coil_current_upper_bound_A_ideal"]
     assert screen(20,coil_ohm=1000)["coil_current_upper_bound_A_ideal"] < healthy["coil_current_upper_bound_A_ideal"]
+    # FSD assumptions are hypothetical. Source and meter are NOT qualified.
+    for fsd in (25e-6,50e-6,100e-6,200e-6):
+        healthy_limit=max_abs_drive_for_fsd(fsd)
+        single_short_limit=max_abs_drive_for_fsd(fsd,shorted_resistors=1)
+        assert isclose(healthy_limit,2*single_short_limit)
+        assert max_abs_drive_for_fsd(fsd,shorted_resistors=2)==0
+        assert not screen(healthy_limit,fsd_a=fsd)["possible_FSD_exceedance_model"]
+        assert screen(healthy_limit*1.00001,fsd_a=fsd)["possible_FSD_exceedance_model"]
+        assert screen(healthy_limit,shorted_resistors=1,fsd_a=fsd)["possible_FSD_exceedance_model"]
+        assert not screen(single_short_limit,shorted_resistors=1,fsd_a=fsd)["possible_FSD_exceedance_model"]
+    assert isclose(max_abs_drive_for_fsd(50e-6),9.5)
+    assert isclose(max_abs_drive_for_fsd(50e-6,shorted_resistors=1),4.75)
+    assert isclose(max_abs_drive_for_fsd(100e-6),19)
+    assert max_abs_drive_for_fsd(50e-6,shorted_resistors=2,coil_ohm=100)==0.005
+    for invalid in (0,-1,float("nan"),float("inf")):
+        try: max_abs_drive_for_fsd(invalid)
+        except ValueError: pass
+        else: raise AssertionError("invalid FSD accepted")
     # Example sensitivities do not select a real meter.
     assert screen(20,fsd_a=50e-6)["possible_FSD_exceedance_model"] is True
     assert screen(20,fsd_a=200e-6)["possible_FSD_exceedance_model"] is False
@@ -81,6 +107,9 @@ def verify():
         "actual_coil_resistance_known":False,
         "pot_input_winding_and_wiper_faults_qualified":False,
         "thermal_and_transient_qualified":False,
+        "hypothetical_50uA_FSD_max_healthy_source_V":9.5,
+        "hypothetical_50uA_FSD_max_one_short_source_V":4.75,
+        "actual_meter_and_source_qualified":False,
         "NO_FAB_NO_TX":True,
     },flush=True)
 
