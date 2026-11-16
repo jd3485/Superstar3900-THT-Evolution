@@ -1,6 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
+
+**Baseline verificata:** PR #286 integrata (main SHA `5fb398a67f13a1523f938afef2bae9f093077a78`), PR #287 checkpoint integrata (main SHA `ab0a09bc11a21f442920af450f7c6999bc38eb1e`). PR #286 CI #43808193916 FAST/FULL/Required 3/3 SUCCESS e master FRONT 24 reti / 71 pin / 2 unioni audio.
+
+**Nuovo branch** `engineering/v27-front-master-coil-two-net-hierarchy-20261116`: due nuove connessioni gerarchiche elettriche KiCad9 tra RELAY e COIL_DRIVER (`COIL_PLUS_LAB` e `COIL_MINUS_LAB`), portando la topologia attesa a **22 reti / 71 endpoint / 4 unioni parent**. Test di netlist su tutte le partizioni, isolamenti AF_GND/DRIVER_GND/ILLUM_RETURN e ERC gerarchico aggiornati. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MASTER_COIL_HIERARCHY_20261116.md`. **Non ancora CI convalidata, non integrata su main**: procedere soltanto dopo FAST/FULL/Required verdi sullo SHA finale. Relè, rail e driver restano non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #286 MERGED, master FRONT audio/AF_GND realmente cablato
 
 **Verifica live:** PR [#286](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/286) MERGED su `main` con SHA `5fb398a67f13a1523f938afef2bae9f093077a78`. Il commit finale della PR `448b382e5abe02e46b1950b4fb9a113a5130e0f5` ha superato [CI #43808193916](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43808193916): FAST/FULL/Required **SUCCESS 3/3**, `PASS_REQUIRED_CI_GATE (full_required=true)`, nessun Traceback o error log, KiCad9 ERC0 nel master e nei verificatori; `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_24NETS_71PINS_2REAL_AUDIO_GND_JOINS_ERC0_NONFAB`. Corretto anche l'ERC dei child gerarchici in contesto parent (pin gerarchici non validi come root standalone), preservando i controlli netlist dei singoli fogli.
