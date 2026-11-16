@@ -52,7 +52,7 @@ def main():
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
     assert raw.count('(symbol (lib_id "TH_COIL:CAP_DECOUPLE_THT")')==1
     assert raw.count("100n_COIL_RAIL_BYPASS_CANDIDATE")==1
-    assert raw.count("Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm")==1
+    assert raw.count("Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm")==2  # embedded library plus C1911 instance
     assert raw.count("1k5_THT_BASERES")==2
     assert raw.count("10k_THT_PULLDOWN")==2
     # Gate physical THT footprint on all four passive resistors (not a driver qualification).
