@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #283 MERGED; interconnessione KiCad9 FRONT DRIVER↔RELAY in nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #283 SHA `b977bf7853411491b67c867a09825f9fdc27d066`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #284 MERGED; master gerarchico FRONT 5 fogli THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #284 SHA `4d5467a87135698e755a2770cec663b75d8894ec`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #284 MERGED; master FRONT 5 sheet KiCad9 su branch
+
+**Verificato GitHub:** PR #284 MERGED su main SHA `4d5467a87135698e755a2770cec663b75d8894ec`. [Actions #43788106048](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43788106048) FAST/FULL/Required **SUCCESS 3/3**. FULL `FRONT_COIL_LINK_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_TWO_WIRE_PIN1_PIN2_HARNESS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Cablaggio di laboratorio separato dal master e dalla PCB FRONT.
+
+**Branch corrente** `engineering/v27-front-hierarchy-five-isolated-native-sheets-20261116`: **modifica elettrica al master KiCad9** `FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`: da tre a cinque fogli THT aggiungendo veri sheet `FRONT_MUTE_NC_RELAY` e `FRONT_MUTE_COIL_DRIVER`. Librerie parent `TH_MUTE`, `TH_COIL` registrate. Test gerarchico aggiornato a **32 ref, 26 net locali, 71 pin** per verificare l'isolamento di AF_GND, wiper, COIL_PLUS/MINUS ripetuti fra figli. In assenza di connessioni gerarchiche, i fogli restano intenzionalmente elettricamente isolati: integrazione di progetto non è ancora collegamento elettrico/PCB finita. FULL CI sul branch da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #283 MERGED; interconnessione fisica KiCad9 laboratorio FRONT in branch
 
