@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — diagnostica guasti singoli/doppi dei due interruttori completi THT
+
+Branch `engineering/v27-two-stage-common-and-double-fault-diagnostics-20261116`, basato sul candidato KiCad9 di PR #329 **ancora DA VERIFICARE/integrare**: regression `03_Verifiche/V2.7/verify_two_pmos_stages_single_double_fault_native.py` vincolata a 24 THT, 54 pin e 14 reti. Su grafo diretto ideale di diodi PMOS e corti D–S/C–E: **0/6** guasti singoli mostrano percorso IN↔OUT, ma **7/15** coppie di guasti aprono percorso in almeno una direzione (4 coppie driver+MOSFET, 2 coppie D–S e 2 driver incollati). Rapporto `03_Verifiche/V2.7/RAPPORTO_TWO_FULL_PMOS_STAGES_21_SINGLE_DOUBLE_FAULTS_20261116.md`; check registrato in FULL su branch, nuova PR/CI DA VERIFICARE. Prova NON OEM, non quantitativa, nessun fail-OFF certificato; source/return condivisi, enable esterni, 5V/VREF, guasti diodo/clamp e SOA non coperti. #27 OPEN, MAIN/FRONT senza PCB. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
 ## 16 novembre 2026 — due interruttori PMOS anti-serie completi in serie, nuovo CAD THT
 
 Nuovo branch `engineering/v27-two-complete-antisieries-switch-stages-20261116`: CAD nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES_LAB_V2_7_DRAFT.kicad_sch`, 2× coppie anti-serie IRF9540NPBF, source separati fra gli stadi, Q806/Q816 driver BJT distinti e ciascuna coppia 2× diodi Microchip 1N4106-1 con un unico gate per stadio. Uscita stadio A ↔ ingresso B su `SECONDARY_OUT_DRAIN_LAB`. Local LAB_OVP library/KiCad project nativi. Test FULL `03_Verifiche/V2.7/verify_two_complete_pmos_stages_native.py` attende **ERC zero, 24 simboli/54pin/14 reti** e 16 fault booleiani: un unico C–E SHORT di driver con altro stadio OFF non deve aprire percorso input-output via body diode ideale in entrambe le direzioni. Report `03_Verifiche/V2.7/RAPPORTO_TWO_COMPLETE_PMOS_SWITCHES_THT_20261116.md`. PR/CI nuova DA VERIFICARE. **Non è sicurezza elettrica qualificata.** #27 OPEN, assenti UV/OV indipendenti, rail OEM, prove PVT, load/SOA, PCB. **NO FAB/TX/BATTERIA/VEICOLO**.
