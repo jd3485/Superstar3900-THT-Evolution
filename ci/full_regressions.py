@@ -306,6 +306,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_secondary_window_passive.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # THT LM2903P PDIP8 window actual KiCad9 isolated schematic:
+    # 30 real pins, 8 nets, 128 1% corners, input lower-leg OPEN unsafe.
+    print("::group::V2.7 LM2903P PHYSICAL PDIP8 30 PIN WINDOW",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_pdip8_window_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
