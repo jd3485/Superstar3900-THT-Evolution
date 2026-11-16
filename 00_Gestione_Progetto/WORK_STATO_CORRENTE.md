@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #323 MERGED; guasto common-OC LM2903P in nuova regressione
+
+PR [#323](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/323) **MERGED** main `c4514bd107043ff6c6d916c00d5e55506e0ff3ab`, final head `120a2b9691b22cbda340ebafdc6c79c53e961d63`, run [#43898059608](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43898059608) FAST/FULL/Required **3/3 SUCCESS**, regressione dei 16 valori e footprint THT; rimane banco isolato senza supply o reference OEM e senza fail-OFF fisico.
+
+Nuovo branch `engineering/v27-dual-lm2903p-common-oc-stuck-fault-20261116`: nuova regressione FULL `03_Verifiche/V2.7/verify_dual_lm2903p_shared_oc_fault_native.py`, netlist nativa **60 pin/14 reti** e **720.896** corner matematici indipendenti a VREF nominali esterne. Caso limite di output OC ipoteticamente forzato HIGH produce **524.288** falsi GOOD per VIN fuori 9..16 V; nodo forzato LOW **65.536** falsi OFF a VIN13,8V. Non costituiscono simulazione di un corto reale o garanzia di contesa, né prova fail-safe: R2207 OPEN / VCC5V persa = nodo indeterminato. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_SHARED_OC_720896_FAULT_20261116.md`. **Nuova PR/CI da verificare; non integrata**. #27 OPEN; MAIN V2.6/FRONT senza PCB. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
 ## 16 novembre 2026 — PR #321 MERGED; controllo pin-net e valori reali 16R in nuova revisione
 
 PR [#321](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/321) MERGED su main `3562ad8c455b499de6f734651c40d8c08207f593`, final head `2cdff864fe53d9ce7f36566d30593b9a0e5d973d`, run [#43896260492](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43896260492) FAST/FULL/Required 3/3 SUCCESS. Verificato pin↔net dei 16 resistori THT dei due canali LM2903P, nessuna PCB integrata.
