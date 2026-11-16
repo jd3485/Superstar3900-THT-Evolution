@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""KiCad9 native Q804/Q805 common-source + Q806 2N3904BU physical sink.
+"""KiCad9 native Q804/Q805 common-source + Q806 onsemi KSP42BU 300V THT high-voltage sink.
 Not an independent OVP/UVLO supervisor, vendor simulation or hardware approval.
 """
 from pathlib import Path
@@ -46,7 +46,7 @@ def has_path(edges, src, dst):
 def main():
     schematic = SCH.read_text(encoding="utf-8")
     assert schematic.count('(symbol (lib_id "LAB_OVP:') == 11
-    assert "2N3904BU_NPN_CANDIDATE" in schematic
+    assert "KSP42BU_NPN_CANDIDATE" in schematic
     assert "NO FAB / NO TX / NO BATTERIA / NO VEICOLO" in schematic
     with tempfile.TemporaryDirectory(prefix="q806_native_nonfab_") as d:
         tmp = Path(d)
@@ -67,7 +67,7 @@ def main():
         assert nets[name] == pins, (name, sorted(nets[name]),sorted(pins))
     all_pins = [p for members in nets.values() for p in members]
     assert len(all_pins) == len(set(all_pins)) == 25
-    # Pinout per onsemi 2N3904/D, 2024 Rev.3: E1/B2/C3. Neither
+    # Pinout per onsemi KSP43/D (KSP42), January 2025 Rev.4: E1/B2/C3. Neither
     # transistor emitter nor control return may short the floating source.
     assert ("Q806","1") in nets["LAB_RETURN_ONLY"]
     assert ("Q806","2") in nets["Q806_BASE_LAB"]
@@ -93,7 +93,8 @@ def main():
     ib_min = float("inf")
     ib_max = 0.0
     over_20_vgs_cases = 0
-    over_40_bjt_off_cases = 0
+    over_40_bjt_off_baseline_cases = 0
+    over_300_ksp42_off_cases = 0
     cases = 0
     for vin,vbe,rbase,rpul,rgs,rgate,vf in itertools.product(
         (0.,5.,8.,12.,13.8,16.,20.,24.,36.,48.),
@@ -116,25 +117,29 @@ def main():
         # BJT OFF source can rise via input->source body diode:
         # VCE(off) ≈ max(0, VIN-VF), assuming source unloaded.
         if max(0.,vin-vf)>40.:
-            over_40_bjt_off_cases += 1
+            over_40_bjt_off_baseline_cases += 1
+        if max(0.,vin-vf)>300.:
+            over_300_ksp42_off_cases += 1
         cases+=1
     assert cases == 10*3**6 == 7290
     assert 0.0007 < ib_min < ib_max < 0.0011
-    assert over_20_vgs_cases > 0 and over_40_bjt_off_cases > 0
+    assert over_20_vgs_cases > 0 and over_40_bjt_off_baseline_cases > 0
+    assert over_300_ksp42_off_cases == 0
     # 5V logic condition is NOT an independent fail-closed qualifier.
     print("Q806_NATIVE_PINNET_AND_MODEL_SCREEN", {
         "native_nets":len(nets),"physical_pins":len(all_pins),
         "analytic_cases":cases,
         "ideal_enabled_base_current_mA":(round(ib_min*1000,5),round(ib_max*1000,5)),
         "D2101_OPEN_over_PFET_20V_VGS_cases":over_20_vgs_cases,
-        "Q806_OFF_over_40V_VCEO_cases":over_40_bjt_off_cases,
+        "rejected_2N3904_OFF_over_40V_VCEO_cases":over_40_bjt_off_baseline_cases,
+        "candidate_KSP42BU_OFF_over_300V_VCEO_cases":over_300_ksp42_off_cases,
         "BJT_base_drive_5V_independent_supervisor_exists":False,
         "Q806_actual_saturation_and_hot_leakage_verified":False,
         "OEM_dynamic_zener_verified":False,
         "input_48V_permitted":False,
         "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True
     },flush=True)
-    print("PASS_NATIVE_KICAD9_THT_Q806_GATE_BJT_25PINS_8NETS_7290_MODEL_CASES_NONFAB",flush=True)
+    print("PASS_NATIVE_KICAD9_THT_Q806_KSP42BU_25PINS_8NETS_7290_MODEL_CASES_NONFAB",flush=True)
 
 if __name__ == "__main__":
     main()
