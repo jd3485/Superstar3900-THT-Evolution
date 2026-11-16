@@ -91,7 +91,7 @@
 (wire (pts (xy 63.5 116.84)(xy 58.42 116.84))(stroke (width 0)(type default))(uuid "c71a0000-0000-4000-8000-000000000047"))
 (label "DRIVE1_BASE" (at 58.42 116.84 0)(effects (font (size 1 1)))(uuid "c71a0000-0000-4000-8000-000000000048"))
 (wire (pts (xy 88.9 116.84)(xy 93.98 116.84))(stroke (width 0)(type default))(uuid "c71a0000-0000-4000-8000-000000000049"))
-(label "DRIVER_GND" (at 93.98 116.84 0)(effects (font (size 1 1)))(uuid "c71a0000-0000-4000-8000-000000000050"))
+(label "SERIES_MID" (at 93.98 116.84 0)(effects (font (size 1 1)))(uuid "c71a0000-0000-4000-8000-000000000050"))
 (symbol (lib_id "TH_COIL:RESISTOR")(at 76.2 180.34 0)(unit 1)(in_bom yes)(on_board yes)(dnp no)(uuid "c71a0000-0000-4000-8000-000000000051")
 (property "Reference" "R1914" (at 76.2 166.37 0)(effects (font (size 1 1))))
 (property "Value" "10k_THT_PULLDOWN" (at 76.2 194.31 0)(effects (font (size 1 1))))

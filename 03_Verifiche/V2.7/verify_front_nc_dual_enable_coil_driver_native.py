@@ -24,8 +24,8 @@ BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_N
 EXPECTED={
  "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1")},
  "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","1")},
- "SERIES_MID":{("Q1911","3"),("Q1912","1")},
- "DRIVER_GND":{("Q1912","3"),("R1913","2"),("R1914","2"),
+ "SERIES_MID":{("Q1911","3"),("Q1912","1"),("R1913","2")},
+ "DRIVER_GND":{("Q1912","3"),("R1914","2"),
                ("J1911","2"),("J1912","2"),("J1913","2")},
  "DRIVE1_BASE":{("Q1911","2"),("R1911","2"),("R1913","1")},
  "DRIVE2_BASE":{("Q1912","2"),("R1912","2"),("R1914","1")},
@@ -83,7 +83,7 @@ def main():
     assert nets["COIL_PLUS_LAB"].isdisjoint(nets["COIL_MINUS_LAB"])
     assert ("D1911","1") in nets["COIL_PLUS_LAB"]
     assert ("D1911","2") in nets["COIL_MINUS_LAB"]
-    assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","1")}
+    assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","1"),("R1913","2")}
     # Two series transistor switches are NOT independent against stuck-ON
     # faults. Enumerate all command/fault combinations instead of testing
     # the tautology (enable and good) == (enable and good).
@@ -120,10 +120,10 @@ def main():
         if rail<2*drop:continue
         icoil=(rail-2*drop)/rcoil
         # Upper switch emitter may rise by roughly VCEsat of lower switch.
-        # VBE 0.8V assumed conservatively for switching DC screen.
+        # VBE 0.8V assumed; R1913 now clamps Q1911 base to its own emitter.
         upper_base=drive-(.8+drop)
         lower_base=drive-.8
-        iupper=max(0.,upper_base/1500.-(.8+drop)/10000.)
+        iupper=max(0.,upper_base/1500.-.8/10000.)
         ilower=max(0.,lower_base/1500.-.8/10000.)
         assert min(iupper,ilower)>icoil/10.,(rail,drive,rcoil,drop,icoil,iupper,ilower)
         assert icoil<.025,(rail,rcoil,icoil)
