@@ -335,6 +335,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_redundant_double_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Two real KiCad9 LM2903P PDIP8 THT window channels, physically
+    # distinct sensor resistors; VCC/reference still SHARED, not safe.
+    print("::group::V2.7 DUAL LM2903P 69120 SINGLE SENSOR FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_window_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
