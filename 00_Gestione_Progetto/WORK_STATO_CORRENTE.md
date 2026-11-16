@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — due interruttori PMOS anti-serie completi in serie, nuovo CAD THT
+
+Nuovo branch `engineering/v27-two-complete-antisieries-switch-stages-20261116`: CAD nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES_LAB_V2_7_DRAFT.kicad_sch`, 2× coppie anti-serie IRF9540NPBF, source separati fra gli stadi, Q806/Q816 driver BJT distinti e ciascuna coppia 2× diodi Microchip 1N4106-1 con un unico gate per stadio. Uscita stadio A ↔ ingresso B su `SECONDARY_OUT_DRAIN_LAB`. Local LAB_OVP library/KiCad project nativi. Test FULL `03_Verifiche/V2.7/verify_two_complete_pmos_stages_native.py` attende **ERC zero, 24 simboli/54pin/14 reti** e 16 fault booleiani: un unico C–E SHORT di driver con altro stadio OFF non deve aprire percorso input-output via body diode ideale in entrambe le direzioni. Report `03_Verifiche/V2.7/RAPPORTO_TWO_COMPLETE_PMOS_SWITCHES_THT_20261116.md`. PR/CI nuova DA VERIFICARE. **Non è sicurezza elettrica qualificata.** #27 OPEN, assenti UV/OV indipendenti, rail OEM, prove PVT, load/SOA, PCB. **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
 ## 16 novembre 2026 — variante THT quattro clamp su due gate separati, non qualificata
 
 Branch `engineering/v27-dual-gate-twin-clamps-lab-20261116` **deriva dalla PR #326 integrata su main** SHA `4bd4de847e05c38c9a7a816548fc5b5a080b8475` CI #43907346523 FAST/FULL/Required 3/3 SUCCESS; la variante #327 non è ancora integrata. Nuovo banco KiCad9 `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS_LAB_V2_7_DRAFT.kicad_sch` con **D2101+D2110** sul gate A e **D2102+D2111** sul gate B, 1N4106-1 DO-35 THT candidati, ora con libreria `LAB_OVP.kicad_sym`, `sym-lib-table` e project file dedicati. Resta una sola source comune, GND BJT comune e ENABLE A/B esterni non qualificati.
