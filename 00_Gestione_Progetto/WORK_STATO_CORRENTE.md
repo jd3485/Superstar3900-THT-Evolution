@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #317 MERGED, guasto doppio VREF separati ancora critico
+
+PR [#317](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/317) **MERGED** main `4db05caea15203d155d0e75c26301f4907db868d`, final head `c5a850bafb9e5b2360fe78e51e6cc050aec0f76b`, run [#43863682723](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43863682723) FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC zero errori/warning, **60pin/14net, 24 componenti THT**, 33.792 corner. Separati fisicamente J2203 VREF_A e J2205 VREF_B; un solo guasto esterno reference (altro ideale) = 0 false GOOD VIN<9/>16V, ma **1.536 false OFF** a VIN13,8V nel modello. Nessun VREF realmente generato/qualificato, supply5V/RETURN/OC condivisi, non fail-safe.
+
+Nuovo branch `engineering/v27-split-vref-dual-fault-common-cause-20261116`: `03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_double_fault_native.py` in FULL su vera netlist KiCad9 60pin/14net, **101.376 corner** di due VREF variabili 0/1,25/2,475/2,5/2,525/5V, 11 VIN e 256 corner tolleranza; modello mostra **1.028 falsi consensi** per fault VREF_A=VREF_B=1,25V/5V correlati. Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DUE_VREF_DOPPIO_FAULT_101376_20261116.md`. CI PR **NUOVE DA VERIFICARE**, nessun merge. Non sono stati implementati rail 5V, reference OEM indipendenti, input protection, switch serie fail-OFF o PCB, MAIN V2.6/FRONT invariati. #27 aperta, **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #316 MERGED; VREF A/B separati fisicamente in banco THT KiCad9
 
 PR [#316](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/316) **MERGED** su main `c2dfc8db4279e3df1b3345aea0a3566e4586817e`; final head `f45e1c1b88251c50daac48adc17ee1266ff8443e`, run [#43862397171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43862397171) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_COMMON_VREF_58PIN_13NET_16896_NONFAB`, 58 pin/13 reti, 16.896 corner DC condivisi su U2201/U2202, **1.028** false-GOOD a reference comune ipoteticamente 1,25/5V; blocco fail-closed di issue #27 non risolto.
