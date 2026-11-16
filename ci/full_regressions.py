@@ -363,13 +363,6 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_independent_tolerances_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
-    # Back-to-back THT PMOS still share one gate and a single BJT
-    # sink; a collector-emitter SHORT bypasses logic ENABLE=0.
-    print("::group::DUAL PMOS Q806 SHARED-GATE SHORT FAULT NATIVE",flush=True)
-    subprocess.run([sys.executable,"-B",
-                    str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py")],
-                   cwd=ROOT,check=True)
-    print("::endgroup::",flush=True)
     # KiCad9 two physically separate THT reference headers do not
     # prevent correlated VREF failures: 101376 synthetic cases.
     print("::group::V2.7 SPLIT LM2903P DOUBLE VREF 101376 CORNERS",flush=True)
@@ -953,6 +946,13 @@ def main()->None:
     print("::group::IF455 TOUCHSTONE TWO PORT TERMINATION 27 ANALYTICAL CHECKS",flush=True)
     subprocess.run([sys.executable,"-B",
                     str(ROOT/"03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # Back-to-back THT PMOS still share a gate and a BJT sink;
+    # collector-emitter SHORT overrides disabled ENABLE at both FETs.
+    print("::group::DUAL PMOS Q806 SHARED-GATE SHORT FAULT NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
