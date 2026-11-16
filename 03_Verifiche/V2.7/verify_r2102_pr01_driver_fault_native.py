@@ -92,7 +92,7 @@ def main():
         "R2102_open_passive_off_model_cases":single_resistor_open_off,
         "R2102_short_unclamped_over_20V_cases":dangerous_hard_sink,
         "max_unclamped_gate_resistor_W":round(max_on_case_resistor_w,6),
-        "R2102_short_current_unlimited_model":True,
+        "R2102_short_bypasses_its_gate_current_limit":True,
         "OEM_1N4106_current_sharing_qualified":False,
         "driver_hardware_fail_closed":False,
         "independent_supervisor_qualified":False,
