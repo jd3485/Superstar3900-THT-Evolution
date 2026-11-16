@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
-from verify_front_partial_hierarchy_native import PARTITIONS
+from verify_front_partial_hierarchy_native import PARTITIONS as HIERARCHY_PARTITIONS
 
 ROOT=Path(__file__).resolve().parents[2]
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
@@ -20,6 +20,11 @@ EXPECTED_REFS={
     "J2201","R2201","D2201","R2202","D2202",
     "J1801","RV1801","R1801","R1802","J1802"
 }
+# This board holds ONLY the historical 13 physical refs / 12 local nets.
+# Additional schematic children must never silently enlarge its netlist contract.
+PARTITIONS={name:pins for name,pins in HIERARCHY_PARTITIONS.items()
+            if pins and all(ref in EXPECTED_REFS for ref,pin in pins)}
+assert len(PARTITIONS)==12 and len(HIERARCHY_PARTITIONS)>len(PARTITIONS)
 EXPECTED_PINS={
     (ref,pin):name
     for name,refs in PARTITIONS.items()
