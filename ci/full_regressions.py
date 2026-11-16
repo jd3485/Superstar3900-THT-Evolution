@@ -237,6 +237,15 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_ovp_secondary_q804_passive_off_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Independent V2.7 dual P-MOS anti-series THT isolated lab:
+    # true KiCad9 native ERC, 18 pins / 6 isolated nets, ideal diode topology
+    # and theoretical gate-series resistor/Zener-open failure screen.
+    # No second supervisor exists; NO HARDWARE ENERGIZATION.
+    print("::group::V2.7 THT DUAL PMOS BACK-TO-BACK NATIVE ERC AND FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_ovp_dual_pmos_backtoback_lab_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
