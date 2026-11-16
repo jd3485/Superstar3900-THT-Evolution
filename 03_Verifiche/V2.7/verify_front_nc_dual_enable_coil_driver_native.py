@@ -21,6 +21,7 @@ NAME="FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT"
 SCH=BASE/(NAME+".kicad_sch")
 CONTACT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch"
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
+HARNESS=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_COIL_INTERCONNECT_LAB/FRONT_COIL_INTERCONNECT_PIN1_PIN2_NONFAB.kicad_sch"
 EXPECTED={
  "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1"),("C1912","1")},
  "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","1")},
@@ -82,6 +83,28 @@ def main():
         run.check_returncode()
         nets=exported_nets(SCH,d/"coil.net")
         contact=exported_nets(CONTACT,d/"contact.net")
+        harness_erc=d/"front_harness_erc.rpt"
+        h=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
+                          "-o",str(harness_erc),str(HARNESS)],cwd=ROOT,
+                         capture_output=True,text=True,timeout=120)
+        print("FRONT_COIL_LINK_NATIVE_KICAD9_ERC",h.stdout,h.stderr,flush=True)
+        if harness_erc.exists():print(harness_erc.read_text(encoding="utf-8"),flush=True)
+        h.check_returncode()
+        link=exported_nets(HARNESS,d/"front_coil_link.net")
+    assert set(link)=={"COIL_PLUS_LAB","COIL_MINUS_LAB"},link
+    assert link["COIL_PLUS_LAB"]=={("J1921","1"),("J1922","1")},link
+    assert link["COIL_MINUS_LAB"]=={("J1921","2"),("J1922","2")},link
+    require(nets,"COIL_PLUS_LAB",("J1914","1"))
+    require(nets,"COIL_MINUS_LAB",("J1914","2"))
+    require(contact,"COIL_PLUS_LAB",("J1903","1"))
+    require(contact,"COIL_MINUS_LAB",("J1903","2"))
+    assert link["COIL_PLUS_LAB"].isdisjoint(link["COIL_MINUS_LAB"])
+    assert HARNESS.with_suffix(".kicad_pro").is_file()
+    linkraw=HARNESS.read_text(encoding="utf-8")
+    assert linkraw.count('(symbol (lib_id "TH_LINK:PORT2")')==2
+    assert linkraw.count("Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")==3
+    assert "reverse insertion and wiring errors NOT prevented" in linkraw
+    print("PASS_KICAD9_FRONT_COIL_TWO_WIRE_PIN1_PIN2_HARNESS_ERC0_NONFAB",flush=True)
     assert set(nets)==set(EXPECTED),(sorted(nets),sorted(EXPECTED))
     for name,pins in EXPECTED.items():
         require(nets,name,*pins)
