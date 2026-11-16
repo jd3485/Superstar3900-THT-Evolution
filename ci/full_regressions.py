@@ -313,6 +313,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_pdip8_window_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native LM2903P THT 30pin/8net dual OC window truth table, 3200
+    # cases including reference loss, VCC loss and sense bottom-open.
+    print("::group::V2.7 LM2903P OC 3200 FAULT TRUTH CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_oc_fault_truth_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
