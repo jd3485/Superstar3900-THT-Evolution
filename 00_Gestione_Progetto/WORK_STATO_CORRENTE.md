@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — gate candidato FSD sorgente S-meter passivo 2×100 kΩ
+
+**Branch:** `engineering/v27-smeter-fsd-drive-compliance-envelope-20261116`, main baseline PR #294 integrata `ecdda05a4d99ef0e036dbd256255af5e891b703c`. Verificatore `03_Verifiche/V2.7/verify_smeter_passive_source_fsd_compliance_native.py`, registrato in FULL, ancora **non validato CI**. 675 condizioni di tensione sorgente (5–20V), cursore RV1801 caricato, Rcoil/FSD solo ipotetici, 0–2 resistori in corto, con 60 casi non limitati riconosciuti. A 5V, 20kΩ coil e 2×100kΩ: 22,727µA max; modello 50µA richiede almeno 11V nominali, senza approvare driver/cavo/movimento. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_PASSIVE_FSD_SOURCE_COMPLIANCE_20261116.md`. PR #295 porte S-meter gerarchiche separata e in CI. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #293 MERGED, gate audio fault NC integrato
 
 **PR #293** integrata su main SHA `688a5a9a93b7b86840898b9c7345a06afad8ba4e`, CI #43813871295 FAST/FULL/Required 3/3 SUCCESS, marker nativo `PASS_NATIVE_KICAD9_FRONT_MUTE_120_AC_INJECTION_FAULT_CASES_AF_GND_OPEN_FAIL_CLOSED_NONFAB` confermato nel log. Il modello non costituisce prova di mute fail-safe. NO FAB/NO TX.
