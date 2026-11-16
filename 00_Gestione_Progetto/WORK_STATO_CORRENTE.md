@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — FRONT S-meter: porte gerarchiche drive/return isolate, candidato
+
+**Branch:** `engineering/v27-front-smeter-native-parent-port-isolation-20261116`, main baseline `688a5a9a93b7b86840898b9c7345a06afad8ba4e` (PR #293 merged). Foglio figlio `FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` ora espone `METER_DRIVE_CANDIDATE` e `METER_RETURN` tramite hierarchical_label reali J1801/1-2; il master FRONT aggiunge due sheet pin con etichette isolate da AF_GND, DRIVER_GND, LED, bobina e alimentazioni. Due verificatori nativi KiCad9 aggiornati per confermare ERC0 e conservazione prevista 5 fogli/32 ref/22 reti/71 pin; **CI da verificare, nessun merge senza FAST/FULL/Required verdi**. Nessuna sorgente MAIN, FSD OEM, connettore accoppiato, PCB o approvazione sicurezza. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_HIERARCHICAL_PORT_BOUNDARY_20261116.md`. PR #294 su sovratensione mute indipendente e in verifica. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — FRONT mute NC, guasto AF_GND e interferenza audio: gate candidato
 
 **Baseline:** PR #291 MERGED in main SHA `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. CI #43812854126 FAST/FULL/Required **SUCCESS 3/3**, test post-mute `PASS_FRONT_POSTMUTE_75_RX_AC_KCL_CASES_NATIVE_NETS_NONFAB` osservato nel log. **Branch attuale** `engineering/v27-front-nc-mute-coupled-audio-fault-screen-20261116` implementa un nuovo gate nativo `verify_front_mute_nc_coupled_audio_fault_native.py` e l'integrazione in `ci/full_regressions.py`: 60 combinazioni × due stati NC (120 casi), iniezione capacitiva ipotetica su audio MAIN, doppia soluzione AC KCL/impedenza, rigetto AF_GND open. Rshunt a NC integro con Rcontatto ipotetica 1Ω: 991,079Ω; NC aperto con ramo bleed ancora a massa: 100kΩ, +100,900×. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_NC_COUPLED_AUDIO_FAULT_20261116.md`, issue #292. **CI non ancora convalidata sul branch**: non integrare senza FAST/FULL/Required verdi. Nessuna prova hardware, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
