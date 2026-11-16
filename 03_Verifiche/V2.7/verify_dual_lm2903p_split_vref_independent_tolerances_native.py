@@ -26,7 +26,7 @@ def main():
     assert ("U2202","8") in nets["EXTERNAL_5V_UNQUALIFIED"]
     assert ("J2203","1") in nets["EXTERNAL_VREF_2V5_UNQUALIFIED"]
     assert ("J2205","1") in nets["EXTERNAL_VREF_B_2V5_UNQUALIFIED"]
-    assert nets["VIN_SENSE_A"].isdisjoint(nets["VIN_SENSE_B"])
+    assert nets["VIN_SENSE"].isdisjoint(nets["VIN_SENSE_B"])
     # Each physical channel owns eight separate resistor values. Counting
     # independently gives 256^2 possibilities, without a 26M nested loop.
     normal=[]
