@@ -246,6 +246,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_ovp_dual_pmos_backtoback_lab_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Isolated Q804/Q805 back-to-back THT with real Q806 2N3904BU driver:
+    # KiCad9 native ERC and all 25 physical pins/8 nets, idealized 7290
+    # tolerance/fault cases; independent OVP supervisor still absent.
+    print("::group::V2.7 MAIN Q806 THT GATE BJT NATIVE ERC AND FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
