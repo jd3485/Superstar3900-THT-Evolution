@@ -66,11 +66,16 @@ def verify():
         assert '(name "'+item+'")' in sym,item
     for item in ("TH_FRONT", "TH_FRONT_ILLUM_LAB"):
         assert '(name "'+item+'")' in fp,item
-    assert sch.count("(wire (pts ")==8 and "(junction " not in sch
+    assert sch.count("(wire (pts ")==10 and "(junction " not in sch
     assert sch.count('(pin "VOL_WIPER_TO_AMP" passive')==2
     assert sch.count('(pin "AF_GND" passive')==2
     assert sch.count('(pin "COIL_PLUS_LAB" passive')==2
     assert sch.count('(pin "COIL_MINUS_LAB" passive')==2
+    assert sch.count('(pin "METER_DRIVE_CANDIDATE" passive')==1
+    assert sch.count('(pin "METER_RETURN" passive')==1
+    assert sch.count('(label "METER_DRIVE_CANDIDATE"')==1
+    assert sch.count('(label "METER_RETURN"')==1
+    assert '<escape>' not in sch
     assert "NO FAB / NO TX" in sch
     with tempfile.TemporaryDirectory(prefix="tht_front_partial_hierarchy_") as temp:
         d=Path(temp)
@@ -119,6 +124,10 @@ def verify():
     assert len(set().union(*all_nets))==sum(map(len,all_nets))==71
     assert all(len(found[name])==1 for name in joined)
     assert found["COIL_PLUS_LAB"][0].isdisjoint(found["COIL_MINUS_LAB"][0])
+    assert found["METER_DRIVE_CANDIDATE"][0].isdisjoint(found["METER_RETURN"][0])
+    assert found["METER_RETURN"][0].isdisjoint(found["AF_GND"][0])
+    assert found["METER_RETURN"][0].isdisjoint(found["DRIVER_GND"][0])
+    assert found["METER_RETURN"][0].isdisjoint(found["ILLUM_RETURN_LAB"][0])
     assert found["DRIVER_GND"][0].isdisjoint(found["AF_GND"][0])
     assert found["ILLUM_RETURN_LAB"][0].isdisjoint(found["DRIVER_GND"][0])
     print("PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_22NETS_71PINS_4REAL_AUDIO_COIL_JOINS_ERC0_NONFAB",{
@@ -133,6 +142,8 @@ def verify():
         "relay_coil_qualified_for_product":False,
         "MAIN_FRONT_harness_qualified":False,
         "S_meter_passive_candidate_sheet_included":True,
+        "S_meter_two_native_hierarchical_ports_present":True,
+        "S_meter_return_AF_GND_joined":False,
         "S_meter_driver_FSD_coil_qualified":False,
         "hardware_production_PCB_exists":False,
         "NO_FAB_NO_TX":True,
