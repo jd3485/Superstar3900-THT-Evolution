@@ -11,6 +11,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / "04_KiCad/V2.7_DRAFT/FRONT_VOLUME"
 SCH = BASE / "FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
+PARENT = ROOT / "04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 MOD = BASE / "TH_FRONT.pretty/Potentiometer_THT_3Pin_PROVISIONAL.kicad_mod"
 EXPECTED = {"RV1301", "J1301", "J1302"}
 NETS = {"DEMOD_AUDIO", "VOL_WIPER_TO_AMP", "AF_GND"}
@@ -22,7 +23,9 @@ def main():
     assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in sch
     assert all(sch.count(f'(property "Reference" "{ref}"') == 1 for ref in EXPECTED)
     # Standalone schematic now exposes two passive ports to its KiCad9 parent.
-    # Their net connectivity remains the same when this child is opened alone.
+    # KiCad9 ERC must run against the enclosing master: hierarchical labels
+    # are intentionally invalid on the child when interpreted as a root sheet.
+    # Exporting the child netlist below still audits its physical pin connectivity.
     assert sch.count("(hierarchical_label ") == 2
     assert sch.count('(hierarchical_label "VOL_WIPER_TO_AMP" (shape passive)') == 1
     assert sch.count('(hierarchical_label "AF_GND" (shape passive)') == 1
@@ -36,7 +39,7 @@ def main():
         netfile = Path(directory) / "front.net"
         checked = subprocess.run(
             ["kicad-cli", "sch", "erc", "--exit-code-violations",
-             "-o", str(erc), str(SCH)],
+             "-o", str(erc), str(PARENT)],
             cwd=ROOT, capture_output=True, text=True)
         print(checked.stdout, checked.stderr, flush=True)
         if erc.exists():
