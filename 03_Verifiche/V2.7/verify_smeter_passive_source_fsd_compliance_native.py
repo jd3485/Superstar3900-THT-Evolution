@@ -80,7 +80,7 @@ def main():
         if shorts==2 and coil==0 and wiper>0:
             assert curr==float("inf")
         for fsd in FSD_A:
-            required=source_required(fsd,coil,shorts,wiper)
+            required=source_required(fsd,coil,shorts,wiper_fraction=wiper)
             assert ((curr>=fsd) == (v+1e-10>=required)),(v,coil,shorts,wiper,fsd,curr,required)
             count+=1
             if curr==float("inf"):unbounded+=1
