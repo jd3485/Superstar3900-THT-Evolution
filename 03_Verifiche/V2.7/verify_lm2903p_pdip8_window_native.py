@@ -45,6 +45,11 @@ def main():
         require(nets,name,*ends)
         assert nets[name]==ends,(name,sorted(nets[name]))
     assert sum(map(len,nets.values()))==30 and len(nets)==8
+    # Open-collector healthy-high is a bench output indication only;
+    # J2204 and R2207 have no independent load disconnect path.
+    assert ("J2204","1") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
+    assert ("R2207","1") in nets["EXTERNAL_5V_UNQUALIFIED"]
+    assert ("R2207","2") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
     assert ("U2201","8") in nets["EXTERNAL_5V_UNQUALIFIED"]
     assert ("U2201","4") in nets["LAB_RETURN"]
     assert ("U2201","3") in nets["VIN_SENSE"]
