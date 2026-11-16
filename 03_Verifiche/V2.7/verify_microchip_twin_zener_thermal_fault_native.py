@@ -61,6 +61,15 @@ def main():
                   "1N4106-1_SECOND_PARALLEL_250UA_LAB",
                   "NO FAB / NO TX / NO BATTERIA / NO VEICOLO"):
         assert token in s,token
+    # CAD contains a placeholder DIN0309 body for R2102; DO NOT assume
+    # it is a power rating or replace it with DIN0207 in documentation.
+    # Verify the explicit R2102 property in the symbol instance, not
+    # an unrelated resistor/embedded library default footprint.
+    import re
+    r2102=re.search(r'\\(property "Reference" "R2102".*?\\(property "Footprint" "([^"]+)"',
+                    s,flags=re.S)
+    assert r2102 is not None
+    assert r2102.group(1)=="Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal"
     with tempfile.TemporaryDirectory(prefix="microchip_thermal_native_") as tmp:
         nets=exported_nets(SCH,Path(tmp)/"microchip_thermal.net")
     assert len(nets)==8 and set(nets)==set(EXPECTED)
