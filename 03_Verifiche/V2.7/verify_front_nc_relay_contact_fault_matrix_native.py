@@ -2,7 +2,7 @@
 """Relay contact state-space fault screen, NOT physical relay or safe mute proof.
 
 Compare two independently represented SPDT contact connectivity algorithms
-against actual five KiCad9 exported node names (K1901 pins COM/NC/NO).
+against actual six KiCad9 exported nets (including R1902 series path).
 Model 2 commands x 2 coil continuities x 4 mechanical contact conditions x
 2 independent ground continuities x 2 volume-wiper continuities = 64 cases.
 No OEM physical weld/open probability, debounce, minimum dry current, arc or
@@ -52,8 +52,10 @@ def independent_contact_logic(command,coil_ok,fault,gnd_ok,volume_ok):
 def main():
     with tempfile.TemporaryDirectory(prefix="tht_contact_fault_matrix_") as directory:
         nets=exported_nets(SCH,Path(directory)/"mute.net")
-    require(nets,"AMP_INPUT_MUTED",("K1901","1"),("J1902","1"))
-    require(nets,"AF_GND",("K1901","2"),("J1902","2"),("J1901","2"))
+    # R1902/1 is on relay COM; its other pin joins LM386-side R1901/1.
+    require(nets,"RELAY_COM_AUDIO",("K1901","1"),("R1902","1"))
+    require(nets,"AMP_INPUT_MUTED",("R1902","2"),("J1902","1"),("R1901","1"))
+    require(nets,"AF_GND",("K1901","2"),("J1902","2"),("J1901","2"),("R1901","2"))
     require(nets,"VOL_WIPER_TO_AMP",("K1901","3"),("J1901","1"))
     require(nets,"COIL_PLUS_LAB",("K1901","4"),("J1903","1"))
     require(nets,"COIL_MINUS_LAB",("K1901","5"),("J1903","2"))
@@ -77,7 +79,7 @@ def main():
                 assert audio and not ground
                 regular_audio+=1
         checked+=1
-    assert checked==64 and regular_muted==3 and regular_audio==1
+    assert len(nets)==6, sorted(nets)\n    assert checked==64 and regular_muted==3 and regular_audio==1
     assert len(unexpected_mute_bypass)==4
     assert all(fault=="welded_NO" and volume_ok
                for coil_ok,fault,gnd_ok,volume_ok in unexpected_mute_bypass)
@@ -87,8 +89,8 @@ def main():
         "cases":checked,"normal_grounded_mute_cases":regular_muted,
         "normal_audio_enabled_cases":regular_audio,
         "command_mute_bypass_due_welded_NO":len(unexpected_mute_bypass),
-        "single_fault_AF_GND_open_leaves_input_floating":True,
-        "relay_open_contact_leaves_input_floating":True,
+        "single_fault_AF_GND_open_leaves_input_without_ground_bleed":True,
+        "relay_open_contact_leaves_input_with_100k_bleed_if_ground_intact":True,
         "mechanical_NO_weld_bypasses_mute_during_off":True,
         "coil_stuck_energized_not_prevented_by_contact_only":True,
         "mechanical_contact_position_verified_by_OEM":False,
