@@ -78,6 +78,16 @@ def main():
     for name,pins in EXPECTED.items():
         require(nets,name,*pins)
         assert nets[name]==pins,(name,nets[name],pins)
+    # Real KiCad9 netlist must include actual 100k THT bleed across LM386 input.
+    require(contact,"AMP_INPUT_MUTED",("K1901","1"),("J1902","1"),("R1901","1"))
+    require(contact,"AF_GND",("K1901","2"),("J1901","2"),("J1902","2"),("R1901","2"))
+    # Bleed physically shunts the input in BOTH contact states; only an
+    # impedance reduction, NOT a welded-NO / AF_GND-open fail-safe.
+    contact_raw=CONTACT.read_text(encoding="utf-8")
+    assert contact_raw.count('(symbol (lib_id "TH_MUTE:RESISTOR_THT_BLEED")')==1
+    assert contact_raw.count("100k_AMP_INPUT_BLEED_CANDIDATE")==1
+    assert contact_raw.count('Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal')>=2
+    assert 100000.0>0.0
     require(contact,"COIL_PLUS_LAB",("J1903","1"),("K1901","4"))
     require(contact,"COIL_MINUS_LAB",("J1903","2"),("K1901","5"))
     assert nets["COIL_PLUS_LAB"].isdisjoint(nets["COIL_MINUS_LAB"])
