@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #301 MERGED; seconda topologia isolata Q804/Q805 anti-serie in verifica
+
+PR [#301](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/301) integrata su **main `02566b758a3d8b44949a9aaacd7ad807eb6fe1b3`**. Run [#43831897396](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43831897396): FAST/FULL/Required **3/3 SUCCESS** sul finale `d05c80db49a6ceadc32fc9e8f99ec1c94694c5ac`, marker `PASS_NATIVE_KICAD9_Q804_THT_PASSIVE_OFF_LAB_ERC_NETS_NONFAB`, KiCad9 ERC **0 errori/0 warning**, **13 pin in 4 reti** per il banco isolato Q804. Il master MAIN V2.6 resta invariato; NO sicurezza hardware acquisita.
+
+**Branch candidato successivo** `engineering/v27-dual-pmos-backtoback-passive-off-20261116`: nuovo banco KiCad9 **THT reale isolato Q804/Q805** con drain esterni e source comuni per ostacolare il ritorno attraverso body diode quando entrambi i FET sono idealmente OFF; R2101 47k OFF, D2101 12V ideale, **R2102 10k serie driver**; 3 connettori lab. `03_Verifiche/V2.7/verify_ovp_dual_pmos_backtoback_lab_native.py` richiede ERC0, **18 pin/6 nets**, grafo diodi e analisi VGS in fault, registrato nella FULL. Report `03_Verifiche/V2.7/RAPPORTO_Q804_Q805_ANTISERIE_GATE_FAULT_20261116.md`. **CI sul nuovo branch da verificare, NON INTEGRATO**. A VIN48V ipotetico con D2101 OPEN e sink ideale, VGS teorico **−39,58V** oltre limite ±20V; dissipatore TO-220 non isolato collega i due DRAIN. Supervisor, driver, protezioni VIN e hardware NON progettati/qualificati. Issue [#27](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/27) ancora aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #300 MERGED, nuovo banco KiCad9 Q804 OFF passivo
 
 PR #300 docs-only integrata in `main` SHA `dd03fd526e0d79a6e301aaf417da920f23dd2065`, HEAD `ed6bfb5c711365c4bd7853f0b95344ed79cb9c5a`, CI #43825264889 FAST/Required SUCCESS, FULL skipped per `CI_SCOPE full=false` (non 3/3 FULL). Contratto di integrazione secondo supervisore `03_Verifiche/V2.7/CONTRATTO_SUPERVISORE_OVP_SECONDARIO_20261116.md` resta tecnico e privo di circuito qualificato.
