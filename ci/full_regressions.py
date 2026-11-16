@@ -223,6 +223,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_passive_source_loading_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # S-meter FRONT historical 10k pot + 2x100k guards thermal/source
+    # budget, native netlist and exact I^2R conservation under modeled faults.
+    print("::group::V2.7 SMETER 675 NATIVE FAULT POWER CONSERVATION",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_fault_power_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Source impedance at a detector output is UNKNOWN: sweep four illustrative
     # source resistances through real AM455 RC and FRONT/LM386 input loading.
     # Independent four-node complex KCL cross-check across 300 cases.
