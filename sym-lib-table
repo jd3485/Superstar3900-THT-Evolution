@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "LAB_OVP")(type "KiCad")(uri "${KIPRJMOD}/04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_PASSIVE_OFF/LAB_OVP.kicad_sym")(options "")(descr "Isolated Q804 THT unqualified lab symbols"))
+)

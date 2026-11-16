@@ -230,6 +230,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_fault_power_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # V2.7 isolated THT Q804 passive-OFF candidate: real ERC and all pin/net
+    # partitions, not an independently qualified protection mechanism.
+    print("::group::V2.7 MAIN Q804 THT PASSIVE OFF NATIVE ERC NETLIST",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_ovp_secondary_q804_passive_off_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
