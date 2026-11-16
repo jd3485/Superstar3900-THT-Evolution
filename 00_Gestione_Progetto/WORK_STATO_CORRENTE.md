@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #299 MERGED e architettura protezione indipendente
+
+PR #299 integrata in `main` SHA `840430f4d50cffdca21f6c064a5c7e56de6ffdce` (HEAD `3fc92e5c08740a8f949d5d288569cc5c2e5c305d`). CI #43823862585 FAST/FULL/Required **SUCCESS 3/3**; nel log FULL `PASS_NATIVE_KICAD9_V26_OVP_9072_DUAL_OPEN_RAIL_FAULT_CASES_NONFAB`. Netlist nativa MAIN 76 reti, 9.072 casi, **324 scenari** con D806 e U802 TL431 entrambi aperti sopra il limite 36V U801 in ipotesi VIN48V; massimo 47,4105V. Risultato diagnostico, NON protezione certificata né autorizzazione ad alimentare VIN48V.
+
+Nuovo branch `engineering/v27-independent-ovp-supervisor-interface-contract-20261116`: documento di specifica d'interfaccia `03_Verifiche/V2.7/CONTRATTO_SUPERVISORE_OVP_SECONDARIO_20261116.md` per secondo high-side switch THT in serie, supervisore realmente indipendente, gate OFF passivo, test fault Q801/Q804, supply reverse/brownout e criteri KiCad9/netlist/derating. **Solo contratto, nessun Q804 o supervisore secondario fisico disegnato**. Successivo passo: selezione MPN OEM e schema banco isolato KiCad9 con ERC e netlist, senza integrare nel master fino a review. Issue #27 APERTA. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #298 MERGED: 675 bilanci energetici S-meter
 
 PR #298 su main SHA `7894f7597fc79fd0e67fc437f20d9c9483df542e`, HEAD `bbf5480e6a7052864b6cc635be09d1597100c80c`, CI #43821661995 FAST/FULL/Required SUCCESS 3/3; marker FULL `PASS_NATIVE_KICAD9_FRONT_SMETER_675_POWER_CONSERVATION_FAULT_SCREEN_NONFAB`. Guasto ipotetico 20V/Rcoil 1kΩ/doppio corto/cursore100%: 400mW coil e 40mW pista, senza garanzia di rating OEM. NO FAB/TX.
