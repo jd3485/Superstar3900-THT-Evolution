@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+
+## 16 novembre 2026 — PR #286, correzione test ERC figli gerarchici (branch draft)
+
+PR #286 HEAD iniziale `e5d4e15e321d6b9a30978c5935b93cbd5b318ce8`: Actions `43791229651` FAST SUCCESS, FULL/Required FAILURE: `verify_front_volume_native.py` lanciava `kicad-cli sch erc` sul solo child con due hierarchical labels, ottenendo `pin_not_connected` (manca il parent), non un difetto del master dimostrato. Aggiornati i verificatori volume e mute relay per applicare ERC nativo al **master FRONT cinque fogli** e mantenere esportazione/contratto pin-net dei child. Commit di correzione `f21d456eaec0455c40525fa886852984d4bfe1ed`; attendere FAST/FULL/Required su HEAD finale, riesaminare eventuali ulteriori failure e **non fare merge** con gate non verdi. Nessuna modifica ai conduttori elettrici dopo il commit originario; nessuna qualifica di relay, harness o PCB. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
 **Aggiornato:** 16 novembre 2026 (PR #285 MERGED; collegamento reale volume→mute su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
 **Branch autoritativo:** `main`. Ultimo merge tecnico PR #285 SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; checkpoint sul branch della revisione successiva.
 
