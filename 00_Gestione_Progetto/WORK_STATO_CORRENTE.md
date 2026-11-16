@@ -1,5 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #298 MERGED: 675 bilanci energetici S-meter
+
+PR #298 su main SHA `7894f7597fc79fd0e67fc437f20d9c9483df542e`, HEAD `bbf5480e6a7052864b6cc635be09d1597100c80c`, CI #43821661995 FAST/FULL/Required SUCCESS 3/3; marker FULL `PASS_NATIVE_KICAD9_FRONT_SMETER_675_POWER_CONSERVATION_FAULT_SCREEN_NONFAB`. Guasto ipotetico 20V/Rcoil 1kΩ/doppio corto/cursore100%: 400mW coil e 40mW pista, senza garanzia di rating OEM. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — gate candidato V2.6 OVP doppio guasto LM393/TL431
+
+Branch `engineering/v26-ovp-combined-open-fault-rail-native-20261116` su main `7894f7597fc79fd0e67fc437f20d9c9483df542e`: verificatore `03_Verifiche/V2.6/verify_ovp_dual_open_lm393_supply_native.py` registra 9.072 combinazioni di carico/fault (4 stati × 2.268 parametri) con KiCad9 netlist e formula KCL confrontata a bisezione, FULL CI da confermare. Report `03_Verifiche/V2.6/RAPPORTO_OVP_LM393_DUAL_OPEN_FAULT_20261116.md`. D806 e TL431 aperti a VIN48V (VF=0,2V, R1011=779Ω, Icc assunto 0,5mA) danno **47,4105 V** su U801 VCC rispetto al massimo 36V. Nessuna qualifica di fail-closed, non autorizzare alimentazione VIN48V. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #297 MERGED, carico sorgente S-meter
 
 PR #297 su main SHA `41511ccefc060a74f022fa88bf447cbea040a68d`, HEAD `53a1660a007c5b9847069745121d4911a5e755c4`, CI #43820280960 FAST/FULL/Required SUCCESS 3/3, marker log FULL `PASS_NATIVE_KICAD9_SMETER_675_SOURCE_LOADING_INDEPENDENT_KCL_CASES_NONFAB`. 675 condizioni, errore massimo relativo 2,28e-15. 11V ideali, 20kΩ coil, wiper max: Imetro=50µA, Ipot=1,1mA, Isource=1,15mA; a Rout=1kΩ Imetro=45,27µA. Manca driver MAIN/FSD OEM.
