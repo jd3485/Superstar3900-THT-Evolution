@@ -277,6 +277,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_q806_microchip_1n4106_low_current_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Microchip 1N4106-1 twin asymmetric THT Zener synthetic thermal
+    # and R2102 gate resistor stress: native KiCad9 verified 27pin/8net.
+    # OEM characteristics apply ONLY at stated manufacturer test points.
+    print("::group::V2.7 MICROCHIP ZENER 7680 ASYMMETRIC PVT FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_microchip_twin_zener_thermal_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
