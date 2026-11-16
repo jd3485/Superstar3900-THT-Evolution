@@ -7,8 +7,10 @@ a guaranteed fault-safe supervisor or automotive input rating.
 """
 from itertools import product
 from pathlib import Path
-import json,subprocess,tempfile
+import json,subprocess,tempfile,sys
 from math import isclose
+# Shared native KiCad netlist exporter lives in V2.7, not V2.6.
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"V2.7"))
 from verify_interboard_audio_contract_native import exported_nets,require
 
 ROOT=Path(__file__).resolve().parents[2]
