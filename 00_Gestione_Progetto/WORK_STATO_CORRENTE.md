@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #308 MERGED; Q806 C-E SHORT / R2102 OPEN-SHORT THT in test nativo
+
+PR [#308](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/308) **MERGED** su main `de971b34c2d06279d2aef95dd990c0bda5c058b1`; final PR head `ea3abe49e0497d9b92675bf1ad0a2e88a7bde059`, run [#43847987766](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43847987766) **FAST/FULL/Required 3/3 SUCCESS**; native ERC KiCad9 zero errori/warning, 27 pin/8 reti, marker `PASS_NATIVE_KICAD9_THT_PR01_R2102_27PIN_8NET_567_DERATING_NONFAB`. R2102 Vishay PR01000101002JR500 10k±5% 1W P70 e footprint generica DIN0207 sono soltanto **candidati banco isolato**. 567 corner statici, **36** fuori dal derating P70, a 175°C fault teorico 0,242526W > limite 0,1923W; rating OEM senza curva pulse/termica PCB. MAIN V2.6/FRONT invariati.
+
+Nuovo branch `engineering/v27-pr01-driver-fault-ohmic-gates-20261116`: programma **vero controllo pin-net KiCad9** `03_Verifiche/V2.7/verify_r2102_pr01_driver_fault_native.py`, 27 pin/8 reti e **1080 scenari sintetici** includendo Q806 C–E SHORT, R2102 OPEN/SHORT, Zener aperti e gate sink; test aggiunto alla CI FULL. Rapporto `03_Verifiche/V2.7/RAPPORTO_PR01_DRIVER_FAILCLOSED_1080_20261116.md`. **PR/CI nuovi non verificati e NON integrati**. Risultato architetturale da proteggere: clamp e PR01 non impediscono Q806 corto ON senza ENABLE, non dimostrano supervisor indipendente, body diode, PVT o hardware. #27 resta aperta; **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #307 MERGED; R2102 Vishay PR01 1W THT candidata in PR #308 DRAFT
 
 PR [#307](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/307) MERGED su main SHA `4c019fce978ead98ed8a81809cb59bfa7c33d238`; final head `7931cc867e5e3417505ac9cf2f809687278f670e`, run [#43846653127](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43846653127) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_1N4106_TWIN_THERMAL_7680_SYNTHETIC_FAULT_NONFAB`; netlist KiCad9 27 pin/8 reti, 7680 casi matematici (576 di double-open oltre |VGS|20V, nessuno single-open nel modello sintetico). R2102 footprint reale sul banco precedente **DIN0309 L9.0/D3.2/P12.70** verificato in regression; nessun rating OEM deriva dalla footprint.
