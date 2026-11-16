@@ -963,6 +963,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # KiCad9 physical lab: two PMOS gates, two KSP42BU sinks, independent
+    # pullups/Zeners and external enables. Common supply/source still unsafe.
+    print("::group::THT Q804 Q805 INDEPENDENT GATE DRIVER LAB NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_independent_drivers_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
