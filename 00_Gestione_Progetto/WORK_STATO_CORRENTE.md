@@ -1,6 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — PR #286 MERGED, master FRONT audio/AF_GND realmente cablato
+
+**Verifica live:** PR [#286](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/286) MERGED su `main` con SHA `5fb398a67f13a1523f938afef2bae9f093077a78`. Il commit finale della PR `448b382e5abe02e46b1950b4fb9a113a5130e0f5` ha superato [CI #43808193916](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43808193916): FAST/FULL/Required **SUCCESS 3/3**, `PASS_REQUIRED_CI_GATE (full_required=true)`, nessun Traceback o error log, KiCad9 ERC0 nel master e nei verificatori; `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_24NETS_71PINS_2REAL_AUDIO_GND_JOINS_ERC0_NONFAB`. Corretto anche l'ERC dei child gerarchici in contesto parent (pin gerarchici non validi come root standalone), preservando i controlli netlist dei singoli fogli.
+
+**Prossimo lavoro tecnico:** interfaccia reale FRONT/MAIN e mute/driver da integrare progressivamente su master, senza assumere relay fail-safe né OEM validato; continuano a mancare qualifica alimentazione, connettori, relay e layout prodotto. Questa integrazione non autorizza prototipazione, DRC PCB o test RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 16 novembre 2026 — PR #286, correzione test ERC figli gerarchici (branch draft)
 
 PR #286 HEAD iniziale `e5d4e15e321d6b9a30978c5935b93cbd5b318ce8`: Actions `43791229651` FAST SUCCESS, FULL/Required FAILURE: `verify_front_volume_native.py` lanciava `kicad-cli sch erc` sul solo child con due hierarchical labels, ottenendo `pin_not_connected` (manca il parent), non un difetto del master dimostrato. Aggiornati i verificatori volume e mute relay per applicare ERC nativo al **master FRONT cinque fogli** e mantenere esportazione/contratto pin-net dei child. Commit di correzione `f21d456eaec0455c40525fa886852984d4bfe1ed`; attendere FAST/FULL/Required su HEAD finale, riesaminare eventuali ulteriori failure e **non fare merge** con gate non verdi. Nessuna modifica ai conduttori elettrici dopo il commit originario; nessuna qualifica di relay, harness o PCB. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
