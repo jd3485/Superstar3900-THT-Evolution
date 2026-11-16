@@ -16,12 +16,16 @@ Con U2201A ingresso '+' su VIN_SENSE e '−' su UVLO_REF, la sua uscita idealmen
 | --- | --- |
 | 5V sano, ref sano, VIN 13,8V | Consenso HIGH nominale per tutti i corner |
 | VIN 0, 8, 16, 48V, senza difetti | Uscita LOW nominale, ma VIN 48V non autorizzato sul circuito reale |
-| R2202 inferiore aperto | Il pin VIN_SENSE può arrivare a **VIN raw**; a 8/13,8/16/48 V supera persino la rail 5V. Nessun clamp, non si può fare affidamento sull'uscita |
+| R2202 inferiore aperto | Il pin VIN_SENSE può arrivare a **VIN raw**; a 8/13,8/16/48 V supera la rail 5V e il campo common-mode operativo con 5V (0..3V). **Solo 48V supera inoltre il massimo assoluto TI di 36V sul pin**; 8/13,8/16V sopra VCC non implicano automaticamente danno permanente, ma la risposta non è garantita fuori common-mode. Nessun clamp, non si può fare affidamento sull'uscita |
 | R2202 corto | Il pin sense idealmente è 0V, uscita LOW finché supply/ref funzionano; corrente/elettronica non qualificate |
 | Riferimento 2,5V perso | Con VIN>0, modello LOW; a VIN=0 i comparatori sono entrambi a zero, stato non qualificabile senza offset e startup |
 | Supply 5V persa | **Pullup R2207 senza energia**: il nodo OC non costituisce un consenso digitale HIGH affidabile; ingresso del downstream non noto. Una catena separata deve garantire OFF |
 
 Il modello non simula reale I/V del comparatore, input common-mode durante startup, thermal, isteresi, surge, guasti Q806, o circuito di disconnessione separato. Un output open collector può essere lasciato fluttuante; il test NON certifica alcun hardware safe state. Le tensioni VIN 48 V sono solamente scenari teorici di fault.
+
+## Fonte originale dei limiti
+
+[TI LM2903 family, SLCS005AH (rev. Apr 2025), §5.1–5.2](https://www.ti.com/lit/ds/symlink/lm2903.pdf): per LM2903P **non-B** input abs −0,3…+36 V, supply recommended 2–30 V (supply absolute 36 V) e common-mode raccomandato 0…VCC−2 V, ossia 0…3 V se VCC=5 V. Oltre common-mode non equivale automaticamente oltre rating assoluto: output indefinito/non garantito. Valutare la reale protezione in ogni fault compreso VCC assente, dove il range raccomandato non si applica.
 
 ## Priorità hardware obbligatorie
 
