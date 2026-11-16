@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #313 MERGED, nuovo screening 92.160 doppio guasto LM2903P THT
+
+PR [#313](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/313) **MERGED** su main `cac616c522d82701b9388675ae3d6f8c323571dc`, final head `2119dac6a5bcb9fdd5214ca4b34b4b7292213a0c`, run [#43857742450](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43857742450) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 ERC zero errori e warning, 34 pin/9 reti, 34.560 corner di guasto singolo su due TOP 100k serie e due BOTTOM 10k parallelo: **3.072 falsi consensi GOOD fuori finestra** (modello DC), massimo input sotto guasto singolo 2,329649V con source48V ipotetico e 5V esterno non qualificato. Nessun circuito fail-closed o PCB, MAIN V2.6/FRONT invariati.
+
+Nuovo branch `engineering/v27-lm2903p-redundant-sense-double-fault-screen-20261116`: test native `03_Verifiche/V2.7/verify_lm2903p_redundant_double_fault_native.py` in FULL, vera netlist 34pin/9net, **92.160 scenari** doppio OPEN/SHORT degli elementi di sensing. Due failure mode a source ipotetica48V — **R2202+R2209 entrambi OPEN** o **R2208+R2201 entrambi SHORT** — sollevano teoricamente il pin SENSE a 48V oltre limite assoluto OEM TI LM2903P di 36V, 512 corner. Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DOPPIO_GUASTO_92160_20261116.md`. **NUOVA CI e merge NON verificati; restare DRAFT**, senza energizzazione, reali TVS/reference/supervisor/secondo switch. #27 aperta. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #312 MERGED; sensing ridondante LM2903P nuovo banco KiCad9 THT
 
 PR [#312](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/312) MERGED main SHA `9e8a8bf81eafd3cd6e67efc27bcb1189ce22e202`; final head `c7286ace75fe72abee9927e7c059516fddcbdd48`, run [#43856438604](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43856438604): FAST/FULL/Required **3/3 SUCCESS**; marker `PASS_NATIVE_KICAD9_LM2903P_OC_30PIN_8NET_3200_FAULT_TRUTH_NONFAB`, schema KiCad9 30 pin/8 reti e 3200 scenari OC, sensing OPEN/SHORT e perdita VCC/ref. TI LM2903P non-B input max **36V assoluti**, common-mode 5V supply **0..3V funzionale**: R2202 OPEN e ingresso48V oltre limite assoluto, altre tensioni sopra 3V comunque non funzionali garantite. `#27` sicurezza aperta.
