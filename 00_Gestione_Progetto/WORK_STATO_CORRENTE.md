@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #274 MERGED: D1911 RL 216 casi; resistori THT fisici su branch successivo). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #274 SHA `ed2c0e219ac79ea15c965c7467536b688fed32c0`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #275 MERGED: quattro resistori THT; BC33725BU OEM pinout sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #275 SHA `27fa5f51dec26c77319343b1ee703c027c225b1a`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #275 MERGED; Q1911/Q1912 BC33725BU OEM su nuovo branch
+
+**Verificato:** PR #275 MERGED, main SHA `27fa5f51dec26c77319343b1ee703c027c225b1a`. [Actions #43776189585](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43776189585): FAST/FULL/Required **SUCCESS 3/3**. FULL include `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_FRONT_D1911_216_RL_ELECTRICAL_DECAY_ILLUSTRATIVE_NONFAB`, ERC `Found 0 violations`, nessun errore/Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Quattro footprint THT DIN0207 assegnati nello schema FRONT, nessun PCB modificato.
+
+**Branch in corso** `engineering/v27-front-bc33725bu-to92-pinmap-20261116`: in KiCad Q1911/Q1912 diventano candidati onsemi `BC33725BU`, footprint `Package_TO_SOT_THT:TO-92_Inline`, simbolo e libreria rimappati secondo datasheet OEM **C1, B2, E3**, test di netlist aggiornato ai nuovi pin. L'OEM VCEsat è garantito a 500mA/50mA, **non** per bobina scelta, corrente di base attuale, 0,15/0,30V illustrativi; nessuna qualifica driver, relay o safety. CI del branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
 
 ## 16 novembre 2026 — PR #274 MERGED; footprint fisici R1911–R1914 su branch successivo
 

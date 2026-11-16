@@ -36,9 +36,9 @@ def main():
         drv=exported_nets(DRIVER,d/"driver.net")
         relay=exported_nets(CONTACT,d/"contact.net")
     require(drv,"COIL_PLUS_LAB",("J1914","1"),("D1911","1"))
-    require(drv,"COIL_MINUS_LAB",("J1914","2"),("D1911","2"),("Q1911","2"))
-    require(drv,"DRIVE1_BASE",("Q1911","1"),("R1911","2"))
-    require(drv,"DRIVE2_BASE",("Q1912","1"),("R1912","2"))
+    require(drv,"COIL_MINUS_LAB",("J1914","2"),("D1911","2"),("Q1911","1"))
+    require(drv,"DRIVE1_BASE",("Q1911","2"),("R1911","2"))
+    require(drv,"DRIVE2_BASE",("Q1912","2"),("R1912","2"))
     require(relay,"COIL_PLUS_LAB",("K1901","4"),("J1903","1"))
     require(relay,"COIL_MINUS_LAB",("K1901","5"),("J1903","2"))
     total=0; current_fail=0; pickup_not_guaranteed=0; release_unqualified=0
