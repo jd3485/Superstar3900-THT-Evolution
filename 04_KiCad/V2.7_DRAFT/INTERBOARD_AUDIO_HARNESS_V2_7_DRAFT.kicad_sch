@@ -12,7 +12,7 @@
 )
 (symbol (lib_id "TH_FRONT:AUDIO_2PIN") (at 76.2 100.33 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "f2402026-1115-4000-8000-000000000002")
 (property "Reference" "J2401" (at 76.2 87.63 0) (effects (font (size 1 1))))
-(property "Value" "FRONT_J1302_CABLE_END_CANDIDATE" (at 76.2 113.03 0) (effects (font (size 1 1))))
+(property "Value" "FRONT_J1902_POST_MUTE_CABLE_END_CANDIDATE" (at 76.2 113.03 0) (effects (font (size 1 1))))
 (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (at 76.2 100.33 0) (effects (font (size 1 1)) (hide yes)))
 (pin "1" (uuid "f2402026-1115-4000-8000-000000000003"))
 (pin "2" (uuid "f2402026-1115-4000-8000-000000000004"))
@@ -30,7 +30,7 @@
 (wire (pts (xy 63.5 102.87) (xy 165.1 102.87)) (stroke (width 0) (type default)) (uuid "f2402026-1115-4000-8000-000000000010"))
 (label "AF_RETURN_LINK" (at 129.54 102.87 0) (effects (font (size 1 1))) (uuid "f2402026-1115-4000-8000-000000000011"))
 
-(text "2-CONDUCTOR MAIN-FRONT RX AUDIO LINK ELECTRICAL PIN MAP ONLY. J2401 represents FRONT J1302; J2402 represents MAIN J1202. 1: WIPER to AUDIO_IN; 2: AF_GND to MAIN GND. NO POWER OR RF/TX. Both existing PCB headers MALE: MATING CABLE, POLARIZATION, SHIELD, ESD, EMI AND MECHANICS UNQUALIFIED. NO FAB / NO TX." (at 129.54 152.4 0) (effects (font (size 1 1))) (uuid "f2402026-1115-4000-8000-000000000012"))
+(text "2-CONDUCTOR MAIN-FRONT RX AUDIO LINK ELECTRICAL PIN MAP ONLY. J2401 represents FRONT POST-MUTE J1902; J2402 represents MAIN J1202. 1: AMP_INPUT_MUTED to AUDIO_IN; 2: AF_GND to MAIN GND. Direct FRONT J1302 to MAIN J1202 BYPASSES MUTE and is FORBIDDEN. NO POWER OR RF/TX. Both existing PCB headers MALE: MATING CABLE, POLARIZATION, SHIELD, ESD, EMI AND MECHANICS UNQUALIFIED. NO FAB / NO TX." (at 129.54 152.4 0) (effects (font (size 1 1))) (uuid "f2402026-1115-4000-8000-000000000012"))
 (sheet_instances (path "/" (page "1")))
 (embedded_fonts no)
 )
