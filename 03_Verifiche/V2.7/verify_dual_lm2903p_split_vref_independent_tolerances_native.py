@@ -66,6 +66,37 @@ def main():
     assert ("R2207","2") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
     assert ("J2204","1") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
     # The biased OC output is not a series load disconnect.
+    # Bind the ideal DC constants to the actual 16 resistor Value fields
+    # and through-hole footprints in the native KiCad9 bench. Mere pin/net
+    # continuity would not catch a later accidental 116k <-> 185k swap.
+    source=SCH.read_text(encoding="utf-8")
+    expected_values={
+        "R2208":("100k","SENSE"),"R2201":("100k","SENSE"),
+        "R2202":("10k","SENSE"),"R2209":("10k","SENSE"),
+        "R2203":("116k","OVP"),"R2204":("20k","OVP"),
+        "R2205":("185k","UVLO"),"R2206":("20k","UVLO"),
+        "R2210":("100k","SENSE"),"R2211":("100k","SENSE"),
+        "R2212":("10k","SENSE"),"R2213":("10k","SENSE"),
+        "R2214":("116k","OVP"),"R2215":("20k","OVP"),
+        "R2216":("185k","UVLO"),"R2217":("20k","UVLO"),
+    }
+    assert set(expected_values)==set(channel_a)|set(channel_b)
+    import re
+    for ref,(value,function) in expected_values.items():
+        pattern=(r'\\(property "Reference" "'+ref+
+                 r'"[^\\n]*\\n\\(property "Value" "([^"]+)"[^\\n]*\\n'
+                 r'\\(property "Footprint" "([^"]+)"')
+        matches=re.findall(pattern,source)
+        assert len(matches)==1,(ref,matches)
+        declared,footprint=matches[0]
+        assert declared.startswith(value+"_"),(ref,declared,value)
+        assert function in declared,(ref,declared,function)
+        assert footprint.startswith("Resistor_THT:"),(ref,footprint)
+    assert source.count('(property "Reference" "R22')==17
+    # The 17th resistor is the 10k external-5V OC pull-up, NOT one
+    # of the independent 16 sensing/threshold tolerance parameters.
+    assert '(property "Reference" "R2207"' in source
+    assert '(property "Value" "10k_OC_PULLUP_EXTERNAL_5V"' in source
     # Each physical channel owns eight separate resistor values. Counting
     # independently gives 256^2 possibilities, without a 26M nested loop.
     normal=[]
