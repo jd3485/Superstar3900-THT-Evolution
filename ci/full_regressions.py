@@ -262,6 +262,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_q806_gate_stress_kcl_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Isolated Q806 dual parallel Zener clamp: true KiCad9 ERC plus
+    # 27 pin / 8 net topology, 1944 synthetic single/double open faults.
+    # Does not qualify common-mode, safety or component sharing.
+    print("::group::V2.7 Q806 THT DUAL ZENER 1944 MODEL CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_q806_dual_zener_clamp_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.

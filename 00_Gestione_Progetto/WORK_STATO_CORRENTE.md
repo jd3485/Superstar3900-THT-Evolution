@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #304 MERGED, doppio clamp D2101/D2102 THT in banco KiCad9 isolato
+
+PR [#304](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/304) MERGED su main SHA `bc490ba7768e57b4564a263ee780575140c4b4cf`. Run [#43839174161](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43839174161) sul final SHA `a5daa029290055b2b3601b6bc2daf67ddbf78aa2`: FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_Q806_GATE_810_KCL_ZENER_STRESS_CASES_NONFAB` (810 casi KCL, error massimo circa 1,8e-14 A). Modelli non OEM: picchi stimati R2102 0,1441W, D2101 0,0445W, guasto D2101 OPEN può eccedere |VGS|20V e Q806 C–E SHORT bypassa enable; nessuna qualifica hardware.
+
+Nuovo ramo candidato `engineering/v27-dual-clamp-q806-twin-zener-lab-20261116`: **vero nuovo schematico THT isolato** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DUAL_ZENER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DUAL_ZENER_LAB_V2_7_DRAFT.kicad_sch` con **D2102 1N4742A candidato DO-41 in parallelo a D2101** con catodi a source, anodi a gate; KSP42BU Q806 invariato. Verificatore nativo `03_Verifiche/V2.7/verify_q806_dual_zener_clamp_native.py` registra in FULL ERC0 e **27 pin/8 reti**, modello sintetico **1.944** scenari sani/singolo OPEN/doppio OPEN. Report `03_Verifiche/V2.7/RAPPORTO_Q806_DOPPIO_CLAMP_ZENER_20261116.md`. **Nuova PR/CI ancora non verificate, NON integrato**. Doppio OPEN e guasti comuni/sink SHORT restano pericolosi; nessun modello vendor né supervisore secondario indipendente. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #303 MERGED; gate di stress Q806 810 casi KCL indipendente
 
 PR [#303](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/303) MERGED su main `57721c973362ce2e77cf8e53912fbab092998247`. Run [#43837648283](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43837648283) sul final head `74b7c5e1f3d227a610507b94fb9f5558b5e2d81a`: FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC **0 errori e 0 warning**, 25 pin/8 reti e marker `PASS_NATIVE_KICAD9_THT_Q806_KSP42BU_25PINS_8NETS_7290_MODEL_CASES_NONFAB`. Nuovo Q806 KSP42BU 300V THT è un **candidato di laboratorio isolato** e NON un supervisore funzionale integrato: MAIN V2.6 e FRONT invariati; 1.539 combinazioni modello D2101 OPEN superano limite |VGS|20 V e non autorizzano 48 V.
