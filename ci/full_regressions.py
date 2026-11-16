@@ -216,6 +216,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_passive_source_fsd_compliance_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Historical FRONT S-meter loads its MAIN source through both the full
+    # pot track and the loaded wiper / 2x100k meter branch. No MAIN driver.
+    print("::group::V2.7 SMETER 675 NATIVE SOURCE LOAD INDEPENDENT KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_passive_source_loading_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Source impedance at a detector output is UNKNOWN: sweep four illustrative
     # source resistances through real AM455 RC and FRONT/LM386 input loading.
     # Independent four-node complex KCL cross-check across 300 cases.
