@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — doppio gate PMOS THT fisicamente separato, candidato isolato in PR
+
+Branch `engineering/v27-independent-q804-q805-gates-native-lab-20261116`: realizzato un **nuovo KiCad9 nativo** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES_LAB_V2_7_DRAFT.kicad_sch`, Q804/Q805 anti-serie con gate A/B separati, Q806/Q807 KSP42BU e R2101/R2110 pullup distinti, R2102/R2111 sink separati, J2103/J2104 ENABLE separati, un clamp THT D2101/D2102 per gate. Previsti **18 componenti/40 pin/12 reti**, validazione ERC/netlist KiCad9 e 16 combinazioni Boolean fault tramite `03_Verifiche/V2.7/verify_dual_pmos_independent_drivers_native.py` registrato in FULL. **Nuova PR/CI da verificare, non ancora su main.** Report `03_Verifiche/V2.7/RAPPORTO_PMOS_DUE_GATE_DUE_DRIVER_THT_40PIN_12NET_20261116.md`. Due enable/supply esterni, source/return comuni, Zener singolo per gate e rischio VGS/DS fault: **NON fail-OFF qualificato**. PR #325 MERGED su main b74253c4bfb57e8cdb7b80ef8cc8f7bbc5bddba0 con CI #43902519289 3/3 SUCCESS; #27 APERTA. MAIN V2.6 e FRONT senza PCB, **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
 ## 16 novembre 2026 — PR #323 MERGED; guasto common-OC LM2903P in nuova regressione
 
 PR [#323](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/323) **MERGED** main `c4514bd107043ff6c6d916c00d5e55506e0ff3ab`, final head `120a2b9691b22cbda340ebafdc6c79c53e961d63`, run [#43898059608](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43898059608) FAST/FULL/Required **3/3 SUCCESS**, regressione dei 16 valori e footprint THT; rimane banco isolato senza supply o reference OEM e senza fail-OFF fisico.
