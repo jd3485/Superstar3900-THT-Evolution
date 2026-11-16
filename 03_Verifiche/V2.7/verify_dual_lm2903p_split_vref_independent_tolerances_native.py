@@ -83,9 +83,9 @@ def main():
     assert set(expected_values)==set(channel_a)|set(channel_b)
     import re
     for ref,(value,function) in expected_values.items():
-        pattern=(r'\\(property "Reference" "'+ref+
-                 r'"[^\\n]*\\n\\(property "Value" "([^"]+)"[^\\n]*\\n'
-                 r'\\(property "Footprint" "([^"]+)"')
+        pattern=(r'\(property "Reference" "'+ref+
+                 r'"[^\n]*\n\(property "Value" "([^"]+)"[^\n]*\n'
+                 r'\(property "Footprint" "([^"]+)"')
         matches=re.findall(pattern,source)
         assert len(matches)==1,(ref,matches)
         declared,footprint=matches[0]
