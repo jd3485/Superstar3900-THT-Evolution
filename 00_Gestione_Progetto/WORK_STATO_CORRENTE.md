@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #303 MERGED; gate di stress Q806 810 casi KCL indipendente
+
+PR [#303](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/303) MERGED su main `57721c973362ce2e77cf8e53912fbab092998247`. Run [#43837648283](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43837648283) sul final head `74b7c5e1f3d227a610507b94fb9f5558b5e2d81a`: FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC **0 errori e 0 warning**, 25 pin/8 reti e marker `PASS_NATIVE_KICAD9_THT_Q806_KSP42BU_25PINS_8NETS_7290_MODEL_CASES_NONFAB`. Nuovo Q806 KSP42BU 300V THT è un **candidato di laboratorio isolato** e NON un supervisore funzionale integrato: MAIN V2.6 e FRONT invariati; 1.539 combinazioni modello D2101 OPEN superano limite |VGS|20 V e non autorizzano 48 V.
+
+Nuovo branch `engineering/v27-q806-native-gate-stress-envelope-20261116`: test tecnico `03_Verifiche/V2.7/verify_q806_gate_stress_kcl_native.py` registrato in FULL e rapporto `03_Verifiche/V2.7/RAPPORTO_Q806_GATE_810_KCL_STRESS_20261116.md`. Controlli netlist KiCad9 vera Q804/Q805/Q806, 810 scenari Zener sintetico con **due solutori KCL indipendenti**, stress R2102/D2101, |VGS| D2101 OPEN, C–E Q806 SHORT e gate leakage ipotetico. **CI su nuovo branch ancora DA VERIFICARE; NON INTEGRATO**. Nessun modello vendor/hardware, PCB o qualificazione OEM; #27 sicurezza aperta, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #302 MERGED; Q806 KSP42BU 300V THT in PR #303 DRAFT
 
 PR [#302](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/302) MERGED su main SHA `1304f3651e06b5fc41e98c5a7b5546f66e5dbf79`; run [#43834085840](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43834085840) su head `261eca3bed9c332e7b1c52dfb015eeddbaa3f9be` FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_THT_DUAL_PMOS_BACKTOBACK_18PINS_6NETS_IDEAL_SCREEN_NONFAB`; ERC zero errori/warning, 18 pin/6 reti. Banco isolato, non MAIN.

@@ -254,6 +254,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Q806 KSP42BU candidate real KiCad9 gate/source/collector nets:
+    # 810-corner independent DC KCL of synthetic Zener dynamic R and
+    # D2101-open / Q806-short fault screen (NOT vendor model).
+    print("::group::V2.7 Q806 GATE 810 KCL ZENER AND DRIVER FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_q806_gate_stress_kcl_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
