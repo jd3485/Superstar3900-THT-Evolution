@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #277 MERGED; correzione B-E reale Q1911 sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #277 SHA `38cb061290075b6fd5f3defef5a9428617cc3e17`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #278 MERGED; footprint THT U2101/C2101 MCP100 sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #278 SHA `3f3224fff25adf678a2a87abadfd762715a0863f`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #278 MERGED; impronte fisiche MCP100 sul nuovo branch
+
+**Verificato GitHub:** PR #278 MERGED su main SHA `3f3224fff25adf678a2a87abadfd762715a0863f`, [Actions #43779829333](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43779829333): FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`, KiCad9 `Found 0 violations`, nessun Traceback/errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Modifica circuitale KiCad R1913/2 su SERIES_MID come resistenza base-emettitore alta Q1911; nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-mcp100-d-bond-to92-c100n-footprints-20261116`: in schema KiCad standalone supervisore MCP100-450DI/TO candidati `Package_TO_SOT_THT:TO-92_Inline` (U2101, OEM bondout D RESET_N1/VDD2/VSS3) e `Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm` (C2101 100 nF). Test KiCad9 aggiornato con asserzioni precise sui footprint/pin. Nessun MPN finale, package/dimensioni e accoppiamento al driver ancora da qualificare; PCB FRONT invariata. CI branch da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #277 MERGED; R1913 verso emettitore su nuovo branch
 
