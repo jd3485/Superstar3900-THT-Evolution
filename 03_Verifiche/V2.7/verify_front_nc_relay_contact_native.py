@@ -35,9 +35,12 @@ def main():
     assert "NC=GND (NO POWER)" in library
     assert raw.count('(symbol (lib_id "TH_MUTE:RELAY_SPDT_NC_MUTE_THT")')==1
     assert raw.count('(symbol (lib_id "TH_MUTE:LAB_2PIN")')==3
-    assert raw.count('(pin passive line ')==7
+    assert raw.count('(pin passive line ')==9
+    assert '(symbol "RESISTOR_THT_BLEED"' in library
+    assert raw.count('(symbol (lib_id "TH_MUTE:RESISTOR_THT_BLEED")')==1
+    assert raw.count("100k_AMP_INPUT_BLEED_CANDIDATE")==1
     assert all(f'(property "Reference" "{ref}"' in raw
-               for ref in ("K1901","J1901","J1902","J1903"))
+               for ref in ("K1901","J1901","J1902","J1903","R1901"))
     assert "NC=GND (NO POWER)" in raw and "UNQUALIFIED" in raw
     assert '(property "Footprint" ""' in raw
     assert '(attr through_hole)' not in raw # abstract symbol, no physical package assigned
@@ -60,8 +63,8 @@ def main():
         front=exported_nets(FRONT,d/"front.net")
         audio=exported_nets(AUDIO,d/"audio.net")
     expected={
-        "AMP_INPUT_MUTED":{("K1901","1"),("J1902","1")},
-        "AF_GND":{("K1901","2"),("J1901","2"),("J1902","2")},
+        "AMP_INPUT_MUTED":{("K1901","1"),("J1902","1"),("R1901","1")},
+        "AF_GND":{("K1901","2"),("J1901","2"),("J1902","2"),("R1901","2")},
         "VOL_WIPER_TO_AMP":{("K1901","3"),("J1901","1")},
         "COIL_PLUS_LAB":{("K1901","4"),("J1903","1")},
         "COIL_MINUS_LAB":{("K1901","5"),("J1903","2")},
@@ -74,6 +77,7 @@ def main():
     require(front,"AF_GND",("RV1301","3"),("J1302","2"))
     require(audio,"AUDIO_IN",("J1202","1"),("C1201","1"))
     require(audio,"GND",("J1202","2"),("U1201","4"))
+    assert "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" in raw
     assert not (relay["COIL_PLUS_LAB"] & relay["AF_GND"])
     assert not (relay["COIL_MINUS_LAB"] & relay["AF_GND"])
     assert not (relay["AMP_INPUT_MUTED"] & relay["VOL_WIPER_TO_AMP"])
