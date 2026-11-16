@@ -1,0 +1,2 @@
+(sym_lib_table
+(lib (name "LAB_WINDOW")(type "KiCad")(uri "${KIPRJMOD}/LAB_WINDOW.kicad_sym")(options "")(descr "THT separated dual LM2903P VREF external bench sources, NOT safe")))

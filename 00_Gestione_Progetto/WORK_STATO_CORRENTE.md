@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #316 MERGED; VREF A/B separati fisicamente in banco THT KiCad9
+
+PR [#316](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/316) **MERGED** su main `c2dfc8db4279e3df1b3345aea0a3566e4586817e`; final head `f45e1c1b88251c50daac48adc17ee1266ff8443e`, run [#43862397171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43862397171) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_COMMON_VREF_58PIN_13NET_16896_NONFAB`, 58 pin/13 reti, 16.896 corner DC condivisi su U2201/U2202, **1.028** false-GOOD a reference comune ipoteticamente 1,25/5V; blocco fail-closed di issue #27 non risolto.
+
+Nuovo branch `engineering/v27-dual-lm2903p-separate-external-vref-pins-20261116`: reale variante KiCad9 **ISOLATA** `04_KiCad/V2.7_DRAFT/MAIN_DUAL_LM2903P_SPLIT_EXTERNAL_VREF/MAIN_DUAL_LM2903P_SPLIT_EXTERNAL_VREF_LAB_V2_7_DRAFT.kicad_sch`, separa fisicamente R2214/R2216 da R2203/R2205 su nuova net `EXTERNAL_VREF_B_2V5_UNQUALIFIED` e **nuovo header THT J2205**, lasciando il riferimento A sul connettore J2203. Test `03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_native.py` in FULL: native ERC/netlist **60 pin/14 reti, 24 componenti previsti**, **33.792** corner sintetici con 1 VREF guasta e l'altra ideale: risultato atteso 0 false-GOOD per VIN<9/>16V. Nuovo rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_SPLIT_VREF_33792_20261116.md`; **PR/CI DA VERIFICARE**, non integrato MAIN V2.6/FRONT. Entrambe le VREF/rail 5V sono ingressi esterni NON GENERATI/QUALIFICATI, GND/OC comuni; nessun gate hardware indipendente contro Q806 SHORT; NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #315 MERGED; fault VREF comune doppio LM2903P THT
 
 PR [#315](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/315) **MERGED** main SHA `55141efe3afe5f554faf0eb740090297e4a86b8c`; final head `7132ae4abb9e035aab015a71f5f70cebd958972f`, run [#43861130262](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43861130262) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 **ERC 0 errori / 0 warning**, marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_THT_58PIN_13NET_69120_CORNERS_NONFAB`, 58 pin THT/13 reti, **69.120 corner** di un resistore sensing guasto in solo uno dei canali A/B; zero falsi HIGH fuori VIN9–16V nel modello quando l'altro canale è sano. 5V esterni, 2,5V REF comune, RAW/RETURN/uscita OC condivisi: **nessun fail-closed, niente supervisore o secondo switch indipendenti**; MAIN V2.6 e FRONT invariati.
