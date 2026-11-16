@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — nuovo gate sui due PMOS anti-serie: Q806 C–E SHORT
+
+[PR #323](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/323) **MERGED** su main `c4514bd107043ff6c6d916c00d5e55506e0ff3ab`, final SHA `120a2b9691b22cbda340ebafdc6c79c53e961d63`, run [#43898059608](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43898059608) FAST/FULL/Required **3/3 SUCCESS**; validati pin↔net/valori di 16 resistori THT del banco split LM2903P. [PR #324](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/324) draft, verifica comune open collector in corso, ancora non integrata al momento di questa revisione.
+
+Branch `engineering/v27-dual-pmos-single-gate-common-fault-20261116`: script KiCad9 `03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py` in FULL, 27 pin/8 reti del banco reale Q804/Q805/Q806 con clamp Microchip 1N4106-1; dimostra per topologia il **gate unico** dei PMOS anti-serie, con **36/216** casi sintetici ENABLE0/Q806 C–E SHORT/Vsource≥13,8V che polarizzano negativamente **entrambi** i PMOS. Rapporto `03_Verifiche/V2.7/RAPPORTO_PMOS_ANTI_SERIE_GATE_COMUNE_Q806_SHORT_216_20261116.md`. Nuova PR/CI da verificare; non è un progetto hardware fail-OFF. #27 aperta, nessuna PCB, **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
 ## 16 novembre 2026 — PR #321 MERGED; controllo pin-net e valori reali 16R in nuova revisione
 
 PR [#321](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/321) MERGED su main `3562ad8c455b499de6f734651c40d8c08207f593`, final head `2cdff864fe53d9ce7f36566d30593b9a0e5d973d`, run [#43896260492](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43896260492) FAST/FULL/Required 3/3 SUCCESS. Verificato pin↔net dei 16 resistori THT dei due canali LM2903P, nessuna PCB integrata.
