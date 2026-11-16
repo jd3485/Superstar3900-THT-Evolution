@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — candidato gate termico guasto esterno J1902 post-mute
+
+**Branch indipendente:** `engineering/v27-front-mute-input-overvoltage-resistor-screen-20261116` da main PR #291 integrata `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. Nuovo test `03_Verifiche/V2.7/verify_front_mute_j1902_overvoltage_resistor_screen_native.py`, in suite FULL, verifica topologia KiCad9 R1902 1k e R1901 100k in parallelo con K1901 NC su AF_GND e valuta sovratensioni esterne forzate a J1902/1. A -5% R, 20 V forzati danno **0,421 W R1902**; con limite 0,25 W solo ipotetico, soglia 15,41 V; nessuna qualifica. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_J1902_OVER_VOLTAGE_20261116.md`. Issue #292 e PR #293 su mute NC separate. **Branch NON ancora validato in CI**; nessuna autorizzazione FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #290 MERGED: audio interboard post-mute
 
 PR #290 integrata in main SHA `dfcc0be3e5c50e27e5f44eaaae2f492a606fc37d`, HEAD PR `88aaa5bce003c012197b24f40e012e6c70195fcd`, CI #43812063277 FAST/FULL/Required SUCCESS 3/3; schema interboard corretto J1902 post-mute → J1202 MAIN, escludendo bypass pre-mute J1302. Cablaggio meccanico e relè OEM ancora non qualificati. NO FAB / NO TX.
