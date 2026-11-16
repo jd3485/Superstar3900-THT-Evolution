@@ -1,13 +1,5 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 16 novembre 2026 — nuovo gate sui due PMOS anti-serie: Q806 C–E SHORT
-
-[PR #323](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/323) **MERGED** su main `c4514bd107043ff6c6d916c00d5e55506e0ff3ab`, final SHA `120a2b9691b22cbda340ebafdc6c79c53e961d63`, run [#43898059608](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43898059608) FAST/FULL/Required **3/3 SUCCESS**; validati pin↔net/valori di 16 resistori THT del banco split LM2903P. [PR #324](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/324) draft, verifica comune open collector in corso, ancora non integrata al momento di questa revisione.
-
-Branch `engineering/v27-dual-pmos-single-gate-common-fault-20261116`: script KiCad9 `03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py` in FULL, 27 pin/8 reti del banco reale Q804/Q805/Q806 con clamp Microchip 1N4106-1; dimostra per topologia il **gate unico** dei PMOS anti-serie, con **36/216** casi sintetici ENABLE0/Q806 C–E SHORT/Vsource≥13,8V che polarizzano negativamente **entrambi** i PMOS. Rapporto `03_Verifiche/V2.7/RAPPORTO_PMOS_ANTI_SERIE_GATE_COMUNE_Q806_SHORT_216_20261116.md`. Nuova PR/CI da verificare; non è un progetto hardware fail-OFF. #27 aperta, nessuna PCB, **NO FAB/TX/BATTERIA/VEICOLO**.
-
----
-
 ## 16 novembre 2026 — PR #321 MERGED; controllo pin-net e valori reali 16R in nuova revisione
 
 PR [#321](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/321) MERGED su main `3562ad8c455b499de6f734651c40d8c08207f593`, final head `2cdff864fe53d9ce7f36566d30593b9a0e5d973d`, run [#43896260492](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43896260492) FAST/FULL/Required 3/3 SUCCESS. Verificato pin↔net dei 16 resistori THT dei due canali LM2903P, nessuna PCB integrata.
@@ -2096,3 +2088,10 @@ Non creare una PCB dimostrativa o Gerber fintanto che l'intera radio RX/THT e sa
 ## Ripresa in una nuova sessione
 
 «Leggi `AGENTS.md` e `00_Gestione_Progetto/WORK_STATO_CORRENTE.md` da `main` del repo `jd3485/Superstar3900-THT-Evolution`. Verifica in tempo reale SHA main, PR, Actions e issue. Riparti dall'ultima revisione effettivamente MERGED, prosegui autonomamente con più revisioni KiCad THT, CI e merge solo dopo tutti i test; aggiorna checkpoint. NO FAB / NO TX; non toccare SMD.»
+
+
+---
+
+## 16 novembre 2026 — finding Q804/Q805 gate condiviso, PR #325 in verifica
+
+Branch `engineering/v27-dual-pmos-single-gate-common-fault-20261116` / [PR #325](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/325): la regressione FULL `03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py` esporta KiCad9 reale THT 27 pin/8 reti e verifica il nodo gate condiviso Q804/Q805/Q806. Modello matematico indipendente 216 casi; **36** con ENABLE0, Q806 C–E SHORT e Vsource≥13,8V applicano polarizzazione negativa a entrambi i gate. Il risultato è un finding topologico, non una simulazione OEM di conduzione. [PR #324](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/324) integrata su main `49d4d10bc098642cd67de6953f6bc005718cbf93` dopo run #43900393435 3/3 verdi. Branch #325/CI resta non integrato fino a gate sul commit finale. MAIN V2.6 e FRONT senza PCB, issue #27 APERTA; **NO FAB/TX/BATTERIA/VEICOLO**.
