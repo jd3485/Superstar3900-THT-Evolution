@@ -29,6 +29,16 @@ L'utente delega priorità, MPN/valori ordinari giustificati, alternative tecnich
 9. **Dopo ogni merge** e **prima di chiudere la sessione**, aggiornare 00_Gestione_Progetto/WORK_STATO_CORRENTE.md con ultima revisione integrata, HEAD SHA vero, PR, run IDs, ERC/DRC, differenze nei file reali, rischi e prossimo blocker. Aggiornare anche l'handoff storico quando utile. Se il checkpoint non può essere unito a main per CI/permessi, pubblicarne la bozza sul branch e l'esatto stato nella PR/issue, dichiarando esplicitamente che main non è ancora aggiornato.
 10. Dopo un merge valido, se restano capacità e strumenti, **procedere con il successivo problema concreto senza aspettare una nuova richiesta**. In una nuova chat ripartire dal checkpoint, non dalla memoria o dall'ultima frase dell'assistente.
 
+## Politica anti-loop per CI pending e Pilota V7 (16 novembre 2026)
+
+- Ogni `procedi` deve iniziare da uno snapshot GitHub attuale (PR, HEAD SHA, check richiesti e run ID), ma **non** deve produrre nuovi cicli solo per interrogare la stessa CI ancora `queued`/`in_progress`.
+- Se FAST è verde e FULL/Required CI sono pending, registrare l'ultima verifica (PR, SHA, run, stato e timestamp disponibile) e **non** fondere né qualificare i gate come superati.
+- Individuare e svolgere **lavoro tecnico autonomo, sostanziale e non conflittuale** durante la CI: analisi di schemi, datasheet e fault, miglioramenti isolati su branch separati, test locali realmente disponibili, verifiche e issue tecnici. Non aprire PR duplicate, non alterare il branch sotto test, non provocare CI superflue, e non dichiarare eseguite verifiche non disponibili.
+- Terminare con `CONTINUA` **solo se** è individuabile almeno una concreta attività successiva eseguibile autonomamente (inclusa correzione di CI fallita o avanzamento indipendente), indicando brevemente quale.
+- Se **l'unica** attività residua è aspettare la stessa CI o un'approvazione/risorsa esterna, terminare con `ATTESA`, interrompendo gli invii Tampermonkey V7. `ATTESA` non significa fallimento della CI e non autorizza merge; la successiva ripresa richiede un nuovo input dell'utente.
+- Dopo una ripresa, ricontrollare lo stato una volta prima di ripetere operazioni; distinguere `pending`, `failure`, `success` e run non avviato. `ERRORE` solo per problemi bloccanti non risolvibili; `FINE` solo dopo verifica effettiva del completamento.
+- Non modificare i requisiti GitHub Required CI né aggirare i gate di sicurezza, NO FAB/NO TX e revisione tecnica.
+
 **Anti-loop:** non creare microrevisioni di soli report per simulare progresso; non attribuire percentuali PCB a test di script o footprint; niente false simulazioni vendor e niente layout dimostrativo presentato come radio completa.
 
 ## Architettura di prodotto approvata, successiva al mandato storico
