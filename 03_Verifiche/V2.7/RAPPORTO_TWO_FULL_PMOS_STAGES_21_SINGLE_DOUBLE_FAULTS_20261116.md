@@ -17,6 +17,11 @@ Sei guasti elementari: Q806 C–E SHORT, Q816 C–E SHORT, Q804/Q805/Q814/Q815 D
 
 Un guasto simultaneo dei due enable esterni, comune source/return, gate-source clamp OPEN/SHORT, input supply, MOSFET capacitive dv/dt, avalanche, carico o MOSFET in perdita NON è incluso nei sei guasti elementari: non chiamare questa verifica «single-fault safety». Quattro PMOS in cascata **non** garantiscono automaticamente ridondanza protettiva né un singolo guasto sicuro in qualsiasi classe di difetto. 0/6 e 7/15 sono conteggi del grafo definito, non probabilità né tassi di rischio.
 
+
+## Guasto comune esplicito: consenso esterno incollato HIGH
+
+Le netlist KiCad9 mantengono `ENABLE_LOGIC_5V_LAB` (J2103/1) e `ENABLE_B_5V_LAB` (J2113/1) separati, ma nessuna delle due origini viene implementata o qualificata in questo banco. Se una **sola sorgente comune a monte** alimenta entrambi gli ENABLE e rimane incollata HIGH, il modello `COMMON_ENABLE_STUCK_HIGH` produce percorso in entrambe le direzioni con comandi utente nominali OFF. È un **guasto singolo di causa comune**, non due guasti indipendenti ai transistor. Il test lo vincola in modo esplicito; non è una dimostrazione che la sorgente comune esista sul prodotto finale. Gli originali 0/6 guasti singoli si riferiscono esclusivamente alla lista di sei guasti locali D–S/C–E, **non** a ogni possibile guasto singolo. Per chiudere #27 servono sorgenti, consenso OFF e diagnostiche indipendenti reali, non solo due etichette di rete.
+
 ## Azioni obbligatorie prima di impiego
 Separare e qualificare l'alimentazione e la supervisione degli stadi; definire il comportamento con un comando di consenso incollato HIGH; verificare pin-pad-tab TO-220, dissipatori isolati, referenze, supply persa, feedback del nodo centrale MID, due Zener per gate in parallelo e fault per singolo diodo, curve OEM I/V e gate ±20V, transitori, termico, SOA e carico reale. Nessuna PCB o test di banco autorizzati dalla sola analisi.
 
