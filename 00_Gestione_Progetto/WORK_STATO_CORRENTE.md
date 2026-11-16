@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #306 MERGED, gate termico/asimmetrie Microchip 1N4106-1 THT
+
+PR [#306](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/306) MERGED su main SHA `a827773cf1f0d921a7ed47701099d0ea98649b15`, final head `237a1f063d3fa912600606aa473f1b83e347086d`, run [#43844093319](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43844093319): FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_MICROCHIP_1N4106_27PIN_8NET_1944_IDEAL_NONFAB`. KiCad9 ERC zero errori/zero warning, 27 pin/8 reti; modello 1.944 casi. Ben **516 casi del test** scendono sotto i 250µA di IZT *per diodo* e non consentono di affermare clamp OEM garantito. Schematic KiCad9 isolato Microchip D2101/D2102 THT DO-35, MAIN V2.6 invariato.
+
+Nuovo branch `engineering/v27-microchip-zener-oem-thermal-current-fault-screen-20261116`: regressione tecnica KiCad9 reale `03_Verifiche/V2.7/verify_microchip_twin_zener_thermal_fault_native.py` registrata nel FULL: **7.680 casi** teorici con due Zener non identici, 5 stati elettrici, PVT sintetici fino a 125°C, limite di dissipazione Zener OEM e analisi R2102 in short clamp. Report `03_Verifiche/V2.7/RAPPORTO_MICROCHIP_1N4106_DISSIPAZIONE_ASIMMETRIE_20261116.md`. **CI/merge nuovi DA VERIFICARE**; senza modello vendor I/V e vero supervisore indipendente. R2102 a source48V e clamp in corto teorico potrebbe dissipare **0,2425W** al minimo 9,5kΩ: impronta generica DIN0207 non prova rating e derating OEM, potenziale difetto thermal; senza autorizzazione VIN48V. #27 APERTA. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #305 MERGED, candidato Microchip 1N4106-1 THT 250µA in schema KiCad9 isolato
 
 PR [#305](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/305) **MERGED** su main SHA `b017466ccb381c09fd525b9676e5255f4adf739f`, run [#43842098135](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43842098135) su head finale `8048b40fb045e83d5da52b04c27eba1ca8e104b5`, FAST/FULL/Required **3/3 SUCCESS**. FULL marker `PASS_NATIVE_KICAD9_Q806_TWIN_ZENER_27PIN_8NET_1944_IDEAL_FAULT_CASES_NONFAB`, ERC0 zero warning, 27 pin/8 reti, 1944 scenari. **Conclusione OEM critica:** il vecchio Zener 1N4742A ha Vz specificato a IZT21mA, ma R2102=10k limita corrente del ramo a <=5,053mA a source48V; pertanto il passaggio dal modello ideale a protezione reale non è garantito. Master MAIN V2.6 e FRONT invariati.
