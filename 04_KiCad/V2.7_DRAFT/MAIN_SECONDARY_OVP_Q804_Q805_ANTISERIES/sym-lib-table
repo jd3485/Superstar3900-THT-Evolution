@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "LAB_OVP")(type "KiCad")(uri "${KIPRJMOD}/LAB_OVP.kicad_sym")(options "")(descr "Q804/Q805 isolated anti-series THT lab candidate"))
+)
