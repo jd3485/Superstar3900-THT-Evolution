@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #310 MERGED; primo schema THT LM2903P PDIP8 in PR #311 DRAFT
+
+PR [#310](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/310) **MERGED** main `b9e551051f7be9a738f9474cf365886259583a01`; final PR SHA `51b18cd5e17e41cb68b2ff08ec7b8dc17c43075b`, run [#43851491166](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43851491166), FAST/FULL/Required **3/3 SUCCESS**. Test `PASS_LM2903P_WINDOW_128_PASSIVE_CORNERS_NONFAB`: 128 corner resistivi, UVLO 9,557–10,462V, OVP 14,363–15,663V nel modello senza bias/isteresi. **R2202 ipotetico OPEN rende VIN_SENSE potenzialmente uguale al raw 48V**, non tollerabile senza protezione. Nessun CAD era presente in #310.
+
+PR [#311](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/311) **DRAFT non integrata**; dopo riconciliazione con main schema KiCad9 THT effettivo in `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_LM2903P_WINDOW/MAIN_SECONDARY_LM2903P_WINDOW_LAB_V2_7_DRAFT.kicad_sch`, U2201 candidato LM2903P PDIP8, R2201..R2207 THT, J2201..J2204; test `03_Verifiche/V2.7/verify_lm2903p_pdip8_window_native.py` in FULL: **30 pin/8 reti e ERC KiCad9 da verificare**, 128 corner window, report `03_Verifiche/V2.7/RAPPORTO_LM2903P_CAD_30PIN_WINDOW_20261116.md`. **Nessun 5V, VREF, clamp ingresso o interruttore fail-off autonomo realizzati**; schema ISOLATO senza integrazione MAIN V2.6 o FRONT. Issue #27 aperta, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #309 MERGED; supervisore THT LM2903P in screening PRE-CAD
 
 PR [#309](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/309) MERGED su main `c141213b02f9e87b9f36dc3254eb85478c34c33e`. Final head `88a8545b0c6a3ed56f92bc613c8071af1e62221e`, run [#43849944578](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43849944578), **FAST/FULL/Required 3/3 SUCCESS**. Test `PASS_NATIVE_KICAD9_PR01_DRIVER_1080_FAULT_CASES_NONFAB`, vera netlist KiCad9 THT 27 pin/8 reti, 1080 corner teorici: 180 casi Q806 C–E SHORT ON senza ENABLE, 108 di R2102 SHORT |VGS|>20V *unclamped*, 216 di R2102 OPEN pull-up OFF idealizzato. Questo dimostra che il driver secondario non è fail-closed; #27 APERTA, NO FAB/TX/BATTERIA/VEICOLO.
