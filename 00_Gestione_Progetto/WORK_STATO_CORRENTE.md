@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #318 MERGED; doppio guasto correlato VREF ancora insicuro
+
+PR [#318](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/318) **MERGED** main `2a4b83688a7830068b0eff482499b135b8064c00`, final head `5d721c2077e8061a2aca16234975e406ae79bdf2`, run [#43865228302](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43865228302): FAST/FULL/Required **3/3 SUCCESS**, jobs e steps verificati. Regressione netlist KiCad9 60 pin / 14 reti, **101.376 corner DC ipotetici**; **1.028 falsi GOOD** con VREF A/B entrambe 1,25 V o 5 V per VIN fuori 9..16 V. Nessun 5V/ref OEM indipendente né switch serie fail-OFF realizzato. MAIN V2.6/FRONT senza PCB; #27 aperta. Prossimo: alimentazione/riferimenti THT reali, fail-closed di due switch indipendenti, qualifica OEM e fault comuni. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #317 MERGED, guasto doppio VREF separati ancora critico
 
 PR [#317](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/317) **MERGED** main `4db05caea15203d155d0e75c26301f4907db868d`, final head `c5a850bafb9e5b2360fe78e51e6cc050aec0f76b`, run [#43863682723](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43863682723) FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC zero errori/warning, **60pin/14net, 24 componenti THT**, 33.792 corner. Separati fisicamente J2203 VREF_A e J2205 VREF_B; un solo guasto esterno reference (altro ideale) = 0 false GOOD VIN<9/>16V, ma **1.536 false OFF** a VIN13,8V nel modello. Nessun VREF realmente generato/qualificato, supply5V/RETURN/OC condivisi, non fail-safe.
