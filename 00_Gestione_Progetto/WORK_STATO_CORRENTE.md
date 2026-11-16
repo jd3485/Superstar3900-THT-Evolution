@@ -1,6 +1,12 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — safety gate analitico S-meter FSD single-fault su branch
+
+**Branch indipendente:** `engineering/v27-front-smeter-fsd-single-fault-bound-20261116` (da main `ab0a09bc11a21f442920af450f7c6999bc38eb1e`): estensione sostanziale del gate `03_Verifiche/V2.7/verify_front_smeter_fsd_fault_screen.py` che ricava tensione massima sorgente da FSD *ipotetica*, due resistenze da 100k con -5% e guasto singolo in corto. A 50 µA: **9,5 V** sani, **4,75 V** con un resistore corto; 20 V non qualificati. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FSD_VOLTAGE_SINGLE_SHORT_20261116.md`. Schemi FRONT/MAIN invariati; nessuna FSD OEM certificata. Questo gate non è prova di sicurezza o permesso di alimentare hardware. PR/CI da verificare sullo SHA finale. PR #288 sulla bobina rimane indipendente e draft. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #286 MERGED, master FRONT audio/AF_GND realmente cablato
 
 **Verifica live:** PR [#286](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/286) MERGED su `main` con SHA `5fb398a67f13a1523f938afef2bae9f093077a78`. Il commit finale della PR `448b382e5abe02e46b1950b4fb9a113a5130e0f5` ha superato [CI #43808193916](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43808193916): FAST/FULL/Required **SUCCESS 3/3**, `PASS_REQUIRED_CI_GATE (full_required=true)`, nessun Traceback o error log, KiCad9 ERC0 nel master e nei verificatori; `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_24NETS_71PINS_2REAL_AUDIO_GND_JOINS_ERC0_NONFAB`. Corretto anche l'ERC dei child gerarchici in contesto parent (pin gerarchici non validi come root standalone), preservando i controlli netlist dei singoli fogli.
