@@ -977,6 +977,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_twin_clamps_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Actual KiCad9 back-to-back source-common PMOS are NOT two
+    # independent directional disconnects: drain->source body diodes.
+    print("::group::THT SPLIT PMOS DIRECTIONAL BODY DIODE FAULT NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_twin_gate_directional_body_diode_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
