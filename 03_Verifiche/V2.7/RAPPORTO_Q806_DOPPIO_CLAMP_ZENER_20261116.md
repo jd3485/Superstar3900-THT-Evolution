@@ -8,6 +8,12 @@ Nuovo schematico **isolato**: `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_
 
 Il nuovo **D2102 1N4742A candidato THT DO-41** è in **parallelo** al precedente D2101: entrambi i **catodi pin1** sul `FLOATING_COMMON_SOURCE_LAB` (Q804/3, Q805/3, R2101/1) e entrambi gli **anodi pin2** su `COMMON_GATE_LAB` (Q804/1, Q805/1, R2101/2, R2102/2). R2101 47k, R2102 10k, Q806 KSP42BU e la rete di enable restano identici. Biblioteche e footprint KiCad THT generici; MPN/derating/meccanica, tolleranze Zener e termica non verificati.
 
+## Rischio OEM appena verificato — impedisce qualsiasi claim di clamp
+
+Il [datasheet originale onsemi 1N4736AT/D Rev.10](https://www.onsemi.com/pdf/datasheet/1n4736at-d.pdf), tabella **1N4742A** a 25°C, dichiara **Vz min11,4V / tip12V / max12,6V solo a IZT=21mA**, impedenza dinamica massima **ZZT=9Ω a IZT=21mA**, impedenza al ginocchio massima **ZZK=700Ω a IZK=0,25mA**. Il dato ZZT=9Ω non è un modello utilizzabile arbitrariamente a pochi mA; il dato ZZK non definisce da solo un limite DC del gate nell'intero intervallo di corrente.
+
+Con Vsource ipotetico massimo **48V**, resistore serie R2102 al minimo **9,5kΩ** e soglia Zener 11,4V, **la corrente massima totale teorica verso gate e due diodi è (48−11,4)/9500 ≈3,853mA**, ossia ben **inferiore alla corrente IZT=21mA** alla quale è garantita la tensione nominale; in caso di due Zener paralleli ciascuno può riceverne una porzione diversa. I modelli precedenti **0,1/1/10Ω con knee a 11/12/13V sono esclusivamente ipotesi sintetiche** e il loro risultato <20V con un singolo Zener OPEN **non fornisce prova di tenuta VGS** su hardware reale. Dimensionamento del resistore, famiglia di clamp a bassa corrente o vera curva di conduzione OEM devono essere rivalutati prima di integrare il circuito o autorizzare hardware. **Finding bloccante addizionale sulla issue #27.**
+
 ## Verificatore nativo
 
 `03_Verifiche/V2.7/verify_q806_dual_zener_clamp_native.py`, nella FULL, richiede **ERC KiCad9 0 errori/0 warning**, export netlist reale **27 terminali fisici su 8 reti** senza corto fra source flottante e return. Modello idealizzato con **1.944 condizioni**: ingresso source imposto 0/13,8/20/24/36/48V, R2101/R2102 ±5%, Zener nominale 11/12/13V, resistenza dinamica sintetica 0,1/1/10Ω, stati HEALTHY, D2101 OPEN, D2102 OPEN, BOTH OPEN.
