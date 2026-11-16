@@ -72,16 +72,19 @@ def native():
 def main():
     native()
     count=0
+    unbounded=0
     for v,coil,shorts,wiper in product(SOURCE_V,COIL_OHM,SHORTS,WIPER):
         curr=coil_current(v,coil,shorts,wiper)
-        assert curr>=0 and isfinite(curr)
+        assert curr>=0 and (isfinite(curr) or curr==float("inf"))
         assert curr<=coil_current(v,coil,shorts,1.)+1e-16
-        assert curr>=coil_current(v,coil,2,wiper) if shorts==2 else True
+        if shorts==2 and coil==0 and wiper>0:
+            assert curr==float("inf")
         for fsd in FSD_A:
             required=source_required(fsd,coil,shorts,wiper)
             assert ((curr>=fsd) == (v+1e-10>=required)),(v,coil,shorts,wiper,fsd,curr,required)
             count+=1
-    assert count==675
+            if curr==float("inf"):unbounded+=1
+    assert count==675 and unbounded==60
     assert isclose(coil_current(5.,20000.,0,1.),5/220000)
     assert isclose(coil_current(5.,0.,0,1.),25e-6)
     assert isclose(coil_current(5.,20000.,1,1.),5/120000)
@@ -103,7 +106,8 @@ def main():
         except ValueError:pass
         else:raise AssertionError("nonfinite source accepted")
     print("SMETER_PASSIVE_5V_FSD_COMPLIANCE_SCREEN",{
-       "cases_checked":count,"SOURCE_V_scenarios":SOURCE_V,
+       "cases_checked":count,"unbounded_zero_ohm_two_short_cases":unbounded,
+       "SOURCE_V_scenarios":SOURCE_V,
        "R1801_R1802_nominal_each_ohm":R_NOM,
        "R_tolerance_hypothetical":R_TOL,
        "Rcoil_hypothetical_ohm":COIL_OHM,
