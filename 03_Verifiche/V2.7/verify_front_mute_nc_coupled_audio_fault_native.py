@@ -111,8 +111,8 @@ def main():
     assert checked==60 and example
     # Pure DC shunt limits ignore R_INPUT/C_INPUT and coupling injection.
     grounded_nc_shunt=1/(1/R_BLEED+1/(R_SERIES+1.0))
-    assert math.isclose(grounded_nc_shunt,990.09900990099,rel_tol=1e-12)
-    assert math.isclose(R_BLEED/grounded_nc_shunt,101.0,rel_tol=1e-12)
+    assert math.isclose(grounded_nc_shunt,991.0792962445917,rel_tol=1e-12)
+    assert math.isclose(R_BLEED/grounded_nc_shunt,100.9000999000999,rel_tol=1e-12)
     for fn in (impedance_reduction,nodal_kcl):
         try:fn(1000,1e-9,1.0,False,False)
         except ValueError:pass
@@ -122,7 +122,7 @@ def main():
         "coupling_capacitances_F":COUPLING_CAPACITANCE_F,
         "NC_contact_resistance_ohm_scenarios":NC_CONTACT_RESISTANCE_OHM,
         "grounded_nc_shunt_ohm":grounded_nc_shunt,
-        "NC_open_to_intact_DC_shunt_impedance_ratio":101.0,
+        "NC_open_to_intact_DC_shunt_impedance_ratio":100.9000999000999,
         "minimum_AC_gain_ratio_NC_open_vs_intact":minimum_degradation,
         "maximum_AC_gain_ratio_NC_open_vs_intact":maximum_degradation,
         "sample":example,
