@@ -1,6 +1,12 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — modello AC post-mute RX K1901/R1902/R1901, revisione candidata
+
+**Branch:** `engineering/v27-audio-postmute-loaded-ac-20261116`, baseline main PR #288 integrata `5f92440dddd3bff93e73847bcd27ff476a6e414e`. Nuovo verificatore `03_Verifiche/V2.7/verify_front_postmute_loaded_ac_native.py`: 75 combinazioni AC di AM455→RV1301→NO K1901→R1902 1k/R1901 100k shunt→C1201/R1201→LM386. Verifica netlist reale di quattro fogli KiCad9, confronto indipendente KCL complessa quattro nodi vs riduzione impedenze; regression in `ci/full_regressions.py`. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_POSTMUTE_AC_TRANSFER_20261116.md`. **CI da convalidare, non merge anticipato**. Modello di ricezione con relay NO ideale, non prova di mute sicuro, OEM o PCB. Le altre PR #289/#290 sono indipendenti e in CI. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
 
 **Baseline verificata:** PR #286 integrata (main SHA `5fb398a67f13a1523f938afef2bae9f093077a78`), PR #287 checkpoint integrata (main SHA `ab0a09bc11a21f442920af450f7c6999bc38eb1e`). PR #286 CI #43808193916 FAST/FULL/Required 3/3 SUCCESS e master FRONT 24 reti / 71 pin / 2 unioni audio.
