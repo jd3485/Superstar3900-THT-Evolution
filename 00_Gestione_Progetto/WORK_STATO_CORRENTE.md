@@ -1,6 +1,2128 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 16 novembre 2026 — PR #327 MERGED, guasto direzionale body diode isolato
+## 16 novembre 2026 — due interruttori PMOS anti-serie completi in serie, nuovo CAD THT
+
+Nuovo branch `engineering/v27-two-complete-antisieries-switch-stages-20261116`: CAD nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES/MAIN_SECONDARY_OVP_TWO_COMPLETE_STAGES_LAB_V2_7_DRAFT.kicad_sch`, 2× coppie anti-serie IRF9540NPBF, source separati fra gli stadi, Q806/Q816 driver BJT distinti e ciascuna coppia 2× diodi Microchip 1N4106-1 con un unico gate per stadio. Uscita stadio A ↔ ingresso B su `SECONDARY_OUT_DRAIN_LAB`. Local LAB_OVP library/KiCad project nativi. Test FULL `03_Verifiche/V2.7/verify_two_complete_pmos_stages_native.py` attende **ERC zero, 24 simboli/54pin/14 reti** e 16 fault booleiani: un unico C–E SHORT di driver con altro stadio OFF non deve aprire percorso input-output via body diode ideale in entrambe le direzioni. Report `03_Verifiche/V2.7/RAPPORTO_TWO_COMPLETE_PMOS_SWITCHES_THT_20261116.md`. PR #329 CI da verificare; precedente run #43913857663 FAIL per overlap CAD corretto, rerun finale da fare. **Non è sicurezza elettrica qualificata.** #27 OPEN, assenti UV/OV indipendenti, rail OEM, prove PVT, load/SOA, PCB. **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
+## 16 novembre 2026 — variante THT quattro clamp su due gate separati, non qualificata
+
+Branch `engineering/v27-dual-gate-twin-clamps-lab-20261116` **deriva dalla PR #326 integrata su main** SHA `4bd4de847e05c38c9a7a816548fc5b5a080b8475` CI #43907346523 FAST/FULL/Required 3/3 SUCCESS; la variante #327 non è ancora integrata. Nuovo banco KiCad9 `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS_LAB_V2_7_DRAFT.kicad_sch` con **D2101+D2110** sul gate A e **D2102+D2111** sul gate B, 1N4106-1 DO-35 THT candidati, ora con libreria `LAB_OVP.kicad_sym`, `sym-lib-table` e project file dedicati. Resta una sola source comune, GND BJT comune e ENABLE A/B esterni non qualificati.
+
+Verificatore nativo `03_Verifiche/V2.7/verify_dual_pmos_twin_clamps_native.py` aggiunto al FULL: richiede ERC0, **20 THT / 44 pin / 12 reti** e controlla **1.944** corner di modello Zener ideale NON OEM; **un clamp OPEN** per gate non supera 20V nel modello fittizio, mentre **entrambi OPEN** possono superare VGS assoluto. Report `03_Verifiche/V2.7/RAPPORTO_PMOS_DUE_GATE_QUATTRO_ZENER_THT_44PIN_12NET_20261116.md`. Non è una qualifica realistica di clamp, guasto D–S, fault comuni, carico, transitori o supply. **PR/CI nuovi non ancora confermati**. #27 aperta, MAIN/FRONT senza PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — doppio gate PMOS THT fisicamente separato, candidato isolato in PR
+
+Branch `engineering/v27-independent-q804-q805-gates-native-lab-20261116`: realizzato un **nuovo KiCad9 nativo** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES_LAB_V2_7_DRAFT.kicad_sch`, Q804/Q805 anti-serie con gate A/B separati, Q806/Q807 KSP42BU e R2101/R2110 pullup distinti, R2102/R2111 sink separati, J2103/J2104 ENABLE separati, un clamp THT D2101/D2102 per gate. Previsti **18 componenti/40 pin/12 reti**, validazione ERC/netlist KiCad9 e 16 combinazioni Boolean fault tramite `03_Verifiche/V2.7/verify_dual_pmos_independent_drivers_native.py` registrato in FULL. **Nuova PR/CI da verificare, non ancora su main.** Report `03_Verifiche/V2.7/RAPPORTO_PMOS_DUE_GATE_DUE_DRIVER_THT_40PIN_12NET_20261116.md`. Due enable/supply esterni, source/return comuni, Zener singolo per gate e rischio VGS/DS fault: **NON fail-OFF qualificato**. PR #325 MERGED su main b74253c4bfb57e8cdb7b80ef8cc8f7bbc5bddba0 con CI #43902519289 3/3 SUCCESS; #27 APERTA. MAIN V2.6 e FRONT senza PCB, **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #323 MERGED; guasto common-OC LM2903P in nuova regressione
+
+PR [#323](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/323) **MERGED** main `c4514bd107043ff6c6d916c00d5e55506e0ff3ab`, final head `120a2b9691b22cbda340ebafdc6c79c53e961d63`, run [#43898059608](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43898059608) FAST/FULL/Required **3/3 SUCCESS**, regressione dei 16 valori e footprint THT; rimane banco isolato senza supply o reference OEM e senza fail-OFF fisico.
+
+Nuovo branch `engineering/v27-dual-lm2903p-common-oc-stuck-fault-20261116`: nuova regressione FULL `03_Verifiche/V2.7/verify_dual_lm2903p_shared_oc_fault_native.py`, netlist nativa **60 pin/14 reti** e **720.896** corner matematici indipendenti a VREF nominali esterne. Caso limite di output OC ipoteticamente forzato HIGH produce **524.288** falsi GOOD per VIN fuori 9..16 V; nodo forzato LOW **65.536** falsi OFF a VIN13,8V. Non costituiscono simulazione di un corto reale o garanzia di contesa, né prova fail-safe: R2207 OPEN / VCC5V persa = nodo indeterminato. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_SHARED_OC_720896_FAULT_20261116.md`. **Nuova PR/CI da verificare; non integrata**. #27 OPEN; MAIN V2.6/FRONT senza PCB. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #321 MERGED; controllo pin-net e valori reali 16R in nuova revisione
+
+PR [#321](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/321) MERGED su main `3562ad8c455b499de6f734651c40d8c08207f593`, final head `2cdff864fe53d9ce7f36566d30593b9a0e5d973d`, run [#43896260492](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43896260492) FAST/FULL/Required 3/3 SUCCESS. Verificato pin↔net dei 16 resistori THT dei due canali LM2903P, nessuna PCB integrata.
+
+Nuovo branch `engineering/v27-native-16r-values-and-oem-input-guards-20261116`: regressione FULL esistente estesa al confronto tra valori dei 16 resistori nello schematico KiCad9 (100k, 10k, 116k, 20k, 185k), footprint THT e pull-up R2207, e i coefficienti dell'audit indipendente 25.952.256 corner DC. Previene falsi pass quando cambia il CAD ma non il modello di calcolo. **PR e CI nuove da verificare; non su main**. #27 safety aperta, 5V/VREF esterne, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #320 MERGED; nuovo controllo nativo pin↔net per 16 resistenze A/B
+
+PR [#320](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/320) MERGED su main `a6e33a4c36322a7e6724cf93b94fe47080bea06c`; final head `23e97f666a26afd11a7ffc18862e8c81656372d3`; run [#43894482289](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43894482289) FAST/FULL/Required 3/3 SUCCESS. KiCad9 isolato 60pin/14net; test matematico esatto 25.952.256 combinazioni e 231.760 falsi consensi teorici da riferimenti guasti, senza qualifica OEM.
+
+Branch `engineering/v27-split-vref-16r-pinmap-guard-20261116` rafforza il controllo native sui riferimenti A R2201/2202/2203/2204/2205/2206/2208/2209 e B R2210..R2217: esatta corrispondenza di ogni coppia di pin con le reti KiCad9, separazione A/B e output OC R2207/J2204 ancora non fail-OFF. Test registrato nella FULL già esistente; **PR/CI nuovi da verificare, non integrato**. #27 safety aperta, MAIN V2.6/FRONT senza PCB, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — #319 MERGED; tolleranze 16 R A/B indipendenti in nuova revisione
+
+PR [#319](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/319) **MERGED** main `a1e6c0dca743136d4718be0fef732efaa6712891`; head `5963b655e682ad36098cb4c7fa4f028f260116ed`; run [#43893797542](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43893797542): FAST SUCCESS, Required SUCCESS, FULL skipped su diff documentale.
+
+Branch `engineering/v27-independent-ab-resistor-corners-20261116`: nuova regressione netlist KiCad9 THT 60 pin/14 reti e **25.952.256** combinazioni ideali DC con tolleranze indipendenti per 16 R A/B; **231.760 falsi GOOD matematici** a VREF A/B simultaneamente guaste, calcolati con conteggio cartesiano esatto (non SPICE). Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DUE_VREF_TOLLERANZE_INDIPENDENTI_25952256_20261116.md`; **nuova PR/CI da verificare**. Nessun 5V/reference OEM né fail-closed fisico, #27 APERTA, MAIN V2.6/FRONT invariati. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #318 MERGED; doppio guasto correlato VREF ancora insicuro
+
+PR [#318](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/318) **MERGED** main `2a4b83688a7830068b0eff482499b135b8064c00`, final head `5d721c2077e8061a2aca16234975e406ae79bdf2`, run [#43865228302](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43865228302): FAST/FULL/Required **3/3 SUCCESS**, jobs e steps verificati. Regressione netlist KiCad9 60 pin / 14 reti, **101.376 corner DC ipotetici**; **1.028 falsi GOOD** con VREF A/B entrambe 1,25 V o 5 V per VIN fuori 9..16 V. Nessun 5V/ref OEM indipendente né switch serie fail-OFF realizzato. MAIN V2.6/FRONT senza PCB; #27 aperta. Prossimo: alimentazione/riferimenti THT reali, fail-closed di due switch indipendenti, qualifica OEM e fault comuni. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #317 MERGED, guasto doppio VREF separati ancora critico
+
+PR [#317](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/317) **MERGED** main `4db05caea15203d155d0e75c26301f4907db868d`, final head `c5a850bafb9e5b2360fe78e51e6cc050aec0f76b`, run [#43863682723](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43863682723) FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC zero errori/warning, **60pin/14net, 24 componenti THT**, 33.792 corner. Separati fisicamente J2203 VREF_A e J2205 VREF_B; un solo guasto esterno reference (altro ideale) = 0 false GOOD VIN<9/>16V, ma **1.536 false OFF** a VIN13,8V nel modello. Nessun VREF realmente generato/qualificato, supply5V/RETURN/OC condivisi, non fail-safe.
+
+Nuovo branch `engineering/v27-split-vref-dual-fault-common-cause-20261116`: `03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_double_fault_native.py` in FULL su vera netlist KiCad9 60pin/14net, **101.376 corner** di due VREF variabili 0/1,25/2,475/2,5/2,525/5V, 11 VIN e 256 corner tolleranza; modello mostra **1.028 falsi consensi** per fault VREF_A=VREF_B=1,25V/5V correlati. Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DUE_VREF_DOPPIO_FAULT_101376_20261116.md`. CI PR **NUOVE DA VERIFICARE**, nessun merge. Non sono stati implementati rail 5V, reference OEM indipendenti, input protection, switch serie fail-OFF o PCB, MAIN V2.6/FRONT invariati. #27 aperta, **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #316 MERGED; VREF A/B separati fisicamente in banco THT KiCad9
+
+PR [#316](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/316) **MERGED** su main `c2dfc8db4279e3df1b3345aea0a3566e4586817e`; final head `f45e1c1b88251c50daac48adc17ee1266ff8443e`, run [#43862397171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43862397171) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_COMMON_VREF_58PIN_13NET_16896_NONFAB`, 58 pin/13 reti, 16.896 corner DC condivisi su U2201/U2202, **1.028** false-GOOD a reference comune ipoteticamente 1,25/5V; blocco fail-closed di issue #27 non risolto.
+
+Nuovo branch `engineering/v27-dual-lm2903p-separate-external-vref-pins-20261116`: reale variante KiCad9 **ISOLATA** `04_KiCad/V2.7_DRAFT/MAIN_DUAL_LM2903P_SPLIT_EXTERNAL_VREF/MAIN_DUAL_LM2903P_SPLIT_EXTERNAL_VREF_LAB_V2_7_DRAFT.kicad_sch`, separa fisicamente R2214/R2216 da R2203/R2205 su nuova net `EXTERNAL_VREF_B_2V5_UNQUALIFIED` e **nuovo header THT J2205**, lasciando il riferimento A sul connettore J2203. Test `03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_native.py` in FULL: native ERC/netlist **60 pin/14 reti, 24 componenti previsti**, **33.792** corner sintetici con 1 VREF guasta e l'altra ideale: risultato atteso 0 false-GOOD per VIN<9/>16V. Nuovo rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_SPLIT_VREF_33792_20261116.md`; **PR/CI DA VERIFICARE**, non integrato MAIN V2.6/FRONT. Entrambe le VREF/rail 5V sono ingressi esterni NON GENERATI/QUALIFICATI, GND/OC comuni; nessun gate hardware indipendente contro Q806 SHORT; NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #315 MERGED; fault VREF comune doppio LM2903P THT
+
+PR [#315](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/315) **MERGED** main SHA `55141efe3afe5f554faf0eb740090297e4a86b8c`; final head `7132ae4abb9e035aab015a71f5f70cebd958972f`, run [#43861130262](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43861130262) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 **ERC 0 errori / 0 warning**, marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_THT_58PIN_13NET_69120_CORNERS_NONFAB`, 58 pin THT/13 reti, **69.120 corner** di un resistore sensing guasto in solo uno dei canali A/B; zero falsi HIGH fuori VIN9–16V nel modello quando l'altro canale è sano. 5V esterni, 2,5V REF comune, RAW/RETURN/uscita OC condivisi: **nessun fail-closed, niente supervisore o secondo switch indipendenti**; MAIN V2.6 e FRONT invariati.
+
+Nuovo branch `engineering/v27-dual-lm2903p-common-vref-fault-20261116`, verificatore `03_Verifiche/V2.7/verify_dual_lm2903p_common_reference_fault_native.py` registrato in FULL, 58pin/13net native, **16.896 corner** con 6 VREF comuni ipotizzate 0/1,25/2,475/2,5/2,525/5V e 11 VIN (0..48V sintetici), 256 tolleranze. **1.028** casi di consenso GOOD falsi fuori range9–16V con guasto comune riferimento, pur avendo due comparatori fisici separati: 512 con REF1,25V e 516 con REF5V. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_VREF_COMUNE_16896_20261116.md`. **CI e merge del nuovo branch DA VERIFICARE**; #27 OPEN. Supply/reference/switch autonoma, input TVS/fail-safe non progettati, nessun PCB. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — #314 MERGED; secondo canale LM2903P THT reale in nuova PR DRAFT
+
+PR [#314](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/314) **MERGED** main SHA `04667a14426e869070a7c55cf9aaf5186fefda2d`, final head `a8b46f7ff2664d88809f4ecab8506b4e68f703b5`, run [#43859615060](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43859615060) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_REDUNDANT_34PIN_9NET_92160_DOUBLE_FAULT_NONFAB`, 92.160 casi, 9.216 fuori common-mode, 512 oltre input 36V assoluti, 0 falsi GOOD nel solo doppio-fault model. **3.072 falsi GOOD a GUASTO SINGOLO PR #313 rimangono**, NO FAB/TX/BATTERIA/VEICOLO.
+
+Nuovo branch `engineering/v27-dual-lm2903p-two-window-sense-physical-lab-20261116`: nuovo KiCad9 THT ISOLATO `04_KiCad/V2.7_DRAFT/MAIN_DUAL_LM2903P_INDEPENDENT_SENSE/MAIN_DUAL_LM2903P_INDEPENDENT_SENSE_LAB_V2_7_DRAFT.kicad_sch`, secondo U2202 LM2903P PDIP8 e R2210..R2217 8 resistori THT per senso e soglie UVLO/OVP B separati, output OC entrambi sul nodo finestra condiviso; native `03_Verifiche/V2.7/verify_dual_lm2903p_window_native.py` in FULL richiede ERC0, **58 pin/13 reti reali attesi**, **69.120** single-sensor-fault corner su A/B e VIN 0–48V teorico. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_69120_SENSE_20261116.md`. **CI/merge NUOVI NON verificati**, restare DRAFT. **Rail 5V/ref2,5V/RETURN/OC condivisi e non qualificati, nessuno switch serie autonomo, no fail-closed; MAIN V2.6/FRONT invariati.** #27 aperta. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #313 MERGED, nuovo screening 92.160 doppio guasto LM2903P THT
+
+PR [#313](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/313) **MERGED** su main `cac616c522d82701b9388675ae3d6f8c323571dc`, final head `2119dac6a5bcb9fdd5214ca4b34b4b7292213a0c`, run [#43857742450](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43857742450) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 ERC zero errori e warning, 34 pin/9 reti, 34.560 corner di guasto singolo su due TOP 100k serie e due BOTTOM 10k parallelo: **3.072 falsi consensi GOOD fuori finestra** (modello DC), massimo input sotto guasto singolo 2,329649V con source48V ipotetico e 5V esterno non qualificato. Nessun circuito fail-closed o PCB, MAIN V2.6/FRONT invariati.
+
+Nuovo branch `engineering/v27-lm2903p-redundant-sense-double-fault-screen-20261116`: test native `03_Verifiche/V2.7/verify_lm2903p_redundant_double_fault_native.py` in FULL, vera netlist 34pin/9net, **92.160 scenari** doppio OPEN/SHORT degli elementi di sensing. Due failure mode a source ipotetica48V — **R2202+R2209 entrambi OPEN** o **R2208+R2201 entrambi SHORT** — sollevano teoricamente il pin SENSE a 48V oltre limite assoluto OEM TI LM2903P di 36V, 512 corner. Report `03_Verifiche/V2.7/RAPPORTO_LM2903P_DOPPIO_GUASTO_92160_20261116.md`. **NUOVA CI e merge NON verificati; restare DRAFT**, senza energizzazione, reali TVS/reference/supervisor/secondo switch. #27 aperta. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #312 MERGED; sensing ridondante LM2903P nuovo banco KiCad9 THT
+
+PR [#312](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/312) MERGED main SHA `9e8a8bf81eafd3cd6e67efc27bcb1189ce22e202`; final head `c7286ace75fe72abee9927e7c059516fddcbdd48`, run [#43856438604](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43856438604): FAST/FULL/Required **3/3 SUCCESS**; marker `PASS_NATIVE_KICAD9_LM2903P_OC_30PIN_8NET_3200_FAULT_TRUTH_NONFAB`, schema KiCad9 30 pin/8 reti e 3200 scenari OC, sensing OPEN/SHORT e perdita VCC/ref. TI LM2903P non-B input max **36V assoluti**, common-mode 5V supply **0..3V funzionale**: R2202 OPEN e ingresso48V oltre limite assoluto, altre tensioni sopra 3V comunque non funzionali garantite. `#27` sicurezza aperta.
+
+Nuovo branch `engineering/v27-lm2903p-redundant-sense-fault-tolerant-lab-20261116`: schema KiCad9 reale isolato `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_LM2903P_REDUNDANT_SENSE/MAIN_SECONDARY_LM2903P_REDUNDANT_SENSE_LAB_V2_7_DRAFT.kicad_sch`. **Due 100k TOP in serie** (R2208+R2201), **due 10k BOTTOM in parallelo** (R2202||R2209); normal ratio 1/41, UVLO 10/OVP15 con riferimenti R2205 185k e R2203 116k, U2201 LM2903P DIP8. Test native `03_Verifiche/V2.7/verify_lm2903p_redundant_sense_native.py` in FULL ERC e **34 pin/9 reti attesi**, 34.560 corner sintetici; il single resistor fault OPEN/SHORT limita teoricamente VIN_SENSE sotto i 3V per VIN ipotetico 48V ma **falsi consensi HIGH in alcuni single-fault restano**. No 5V o VREF generati, no PWM o supervisore fail-OFF o secondo switch, nessun PCB. Rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_SENSE_RIDONDANTE_34560_20261116.md`. **CI/merge del nuovo branch ancora DA VERIFICARE**. #27 aperta. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #311 MERGED; LM2903P open-collector THT fault truth 3200 corner in nuova PR DRAFT
+
+PR [#311](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/311) **MERGED** main SHA `df7e088d4890075b378894d426a2b9594681ab25`; head finale `739c1d333613055d8f9be5aa3170811600caf7c1`, run [#43853755257](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43853755257): FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_PDIP8_30PIN_8NET_128_WINDOW_NONFAB`; ERC KiCad9 **0 errori/0 warning**, 30 pin reali/8 reti, 128 corner della finestra UVLO/OVP su U2201 LM2903P DIP8 e R2201..R2207. J2202 è connettore **ESTERNO** che dichiara formalmente il rail5V/return come `power_out` nel banco, non un vero alimentatore generato; nessuna PCB e nessuna qualifica. Prima iterazione #311 fallì correttamente ERC 11 violazioni, corrette prima del merge.
+
+Nuovo branch `engineering/v27-lm2903p-window-fault-truth-table-20261116`: test `03_Verifiche/V2.7/verify_lm2903p_oc_fault_truth_native.py` in FULL, netlist vera 30 pin/8 reti, **3200** casi ideali di uscita open collector, VIN 0/8/13,8/16/48 V ipotetici, R2202 OPEN/SHORT, VREF lost e supply5V lost. Rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_OC_3200_FAULT_TRUTH_20261116.md`. **CI/merge nuovi DA VERIFICARE; nulla integrato in MAIN.** Critici R2202 OPEN con ingresso sovratensione e supply persa con OC fluttuante, niente vero fail-OFF/secondo stadio serie. #27 aperta; NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #310 MERGED; primo schema THT LM2903P PDIP8 in PR #311 DRAFT
+
+PR [#310](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/310) **MERGED** main `b9e551051f7be9a738f9474cf365886259583a01`; final PR SHA `51b18cd5e17e41cb68b2ff08ec7b8dc17c43075b`, run [#43851491166](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43851491166), FAST/FULL/Required **3/3 SUCCESS**. Test `PASS_LM2903P_WINDOW_128_PASSIVE_CORNERS_NONFAB`: 128 corner resistivi, UVLO 9,557–10,462V, OVP 14,363–15,663V nel modello senza bias/isteresi. **R2202 ipotetico OPEN rende VIN_SENSE potenzialmente uguale al raw 48V**, non tollerabile senza protezione. Nessun CAD era presente in #310.
+
+PR [#311](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/311) **DRAFT non integrata**; dopo riconciliazione con main schema KiCad9 THT effettivo in `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_LM2903P_WINDOW/MAIN_SECONDARY_LM2903P_WINDOW_LAB_V2_7_DRAFT.kicad_sch`, U2201 candidato LM2903P PDIP8, R2201..R2207 THT, J2201..J2204; test `03_Verifiche/V2.7/verify_lm2903p_pdip8_window_native.py` in FULL: **30 pin/8 reti e ERC KiCad9 da verificare**, 128 corner window, report `03_Verifiche/V2.7/RAPPORTO_LM2903P_CAD_30PIN_WINDOW_20261116.md`. **Nessun 5V, VREF, clamp ingresso o interruttore fail-off autonomo realizzati**; schema ISOLATO senza integrazione MAIN V2.6 o FRONT. Issue #27 aperta, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #309 MERGED; supervisore THT LM2903P in screening PRE-CAD
+
+PR [#309](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/309) MERGED su main `c141213b02f9e87b9f36dc3254eb85478c34c33e`. Final head `88a8545b0c6a3ed56f92bc613c8071af1e62221e`, run [#43849944578](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43849944578), **FAST/FULL/Required 3/3 SUCCESS**. Test `PASS_NATIVE_KICAD9_PR01_DRIVER_1080_FAULT_CASES_NONFAB`, vera netlist KiCad9 THT 27 pin/8 reti, 1080 corner teorici: 180 casi Q806 C–E SHORT ON senza ENABLE, 108 di R2102 SHORT |VGS|>20V *unclamped*, 216 di R2102 OPEN pull-up OFF idealizzato. Questo dimostra che il driver secondario non è fail-closed; #27 APERTA, NO FAB/TX/BATTERIA/VEICOLO.
+
+Nuovo branch `engineering/v27-lm2903p-preconditioned-window-thresholds-20261116`, verifica `03_Verifiche/V2.7/verify_lm2903p_secondary_window_passive.py` registrata in FULL (**128 corner** di 6 resistori ±1% e VREF ±1%), rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_WINDOW_THT_PRECAD_20261116.md`. Candidato **TI LM2903P PDIP8 THT** e comparazione con supply 5V e VREF2,5V **ancora esterne, NON generate e NON qualificate**. Partitori proposti: Vsense 100k/5k (48V sintetici→2,286V nominale); UVLO 10V, OVP 15V; casistiche corner nominali. **GRAVE difetto sensore**: Rlow5k OPEN fa salire il pin sense verso VIN fino a 48V ipotetici, oltre compatibilità comparator VCC5V; serve protezione indipendente e fail-OFF. **Solo studio PRE-CAD**: nessun simbolo LM2903 creato, nessuna alimentazione o circuito hardware realizzato; nuova PR/CI non verificate. Nessuna autorizzazione VIN48V, PCB, TX, batteria o veicolo.
+
+---
+
+
+## 16 novembre 2026 — PR #308 MERGED; Q806 C-E SHORT / R2102 OPEN-SHORT THT in test nativo
+
+PR [#308](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/308) **MERGED** su main `de971b34c2d06279d2aef95dd990c0bda5c058b1`; final PR head `ea3abe49e0497d9b92675bf1ad0a2e88a7bde059`, run [#43847987766](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43847987766) **FAST/FULL/Required 3/3 SUCCESS**; native ERC KiCad9 zero errori/warning, 27 pin/8 reti, marker `PASS_NATIVE_KICAD9_THT_PR01_R2102_27PIN_8NET_567_DERATING_NONFAB`. R2102 Vishay PR01000101002JR500 10k±5% 1W P70 e footprint generica DIN0207 sono soltanto **candidati banco isolato**. 567 corner statici, **36** fuori dal derating P70, a 175°C fault teorico 0,242526W > limite 0,1923W; rating OEM senza curva pulse/termica PCB. MAIN V2.6/FRONT invariati.
+
+Nuovo branch `engineering/v27-pr01-driver-fault-ohmic-gates-20261116`: programma **vero controllo pin-net KiCad9** `03_Verifiche/V2.7/verify_r2102_pr01_driver_fault_native.py`, 27 pin/8 reti e **1080 scenari sintetici** includendo Q806 C–E SHORT, R2102 OPEN/SHORT, Zener aperti e gate sink; test aggiunto alla CI FULL. Rapporto `03_Verifiche/V2.7/RAPPORTO_PR01_DRIVER_FAILCLOSED_1080_20261116.md`. **PR/CI nuovi non verificati e NON integrati**. Risultato architetturale da proteggere: clamp e PR01 non impediscono Q806 corto ON senza ENABLE, non dimostrano supervisor indipendente, body diode, PVT o hardware. #27 resta aperta; **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #307 MERGED; R2102 Vishay PR01 1W THT candidata in PR #308 DRAFT
+
+PR [#307](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/307) MERGED su main SHA `4c019fce978ead98ed8a81809cb59bfa7c33d238`; final head `7931cc867e5e3417505ac9cf2f809687278f670e`, run [#43846653127](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43846653127) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_1N4106_TWIN_THERMAL_7680_SYNTHETIC_FAULT_NONFAB`; netlist KiCad9 27 pin/8 reti, 7680 casi matematici (576 di double-open oltre |VGS|20V, nessuno single-open nel modello sintetico). R2102 footprint reale sul banco precedente **DIN0309 L9.0/D3.2/P12.70** verificato in regression; nessun rating OEM deriva dalla footprint.
+
+PR [#308](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/308) **DRAFT, NUOVO HEAD DA VERIFICARE DOPO REBASE/CI**: banco THT KiCad9 isolato `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_PR01_R2102/MAIN_SECONDARY_OVP_Q804_Q805_Q806_PR01_R2102_LAB_V2_7_DRAFT.kicad_sch` con R2102 candidato **Vishay PR01000101002JR500 10k ±5% 1W P70**, impronta provvisoria DIN0207 cambiata intenzionalmente (OEM corpo 6,5×2,5mm). Nuova FULL `03_Verifiche/V2.7/verify_r2102_pr01_native_derating.py`: richiede ERC0, 27 pin/8 reti e 567 scenari P70/guasto. A source ipotetico 48V e clamp SHORT Rmin9,5k dissipa teoricamente 0,24253W, sotto rating statico a125°C (~0,5769W) ma **sopra** rating a175°C (~0,1923W). Report `03_Verifiche/V2.7/RAPPORTO_R2102_PR01_1W_THT_FAULT_P70_20261116.md`. R2102/OEM footprint, pulse/termica reali, clamp, supervisor e safety NON qualificati. Master MAIN V2.6/FRONT invariati; issue #27 aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #306 MERGED, gate termico/asimmetrie Microchip 1N4106-1 THT
+
+PR [#306](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/306) MERGED su main SHA `a827773cf1f0d921a7ed47701099d0ea98649b15`, final head `237a1f063d3fa912600606aa473f1b83e347086d`, run [#43844093319](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43844093319): FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_MICROCHIP_1N4106_27PIN_8NET_1944_IDEAL_NONFAB`. KiCad9 ERC zero errori/zero warning, 27 pin/8 reti; modello 1.944 casi. Ben **516 casi del test** scendono sotto i 250µA di IZT *per diodo* e non consentono di affermare clamp OEM garantito. Schematic KiCad9 isolato Microchip D2101/D2102 THT DO-35, MAIN V2.6 invariato.
+
+Nuovo branch `engineering/v27-microchip-zener-oem-thermal-current-fault-screen-20261116`: regressione tecnica KiCad9 reale `03_Verifiche/V2.7/verify_microchip_twin_zener_thermal_fault_native.py` registrata nel FULL: **7.680 casi** teorici con due Zener non identici, 5 stati elettrici, PVT sintetici fino a 125°C, limite di dissipazione Zener OEM e analisi R2102 in short clamp. Report `03_Verifiche/V2.7/RAPPORTO_MICROCHIP_1N4106_DISSIPAZIONE_ASIMMETRIE_20261116.md`. **CI/merge nuovi DA VERIFICARE**; senza modello vendor I/V e vero supervisore indipendente. R2102 a source48V e clamp in corto teorico potrebbe dissipare **0,2425W** al minimo 9,5kΩ: impronta effettiva CAD DIN0309 L9.0/D3.2/P12.70 (non DIN0207) non prova rating e derating OEM, potenziale difetto thermal; senza autorizzazione VIN48V. #27 APERTA. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #305 MERGED, candidato Microchip 1N4106-1 THT 250µA in schema KiCad9 isolato
+
+PR [#305](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/305) **MERGED** su main SHA `b017466ccb381c09fd525b9676e5255f4adf739f`, run [#43842098135](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43842098135) su head finale `8048b40fb045e83d5da52b04c27eba1ca8e104b5`, FAST/FULL/Required **3/3 SUCCESS**. FULL marker `PASS_NATIVE_KICAD9_Q806_TWIN_ZENER_27PIN_8NET_1944_IDEAL_FAULT_CASES_NONFAB`, ERC0 zero warning, 27 pin/8 reti, 1944 scenari. **Conclusione OEM critica:** il vecchio Zener 1N4742A ha Vz specificato a IZT21mA, ma R2102=10k limita corrente del ramo a <=5,053mA a source48V; pertanto il passaggio dal modello ideale a protezione reale non è garantito. Master MAIN V2.6 e FRONT invariati.
+
+**Nuovo candidato branch** `engineering/v27-q806-low-current-microchip-clamp-lab-20261116`: schema nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_LOW_CURRENT_ZENER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_LOW_CURRENT_ZENER_LAB_V2_7_DRAFT.kicad_sch` sostituisce D2101/D2102 con **Microchip 1N4106-1 DO-35 THT** OEM status In Production, 12V ±5% nominale a IZT **250µA**, footprint generico DO-35 non ancora convalidato. Nuovo script nativo `03_Verifiche/V2.7/verify_q806_microchip_1n4106_low_current_native.py` in FULL: ERC0, 27 pin/8 reti, 1944 casi ipotetici, verifica del campo di corrente OEM e limiti espliciti dell'estrapolazione di ZZT=200Ω a IZT. Rapporto `03_Verifiche/V2.7/RAPPORTO_Q806_MICROCHIP_1N4106_250UA_20261116.md`. **PR/CI nuova DA VERIFICARE, NON INTEGRATA**. #27 sicurezza aperta: due clamp paralleli non risolvono Q806 C–E SHORT, fault comuni, reale curva I/V, supply/supervisore indipendente e review hardware. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #304 MERGED, doppio clamp D2101/D2102 THT in banco KiCad9 isolato
+
+PR [#304](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/304) MERGED su main SHA `bc490ba7768e57b4564a263ee780575140c4b4cf`. Run [#43839174161](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43839174161) sul final SHA `a5daa029290055b2b3601b6bc2daf67ddbf78aa2`: FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_Q806_GATE_810_KCL_ZENER_STRESS_CASES_NONFAB` (810 casi KCL, error massimo circa 1,8e-14 A). Modelli non OEM: picchi stimati R2102 0,1441W, D2101 0,0445W, guasto D2101 OPEN può eccedere |VGS|20V e Q806 C–E SHORT bypassa enable; nessuna qualifica hardware.
+
+Nuovo ramo candidato `engineering/v27-dual-clamp-q806-twin-zener-lab-20261116`: **vero nuovo schematico THT isolato** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DUAL_ZENER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DUAL_ZENER_LAB_V2_7_DRAFT.kicad_sch` con **D2102 1N4742A candidato DO-41 in parallelo a D2101** con catodi a source, anodi a gate; KSP42BU Q806 invariato. Verificatore nativo `03_Verifiche/V2.7/verify_q806_dual_zener_clamp_native.py` registra in FULL ERC0 e **27 pin/8 reti**, modello sintetico **1.944** scenari sani/singolo OPEN/doppio OPEN. Report `03_Verifiche/V2.7/RAPPORTO_Q806_DOPPIO_CLAMP_ZENER_20261116.md`. **Nuova PR/CI ancora non verificate, NON integrato**. Nuovo finding OEM onsemi 1N4742A: Vz11,4..12,6V specificata a IZT21mA; con R2102>=9,5kΩ e Vsource<=48V la corrente massima assoluta del ramo serie è <=5,053mA, quindi il clamp reale a corrente di banco NON è garantito dai dati Vz/ZZT; test e rapporto esplicitano il limite. Doppio OPEN e guasti comuni/sink SHORT restano pericolosi; nessun modello vendor né supervisore secondario indipendente. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #303 MERGED; gate di stress Q806 810 casi KCL indipendente
+
+PR [#303](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/303) MERGED su main `57721c973362ce2e77cf8e53912fbab092998247`. Run [#43837648283](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43837648283) sul final head `74b7c5e1f3d227a610507b94fb9f5558b5e2d81a`: FAST/FULL/Required **3/3 SUCCESS**, KiCad9 ERC **0 errori e 0 warning**, 25 pin/8 reti e marker `PASS_NATIVE_KICAD9_THT_Q806_KSP42BU_25PINS_8NETS_7290_MODEL_CASES_NONFAB`. Nuovo Q806 KSP42BU 300V THT è un **candidato di laboratorio isolato** e NON un supervisore funzionale integrato: MAIN V2.6 e FRONT invariati; 1.539 combinazioni modello D2101 OPEN superano limite |VGS|20 V e non autorizzano 48 V.
+
+Nuovo branch `engineering/v27-q806-native-gate-stress-envelope-20261116`: test tecnico `03_Verifiche/V2.7/verify_q806_gate_stress_kcl_native.py` registrato in FULL e rapporto `03_Verifiche/V2.7/RAPPORTO_Q806_GATE_810_KCL_STRESS_20261116.md`. Controlli netlist KiCad9 vera Q804/Q805/Q806, 810 scenari Zener sintetico con **due solutori KCL indipendenti**, stress R2102/D2101, |VGS| D2101 OPEN, C–E Q806 SHORT e gate leakage ipotetico. **CI su nuovo branch ancora DA VERIFICARE; NON INTEGRATO**. Nessun modello vendor/hardware, PCB o qualificazione OEM; #27 sicurezza aperta, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #302 MERGED; Q806 KSP42BU 300V THT in PR #303 DRAFT
+
+PR [#302](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/302) MERGED su main SHA `1304f3651e06b5fc41e98c5a7b5546f66e5dbf79`; run [#43834085840](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43834085840) su head `261eca3bed9c332e7b1c52dfb015eeddbaa3f9be` FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_THT_DUAL_PMOS_BACKTOBACK_18PINS_6NETS_IDEAL_SCREEN_NONFAB`; ERC zero errori/warning, 18 pin/6 reti. Banco isolato, non MAIN.
+
+**PR [#303](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/303) DRAFT; CI finale DA VERIFICARE.** Branch `engineering/v27-q806-bjt-gate-driver-physical-candidate-20261116`: CAD reale `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DRIVER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_NPN_LAB_V2_7_DRAFT.kicad_sch` con Q804/Q805 PMOS source comuni e **Q806 onsemi KSP42BU 300V TO-92 E1/B2/C3** come sink BJT, R2103 4k7 base e R2104 100k pulldown, R2102 10k fra collettore e gate, J2103 dedicato a enable 5V esterno NON ancora generato. 2N3904BU 40V è stato **scartato per rischio VCEO con ipotesi VIN48V**, prima dell'approvazione dello schematico finale. Verificatore in FULL `03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py` attende ERC0, 25 pin/8 reti, 7290 casi matematici con scenario D2101 OPEN e Q806 OFF; dati OEM nel `03_Verifiche/V2.7/RAPPORTO_Q806_DRIVER_CANDIDATO_20261116.md`.
+
+**Blocchi sicurezza:** modello D2101 OPEN porta ipotetico |VGS|~39,58V a VIN48V > limite 20V; nessun supervisore indipendente, supply qualificata, GUI power-good o prove banco. Materiale e PCB ancora incompleti, issue #27 aperta. MAIN V2.6 invariato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #301 MERGED; seconda topologia isolata Q804/Q805 anti-serie in verifica
+
+PR [#301](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/301) integrata su **main `02566b758a3d8b44949a9aaacd7ad807eb6fe1b3`**. Run [#43831897396](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43831897396): FAST/FULL/Required **3/3 SUCCESS** sul finale `d05c80db49a6ceadc32fc9e8f99ec1c94694c5ac`, marker `PASS_NATIVE_KICAD9_Q804_THT_PASSIVE_OFF_LAB_ERC_NETS_NONFAB`, KiCad9 ERC **0 errori/0 warning**, **13 pin in 4 reti** per il banco isolato Q804. Il master MAIN V2.6 resta invariato; NO sicurezza hardware acquisita.
+
+**Branch candidato successivo** `engineering/v27-dual-pmos-backtoback-passive-off-20261116`: nuovo banco KiCad9 **THT reale isolato Q804/Q805** con drain esterni e source comuni per ostacolare il ritorno attraverso body diode quando entrambi i FET sono idealmente OFF; R2101 47k OFF, D2101 12V ideale, **R2102 10k serie driver**; 3 connettori lab. `03_Verifiche/V2.7/verify_ovp_dual_pmos_backtoback_lab_native.py` richiede ERC0, **18 pin/6 nets**, grafo diodi e analisi VGS in fault, registrato nella FULL. Report `03_Verifiche/V2.7/RAPPORTO_Q804_Q805_ANTISERIE_GATE_FAULT_20261116.md`. **CI sul nuovo branch da verificare, NON INTEGRATO**. A VIN48V ipotetico con D2101 OPEN e sink ideale, VGS teorico **−39,58V** oltre limite ±20V; dissipatore TO-220 non isolato collega i due DRAIN. Supervisor, driver, protezioni VIN e hardware NON progettati/qualificati. Issue [#27](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/27) ancora aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
+## 16 novembre 2026 — PR #300 MERGED, nuovo banco KiCad9 Q804 OFF passivo
+
+PR #300 docs-only integrata in `main` SHA `dd03fd526e0d79a6e301aaf417da920f23dd2065`, HEAD `ed6bfb5c711365c4bd7853f0b95344ed79cb9c5a`, CI #43825264889 FAST/Required SUCCESS, FULL skipped per `CI_SCOPE full=false` (non 3/3 FULL). Contratto di integrazione secondo supervisore `03_Verifiche/V2.7/CONTRATTO_SUPERVISORE_OVP_SECONDARIO_20261116.md` resta tecnico e privo di circuito qualificato.
+
+Branch `engineering/v27-ovp-q804-off-default-toplevel-lab-20261116`: **vero schema isolato KiCad9 THT candidato** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_PASSIVE_OFF/MAIN_SECONDARY_OVP_Q804_PASSIVE_OFF_LAB_V2_7_DRAFT.kicad_sch` con Q804 IRF9540NPBF TO-220, R2101 47k source↔gate per OFF passivo, D2101 1N4742A 12V gate clamp candidato e J2101-2103 (IN/OUT/GATE LAB). Nuovo test nativo `03_Verifiche/V2.7/verify_ovp_secondary_q804_passive_off_native.py` registrato nel FULL: ERC0 atteso e 13 pin/4 reti da verificare, CI ancora da concludere. Report `03_Verifiche/V2.7/RAPPORTO_Q804_PASSIVE_OFF_BENCH_20261116.md`. LM2903P TI Active PDIP-8 ipotesi futura: Vs max36V, alimentazione indipendente indispensabile; **nessun supervisore secondario è presente nel CAD**, nessuna protezione fail-closed qualificata. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #299 MERGED e architettura protezione indipendente
+
+PR #299 integrata in `main` SHA `840430f4d50cffdca21f6c064a5c7e56de6ffdce` (HEAD `3fc92e5c08740a8f949d5d288569cc5c2e5c305d`). CI #43823862585 FAST/FULL/Required **SUCCESS 3/3**; nel log FULL `PASS_NATIVE_KICAD9_V26_OVP_9072_DUAL_OPEN_RAIL_FAULT_CASES_NONFAB`. Netlist nativa MAIN 76 reti, 9.072 casi, **324 scenari** con D806 e U802 TL431 entrambi aperti sopra il limite 36V U801 in ipotesi VIN48V; massimo 47,4105V. Risultato diagnostico, NON protezione certificata né autorizzazione ad alimentare VIN48V.
+
+Nuovo branch `engineering/v27-independent-ovp-supervisor-interface-contract-20261116`: documento di specifica d'interfaccia `03_Verifiche/V2.7/CONTRATTO_SUPERVISORE_OVP_SECONDARIO_20261116.md` per secondo high-side switch THT in serie, supervisore realmente indipendente, gate OFF passivo, test fault Q801/Q804, supply reverse/brownout e criteri KiCad9/netlist/derating. **Solo contratto, nessun Q804 o supervisore secondario fisico disegnato**. Successivo passo: selezione MPN OEM e schema banco isolato KiCad9 con ERC e netlist, senza integrare nel master fino a review. Issue #27 APERTA. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #298 MERGED: 675 bilanci energetici S-meter
+
+PR #298 su main SHA `7894f7597fc79fd0e67fc437f20d9c9483df542e`, HEAD `bbf5480e6a7052864b6cc635be09d1597100c80c`, CI #43821661995 FAST/FULL/Required SUCCESS 3/3; marker FULL `PASS_NATIVE_KICAD9_FRONT_SMETER_675_POWER_CONSERVATION_FAULT_SCREEN_NONFAB`. Guasto ipotetico 20V/Rcoil 1kΩ/doppio corto/cursore100%: 400mW coil e 40mW pista, senza garanzia di rating OEM. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — gate candidato V2.6 OVP doppio guasto LM393/TL431
+
+Branch `engineering/v26-ovp-combined-open-fault-rail-native-20261116` su main `7894f7597fc79fd0e67fc437f20d9c9483df542e`: verificatore `03_Verifiche/V2.6/verify_ovp_dual_open_lm393_supply_native.py` registra 9.072 combinazioni di carico/fault (4 stati × 2.268 parametri) con KiCad9 netlist e formula KCL confrontata a bisezione, FULL CI da confermare. Report `03_Verifiche/V2.6/RAPPORTO_OVP_LM393_DUAL_OPEN_FAULT_20261116.md`. D806 e TL431 aperti a VIN48V (VF=0,2V, R1011=779Ω, Icc assunto 0,5mA) danno **47,4105 V** su U801 VCC rispetto al massimo 36V. Nessuna qualifica di fail-closed, non autorizzare alimentazione VIN48V. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #297 MERGED, carico sorgente S-meter
+
+PR #297 su main SHA `41511ccefc060a74f022fa88bf447cbea040a68d`, HEAD `53a1660a007c5b9847069745121d4911a5e755c4`, CI #43820280960 FAST/FULL/Required SUCCESS 3/3, marker log FULL `PASS_NATIVE_KICAD9_SMETER_675_SOURCE_LOADING_INDEPENDENT_KCL_CASES_NONFAB`. 675 condizioni, errore massimo relativo 2,28e-15. 11V ideali, 20kΩ coil, wiper max: Imetro=50µA, Ipot=1,1mA, Isource=1,15mA; a Rout=1kΩ Imetro=45,27µA. Manca driver MAIN/FSD OEM.
+
+---
+
+## 16 novembre 2026 — gate candidato: dissipazioni e doppio corto S-meter
+
+Branch `engineering/v27-smeter-fault-power-conservation-20261116` da main `41511ccefc060a74f022fa88bf447cbea040a68d`. Script `03_Verifiche/V2.7/verify_smeter_fault_power_native.py` nel FULL verifica 675 scenari di dissipazione su netlist vera FRONT e due identità di conservazione Ptotale. A 20V idealizzati, doppio corto R1801/R1802 e Rcoil ipotetica 1kΩ, cursore massimo: 400mW su coil (no rating approvato), 40mW pista potenziometro; rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FAULT_POWER_20261116.md`. CI ancora da verificare prima del merge. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #296 MERGED: FSD S-meter passivo 675 casi
+
+PR #296 integrata in main SHA `84dd756b8b7ff11003d8cb1c28343504b8d579c3`, HEAD `e7c3ee87e4442c0ebaad84579807540be06b6304`, CI #43818657921 FAST/FULL/Required SUCCESS 3/3. Marker FULL `PASS_NATIVE_KICAD9_SMETER_675_PASSIVE_FSD_SOURCE_COMPLIANCE_CASES_NONFAB`, 675 casi e 15 casi privi di limite ohmico per doppio corto con cursore 100%/Rcoil=0Ω. Sorgente e FSD OEM non qualificati. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — gate candidato: carico reale della sorgente S-meter passiva
+
+**Branch** `engineering/v27-smeter-drive-source-loading-native-20261116`, base main `84dd756b8b7ff11003d8cb1c28343504b8d579c3`. `03_Verifiche/V2.7/verify_smeter_passive_source_loading_native.py` registra 675 combinazioni di sorgente/impedenza/coil ipotetica/fault/cursore, doppia analisi KCL vs Thévenin e pin-net reali KiCad9, aggiunto a FULL. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_PASSIVE_SOURCE_LOADING_20261116.md`. Per 50µA ipotetici di movimento su 11 V, la sorgente deve alimentare anche pista RV1801: 1,15mA totali, 1,10mA su pista (cursore massimo). **CI da verificare sul branch, nessun merge in anticipo.** Nessun driver MAIN/MPN/FSD reale. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #295 MERGED: porte S-meter gerarchiche isolate
+
+PR #295 integrata in main SHA `f195388657fc934df4c8a787f6c2208dfec5e354`, HEAD PR `b4cf4ec67e2be407c25bff63ce1a5086958eefe8`, CI #43816231083 FAST/FULL/Required SUCCESS 3/3; log prova `SMETER_CONTEXTUAL_PARENT_KICAD_ERC Found 0 violations` e `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_22NETS_71PINS_4REAL_AUDIO_COIL_JOINS_ERC0_NONFAB`. Porte J1801 drive/return gerarchiche reali, isolate da AF_GND. FSD/OEM/MAIN non qualificati. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — gate candidato FSD sorgente S-meter passivo 2×100 kΩ
+
+**Branch:** `engineering/v27-smeter-fsd-drive-compliance-envelope-20261116`, main baseline PR #294 integrata `ecdda05a4d99ef0e036dbd256255af5e891b703c`. Verificatore `03_Verifiche/V2.7/verify_smeter_passive_source_fsd_compliance_native.py`, registrato in FULL, ancora **non validato CI**. 675 condizioni di tensione sorgente (5–20V), cursore RV1801 caricato, Rcoil/FSD solo ipotetici, 0–2 resistori in corto, con 15 casi non limitati (cursore al massimo, bobina ipotetica 0Ω e due R in corto) e 45 casi ancora limitati dal potenziometro riconosciuti. A 5V, 20kΩ coil e 2×100kΩ: 22,727µA max; modello 50µA richiede almeno 11V nominali, senza approvare driver/cavo/movimento. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_PASSIVE_FSD_SOURCE_COMPLIANCE_20261116.md`. PR #295 porte S-meter gerarchiche separata e in CI. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #294 MERGED: gate termico J1902 validato
+
+**PR #294** integrata main SHA `ecdda05a4d99ef0e036dbd256255af5e891b703c` da HEAD `856d6943b14274aa9ddaf9819c812e869b2c7f2b`: CI #43814903278 FAST/FULL/Required **SUCCESS 3/3**, marker `PASS_NATIVE_KICAD9_FRONT_MUTE_J1902_OVERVOLTAGE_RESISTOR_SCREEN_NONFAB` verificato. Nessuna qualifica OEM, nessun limite reale di guasto autorizzato. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — FRONT S-meter: porte gerarchiche drive/return isolate, candidato
+
+**Branch:** `engineering/v27-front-smeter-native-parent-port-isolation-20261116`, main baseline `688a5a9a93b7b86840898b9c7345a06afad8ba4e` (PR #293 merged). Foglio figlio `FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` ora espone `METER_DRIVE_CANDIDATE` e `METER_RETURN` tramite hierarchical_label reali J1801/1-2; il master FRONT aggiunge due sheet pin con etichette isolate da AF_GND, DRIVER_GND, LED, bobina e alimentazioni. Due verificatori nativi KiCad9 aggiornati per confermare ERC0 e conservazione prevista 5 fogli/32 ref/22 reti/71 pin; **CI da verificare, nessun merge senza FAST/FULL/Required verdi**. Nessuna sorgente MAIN, FSD OEM, connettore accoppiato, PCB o approvazione sicurezza. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_HIERARCHICAL_PORT_BOUNDARY_20261116.md`. PR #294 su sovratensione mute indipendente e in verifica. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #293 MERGED, gate audio fault NC integrato
+
+**PR #293** integrata su main SHA `688a5a9a93b7b86840898b9c7345a06afad8ba4e`, CI #43813871295 FAST/FULL/Required 3/3 SUCCESS, marker nativo `PASS_NATIVE_KICAD9_FRONT_MUTE_120_AC_INJECTION_FAULT_CASES_AF_GND_OPEN_FAIL_CLOSED_NONFAB` confermato nel log. Il modello non costituisce prova di mute fail-safe. NO FAB/NO TX.
+
+---
+
+## 16 novembre 2026 — candidato gate termico guasto esterno J1902 post-mute
+
+**Branch indipendente:** `engineering/v27-front-mute-input-overvoltage-resistor-screen-20261116` da main PR #291 integrata `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. Nuovo test `03_Verifiche/V2.7/verify_front_mute_j1902_overvoltage_resistor_screen_native.py`, in suite FULL, verifica topologia KiCad9 R1902 1k e R1901 100k in parallelo con K1901 NC su AF_GND e valuta sovratensioni esterne forzate a J1902/1. A -5% R, 20 V forzati danno **0,421 W R1902**; con limite 0,25 W solo ipotetico, soglia 15,41 V; nessuna qualifica. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_J1902_OVER_VOLTAGE_20261116.md`. Issue #292 e PR #293 su mute NC separate. **Branch NON ancora validato in CI**; nessuna autorizzazione FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — FRONT mute NC, guasto AF_GND e interferenza audio: gate candidato
+
+**Baseline:** PR #291 MERGED in main SHA `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. CI #43812854126 FAST/FULL/Required **SUCCESS 3/3**, test post-mute `PASS_FRONT_POSTMUTE_75_RX_AC_KCL_CASES_NATIVE_NETS_NONFAB` osservato nel log. **Branch attuale** `engineering/v27-front-nc-mute-coupled-audio-fault-screen-20261116` implementa un nuovo gate nativo `verify_front_mute_nc_coupled_audio_fault_native.py` e l'integrazione in `ci/full_regressions.py`: 60 combinazioni × due stati NC (120 casi), iniezione capacitiva ipotetica su audio MAIN, doppia soluzione AC KCL/impedenza, rigetto AF_GND open. Rshunt a NC integro con Rcontatto ipotetica 1Ω: 991,079Ω; NC aperto con ramo bleed ancora a massa: 100kΩ, +100,900×. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_NC_COUPLED_AUDIO_FAULT_20261116.md`, issue #292. **CI non ancora convalidata sul branch**: non integrare senza FAST/FULL/Required verdi. Nessuna prova hardware, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #290 MERGED: audio interboard post-mute
+
+PR #290 integrata in main SHA `dfcc0be3e5c50e27e5f44eaaae2f492a606fc37d`, HEAD PR `88aaa5bce003c012197b24f40e012e6c70195fcd`, CI #43812063277 FAST/FULL/Required SUCCESS 3/3; schema interboard corretto J1902 post-mute → J1202 MAIN, escludendo bypass pre-mute J1302. Cablaggio meccanico e relè OEM ancora non qualificati. NO FAB / NO TX.
+
+---
+
+## 16 novembre 2026 — modello AC post-mute RX K1901/R1902/R1901, revisione candidata
+
+**Branch:** `engineering/v27-audio-postmute-loaded-ac-20261116`, baseline main PR #288 integrata `5f92440dddd3bff93e73847bcd27ff476a6e414e`. Nuovo verificatore `03_Verifiche/V2.7/verify_front_postmute_loaded_ac_native.py`: 75 combinazioni AC di AM455→RV1301→NO K1901→R1902 1k/R1901 100k shunt→C1201/R1201→LM386. Verifica netlist reale di quattro fogli KiCad9, confronto indipendente KCL complessa quattro nodi vs riduzione impedenze; regression in `ci/full_regressions.py`. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_POSTMUTE_AC_TRANSFER_20261116.md`. **CI da convalidare, non merge anticipato**. Modello di ricezione con relay NO ideale, non prova di mute sicuro, OEM o PCB. Le altre PR #289/#290 sono indipendenti e in CI. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
+## 16 novembre 2026 — fix candidato bypass MAIN AUDIO MUTE, branch
+
+**Nuovo branch:** `engineering/v27-main-front-audio-harness-post-mute-20261116`, baseline main PR #288 MERGED (SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`, Actions #43809446368 FAST/FULL/Required SUCCESS 3/3, 22 reti FRONT). Individuato errore reale di contratto: cavo MAIN/FRONT J2401 precedentemente puntato a **J1302**, presa wiper **pre-mute**, bypassando K1901 se usata come uscita verso LM386 MAIN. Corretto schema del cavo per **J1902/1 AMP_INPUT_MUTED → J1202/1 AUDIO_IN** e **J1902/2 AF_GND → J1202/2 GND**; aggiornato verificatore nativo per imporre netlist del master FRONT, separazione tra J1302 e J1902, e pin endpoint. Rapporto `03_Verifiche/V2.7/RAPPORTO_INTERBOARD_AUDIO_POST_MUTE_BYPASS_FIX_20261116.md`. **CI non ancora conclusa: non fondere** senza FAST/FULL/Required verdi sul commit finale. Nessuna scheda reale o MPN relè qualificato; resta NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
+
+## 16 novembre 2026 — PR #288 MERGED: FRONT bobina gerarchica KiCad9
+
+**Merge verificato su main:** PR #288 SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`; CI #43809446368 FAST/FULL/Required **SUCCESS 3/3** su HEAD `8ff4c674ebee4425ade6937616dcf2babbc4e6f5`. KiCad9: ERC0; master FRONT 5 fogli, 32 ref, **22 reti**, **71 pin**, **4 collegamenti fra fogli** (2 audio/AF_GND, 2 bobina COIL_PLUS/MINUS_LAB); verificati 36 stati di guasto logici del dual NPN, non fail-safe. Nessun MPN relè o driver qualificato, niente PCB prodotto. PR #289, gate S-meter FSD, separata e in verifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
+## 16 novembre 2026 — safety gate analitico S-meter FSD single-fault su branch
+
+**Branch indipendente:** `engineering/v27-front-smeter-fsd-single-fault-bound-20261116` (da main `ab0a09bc11a21f442920af450f7c6999bc38eb1e`): estensione sostanziale del gate `03_Verifiche/V2.7/verify_front_smeter_fsd_fault_screen.py` che ricava tensione massima sorgente da FSD *ipotetica*, due resistenze da 100k con -5% e guasto singolo in corto. A 50 µA: **9,5 V** sani, **4,75 V** con un resistore corto; 20 V non qualificati. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FSD_VOLTAGE_SINGLE_SHORT_20261116.md`. Schemi FRONT/MAIN invariati; nessuna FSD OEM certificata. Questo gate non è prova di sicurezza o permesso di alimentare hardware. PR/CI da verificare sullo SHA finale. PR #288 sulla bobina rimane indipendente e draft. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+
+
+## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
+
+**Baseline verificata:** PR #286 integrata (main SHA `5fb398a67f13a1523f938afef2bae9f093077a78`), PR #287 checkpoint integrata (main SHA `ab0a09bc11a21f442920af450f7c6999bc38eb1e`). PR #286 CI #43808193916 FAST/FULL/Required 3/3 SUCCESS e master FRONT 24 reti / 71 pin / 2 unioni audio.
+
+**Nuovo branch** `engineering/v27-front-master-coil-two-net-hierarchy-20261116`: due nuove connessioni gerarchiche elettriche KiCad9 tra RELAY e COIL_DRIVER (`COIL_PLUS_LAB` e `COIL_MINUS_LAB`), portando la topologia attesa a **22 reti / 71 endpoint / 4 unioni parent**. Test di netlist su tutte le partizioni, isolamenti AF_GND/DRIVER_GND/ILLUM_RETURN e ERC gerarchico aggiornati. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MASTER_COIL_HIERARCHY_20261116.md`. **Non ancora CI convalidata, non integrata su main**: procedere soltanto dopo FAST/FULL/Required verdi sullo SHA finale. Relè, rail e driver restano non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 16 novembre 2026 — PR #286 MERGED, master FRONT audio/AF_GND realmente cablato
+
+**Verifica live:** PR [#286](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/286) MERGED su `main` con SHA `5fb398a67f13a1523f938afef2bae9f093077a78`. Il commit finale della PR `448b382e5abe02e46b1950b4fb9a113a5130e0f5` ha superato [CI #43808193916](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43808193916): FAST/FULL/Required **SUCCESS 3/3**, `PASS_REQUIRED_CI_GATE (full_required=true)`, nessun Traceback o error log, KiCad9 ERC0 nel master e nei verificatori; `PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_24NETS_71PINS_2REAL_AUDIO_GND_JOINS_ERC0_NONFAB`. Corretto anche l'ERC dei child gerarchici in contesto parent (pin gerarchici non validi come root standalone), preservando i controlli netlist dei singoli fogli.
+
+**Prossimo lavoro tecnico:** interfaccia reale FRONT/MAIN e mute/driver da integrare progressivamente su master, senza assumere relay fail-safe né OEM validato; continuano a mancare qualifica alimentazione, connettori, relay e layout prodotto. Questa integrazione non autorizza prototipazione, DRC PCB o test RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #286, correzione test ERC figli gerarchici (branch draft)
+
+PR #286 HEAD iniziale `e5d4e15e321d6b9a30978c5935b93cbd5b318ce8`: Actions `43791229651` FAST SUCCESS, FULL/Required FAILURE: `verify_front_volume_native.py` lanciava `kicad-cli sch erc` sul solo child con due hierarchical labels, ottenendo `pin_not_connected` (manca il parent), non un difetto del master dimostrato. Aggiornati i verificatori volume e mute relay per applicare ERC nativo al **master FRONT cinque fogli** e mantenere esportazione/contratto pin-net dei child. Commit di correzione `f21d456eaec0455c40525fa886852984d4bfe1ed`; attendere FAST/FULL/Required su HEAD finale, riesaminare eventuali ulteriori failure e **non fare merge** con gate non verdi. Nessuna modifica ai conduttori elettrici dopo il commit originario; nessuna qualifica di relay, harness o PCB. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+**Aggiornato:** 16 novembre 2026 (PR #285 MERGED; collegamento reale volume→mute su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #285 SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #285 MERGED; primo collegamento elettrico reale FRONT sul branch
+
+**Verificato GitHub:** PR #285 MERGED su main SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; [Actions #43789747752](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43789747752) FAST/FULL/Required **SUCCESS 3/3**. FULL: `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_5SHEETS_32REFS_26NETS_71PINS_ERC0_NO_CROSS_RAIL_NO_FAB`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Riparata regressione indipendente di piazzamento 13ref.
+
+**Branch corrente** `engineering/v27-front-master-volume-to-mute-hierarchical-audio-20261116`: due vere connessioni KiCad9 nel master FRONT fra i fogli VOLUME e RELAY via pin gerarchici: `VOL_WIPER_TO_AMP` **J1302/1 ↔ J1901/1 ↔ K1901/3** e `AF_GND` **J1302/2 ↔ J1901/2 ↔ K1901/2**. Test netlist gerarchico aggiornato da 26 a **24 reti**, 71 endpoint pin; tutte le altre reti, incluse quelle bobina e LED, devono restare isolate. MPN relè e condizioni meccaniche non qualificati; niente interconnessione PCB MAIN, power/coil, routing/front PCB completo; nessun comportamento fail-safe certificato. Prima CI #43790882778 FAST SUCCESS, FULL/Required FAILURE: la nuova gerarchia KiCad9 **ERC0, 24 reti e 71 pin verificati**; test standalone del volume ancora vietava tutti gli hierarchical_label (`assert "(hierarchical_label " not in sch`). Corretto il gate per richiedere esattamente le due nuove porte passive `VOL_WIPER_TO_AMP` e `AF_GND`, mantenendo isolato `DEMOD_AUDIO`. Nuova CI sul commit aggiornato da verificare; merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #284 MERGED; master FRONT 5 sheet KiCad9 su branch
+
+**Verificato GitHub:** PR #284 MERGED su main SHA `4d5467a87135698e755a2770cec663b75d8894ec`. [Actions #43788106048](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43788106048) FAST/FULL/Required **SUCCESS 3/3**. FULL `FRONT_COIL_LINK_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_TWO_WIRE_PIN1_PIN2_HARNESS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Cablaggio di laboratorio separato dal master e dalla PCB FRONT.
+
+**Branch corrente** `engineering/v27-front-hierarchy-five-isolated-native-sheets-20261116`: **modifica elettrica al master KiCad9** `FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`: da tre a cinque fogli THT aggiungendo veri sheet `FRONT_MUTE_NC_RELAY` e `FRONT_MUTE_COIL_DRIVER`. Librerie parent `TH_MUTE`, `TH_COIL` registrate. Test gerarchico aggiornato a **32 ref, 26 net locali, 71 pin** per verificare l'isolamento di AF_GND, wiper, COIL_PLUS/MINUS ripetuti fra figli. In assenza di connessioni gerarchiche, i fogli restano intenzionalmente elettricamente isolati: integrazione di progetto non è ancora collegamento elettrico/PCB finita. Prima CI #43789249115 FAST SUCCESS, FULL/Required FAILURE: master KiCad9 5 fogli **ERC0 e netlist 32ref/26net/71pin superati**, ma test legacy PCB 13ref importava PARTITIONS ampliato da 12 a 22 etichette, fallendo `assert len(EXPECTED_PINS)==28` senza alterazioni PCB. Corretto test legacy con selezione autonoma delle sole 12 reti e 13 ref del placement laboratorio; nuova CI HEAD da verificare, merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #283 MERGED; interconnessione fisica KiCad9 laboratorio FRONT in branch
+
+**Verificato GitHub:** PR #283 MERGED su main SHA `b977bf7853411491b67c867a09825f9fdc27d066`; [Actions #43786640594](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43786640594) FAST/FULL/Required **SUCCESS 3/3**. FULL: `DUAL_ENABLE_COIL_DRIVER_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. C1912 10 µF/16 V polarizzato THT nativo aggiunto a driver bobina standalone, nessuna PCB modificata.
+
+**Branch corrente** `engineering/v27-front-relay-coil-harness-contract-20261116`: schema KiCad9 `FRONT_COIL_INTERCONNECT_PIN1_PIN2_NONFAB.kicad_sch` di collegamento fisico **J1921↔J1922** pin1=COIL_PLUS_LAB, pin2=COIL_MINUS_LAB; test ERC e netlist nativi a 2 reti, verifica indipendente incrociata ai pin J1914 driver e J1903 relè. È **harness laboratorio** non PCB prodotto, headers non keyati e MPN/polarizzazione qualificati; il blocco FRONT completo resta non integrato e non releasable. Prima CI #43787692399: FAST SUCCESS; FULL/Required FAILURE per due warning ERC `lib_symbol_issues`: mancava la registrazione della libreria locale `TH_LINK`, non un errore delle connessioni. Creati `TH_LINK.kicad_sym` e `sym-lib-table` sul branch con simbolo KiCad9 a due pin coerente con lo schema embedded. Nuova CI HEAD da verificare, merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #282 MERGED; C1912 bulk rail bobina in branch
+
+**Verificato GitHub:** PR #282 MERGED su main SHA `e4348dab715756f0b3a3b65ae8454b79445d0ff1`. [Actions #43785677259](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43785677259) FAST/FULL/Required **SUCCESS 3/3**; FULL `DUAL_ENABLE_COIL_DRIVER_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. C1911 100 nF THT presente in schema driver standalone, nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-coil-rail-bulk-10u-tht-20261116`: vero **C1912 10 µF / 16 V THT polarizzato** con positivo pin 1 verso **COIL_PLUS_LAB**, negativo pin 2 verso **DRIVER_GND**, impronta radiale 2 mm candidata e simbolo registrato. Test nativo delle **otto reti** aggiornato per C1912 e polarità, rapporto documenta energia limitata, inrush, ESR, maturazione/temperatura e OEM da verificare. PCB FRONT/MAIN inalterate, CI sul nuovo branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #281 MERGED; bypass THT bobina su branch
+
+**Verificato GitHub:** PR #281 MERGED su main SHA `ea6f28d414f15abf76d6479bc36db22def8811dc`, [Actions #43784261629](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43784261629) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_NC_RELAY_2_THT_RESISTORS_6_ISOLATED_NETS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_NC_RELAY_64_FAULT_STATE_GRAPH_BOOLEAN_NO_FAILSAFE_RELEASE`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun errore/Traceback, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. R1902 1 kΩ serie, R1901 100 kΩ shunt solo schema standalone FRONT.
+
+**Branch corrente** `engineering/v27-front-coil-rail-100n-decouple-tht-20261116`: reale **C1911 100 nF THT** fra **COIL_PLUS_LAB** e **DRIVER_GND** sullo schema KiCad9 driver bobina, simbolo locale registrato e impronta ceramica radiale provvisoria. Regressione KiCad9 nativa 8 reti aggiornata con C1911/1 e C1911/2; documento limita esplicitamente claims di EMC, bulk, transienti e componenti OEM. PCB FRONT/MAIN inalterate. Prima CI #43785262025 FAST SUCCESS, FULL/Required FAILURE: test indipendente ha contato una sola impronta C1911, ma l'impronta compare sia nella proprietà del simbolo di libreria embedded sia nell'istanza (2 occorrenze). Assertion corretta a 2, nessun risultato ERC del driver dichiarato prima del rerun. Nuova CI su HEAD da verificare; merge sospeso; nessuna qualifica produttiva. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #280 MERGED; R1902 serie 1k nell'ingresso audio
+
+**Verificato GitHub:** PR #280 MERGED su main SHA `0a52d93e6d93cfa30536570007ecc32e9a65f62f`; [Actions #43782129072](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43782129072) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. R1901 100 kΩ tra AMP_INPUT_MUTED e AF_GND integrato nel foglio standalone relay; nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-relay-input-series-1k-tht-20261116`: R1902 1 kΩ THT fisico in serie fra K1901 COM e J1902 ingresso LM386; rete distinta RELAY_COM_AUDIO. R1901 100k resta a massa lato amplificatore. Sei reti native nel foglio contatti, due verifiche KiCad9 aggiornate, rapporto tecnico include carico audio ipotetico; non simula/sostituisce collaudi OEM, ESD o guasti saldatura NO/GND aperta. PCB FRONT/MAIN inalterate. CI #43783407970 FAST superato ma FULL/Required falliti: test indipendente verify_front_nc_relay_contact_fault_matrix_native.py conservava pin COM sulla rete AMP_INPUT_MUTED prima dell'aggiunta R1902. Corretto confronto delle sei reti, R1902/1↔RELAY_COM_AUDIO, R1902/2↔AMP_INPUT_MUTED e R1901 verso AF_GND; matrix 64 stati resta modello ideale e non qualificazione. Seconda CI #43783793413: FAST SUCCESS, FULL/Required FAILURE dovuta a sequenza letterale \\n anziché newline in verifica Python 64 stati (SyntaxError), senza difetto ERC del foglio a sei reti. Corretto nel branch con commit ab48f235; nuova CI HEAD da verificare; merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #279 MERGED; nuovo shunt analogico THT su branch
+
+**Verificato GitHub:** PR #279 MERGED su main SHA `22e0cc82a4a00eec2e4aa8eb3a1b618ba9a42276`; [Actions #43780724940](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43780724940) FAST/FULL/Required **SUCCESS 3/3**, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, ERC `Found 0 violations`, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. U2101 e C2101 hanno footprint THT candidati, non qualificati.
+
+**Branch corrente** `engineering/v27-front-muted-amp-input-100k-bleed-20261116`: vero **R1901 100 kΩ** THT nel foglio KiCad9 FRONT relay, fra **AMP_INPUT_MUTED** e **AF_GND**. Test di netlist KiCad9 esteso a entrambi i pin/componenti e footprint; rapporto tecnico aggiornato. Riduce ingresso flottante su contatto aperto ma non garantisce mute con NO saldato o AF_GND interrotta; carico audio su potenziometro va misurato. PCB prodotto invariata; prima CI #43781676188 FAST SUCCESS, FULL/Required FAILURE per test nativo relay preesistente con conteggio pin obsoleto e libreria TH_MUTE priva del nuovo simbolo R1901: aggiunto simbolo locale e aggiornate asserzioni indipendenti per 9 pin e R1901/1, R1901/2; nuova CI HEAD richiesta. Nessun merge finché FAST/FULL/Required non sono verdi. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #278 MERGED; impronte fisiche MCP100 sul nuovo branch
+
+**Verificato GitHub:** PR #278 MERGED su main SHA `3f3224fff25adf678a2a87abadfd762715a0863f`, [Actions #43779829333](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43779829333): FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`, KiCad9 `Found 0 violations`, nessun Traceback/errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Modifica circuitale KiCad R1913/2 su SERIES_MID come resistenza base-emettitore alta Q1911; nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-mcp100-d-bond-to92-c100n-footprints-20261116`: in schema KiCad standalone supervisore MCP100-450DI/TO candidati `Package_TO_SOT_THT:TO-92_Inline` (U2101, OEM bondout D RESET_N1/VDD2/VSS3) e `Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm` (C2101 100 nF). Test KiCad9 aggiornato con asserzioni precise sui footprint/pin. Nessun MPN finale, package/dimensioni e accoppiamento al driver ancora da qualificare; PCB FRONT invariata. CI branch da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #277 MERGED; R1913 verso emettitore su nuovo branch
+
+**Verificato GitHub:** PR #277 MERGED su main SHA `38cb061290075b6fd5f3defef5a9428617cc3e17`; [Actions #43778992240](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43778992240) FAST/FULL/Required **SUCCESS 3/3**. FULL include `PASS_FRONT_DUAL_NPN_36_FAULT_STATES_EXPOSE_UNSAFE_ENERGIZATION_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, ERC `Found 0 violations`, nessun Traceback o errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. La matrice rivela 5 energizzazioni indesiderate e 5 mancate energizzazioni nel modello ideale, non una mitigazione.
+
+**Branch in corso** `engineering/v27-front-upper-bjt-base-emitter-bleed-20261116`: modifica fisica della rete in KiCad9 R1913/2 da DRIVER_GND a SERIES_MID, riferimento all'emettitore Q1911; R1914 resta B-E Q1912. Test netlist delle 8 reti e modelli DC/Omron coerentemente aggiornati. Prima R1913 a massa non fissava VBE del transistor alto quando Q1912 disattivato: corretta la topologia, **senza affermare fail-safe né saturazione garantita**. CI branch ancora da verificare; nessuna PCB modificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #276 MERGED; fault screening doppio transistor su nuovo branch
+
+**Verificato GitHub:** PR #276 MERGED su main SHA `e8598fb756db6de156020362746851679ea0c752`; [Actions #43777796972](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43777796972) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`, KiCad9 `Found 0 violations`, nessun Traceback o errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Q1911/Q1912 BC33725BU candidati in KiCad con TO-92, C1/B2/E3 OEM. Nessuna PCB aggiornata, bobina/contatti/safety non qualificati.
+
+**Branch in corso** `engineering/v27-front-coil-36-state-transistor-faults-20261116`: sostituito il controllo tautologico con **36 stati** (4 comandi × 3 stati Q1911 × 3 stati Q1912), esplicitando **5 energizzazioni non comandate** e **5 mancate energizzazioni** nel modello interruttore ideale. Non è una mitigazione fail-safe né una prova hardware; gate CI del branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 16 novembre 2026 — PR #275 MERGED; Q1911/Q1912 BC33725BU OEM su nuovo branch
+
+**Verificato:** PR #275 MERGED, main SHA `27fa5f51dec26c77319343b1ee703c027c225b1a`. [Actions #43776189585](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43776189585): FAST/FULL/Required **SUCCESS 3/3**. FULL include `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_FRONT_D1911_216_RL_ELECTRICAL_DECAY_ILLUSTRATIVE_NONFAB`, ERC `Found 0 violations`, nessun errore/Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Quattro footprint THT DIN0207 assegnati nello schema FRONT, nessun PCB modificato.
+
+**Branch in corso** `engineering/v27-front-bc33725bu-to92-pinmap-20261116`: in KiCad Q1911/Q1912 diventano candidati onsemi `BC33725BU`, footprint `Package_TO_SOT_THT:TO-92_Inline`, simbolo e libreria rimappati secondo datasheet OEM **C1, B2, E3**, test di netlist aggiornato ai nuovi pin. L'OEM VCEsat è garantito a 500mA/50mA, **non** per bobina scelta, corrente di base attuale, 0,15/0,30V illustrativi; nessuna qualifica driver, relay o safety. CI del branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #274 MERGED; footprint fisici R1911–R1914 su branch successivo
+
+**Verificato GitHub:** PR #274 MERGED, main `ed2c0e219ac79ea15c965c7467536b688fed32c0`, workflow [#43775458662](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43775458662) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `FRONT_D1911_RL_DIODE_216_ELECTRICAL_DECAY_ONLY_NO_RELAY_RELEASE`, `PASS_FRONT_D1911_216_RL_ELECTRICAL_DECAY_ILLUSTRATIVE_NONFAB`, KiCad9 `Found 0 violations`, nessun Traceback/errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Analisi RL soltanto elettrica (NO prova tempo contatti).
+
+**Branch corrente** `engineering/v27-front-driver-four-resistor-tht-footprints-20261116`: assegnati in schema CAD KiCad R1911–R1914 tutti a `Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal`, controllo native gate dei quattro footprint. Non sono resistori elettricamente o termicamente qualificati, né l'attuale doppio NPN è un driver rilasciabile; PCB invariato; CI ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #273 MERGED; RL elettrico D1911 su branch successivo
+
+**Verificato su GitHub:** PR #273 MERGED, main `4804b950e7894e354f88e927b22573daf8861f57`. Workflow [#43774695605](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43774695605) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun errore/Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. D1911 candidato Vishay `1N4007-E3/54` su CAD KiCad nativo DO-41, K1 rail+, A2 rail−, nessun PCB aggiornato; diodo non qualificato per rilascio fisico.
+
+**In corso su branch** `engineering/v27-front-flyback-rl-release-bound-20261116`: test Python di 216 scenari analitici RL del ricircolo D1911, t corrente 10% 0,10052–5,59395 ms, energia iniziale 0,002296–0,299246 mJ, **solo ipotesi L/Vf/VCEsat**. Non sono valori reali di contatto o relè; test CI ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #272 MERGED; D1911 flyback CAD OEM candidato
+
+**Verificato su GitHub:** PR #272 MERGED su main `c4fe6907ff838ce441b7a58b0c091dcd8aeaa195`, [Actions #43773957936](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43773957936) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `OMRON_G5V1_5V6V_54CORNER_PICKUP_DRIVER_OEM_REJECTION_NOT_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, no Traceback; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Omron DC5/DC6 respinti allo screening di funzionamento, nessun MPN relè qualificato.
+
+**Revisione sul branch** `engineering/v27-front-flyback-1n4007-oem-candidate-20261116`: assegnato realmente in schema KiCad D1911 candidato Vishay `1N4007-E3/54` DO-41 THT con footprint `Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal`; pin K1 rail+ / A2 rail− controllati dal test native netlist. OEM full release e tempi di caduta mute NON qualificati; PCB invariato; CI del branch non ancora verificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #271 MERGED; screening Omron DC5/DC6 in corso
+
+**Verificato su GitHub:** PR #271 MERGED, main SHA `c7b6cbcdb89fd09d2760cc3b05c74e980900974f`, workflow [#43773219018](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43773219018) FAST/FULL/Required **SUCCESS 3/3**. Log FULL: `MCP100_9CORNER_NECESSARY_COIL_IMPEDANCE_NOT_RELAY_QUALIFICATION`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, nessun Traceback; gate Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Nessun CAD/PCB modificato; limite matematico a 9 corner **216,443Ω**, non release.
+
+**Branch corrente non integrato:** `engineering/v27-omron-5v-6v-pickup-driver-oem-screen-20261116`. Nuova matrice con fonte primaria Omron G5V-1: **54 corner** (DC5/DC6 ×3 rail×3 drop×3 tolleranze); DC5 **27/27** con pilotaggio insufficiente, **3/27** sotto pickup; DC6 **1/27** pilotaggio insufficiente e **18/27** sotto pickup. Modello transistor non qualificato, test nativo CI sul nuovo HEAD da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 16 novembre 2026 — PR #270 integrata, MCP100 driver coil-bound in nuova revisione
+
+**Verificato su GitHub:** PR #270 MERGED, main SHA `4afd922ebf355a38d89dee8f5ef228958f385974`; [Actions #43772174854](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43772174854) **FAST/FULL/Required SUCCESS 3/3**. Audit FULL: marker `MCP100_3MA_OEM_OUTPUT_SOURCE_FEASIBILITY_NOT_DRIVER_RELEASE`, `MCP100_216_FAULT_STATE_SCREEN_NOT_SAFETY_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`; nessun Traceback. Audit Required: `PASS_REQUIRED_CI_GATE (full_required=true)`. Test 9/27 stati di corrente source oltre la garanzia OEM 3mA; nessun driver o relè autorizzato.
+
+**Revisione corrente non ancora integrata:** branch `engineering/v27-mcp100-coil-impedance-necessary-screen-20261116`: gate aggiuntivo di **9 corner** VOH/driver per minima resistenza bobina necessaria con Rbase 1k5, beta10 e VBE0.8 illustrativi; massimo 216,443Ω. 167Ω fallisce ogni corner, 220Ω supera solo lo screening matematico, non costituisce MPN o qualifica. PR/CI della revisione corrente non ancora verificati; schema e PCB invariati, nessun rilascio hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 15 novembre 2026 — PR #269 integrata, passo successivo MCP100 source-current
+
+**Verificato su GitHub:** PR #269 MERGED, main SHA `635f2fcf966ef4f8c9446c1b6921893d12ba807e`. Actions run [#43771474863](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43771474863) FAST/FULL/Required SUCCESS 3/3, log nativo FULL marker `MCP100_216_FAULT_STATE_SCREEN_NOT_SAFETY_RELEASE`, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, `Found 0 violations`, no Traceback. Revisioni KiCad schematico e PCB restano invariate; test 216 casi astratti NON equivale a safety release.
+
+**Revisione tecnica successiva, su branch** `engineering/v27-mcp100-oem-3ma-driver-feasibility-20261115`: aggiunto al gate FULL native MCP100 un controllo di compatibilità tra corrente base minima illustrativa (beta10, VBE0.8V) e garanzia di VOH OEM a 3mA. Su 27 corner sopra soglia, 9 richiedono più di 3mA incluso pull-down; altri 18 non dimostrano compatibilità driver. Nessun MPN o PCB qualificato; test nuovo e checkpoint sul branch, **CI della revisione successiva non ancora verificata**. Soluzione successiva: progettare buffer o relè THT diverso solo dopo qualifica OEM, mantenendo fault e contatti dry-audio in review. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — nuova revisione draft: test 216 guasti MCP100, NON MERGED
+
+Main HEAD verificato prima del branch: `7851079067df5894e7b1da432faa3073610ff6fd`, merge PR #268. Il checkpoint main ancora riportava #268 aperta: questa annotazione corregge il passaggio **soltanto sul branch** finché i gate della nuova PR non siano verdi e il merge non avvenga. La CI di #268 non è stata riauditata con log di run tramite il connettore; evitare attribuzione di nuovi risultati.
+
+Branch `engineering/v27-mcp100-fault-coverage-20261115`: estensione del gate nativo MCP100 con matrice separata 216 stati (54 condizioni × reset nominale, stuck-HIGH, stuck-LOW, riferimento GND aperto); rapporto OEM aggiornato. Attesi 27 consensi falsi potenziali sotto soglia con stuck-HIGH, 27 consensi persi sopra soglia con stuck-LOW, 54 uscite riferite a GND indefinito. Logica fault injection **non equivale** a simulazione vendor, risposta fisica del relay o prova fail-safe. KiCad/PCB invariati. **GATE di questa revisione: FULL KiCad9, FAST e Required success sull'HEAD finale; non eseguiti localmente**. Proseguire qualificando driver e contatti; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #267 MERGED: vero KiCad9 LM393+TL431 THT power-good
+
+**[PR #267](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/267) MERGED** su main `640de1d16c1b5c3e42dd4212051635b0fd803441`, final technical SHA `3a429f89a485bdab4561fdf29d3ca7f73788cb99`. [Actions #43766904063](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766904063) **FAST/FULL/Required SUCCESS 3/3**, 111 suite legacy PASS, ERC KiCad9 `Found 0 violations`, marker `PASS_KICAD9_THT_TL431_LM393_PGOOD_5NETS_ERC0_135_CORNERS_UNQUALIFIED` presente, nessun traceback. Schema THT autonomo LM393 PDIP8 e TL431 LP TO92, 4 R, 100n, due connettori lab, soglia ideale 4,574V e cinque reti native verificate; test 135 corner VIN, Vref, divisori. Prima [CI #43766197158](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43766197158) **FULL FAIL** per 12 warning `endpoint_off_grid`, sistemati allineando posizioni, fili ortogonali e nuovi gate finali **senza waiver**. **Non è prodotto qualificato:** IKA TL431 e common-mode LM393 non validi ai rail bassi; out open collector caricato dalla base a valle scende a ~3,15V anche con rail5,5, manca vero fail-closed su brownout profondo. PCB invariata. Rapporto `RAPPORTO_FRONT_LM393_TL431_POWERGOOD_THT_CANDIDATO.md`. NO FAB/TX/BATTERIA/VEICOLO.
+
+## 15 novembre 2026 — MCP100-450DI/TO push-pull THT, alternativa in PR
+
+Da main `640de1d16c1b5c3e42dd4212051635b0fd803441`, branch `engineering/v27-mcp100-450di-to-supervisor-native-20261115`. Nuovo schema KiCad9 standalone OEM pinout TO92 D-bondout `FRONT_MUTE_MCP100/FRONT_MCP100_450_POWER_GOOD_THT_V2_7_DRAFT.kicad_sch`: pin1 RESET_N pushpull, pin2 VDD, pin3 VSS, C2101 100n, J2101 rail lab, J2102 verso driver J1913; nessun footprint fisico qualificato. Test FULL `verify_front_mcp100_450_oem_powergood_native.py` controlla ERC + **3 net complete**, 54 stati DC (6 rail/3 bobine/3 VCEsat) usando [datasheet Microchip DS11187F](https://ww1.microchip.com/downloads/en/devicedoc/11187f.pdf), TRIP 4,25–4,50V, release 150–700ms, `VOH≥VDD-0,7` a IOH 3mA. Il confronto con la bobina Omron 167Ω identifica 27/27 corner con margine forced beta10 NON coperto dal driver attuale: **non autorizza K1901**. CI della PR ancora da verificare, footprint/compatibilità OEM e fault reali irrisolti. Report `RAPPORTO_MICROCHIP_MCP100_450DI_TO_POWERGOOD_OEM_DRAFT.md`. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #264 MERGED: driver bobina mute doppio consenso KiCad9
+
+**[PR #264](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/264) MERGED** su main `6d48c05cf72ae267fd6decc14b011e1792ff727a`, final head tecnico `aa59b7c587b2cbd90a01e3fe164875a9aecc7b19`. [Actions #43763343305](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43763343305): FAST/FULL/Required **SUCCESS 3/3**, 111 comandi legacy PASS, marker `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun traceback. Schema KiCad9 THT autonomo `FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch` con due switch NPN in serie, due input `ENABLE_AUDIO_LAB` e `POWER_GOOD_LAB`, resistenze 1k5 base + 10k pulldown e flyback D1911 (cathode verso rail lab). Otto net esatte, quattro connettori. **Nessun supervisore power-good reale, relay OEM, package NPN o rail/tempo di rilascio qualificati; 48 casi DC soltanto ipotetici con bobine 250–1000 Ω.** PCB FRONT invariata, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+## 15 novembre 2026 — PR #265 MERGED: G5V-1 DC5 NON qualificato per driver attuale
+
+**[PR #265](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/265) MERGED** su main `18994d6b054ad8fa3e7bb8bff55aeda3fcf23497`, final technical HEAD `62bd247b503b9c1128ab11891d2326615d4610e1`. [Actions #43764706299](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43764706299): FAST/FULL/Required **SUCCESS 3/3**, 111 vecchi comandi e nuovo marker `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`, nessun Traceback. Un primo run #43764261866 ha fallito FULL/Required per l'asserzione brownout 5V invece di 4,5V; test corretto senza waiver. [OEM Omron G5V-1 datasheet](https://components.omron.com/eu-en/system/files/2023-01/datasheet_pdf/K048-E1.pdf): coil 5V **167Ω±10%/30mA**, valore a riferimento failure-rate contatto **1mA 5VDC** (audio µV non qualificato), must pickup ≤80% tensione nominale a 23°C. `verify_front_omron_g5v1_oem_relay_rejection_screen_native.py`: **29/36** condizioni senza base-drive ipotetico forced beta10 sufficiente, **6/36** corner con pickup non garantito; bobina OEM **fuori** precedente intervallo ipotetico 250–1000Ω. **La CI verde certifica il rilevamento delle condizioni di REIEZIONE, NON la compatibilità del relè.** K1901 e PCB restano invariati, nessun MPN associato. Rapporto `RAPPORTO_OMRON_G5V1_RELAY_DC5_OEM_REJECTION_DRAFT.md`. **Priorità:** progettare vero supervisor power-good, NPN/diode OEM, driver fisicamente adeguato e contatti per audio reale; risolvere welded NO e open-GND/cavo. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #261 MERGED: vero schematico KiCad9 contatto NC mute THT
+
+**[PR #261](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/261) MERGED** su main `acfae8f0041d90b8bd9b398adb6832a3e5632480`, final technical HEAD `61c9d76e4eff7ecf5612c75907a986cec88786f1`. [Actions #43760083956](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43760083956): FAST/FULL/Required **SUCCESS 3/3**, 111 legacy PASS, marker `PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB`, `Found 0 violations`; due run di sviluppo #43759196685 e #43759661720 falliti per `TH_MUTE` library irrisolta, **risolti** con libreria fisica, tabella e progetto locale `.kicad_pro`, nessun waiver. Nuovo circuito KiCad9 standalone editabile `04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch` con K1901 SPDT (COM J1902/1, NC AF_GND, NO volume, bobina isolata su J1903), tre connettori 2 pin. **Non è driver coil, non è una funzione fail-safe qualificata**: relay OEM MPN, contatti minimi e massa aperta irrisolti, PCB non alterata. Report `RAPPORTO_FRONT_MUTE_NC_RELAY_CAD_CANDIDATO_DRAFT.md`. NO FAB/TX/BATTERIA/VEICOLO.
+
+## 15 novembre 2026 — PR #262 MERGED: matrice 64 stati guasto NC
+
+**[PR #262](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/262) MERGED** su main `8dbe79f1108b3c67596265a92b39ef48be20d277`, final technical HEAD `45f3128701b7f866e34bd09d3ff7cf90b914e904`. [Actions #43761081998](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43761081998): FAST/FULL/Required **SUCCESS 3/3**, 111 legacy checks, due marker reali `PASS_KICAD9_FRONT_NC_RELAY_64_FAULT_STATE_GRAPH_BOOLEAN_NO_FAILSAFE_RELEASE` e `PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB`, nessun traceback. 64 casi comando/coil/contatto (free, welded NO/NC, open)/massa/cursore; modelli indipendenti grafo e booleani coerenti. **Welded NO bypassa mute quando richiesto e massa esterna aperta può lasciare il pin amplificatore flottante.** Nessun certificato fail-safe, nessun OEM o driver coil qualificato; PCB FRONT invariata. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_NC_RELAY_64_FAULT_STATES_DRAFT.md`. **Prossimo passo: circuito THT driver coil con power-good e mitigazione indipendente guasti di contatto/cavo, non integrare hardware prima dei gate. NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #259 MERGED: Rguard cursore FRONT, 375 punti AC indipendenti
+
+**[PR #259](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/259) MERGED** su main `c83a2cfc3f9474be88783e2f5dccec69b561fa61`, final technical SHA `859a0311ad11bb830ccf38b138606c37562756ea`. [Actions #43758027167](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43758027167): FAST/FULL/Required **SUCCESS 3/3**, 111 legacy checks, prova `PASS_FRONT_WIPER_GUARD_SHUNT_375_DUAL_KCL_CASES_NATIVE_PIN_MAP_NOT_FAILSAFE_RELEASE` presente nei log; nessun Traceback. Screening di cinque Rguard indipendenti da wiper RV1301 verso AF_GND (100/330/1000/3300/10000 Ω): 375 combinazioni frequenza/posizione/Rin e KCL a tre nodi contro riduzione passiva indipendente. 1kHz/Rin 50k/volume 1%: guasto terminale basso senza guardia `0,714219`, con Rguard 100Ω `0,008192` ma volume massimo sano scende al **6,35%** dell'originale; con 10kΩ il massimo sano è **95,19%**, ma guasto `0,384526`. **Nessuna Rguard è qualificata fail-safe, nessun candidato inserito in schemi/PCB**; apertura AF_GND esterno o guard resistor interrompe protezione. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_VOLUME_GUARD_WIPER_375_CASES_DRAFT.md`; FRONT board 13THT/28pad/12reti/35 piste invariata.
+
+**Prossimo passo tecnico:** progettare mute indipendente normalmente attivo su fault/startup come candidato THT, con alimentazione/driver e comportamento in guasto verificati, qualificando soprattutto contatti a bassissimo segnale, cablaggio GND, tempo di rilascio e assenza di mute bypass. Non usare relay senza qualifica OEM minima corrente/contatto, e non affermare funzione di sicurezza certificata. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #257 MERGED: FRONT RV1301 open-low, 75 casi AC KCL
+
+**[PR #257](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/257) MERGED** su main `496fd3a06a09b3c92c1fd75c13a33e97000fefd5`, final technical SHA `5a2753010050e3bd3f380c14c568bda4bbcd284e`. [CI #43756011096](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43756011096): FAST/FULL/Required **SUCCESS 3/3**, FULL 111 verifiche legacy PASS e gate nuovo `PASS_FRONT_POT_OPEN_LOW_75_INDEPENDENT_AC_KCL_FAULT_CASES_NATIVE_KICAD_PIN_CONTRACT_NO_FAB_NO_TX` su netlist KiCad9 nativa; nessun Traceback. Regime 1 kHz, LM386 Rin ipotetica 50 kΩ, cursore 1%: `V(pin3)/V(AF ingresso)` passa da **0,008192 sano** a **0,714219 con terminale basso aperto** (~**87,184×**), solo nel modello passivo ideale. Sono state eseguite due risoluzioni indipendenti (riduzione e KCL), 5 frequenze × 5 cursori × 3 Rin. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_RV1301_OPEN_LOW_FAULT_75_CASES_DRAFT.md`. **Rischio fail-safe volume aperto da progettare**; né comportamento del componente OEM, né speaker, né limiti acustici sono stati qualificati. CAD PCB 13 THT/28 pad/12 reti/35 piste invariato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+**Prossimo passo:** valutare implementazioni di attenuazione fail-safe senza compromettere il volume nominale, verificare sorgenti AF e carico reale, poi qualifica OEM, percorso interboard e integrazione KiCad con ERC/CI.
+
+---
+
+## 15 novembre 2026 — PR #256 MERGED: screening pad/anello candidato Bourns PTV09A-4
+
+**[PR #256](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/256) MERGED** su main `ac7f804511810a5220cac282368716e8b6fb8057`, final technical HEAD `95acc2ee0442a54428122685e5420e9bc2e9b474`. [Actions #43755089176](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43755089176): FAST/FULL/Required **SUCCESS 3/3**, log FULL marker `PASS_KICAD9_BOURNS_PTV09A4_3THT_PINS_5MM_CANDIDATE_SVG_NO_PRODUCT_SWAP_NO_FAB` con output geometria nuova. Tre pad 1,8mm, fori 1,0mm **provvisori**, ring radiale nominale 0,4mm e spazio rame nominale 0,7mm per passo 2,5mm; verifiche fall-closed e SVG KiCad9 nativo. BOARD FRONT 13THT/28pad/12net/35 piste **invariata**, nessuna DRC di prodotto, OEM meccanica/ambientale/taper/produzione non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #254 MERGED: impronta Bourns PTV09A-4 THT, interasse 5mm
+
+**[PR #254](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/254) MERGED** su main `b62c56dc257354d24c3d29392531d0c49b04e211`, final technical HEAD `3d0d277e876b27cba42f62d5def39a0d64c4b624`. [Actions #43747364174](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43747364174): FAST/FULL/required **SUCCESS 3/3**, 111 comandi storici, `PASS_KICAD9_BOURNS_PTV09A4_3THT_PINS_5MM_CANDIDATE_SVG_NO_PRODUCT_SWAP_NO_FAB`, esportazione SVG nativa KiCad9 verificata. **Fonte OEM** [datasheet Bourns PTV09](https://www.bourns.com/docs/product-datasheets/ptv09.pdf): terminali del tipo PTV09A-4 con interasse complessivo **5,00mm** tra pin 1 e 3 (pin2 cursore); invece gli attuali due footprint provvisori dei RV sulla PCB di studio hanno 5,08mm. Creato **footprint KiCad9 fisico candidato, separato** `04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/TH_FRONT_OEM_CANDIDATES.pretty/Potentiometer_Bourns_PTV09A4_5mm_THT_CANDIDATE_NOT_FOR_FAB.kicad_mod` con 3 pad elettrici THT a -2,5/0/+2,5mm. **Nessuna sostituzione sul PCB già connesso**: fori e corpo da validare, modello con boccola/fissaggi e asse non confrontato con meccanica del frontalino. MPN `PTV09A-4020F-B103` attivo secondo distributore ma **non ancora confermato in produzione diretta OEM**; `B103` è **lineare**, non logaritmico audio; ambientale OEM -10/+50°C, IP40, 0,05W, possibile blocco veicolare. Gate FULL `03_Verifiche/V2.7/verify_front_ptv09a4_oem_pitch_candidate_native.py` verifica reale geometria 3 pad, esportazione SVG nativa KiCad9, blocco cambio footprint e integrità 35 piste originali; report `03_Verifiche/V2.7/RAPPORTO_BOURNS_PTV09A4_FRONT_FOOTPRINT_CANDIDATO_DRAFT.md`. **CI sul final SHA verificata senza waiver; nessuna qualifica OEM completa / DRC0 prodotto / NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #252 MERGED: 12 reti FRONT / 35 segmenti rame / 28 pad THT
+
+**[PR #252](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/252) MERGED** su main `4194a1248b163e48d7c741804ffea8a3c0b09c96`, final technical head `284ceee28563bc12f98d986141500f205b6839ab`; [Actions #43735099946](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43735099946): **FAST/FULL/required SUCCESS 3/3**, 111 comandi storici PASS, `PASS_KICAD9_FRONT_13THT_28PADS_ALL12_NETS_ROUTED_35_SEGMENTS_NO_OUTLINE_NO_DRC_NO_FAB`, `kicad-cli pcb export pos` su 13 componenti PASS. PR #251 checkpoint post-#250 già integrata. Il **CAD KiCad9 reale** `04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb` mantiene 13 riferimenti THT/28 pad e 12 reti fisicamente isolate, con **35 segmenti rame** (13 precedenti LED LAB + **10 nuovi AUDIO** + **12 nuovi S-meter**), senza via, zone o bordo `Edge.Cuts`. `AF_GND`, `ILLUM_RETURN_LAB`, `METER_RETURN` restano separati; non esiste connessione di rete al MAIN. Il gate `03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py` verifica tutte le 35 geometrie, netID/layer, connettività ogni pad delle 12 reti, isolamento per zona e clearance geometrica 2-D indipendente su THT; `kicad-cli pcb export pos` nativo obbligatorio e ERC/netlist FRONT storici immutati. Guardie V0.3/V0.4 autorizzano **solo** il medesimo PCB provvisorio con esattamente 35 piste e LED LAB PCB storico, vietando ulteriori layout. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_13_THT_PLACEMENT_NETASSIGNED_NONFAB_DRAFT.md`. **CI finale verificata sul final SHA senza waiver. Non è DRC0 prodotto né scheda producibile**: coordinate e footprint potenziometri provvisori, S-meter driver/coil, pannello/chassis e RF/EMI non qualificati. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #250 MERGED: FRONT 4 reti LED LAB sbrogliate, 13 segmenti
+
+**[PR #250](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/250) MERGED** su main `afc56545b088d31024d00ca2610b1f885267d19d`, final technical head `8c8af37d06ecb7ebbfa618a6a58532ec68ccf8ca`. [Actions #43725076350](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43725076350) FAST/FULL/required **SUCCESS 3/3**, marker `PASS_KICAD9_FRONT_13THT_28PADS_12NETS_4_LED_LAB_NETS_ROUTED_13_SEGMENTS_AUDIO_SMETER_UNROUTED_NO_OUTLINE_NO_FAB`, 111 regression commands PASS.  Modificato **CAD reale** `04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb` con **13 segmenti di rame reali larghezza 0,5mm**, 7 F.Cu e 6 B.Cu, che completano la connessione dei pad delle **4 reti LED da banco**: `ILLUM_5V_LAB`, `ILLUM_RETURN_LAB`, `ILLUM_LED1_A`, `ILLUM_LED2_A` su 5 footprint LED/R/J. **8 reti volume/S-meter restano senza piste**, tutti i 13 footprint THT/28 pad/12 net originali invariati, nessuna via, nessun Edge.Cuts, nessun rame riempito e nessuna connessione MAIN/FRONT autorizzata. Gate `03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py` ora controlla topologia esatta di ogni segmento, layer, net, coordinate e continuità quattro LED pad-net; guardie storiche V0.3/V0.4 aggiornate per la **sola eccezione di 13 segmenti** (altri PCB vietati). Il test `pcb export pos` nativo resta obbligatorio in FULL, insieme alle verifiche pregresse. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_13_THT_PLACEMENT_NETASSIGNED_NONFAB_DRAFT.md` aggiornato. **CI finale verificata sul final head tecnico; non è PCB prodotto, nessun DRC0 dichiarato, quote frontale e potenziometri OEM non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #248 MERGED: placement PCB-FRONT 13 THT / 28 pad / 12 reti isolate
+
+**[PR #248](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/248) MERGED** su main `648d201d46c743bc359d5f0af7bb3904faef6bd1`, final technical head `d61112274581d3684dfae91e9ac9a801ae102b84`. [Actions #43723761801](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43723761801): FAST/FULL/required **SUCCESS 3/3**, `PASS_KICAD9_FRONT_13_THT_FOOTPRINTS_28_PADS_12_ISOLATED_NETS_PLACEMENT_ONLY_NO_OUTLINE_NO_ROUTING_NO_FAB`, native pcb position export PASS e 111 comandi legacy PASS. Aggiornate guardie storiche V0.3/V0.4 con **due soli percorsi NONFAB consentiti** (LED LAB e nuovo FRONT placement) e verifiche esplicite assenza routing/outline: nessun waiver elettrico. Nuovo CAD **reale** KiCad9 `04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb`: 13 footprint THT e 28 pad con associazioni pin↔net esatte dei tre fogli FRONT, su 12 reti isolate in tre aree separate (volume/AF, illuminazione 5V LAB, S-meter passivo). Coordinate studiate ma **non misure del pannello**. **Nessuna traccia, via, rame o outline Edge.Cuts**: è un file di placement NON FAB, non una PCB prodotto e non comporta DRC0. Potenziometri 3 pad **PROVISIONAL**, connettori header non OEM qualificati, driver/bobina S-meter e ingombro chassis/display sconosciuti. Test obbligatorio FULL `03_Verifiche/V2.7/verify_front_13ref_netassigned_placement_native.py` verifica 13 impronte/28 pin/12 reti/assenza rame e bordo, con esportazione posizioni nativa KiCad9, ed ERC della gerarchia FRONT tramite test storico. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_13_THT_PLACEMENT_NETASSIGNED_NONFAB_DRAFT.md`. **CI finale verificata sul final HEAD tecnico senza waiver; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #246 MERGED: IF455 mixer source 50Ω/1kΩ/10kΩ, 6 casi
+
+**[PR #246](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/246) MERGED** su main `76d8ec22fceeb4e16c3762142631dee27b5f1916`, final technical head `d0d68660705a8680cd4585d99b903a0a501b0d02`. [Actions #43721827904](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43721827904): FAST/FULL/required **SUCCESS 3/3**, 111 legacy commands PASS; `PASS_NGSPICE_6_IF455_UNKNOWN_MIXER_SOURCE_IMPEDANCE_LOWDRIVE_DIRECT_J113_CASES_NO_FAB_NO_TX`. Nuovo gate `03_Verifiche/V2.7/verify_if455_mixer_source_impedance_lowdrive_native.py` obbligatorio nella FULL, confronta **6 veri transienti ngspice** su tank IF455/rivelazione diretta versus follower J113 con carico FRONT/LM386 al pin3 e generatore 455kHz AM da 10/100mVpicco a **50Ω/1kΩ/10kΩ** di sorgente equivalente. Sono **ipotesi non OEM**: vera impedenza del mixer e IF non qualificata, Q1801/C1801 invariati, master MAIN 176 refs invariato. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_IMPEDENZA_SORGENTE_MIXER_BASSO_LIVELLO_DRAFT.md`. **Misurato solo nel modello:** J113/diretto Vpp a LM386 pin3 = **0,6894–0,6900** per generatori 0,01/0,10V e Rsource 50/1000/10000Ω, sempre inferiore. A 0,10V source con 50Ω→10kΩ: diretto 0,5939→0,4639mVpp; J113 0,4096→0,3199mVpp, cioè circa -22% nel modello con maggiore Rsource. **CI finale verificata**, gate OEM mixer, impedenze/polarità/rumore, layout/ESD/ground ancora aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #244 MERGED: J113 C1801, 12 transienti livello IF debole
+
+**[PR #244](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/244) MERGED** su main SHA `8d1f8f13d91e82e8aeb30cd9730af82d0b7996d8`, final head `02843df600a0c1ccecf306c9edd5a5ca50597ae6`. [CI #43719947367](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43719947367) FAST/FULL/required **SUCCESS 3/3**; 111 comandi storici e `PASS_NGSPICE_12_J113_C1801_LOW_IF_LEVEL_COUPLING_GENERIC_NONLINEAR_CASES_NO_OEM_NO_FAB_NO_TX`. Il nuovo controllo `03_Verifiche/V2.7/verify_if455_j113_c1801_lowdrive_loaded_native.py` esegue **12 transienti ngspice** a 455 kHz AM (sorgenti 0,10/0,25/0,50V picco × accoppiamento J113 C1801=2,2/4,7/10/22pF), tutte con FRONT RV1301 10k wiper 90%, C1201 100n/R1201 10k/Rin LM386 50k tipica; riferimenti diretti invariati e gate sulle netlist reali KiCad9 J113. Solo **10pF** è il valore schematico effettivo; alternative **solo SPICE**, nessuna modifica master 176-ref. Test obbligatorio FULL, rapporto `03_Verifiche/V2.7/RAPPORTO_J113_C1801_BASSO_LIVELLO_AM455_CON_CARICO_DRAFT.md`. **Risultati nel modello:** migliore C1801 testato 22p, J113/diretto 0,7438 a 0,10V, 0,7333 a 0,25V, 0,7699 a 0,50V con wiper90%; sempre **inferiore** al percorso diretto. C1801=10p CAD produce rapporti 0,6896/0,6793/0,5974. **Scelta tecnica: non aumentare ora C1801 né integrare il follower in MAIN**, richiede OEM RF port impedance, noise e IF minima. CI finale verificata, nessun modello OEM/rumore/SINAD/THD, nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #242 MERGED: J113 IF455 vs diretto con carico FRONT/LM386
+
+**[PR #242](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/242) MERGED** su main `c14875520edea25321414d622183c4deb2de5225`, final head `d9103a41a90277ece3f3ccc5f1405bacd4655f7b`; [CI #43717571868](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43717571868) FAST/FULL/required **SUCCESS 3/3**, 111 comandi storici, log `PASS_NGSPICE_6_IF455_J113_AM455_FRONT_LM386_GENERIC_LOADED_COMPARISONS_NO_FAB_NO_TX`. Nuovo SPICE `03_Verifiche/V2.7/spice/if455_j113_am455_front_lm386_loaded_generic_comparison.cir` e gate `03_Verifiche/V2.7/verify_if455_j113_am455_front_loaded_comparison_native.py` incluso nella FULL. Confronta **6 veri transitori ngspice** del 455k AM diretto vs J113 JFET candidate (C1801 10p, Rgate 1Meg, source 2k2), **entrambi** con RV1301=10k, C1201=100n, R1201=10k, Rin LM386 50k tipico, 25ns e 12ms, output al pin3. Verifica netlist nativa KiCad9 pin D/S/G e connettori del ramo J113. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_J113_VS_DIRECT_LOADED_FRONT_LM386_DRAFT.md`. **Risultati modello:** con sorgente AM 0,5 Vpicco, J113/diretto pin3 LM386=0,590–0,597 (<1, attenua circa 40%); a 2 Vpicco=2,334–2,347 (>1, segnale più alto). A volume 90%: 0,5 V→diretto 5,737mVpp, J113 3,427mVpp; 2 V→diretto 44,488mVpp, J113 104,414mVpp. **Dipendenza forte dal livello, candidato NON QUALIFICATO a bassa ampiezza / sensibilità reale non nota.** CI finale verde, nessun collegamento elettrico al MAIN, nessun modello OEM, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #241 MERGED: IF455 diretto vs KSP10 con carico FRONT/LM386
+
+**[PR #241](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/241) MERGED** su main `2be34ee1bc707e5b456545e7dc7d16759ac764ff`, final head `b796d137c8bdd9663b4130aabe7c6fce3923c03a`; [CI #43716747333](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43716747333) FAST/FULL/required **SUCCESS 3/3**, 111 regressioni storiche, `PASS_NGSPICE_6_IF455_KSP10_AM455_FRONT_LM386_GENERIC_LOADED_COMPARISONS_NO_FAB_NO_TX`. Nuovo deck `03_Verifiche/V2.7/spice/if455_ksp10_am455_front_lm386_loaded_generic_comparison.cir` confronta in **6 veri transienti ngspice** due tank IF455/455kHz identici separatamente pilotati, con ramo diretto vs buffer BJT KSP10 generico; entrambi i rivelatori AM DGENERIC alimentano **lo stesso modello passivo di carico** RV1301 10k + C1201 100n + R1201 10k + Rin LM386 tipica 50k, misurando Vpp **pin3**, non solo AF su R1502 100k. Il test `03_Verifiche/V2.7/verify_if455_ksp10_am455_front_loaded_comparison_native.py` è aggiunto alla FULL e controlla partizioni endpoint KiCad9 buffer Q1701 e identità delle carte SPICE storiche. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_VS_DIRECT_LOADED_FRONT_LM386_DRAFT.md`. **Risultato:** ai 6 punti di carico, il rapporto Vpp pin3 KSP10/diretto è 0,0894–0,0969, ossia il buffer fornisce ~9–10% del riferimento in questo modello (a 2V picco/wiper90%: diretto 44,085mVpp, KSP10 4,029mVpp). **KSP10 configurazione attuale NON APPROVATA per integrazione elettrica**, modello BJT generico e non datasheet OEM. CI finale verde; nessuna integrazione elettrica del buffer nel MAIN, rail LAB 6 V isolato, nessun modello BJT/diodo OEM, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #240 MERGED: gerarchia MAIN 176 refs, buffer KSP10 isolato
+
+**[PR #240](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/240) MERGED** su main `87ab4d40ba22020abf1179d839283e404690ee1e`, final technical head `2c6737b7443b3bc664d08ebd050bbf145c6a4166`. [Actions #43706251084](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43706251084) FAST/FULL/required **SUCCESS 3/3**, ERC KiCad9 `Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_176REFS_FIVE_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB`, FULL **111 comandi storici**. Nuovo quinto figlio KiCad9 sul master V2.7: **IF455_KSP10_FOLLOWER** THT da 10 riferimenti J1701/2/3, C1701/2, R1701/2/3/4, Q1701, con libreria TH_IFBUF registrata nel root; 166 refs precedenti + 10 = **176 riferimenti**. Il follower è **completamente isolato** e alimentato solo con 6V LAB nel proprio foglio, non collegato a tank, rivelatore, o rail MAIN; nessuna assunzione sulla sua efficacia o su BJT OEM. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque export standalone + master, ERC0 nativo e partizioni multi-pin intatte, allowlist NC storica invariata. CI finale verificata sul final HEAD; nessuna PCB, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #238 MERGED: audit Vishay 1N4148-TAP a 25°C, 9 modelli DGENERIC testati
+
+**[PR #238](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/238) MERGED** su main SHA `45b0d569334715d1df873fb1c5a182448a3fe82a`, HEAD tecnico `1415e9dcef14f4a0e051a2fe457ddd1c0e867c54`; [Actions #43705365413](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43705365413) FAST/FULL/required **SUCCESS 3/3**, `PASS_NGSPICE_9_VISHAY_DATASHEET_SCREEN_8PF_AND_25NA_SYNTHETIC_OUTSIDE_OEM_LIMITS_NO_FAB_NO_TX`, FULL **111 comandi storici**. **Fonte OEM** Vishay 1N4148 document 81857 rev. 1.6 (2024-11-07), [datasheet ufficiale](https://www.vishay.com/docs/81857/1n4148.pdf), [qualifiche OEM](https://www.vishay.com/en/product/81857/tab/quality/): 1N4148-TAP DO-35, non-automotive; Vf max 1V a 10mA/25°C, IR max 25nA a 20V/25°C, CD max **4 pF** a 0V/1MHz/50mV. **Correzione d'interpretazione:** nel precedente sweep 54 casi `Cjo=8pF` eccede il massimo OEM CD=4pF; rimane *stress sintetico FUORI specifica*, NON corner certificato. Cjo SPICE non è misura completa CD, Is non è corrente inversa OEM di qualunque bias. Nuovo gate reale `03_Verifiche/V2.7/verify_am455_1n4148_vishay_datasheet_model_screen_native.py` su 9 soluzioni DC native ngspice con IF=10mA e VR=20V per le tre Is e tre Cjo sintetiche; controllo pin D1501 via netlist KiCad9, limiti OEM, segnalazione 3 casi Cjo=8pF extra specifica. Incluso in `ci/full_regressions.py`; rapporto `03_Verifiche/V2.7/RAPPORTO_VISHAY_1N4148_TAP_OEM_MODELLI_SCREEN_DRAFT.md`. **Screening ngspice durante sviluppo:** fra 9 varianti sintetiche, 3 con Cjo=8p oltrepassano CD OEM max 4p e 3 con Is=25n danno IR≈25,020nA contro il massimo OEM 25nA, con 1 intersezione; **solo 4/9 superano questi limiti puntuali**, senza essere modelli OEM approvati. Sono state corrette questioni di formato corrente SPICE, prima linea titolo, temperatura 25°C e precisione di misura nanoampere, senza waiver di parametri OEM. **CI sul final SHA verificata, senza waiver OEM; precedenti tentativi FULL falliti durante sviluppo per errori del nuovo banco/lettura, tutti risolti e non nascosti. Nessun modello OEM scaricato o approvato, nessuna PCB prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #236 MERGED: 54 scenari DGENERIC Is/Cjo, CI verde
+
+**[PR #236](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/236) MERGED** su main `65cbfe021aa8c36a69f6d8aea16612631bbcfca2`, final head `508a1969f6fafd6f3fac8fa1232d3328cc9067e5`; [CI #43702519024](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43702519024) FAST/FULL/required **SUCCESS 3/3**, 111 step legacy, `PASS_NGSPICE_54_IF455_AM455_FRONT_LOADED_SYNTHETIC_DIODE_IS_CJO_CORNER_TRANSIENTS_NOT_OEM_NO_FAB_NO_TX`. Script `03_Verifiche/V2.7/verify_if455_am455_loaded_generic_diode_parameter_screen.py` aggiunto in FULL: **54 transienti ngspice** (Is 0,25/2,5/25nA × Cjo 2/4/8pF × input 0,5/2V picco × volume 10/50/90%) sullo stesso banco IF455→AM455→FRONT→LM386; parametri DGENERIC **sintetici, NON corner OEM 1N4148**. Output pp e rapporti, bande di sensitività, non guadagno LM386 attivo. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_DIODE_SYNTHETIC_CORNERS_DRAFT.md`; aggiornato rapporto PR #235 con evidenze CI quantitative. **Risultati modello:** sorgente 0,5 Vpicco e volume 90%, ingresso LM386 1,934–6,216mVpp (estremi Is/Cjo sintetici, rapporto ~3,21×); a 2 Vpicco 29,915–36,817mVpp (~1,23×). CI verificata sul final HEAD; nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #235 MERGED: IF455→AM455→FRONT→LM386, 9 transienti non lineari generici
+
+**[PR #235](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/235) MERGED** main SHA `77ba66cdaa5fcbf89e6a833542207f875dd38763`, final technical head `b498db61fe631bb12150c35d6b6af7624b94fcae`. [CI #43701908041](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43701908041): FAST/FULL/required **SUCCESS 3/3**, 111 comandi storici, log `PASS_NGSPICE_9_GENERIC_DIODE_IF455_AM455_LOADED_FRONT_LM386_TRANSIENT_CASES_NOT_OEM_NO_FAB_NO_TX`. Nuovo deck `03_Verifiche/V2.7/spice/if455_am455_front_lm386_loaded_generic_diode.cir` e gate `03_Verifiche/V2.7/verify_if455_am455_front_loaded_nonlinear_native.py` incluso nella FULL: **9 transitori ngspice** su generatore 455 kHz AM con diodo **generico NON OEM** e tank duplicato, confrontando il precedente carico AF 100kΩ con R1502=100kΩ, RV1301=10kΩ FRONT e C1201=100nF/R1201=10kΩ/Rin LM386=50kΩ tipico. Livelli sorgente 0,5/1/2V picco e posizioni volume 10/50/90%; verifica reti KiCad native e tensioni pp in finestra 8–11ms. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_FRONT_LM386_NONLINEAR_LOADED_DRAFT.md`. **Risultato verificato:** in scenario sorgente 2V picco/wiper 90%, AF 100k standalone=0,173526Vpp, nodo AF caricato=0,049170Vpp, LM386 pin3=0,035411Vpp; nessun gain attivo, non è sensibilità reale/OEM.** Restano massa/chassis, cavo, EMI, PVT, stadio IF reale, LM386 attivo e FRONT/MAIN product PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #233 MERGED: studio impedenza sorgente AM455 300 casi
+
+**[PR #233](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/233) MERGED** su main `ce4629768109befaf5bc003599913e7038f0ce55`, head tecnico `9bee4c6f48db1c4886f5985080d2a7d23480b1ab`; [Actions #43701167950](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43701167950) FAST/FULL/required **SUCCESS 3/3**, log `PASS_KICAD9_AM455_ENVELOPE_300_RSOURCE_AC_KCL_CASES_NOT_DIODE_OEM_NO_FAB_NO_TX`, FULL 111 comandi storici. Nuovo `03_Verifiche/V2.7/verify_am455_envelope_source_impedance_kcl_native.py` aggiunto a FULL: carico di R1501=47k e C1501=1nF verificato con netlist KiCad9 AM455, più modello lineare illustrativo di resistenza di Thévenin a monte dell'inviluppo **1/10/47/100 kΩ** e circuito downstream di PR #232. Matrice 4 nodi KCL indipendente dalla riduzione serie/parallelo, 300 casi (4 Rsource × 5 frequenze × 5 wiper × 3 Rin). Il diodo **non** è un resistore nel circuito reale: questi scenari non sono min/max OEM e non equivalgono a sensibilità/SINAD, non comprendono IF455 RF, noise, THD o LM386 attivo. Report `03_Verifiche/V2.7/RAPPORTO_AM455_IMPEDENZA_SORGENTE_AF_300KCL_DRAFT.md`. **CI finale eseguita e verificata sul final HEAD; master MAIN da 166 refs invariato; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #232 MERGED: AM455→FRONT→LM386, 75 casi carico AF/KCL
+
+**[PR #232](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/232) MERGED** main `158152c6c683869c4a8221b259079f6182fa61fa`, final head `ca3930a45fdfe10475d9d6a0251ea3a027595acc`. [CI #43700553512](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43700553512) FAST/FULL/required SUCCESS 3/3, log `PASS_AF_AM455_FRONT_LM386_75_AC_KCL_CASES_NATIVE_KICAD_PIN_NETS_NO_FAB_NO_TX`, 111 comandi storici PASS. Nuovo `03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py` integrato nel gate `ci/full_regressions.py`: 75 combinazioni frequenza/posizione potenziometro/Rin (25/50/75kΩ), trasferimento passivo complesso e doppio confronto analitico↔solutore nodale KCL indipendente, controllo reti/pin KiCad9 originali C1502-R1502, RV1301, C1201-R1201-U1201. Rapporto `03_Verifiche/V2.7/RAPPORTO_AF_AM455_FRONT_LM386_CARICO_AC_KCL_DRAFT.md` con valori e limiti. Rin=50k tipico OEM; 25/75k scenari ipotetici, non corner garantiti. Non è stato modificato alcun collegamento master MAIN, nessuna simulazione OEM/LM386 attivo/noise/THD o qualifica carico diodo IF455, ground/chassis, cavi. **CI verificata sul final HEAD; nessuna PCB di prodotto, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #230 MERGED: contratto KiCad9 IF455→AM455→FRONT
+
+**[PR #230](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/230) MERGED** su main `8d7222607259389f0bcbb4bf8fac6e6fbd0d84c6`, final head `12f0e4e65a6d1136ec5db8a3a277c023d85dfb5b`. [Actions #43699560216](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43699560216): FAST/FULL/required **SUCCESS 3/3**, `IF_AM_FRONT_HARNESS_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_IF_AM_FRONT_4NETS_8PINS_ERC0_BENCH_PIN_CONTRACT_NO_FAB_NO_TX`, FULL **111 comandi storici** superati. Nuovo `04_KiCad/V2.7_DRAFT/IF_AM_FRONT_TWO_LINK_HARNESS_V2_7_DRAFT.kicad_sch` con quattro rappresentazioni di terminali header THT J2501..J2504 e quattro reti distinte su **otto pin**: IF455 J1602/1→AM455 J1501/1 (455 kHz), J1602/2→J1501/2 (ritorno IF), AM455 J1502/1→FRONT J1301/1 (AF demod), J1502/2→J1301/2 (ritorno AF). Il tratto FRONT J1302→MAIN LM386 J1202 resta documentato separatamente dal precedente contratto (PR #224). Lo schema è **solo contratto di cablaggio sperimentale**, non circuiti MAIN/FRONT connessi internamente, né cable/PCB producibile.
+
+Nuovo controllo nativo `03_Verifiche/V2.7/verify_if_am_front_two_link_harness_native.py` incluso in `ci/full_regressions.py`: verifica ERC0 del nuovo KiCad9, quattro partizioni rigorosamente di due pin, riscontra tutti i connettori nelle netlist vere IF455/AM455/FRONT, esclude rail e TX dalla tratta. **CI finale verificata su HEAD tecnico, senza waiver.** Rischi aperti: carico diodo su tank, ampiezza minima IF, livelli/impedenza AF verso volume+LM386, interconnessione ritorni/chassis, schermatura EMI e protezione ESD, connettori maschio/maschio senza mating qualificato. Esclusivamente schemi LAB, nessuna PCB radio definitiva e nessuna DRC radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #228 MERGED: MAIN V2.7 166 riferimenti, IF455 + AM455 isolati
+
+**[PR #228](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/228) MERGED** su main `701754bc0818b189b6f9e1b5b079b6b97218fa98`, head tecnico `103d15435487aaac50749e530a959132ad0baf63`; [CI #43698724725](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43698724725) su HEAD finale **FAST/FULL/required SUCCESS 3/3**, con evidenze `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_166REFS_FOUR_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB`. Le due precedenti FULL su head non finali hanno individuato librerie TH_DEMOD/TH_TANK simboli e impronte non registrate al root KiCad V2.7: corrette senza waiver. Il master KiCad9 `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` aggiunge **IF455 tank THT (9 refs)** e **AM455 envelope detector THT (7 refs)** agli originali 138 radio V2.6 e 12 LM386 RX audio. Attesi **166 riferimenti** su quattro figli nativi, senza wire tra fogli e senza modificare sorgenti originali. La catena IF455→AM455 e AM455→audio NON è collegata: impedenza/carico diodo, massa/chassis e livelli AF non qualificati. Gate `verify_main_partial_v27_hierarchy_native.py` esteso a cinque esportazioni KiCad9 e confronto pin/net fail-closed, con allowlist immutata di otto NC V2.6. CI finale verificata sullo SHA tecnico; nessuna PCB radio, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #226 MERGED: MAIN gerarchico KiCad9 con 150 refs
+
+**[PR #226](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/226) MERGED** main SHA `167c82d3f87e113e1275ca4dcec07f824df65185`, head tecnico `c74e85bbef558b398df33b36e35d093148da0874`. [CI #43667633925](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43667633925) su HEAD finale: FAST, FULL KiCad9 e required gate **SUCCESS 3/3**. Evidenze log: `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MAIN_PARTIAL_150REFS_ALL_V26_AND_AUDIO_PIN_NETS_UNCHANGED_ERC0_NO_FAB`. Nuovo master `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` con due fogli: 138 refs V2.6 radio RX/PLL/VTUNE + 12 refs LM386 RX audio standalone, non interconnesse. Il test nativo verifica 3 esportazioni netlist, partizioni pin/net connesse intatte, nessun ponte massa/rail e otto pin NC singleton omessi nella gerarchia secondo allowlist stretta. `ci/full_regressions.py` include il gate nativo; librerie registrate nel progetto V2.7.
+
+**Prossimo sviluppo elettrico:** progettare contratto funzionale IF/demod→AF per integrare blocchi MAIN senza unire indiscriminatamente alimentazioni e masse; verificare interfaccia FRONT fisica, MPN attivi, EMI/ESD e rischi RF. **Nessuna PCB MAIN o FRONT definitiva, DRC di prodotto non eseguito, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+non sostituisce il controllo live di GitHub a ogni nuova sessione. Leggere
+[AGENTS.md](../AGENTS.md) **e questo file da main all'inizio**; poi verificare
+SHA di main, PR, issue, GitHub Actions e i rapporti CAD.
+Non utilizzare la memoria delle chat o lo stato di branch draft come verità di main.
+
+## 15 novembre 2026 — PR #225 MERGED; vero master MAIN V2.7 a gerarchia V2.6 + audio RX in branch tecnico
+
+**[PR #225](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/225) MERGED** su main `3d0bdf6cefff9b35ebce77e8b679e2988ef1168f`, head doc `f2152415eefb52038d5f1380f45d08f530500d08`; [Actions #43666899879](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666899879): FAST e required **SUCCESS 2/2**, FULL skipped per solo checkpoint. Interboard J1302↔J1202 resta elettricamente verificato su [Actions #43666448081](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666448081) FAST/FULL/required 3/3 SUCCESS, ERC0.
+
+**In branch tecnico NON integrato** `v27-main-radio-hierarchical-v26-audio-isolation-20261115`, base main SHA sopra: nuovo master gerarchico KiCad9 autentico `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` con **due fogli**, V2.6 radio RX/PLL/VTUNE 138 riferimenti **originali senza modificare gli schemi** e `AUDIO_RX_MONO_LM386_V2_7_DRAFT` 12 riferimenti THT isolati, **150 riferimenti attesi**. Aggiunto `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_pro` e registrate le librerie simboli/footprint THT V2.6 nella directory root KiCad V2.7. Nuovo test `verify_main_partial_v27_hierarchy_native.py`, obbligatorio nel runner FULL, confronta attraverso **tre esportazioni reali KiCad9** tutte le partizioni pin↔net del master composto con le 138 refs V2.6 e le 12 refs audio originali; non autorizza alcuna connessione GND/rail/AF ipotetica tra i due blocchi. ERC sull'intera gerarchia `--exit-code-violations`, zero waiver. **Seconda FULL [#43667407906](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43667407906) FAST PASS / FULL FAILED**: KiCad9 intero master **ERC0** e tutte le netlist esportate, verifica 138+12 refs PASS; test rigido ha rilevato otto reti a **un solo pin NC** riportate nella netlist standalone ma omesse dalla netlist annidata (U402/8,9; U520/6,8,10,12; U1201/1,8), nessuna nuova rete né connessione aggiunta. Modificato il controllo fail-closed per accettare **soltanto questi otto singleton NC esatti**, continuando a pretendere identità integrale di tutte le partizioni realmente connesse con almeno due pin, zero net extra o collisioni. **CI nuova necessaria sul final HEAD prima del merge**, non considerare ancora PASS la nuova verifica. Nessun componente o wire radio modificato.
+
+**Prima FULL [#43667202828](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43667202828) FAST PASS / FULL FAILED**: `MAIN_PARTIAL_ERC_STDOUT Found 0 violations`, 3 netlist KiCad9 esportate, poi errore **del verificatore** `Counter(all_parts)` interpretava i nomi delle reti (stringhe) come conteggi; corretto con `Counter(list(all_parts))` senza modificare alcuna connessione o introdurre waiver. Richiesto nuovo gate FULL/required sul HEAD finale: **NON dichiarare ancora 150 ref/netlist conservate PASS.** MAIN resta incompleto lato IF/demodulatore, interfaccia FRONT e potenze RX; **nessuna PCB-MAIN fisica**, unica PCB laboratorio LED separata. S-meter analogico e relative protezioni non qualificati, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #224 MERGED: schema nativo interboard audio MAIN↔FRONT verificato ERC0
+
+**[PR #224](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/224) MERGED** main SHA `2c57d50974a85872b4247a926a060f78761d93b3`, head tecnico `390af1c43d8c763a13548a1616edb5ee913e8701`. [Actions #43666448081](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666448081) FAST/FULL/required **SUCCESS 3/3**, log KiCad9 reale `AUDIO_HARNESS_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_RX_MAIN_FRONT_HARNESS_2CONDUCTOR_2NETS_4PINS_ERC0_NO_POWER_NO_FAB`, e contratto nativo schemi MAIN/FRONT PASS. Creato `04_KiCad/V2.7_DRAFT/INTERBOARD_AUDIO_HARNESS_V2_7_DRAFT.kicad_sch`: **due connettori simbolici THT J2401/J2402, due fili, due reti, quattro pin**. Associazione concreta: FRONT J1302 pin1 → MAIN J1202 pin1 (`AF_WIPER_LINK`), FRONT J1302 pin2 → MAIN J1202 pin2 (`AF_RETURN_LINK`). Nessuna linea 5V/6V/20V/TX attraversa il cablaggio. L'errore storico nella nota del rail audio J1201 è stato segnalato: net MAIN corrente `AUDIO_6V_LAB`, NON `AUDIO_5V`.
+
+Il nuovo disegno **è un contratto elettrico verificato, NON un cavo producibile**, entrambi i connettori delle schede sono header maschi e mancano contatti accoppiabili, polarizzazione, cablaggio schermato, filtro EMI/RF/ESD, scelta massa/chassis e dimensioni chassis. Master MAIN V2.6 invariato, master FRONT V2.7 a tre fogli standalone invariato; nessuna vera PCB MAIN/FRONT realizzata, resta solo LED LAB PCB DRC0. **NO FAB/NO TX/NO BATTERIA/NO VEICOLO**.
+
+**Prossimo passo tecnico:** integrare sottosezioni MAIN radio in una gerarchia V2.7 preservando le 138 connessioni/componenti V2.6 e qualificare il collegamento AF reale senza falsi ponti massa o alimentazione.
+
+---
+
+## 15 novembre 2026 — PR #223 MERGED, KiCad9 MAIN↔FRONT AF harness schematico in branch
+
+**[PR #223](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/223) MERGED** su main `c6000bc7a3158bcca7d8b58b74d6da2aa4aded52`, doc head `3361efefcb2dc3d93c1eed3b3af82d3f644fd12c`. [Actions #43666104190](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43666104190): FAST/required **SUCCESS 2/2**, FULL correttamente skipped per solo checkpoint. Il main precedente PR #222 ha 3 fogli FRONT, ERC0 e netlist 13 refs/12 nets/28 pins.
+
+**In branch NON integrato** `v27-main-front-audio-harness-native-20261115` da main SHA sopra: nuovo **schema KiCad9 nativo reale del contratto elettrico a due conduttori audio MAIN↔FRONT** `04_KiCad/V2.7_DRAFT/INTERBOARD_AUDIO_HARNESS_V2_7_DRAFT.kicad_sch` + progetto. J2401 e J2402 rappresentano i due capi della tratta fra FRONT J1302 e MAIN J1202, due wire AF_WIPER_LINK (pin1↔1) / AF_RETURN_LINK (pin2↔2). Il verificatore esistente `03_Verifiche/V2.7/verify_interboard_audio_contract_native.py` ora controlla anche ERC/partizione netlist nativa 2 reti/4 pin e coerenza con netlist dei due schemi. **CI FAST/FULL/required sul final HEAD necessaria**. Non è ancora cavo qualificato con due header maschi, non connettore polarizzato, nessun test EMC/meccanica o fonte di alimentazione trasferita. Corretto rapporto: rail audio J1201 corrente `AUDIO_6V_LAB`, precedenti diciture `AUDIO_5V` storiche. Il file PCB reale nel repo resta solo FRONT LED LABONLY DRC0, non i due PCB radio. **NO FAB/NO TX/NO BATTERIA/NO VEICOLO**.
+
+---
+
+## 15 novembre 2026 — PR #222 MERGED: FRONT gerarchico a TRE fogli KiCad9 nativi ERC0
+
+**[PR #222](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/222) MERGED** su main SHA `996dd8cbb451ff7064accdaecf7cdb1c87cfdf24`, HEAD tecnico `f70c625c47fcdb6bdccd5c0c40659848fa8fd6bc`. [Actions #43665602919](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43665602919): FAST/FULL/required **SUCCESS 3/3**, audit log native `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_3SHEETS_13REFS_12NETS_28PINS_ERC0_NO_CROSS_RAIL_NO_FAB`. **Master gerarchico FRONT parziale reale** `04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`, tre fogli **FRONT_VOLUME** 3 refs/3 reti/7 pin + **FRONT_ILLUM_BENCH** 5 refs/4 reti/10 pin + **FRONT_SMETER** passivo 5 refs/5 reti/11 pin. Ciascuno in dominio separato; nessun collegamento elettrico fra domini, nessun connettore MAIN-FRONT o alimentatore effettivo autorizzato.
+
+S-meter passivo: R1801/R1802 100kΩ, trimmer RV1801 e due header sono **candidati non qualificati**; il driver attivo in banco separato NON è stato inserito nel master, la FSD/Rcoil/OEM e la protezione da fault del movimento restano aperte [issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213). La PCB THT instradata LED **LABONLY** DRC0 da PR #219 rimane **l'unico file PCB**; NON è la scheda FRONT definitiva né la PCB-MAIN radio. Manca ancora integrazione MAIN e UI front complete, connettori/meccanica, BOM produzione, RF e schemi MAIN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo passo concreto:** aggiungere e validare in KiCad9 le interfacce FRONT-MAIN in un contratto univoco (non ponticellare le masse/rail senza ESD/EMI), congelare componenti critici e progettare le due PCB funzionali; non replicare una PCB dimostrativa come radio completa.
+
+---
+
+## 15 novembre 2026 — PR #221 MERGED, terzo foglio S-meter passivo aggiunto a FRONT su nuovo branch
+
+**[PR #221](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/221) MERGED** main `abd6ed1d93c8844d981155001dcb29a1136ec7d7`, head `db3130382ee59bddbee21325551880722b89f408`; [Actions #43664959183](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664959183): FAST/FULL/required **SUCCESS 3/3**, log nativo `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations` e `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_2SHEETS_8REFS_7NETS_17PINS_ERC0_NO_CROSS_RAIL_NO_FAB`. Master FRONT parziale KiCad9 reale con due fogli (Volume + LED), senza bridge fra domini. Prima FULL [#43664684666](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664684666) fallì per 14 warning librerie non registrate, corrette con tabelle root sym/fp senza waiver.
+
+**In branch NON integrato** `v27-front-partial-third-smeter-passive-20261115` da main SHA sopra: aggiunto terzo Sheetfile passivo `FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` a master FRONTALINO, libreria simboli `TH_SMETER` registrata in root, test KiCad9 ERC/netlist aggiornato per **13 riferimenti THT / 12 reti / 28 pin** in tre domini separati: audio, LED LAB, S-meter passivo candidato. **NESSUNA** connessione di energia/signal tra domini o MAIN; S-meter movement FSD/Rcoil, limitatore corrente, AGC e massa ancora non qualificati. **Richiedere FAST/FULL/required HEAD finale** prima di merge. L'unica `.kicad_pcb` resta LED LAB-only DRC0, non PCB-FRONT. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #220 MERGED, nuovo master gerarchico FRONT parziale in branch CI pending
+
+**[PR #220](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/220) MERGED**, main `871829df886056057ff7d9bf64eae35175bef8a5`, head checkpoint `22fbbaf637fa49f83f05f4f5bc2dd2dd8859d151`, [Actions #43664390045](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664390045): FAST e required **SUCCESS 2/2**, FULL skipped correttamente per sole modifiche documentali. PR219 primo PCB reale solo LAB rimane DRC0 su FAST/FULL/required [#43663912790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43663912790). Main verificato live prima delle modifiche.
+
+**In branch NON integrato:** `v27-front-integrated-volume-illum-hierarchy-20261115` da main SHA sopra. Nuovo **master KiCad9 gerarchico parziale FRONT**, `04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch`, comprende tramite sheet references i due sottoschemi autonomi **FRONT_VOLUME** (3 riferimenti/3 reti/7 terminali) e **FRONT_ILLUM_BENCH** (5 riferimenti/4 reti/10 terminali). Il nuovo `03_Verifiche/V2.7/verify_front_partial_hierarchy_native.py`, lanciato nel gate nativo FRONT esistente, controlla ERC effettivo e partizioni 8 riferimenti/7 reti/17 pin netlist KiCad9, tenendo disgiunte audio e illuminazione. **Prima FULL [#43664684666](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43664684666) FAST PASS/FULL FAILED** per 14 warning reali di librerie symbol/footprint non registrate nel contesto della nuova gerarchia, con zero errori di wire dichiarati. Nessun waiver: aggiornato `04_KiCad/V2.7_DRAFT/sym-lib-table` e aggiunto `fp-lib-table` di root con URI alle biblioteche THT dei due figli; aggiunto progetto `FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_pro`, test fail-closed su registrazioni e file. **Gate FULL/required sul HEAD finale da verificare, non rivendicare ERC0.** S-meter/driver/rail reali, cavo/PCB FRONT meccanica/fabbricazione tutti da risolvere; PCB lab LED esistente NON è la FRONT. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #219 MERGED, primo PCB KiCad9 THT fisico SOLO LAB con DRC0 verificato
+
+**[PR #219](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/219) MERGED** su `main` SHA `efc4cb2e2e86ff966fff9a33663184b671351091`, final head tecnico `1b277e935ae280c22005c844f85327d8940ae878`. [Actions #43663912790](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43663912790): FAST/FULL/required **SUCCESS 3/3**; audit log FULL nativo: `FRONT_ILLUM_ERC_STDOUT Found 0 violations`, `FRONT_ILLUM_LAB_PCB_DRC_STDOUT Found 0 violations`, `Found 0 unconnected items`, `PASS_KICAD9_FRONT_ILLUM_LAB_PCB_DRC0_SCHEMATIC_NETS4_PADS10_THT5_NO_FAB`. **Prima scheda KiCad9 realmente instradata** versione LAB `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb`, due strati, Edge.Cuts 80×55mm, **5 footprint THT / 10 pad / 4 reti / 12 segmenti rame**, DRC0 sul file reale e corrispondenza netlist pin↔pad. Tre footprint di laboratorio locali `TH_FRONT_ILLUM_LAB.pretty` registrati in `fp-lib-table` e assegnati anche allo schema; NON sono misure OEM qualificate.
+
+Tentativi precedenti nel branch: FAST #43663134638 e #43663198626 fallite per test storici V0.3/V0.4 che vietavano qualsiasi PCB anche laboratorio, corretti limitando esplicitamente la sola eccezione a questo LAB senza autorizzare PCB prodotto. FULL #43663285212 DRC rilevò **5 mismatch** tra geometrie custom e presunte librerie ufficiali, eliminati tramite libreria LAB locale. FULL #43663725824 rilevò **5 impronte non trovate** per progetto KiCad differente, risolto creando `FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pro` e impostando la directory DRC corretta. **Nessuna soppressione DRC o waiver**. La nuova PCB è esclusivamente esercizio EDA, NON costituisce la PCB-FRONT definitiva né PCB-MAIN radio. Manca qualifica LED OEM, alimentazione reale, EMI, meccanica pannello, cablaggi, S-meter e RF; NON fabbricare e NON produrre Gerber. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Passo successivo sostanziale:** proseguire integrazione elettrica/meccanica MAIN–FRONT e qualifica protezioni S-meter, quindi progettazione delle **due vere PCB** con chiusura OEM e DRC indipendenti, non riproporre il semplice board LAB come prodotto.
+
+---
+
+## 15 novembre 2026 — PR #218 MERGED: schema FRONT ILLUM ERC0; prima PCB di banco separata in branch, DRC NON ANCORA APPROVATO
+
+**[PR #218](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/218) MERGED** su main SHA `0d4133fab50a1c898a9b61515e01383c1b60422f`, HEAD tecnico `07c518cd430a146f428510a70dc21fc7d4a0bce3`, [Actions #43662613171](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43662613171) FAST/FULL/required **SUCCESS 3/3**. Log KiCad9 reale `FRONT_ILLUM_ERC_STDOUT Found 0 violations`, 5 refs/4 reti/10 pin su nuovo schema standby FRONTALINO illuminazione LED THT con 2×680Ω, 2×LED5mm e header 2 pin. Solo 5V di laboratorio, non vero alimentatore MAIN/FRONT.
+
+**In branch NON integrato** `v27-front-illum-bench-pcb-layout-20261115` da head PR218 (merge commit main sopra contiene esattamente i file base). Novità CAD reale `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb`, **board KiCad9 a 2 strati 80×55mm**, 5 footprint THT, 10 pad, 4 reti, 12 segmenti instradati, outline chiuso. Nuovo `verify_front_illum_lab_pcb_native.py` confronta ogni pin/pad/net contro netlist nativa schematica ed esegue `kicad-cli pcb drc --exit-code-violations` sul file PCB. **Run #43663134638 FAST FAILED** per assert storico V0.3 che vietava tutte le PCB; **run #43663198626 FAST FAILED** per analogo assert V0.4. Entrambi corretti senza permettere schede di prodotto non autorizzate. **Run #43663285212 FAST PASS, FULL FAILED** per 5 `lib_footprint_mismatch` (footprint ufficiali dichiarati con geometria embedded semplificata), 0 pad non connessi. Soluzione in branch: nuova libreria locale `TH_FRONT_ILLUM_LAB.pretty/` con 3 geometrie provvisorie registrate in `fp-lib-table`, ogni footprint board riferito esplicitamente a libreria locale, nessun waiver. **Non dichiarare DRC0 prima della verifica FULL/required CI sul HEAD finale**, né qualifica OEM/meccanica/EMI. È un PCB laboratorio isolato, **non** PCB-FRONT definitiva e non PCB-MAIN. Nessun Gerber di produzione o fabbricazione; restano incompleti S-meter, driver, alimentazioni, interconnessione e RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 15 novembre 2026 — PR #217 MERGED; nuovo KiCad9 reale FRONT ILLUM sul branch, CI pending
+
+**[PR #217](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/217) MERGED** main `d34b71676c6f816ce0e6b1251e9b119f9bb8adf3`, head tecnico `927c0745c778a7df5739cc1035a8175cf885d918`, [Actions #43661830999](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661830999): FAST/FULL/required **3/3 SUCCESS**. Log ngspice generic S-meter a doppi servo, riferimenti condivisi 1V: **98,01386µA** a VDD5V, **98,09089µA** a VDD12V ipotetico; fallisce fail-closed in guasto comune, non esiste nuovo KiCad di quel doppio servo. ERC0 del precedente driver MCP6002 standalone non costituisce qualifica MAIN/FRONT.
+
+**Nuovo branch NON integrato:** `v27-front-illumination-twin-led-kicad-20261115` base main sopra. Primo modulo concreto CAD THT separato per **retroilluminazione FRONT** `04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/`: header 2 pin J2201 per 5V LAB e ritorno, due canali indipendenti ciascuno R680Ω/0,25W THT + LED rosso 5mm THT, con libreria locale e pin-pad presuntivi LED pin1=K/pin2=A. Gate reale `verify_front_illum_bench_native.py` incluso nel verifier FRONT, **5 riferimenti / 4 reti / 10 pin**, ERC/partizioni attese (non ancora verificate su CI del final HEAD), con 4,4mA nominali ideali a 5V/Vf2V. Fonte alimentazione, luce, corrente, MPN, interboard, EMI, LED/movement/pannello, cablaggi non qualificati. **Nessuna PCB FRONT né DRC**. Pubblicare PR e attendere FAST/FULL/required prima del merge. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 15 novembre 2026 — PR #216 MERGED; nuovo test guasti di riferimento comune in branch
+
+**[PR #216](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/216) MERGED** su main `a37d859367f51dbb8b2cd62e75eaea726c53ce72`, HEAD tecnico `3166d19a9464ffc069c7a2d6ec25a61f14dd91a1`. [Actions #43661238764](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43661238764): FAST/FULL/required **SUCCESS 3/3**, verifica log nativa: ngspice vero **39,58742µA** normale, **44,54994µA** con QMAIN corto C-E, **39,58905µA** con QGUARD corto C-E, doppi corti **227,2727µA a 2kΩ** e **125µA a 20kΩ**. Circuito SOLO SPICE due regolatori ideali, non KiCad; nessuna PCB/qualifica vendor/FSD/loop/power-off.
+
+**Nuovo branch non integrato** `v27-smeter-dual-common-reference-fault-20261115` da main SHA sopra: aggiorna il test ngspice nel gate FRONT per cause comuni di guasto con **VSETMAIN=VSETGUARD=1V**, vdd12V artificiale, controlli di un solo setpoint alto e OFF di un solo loop; il sistema può eccedere 50µA ipotetici anche con BJT integri, quindi **non fail-closed** su riferimento comune. Modifiche al rapporto tecnico e a questo checkpoint. **PR e FULL/required CI sul final HEAD ancora necessari**; niente nuovo CAD KiCad, nessun hardware dichiarato sicuro. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) resta aperta per movimento/driver reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #215 MERGED, nuovo banco SPICE di protezione a doppio sink indipendente (branch)
+
+**[PR #215](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/215) MERGED** su main `e011be889546891ea79eac74e9b9493056251f24`, head tecnico `81026ec1eed9d99366f0d6086aae4305c866338a`. [Actions #43660456890](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43660456890): FAST/FULL/required **SUCCESS 3/3**; log FULL KiCad9 standalone ERC0/8 refs/8 reti/23 pin e ngspice: corto Q2101 C-E a VSET OFF su carico 20kΩ **166,6667µA**, 2kΩ **416,6666µA**, 500Ω **476,1904µA**. Fallisce requisito fail-closed. Velleman indica 20kΩ e TME 2kΩ per AIM60005, entrambi NON qualificati, issue #213. Nessuna PCB.
+
+**Lavoro tecnico in branch NON integrato** `v27-smeter-dual-series-guard-spice-20261115`, base main SHA sopra: nuovo circuito SPICE **due sink di corrente NPN in serie**, due riferimenti/comandi analogici indipendenti `VSETMAIN=0,4V` e `VSETGUARD=0,45V`, due resistori sense 10kΩ, due servo BAMP ideali (non vendor). `verify_smeter_dual_series_guard_ngspice.py` nel gate FRONT testa due singoli corti C-E, doppio corto, comando zero e VDD OFF, carichi 2k/20k/500Ω; confronto analitico doppio corto ~227,27µA a 2k e 125µA a 20k. **Non dichiarare test ngspice completati finché CI FULL del final HEAD non è verde**. Nessun nuovo KiCad di questa topologia, nessuna protezione fisica o qualifica opamp/BJT/coil. Richiesti schematico KiCad9 candidato, fault study di cause comuni, limitazione indipendente, vendor OEM e prova fisica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 15 novembre 2026 — PR #214 MERGED, singolo guasto Q2101 C–E: nuovo gate fail-closed da validare
+
+**[PR #214](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/214) MERGED**, main `7e6a419c1a6def3596582d8f3eded3a21d944d85`, head tecnico `daf7c79bb768100b4cc321f626bb281119af46b8`. [Actions #43659700760](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43659700760): FAST/FULL/required **SUCCESS 3/3**, FULL KiCad9 ERC0 (8 refs/8 reti/23 pin, driver standalone), ngspice generic 5V VSET0,5: beta40 **48,81206µA**, beta200 **49,73882µA**, carico `20kΩ` candidato Velleman AIM60005 **49,49839µA**. Nessuna qualifica hFE OEM 50µA, ingresso movimento, eventuale corrente limite, transitori, PCB o interoperabilità MAIN/FRONT.
+
+**Branch tecnico NON integrato:** `v27-smeter-ce-short-failclosed-20261115` da main sopra: modifica verificatore ngspice già collegato al gate KiCad9, nuovo test di **Q2101 C–E SHORT anche con VSET=0V**, idealmente ~166,667µA su 20kΩ+10kΩ sense e ~476,19µA con 500Ω+10kΩ; esplicitamente FALSE la proprietà fail-closed, nodo e comando ON/OFF NON sicuri. Confronto anche su 2kΩ: fonte TME per Velleman AIM60005 **2kΩ** mentre produttore Velleman dichiara **20kΩ** per medesimo codice; **discrepanza 10× NON RISOLTA**, né l'una né l'altra resistenza possono essere usate come Rcoil qualificata. Con corto C–E e carico 2kΩ, a 5V/10kΩ sense limite ideale 416,67µA, ~8,33× FSD 50µA ipotetica. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) aggiornata, richiesta prova OEM. Questi valori analitici non sono ancora risultati ngspice del nuovo commit: attendere PR/FAST/FULL/required sul final HEAD. Report tecnico aggiornato. Nessuna nuova PCB o schemi MAIN/FRONT. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) aperta per protezione indipendente e FSD reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #212 MERGED; beta BJT / bobina candidata 50 µA in revisione
+
+**[PR #212](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/212) MERGED** su `main` commit `287650e972f426eed2ce851dd378fd8d75b7e03d`, head tecnico `5be6db5569a5fff49daaddc399b462020af23886`. [Actions #43658780504](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658780504): FAST/FULL/required **SUCCESS 3/3**; log FULL `ACTIVE_SINK_ERC_STDOUT Found 0 violations`, native KiCad9 **8 refs/8 reti/23 pin** e ngspice op-point generic `49,50385µA` (VSET0,5V 5V coil 500Ω), `99,01404µA` (VSET1V, possibile sovracorrente). Nuovo schematico KiCad9 THT standalone `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/`, relativo verificatore nativo e modello ngspice; **non** è un PCB, non integrato a MAIN/FRONT, opamp ideale BJT generic senza current limit sicuro, coil FSD non selezionata. Prima FULL #43658055515 fallì per 31 warning KiCad off-grid, corretti e riprovati senza waiver.
+
+**In lavorazione (branch NON integrato)** `v27-smeter-bjt-beta-coil-candidate-20261115` da main SHA sopra: nuova prova ngspice di sensibilità BF=40/100/200 (feedback su *corrente emettitore* vs uscita bobina al collettore), carico equivalente 20kΩ da candidato pannello [Velleman AIM60005](https://www.velleman.eu/products/view/analogue-current-panel-meter-50a-dc-60-x-47mm-aim60005/?id=340368&lang=en) 50µA FSD, dimensioni 60,5×47×37,3mm, **MPN/stato produzione/elettrico non qualificato**. onsemi `2N3904BU` TO92 con E1/B2/C3 candidato; pinout varia con OEM. [Issue #213](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/213) aperta per scegliere e qualificare bobina e limitazione indipendente, quindi sicurezza e meccanica FRONT. **Attendere CI sul final HEAD e PR prima del merge**. Nessuna prova hardware, NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #212: prima FULL valida su SHA precedente, attesa CI HEAD finale
+
+[Actions #43658055515](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658055515) inizialmente **FAILED** per 31 warning off-grid nel nuovo schema; riposizionati tutti i pin/wire/label su griglia nativa 1,27mm senza waiver. [Actions #43658250059](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43658250059) su SHA `f917b34fa2d69a0c046d8878032dee90b7d90157` **FAST/FULL/required PASS**, log KiCad9 `ACTIVE_SINK_ERC_STDOUT Found 0 violations`, 8 refs/8 nets/23 pins e ngspice generic 49,50385µA a VSET0,5V (coil 500Ω), 99,01404µA a VSET1V non limitata per FSD. Corretto successivamente il report semantico di esistenza KiCad vs equivalenza modello ideale: **CI nuova sul final HEAD obbligatoria, PR212 ancora NON merged**. Nessuna qualifica fisica FSD, alimentazioni, fault, produzione; NO FAB/NO TX.
+
+---
+
+## 15 novembre 2026 — candidato servo S-meter: KiCad9 THT + ngspice, PR #212 in validazione
+
+Nella PR **[#212](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/212)** branch `v27-smeter-active-current-sink-spice-20261115` è stato aggiunto un vero schema **KiCad9 standalone** `04_KiCad/V2.7_DRAFT/SMETER_ACTIVE_SINK_BENCH/SMETER_ACTIVE_SINK_BENCH_V2_7_DRAFT.kicad_sch`: U2101 MCP6002 PDIP8, Q2101 2N3904 TO-92 onsemi E1/B2/C3, R2101 10k sense, R2102 10k base, R2103 100k pulldown e 3 connettori THT; topologia di sink di corrente ad anello chiuso **senza limitazione FSD certificata**, banco separato senza connessione MAIN-FRONT. Aggiunto `verify_smeter_active_sink_native.py` per ERC KiCad9 e partizioni previste **8 componenti, 8 reti, 23 pin**, richiamato in `verify_front_smeter_native.py`, più netlist ngspice comportamentale e test parametrici di VSET/coil/off. **Attendere FULL/FAST/required sul HEAD finale prima di dichiarare ERC o ngspice PASS e prima del merge.** Confronto SPICE ↔ opamp OEM, FSD/Rcoil, stabilità, fault e PCB non verificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #211 MERGED; corrente attiva S-meter SPICE candidato (branch da verificare)
+
+**[PR #211](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/211) MERGED**, main commit `ea2745ea2c6d9613bd42f145f75f07cb97695b73`. [Actions #43657363232](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43657363232): FAST+required **SUCCESS**, FULL correttamente skipped su diff solo documentazione. Il checkpoint PR210 precedentemente pending è ora su main. **La PR211 non costituisce una nuova revisione CAD.**
+
+**Lavoro tecnico branch NON integrato** `v27-smeter-active-current-sink-spice-20261115` da `ea2745ea2c6d9613bd42f145f75f07cb97695b73`: netlist SPICE originale `03_Verifiche/V2.7/SMETER_ACTIVE_SINK_BENCH_V2_7.cir`, controllo operativo reale ngspice `verify_smeter_active_sink_ngspice.py` collegato a `verify_front_smeter_native.py`, e rapporto V2.7. BJT generic tipo 2N3904 TO92 (datasheet onsemi pin **1=E 2=B 3=C**, da qualificare con vera impronta), sink con RSENSE 10k, comando VSET 0,1/0,5V per 10/50µA ideali a 5V lab e bobina puramente ipotetica 500Ω. Comando 1V potenzialmente pericoloso (100µA ideali): manca clamp FSD indipendente. Modelli SPICE BJT/opamp NON OEM, analisi di stabilità transienti e guasti NON qualificate. **Nessun nuovo CAD KiCad per il driver, nessuna PCB.** Non dichiarare prove ngspice eseguite finché FULL sul final head non è verde. In assenza FSD/Rcoil OEM non selezionare corrente definitiva. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #210 MERGED: incompatibilità potenziale S-meter 5V / FSD bobina; NO FAB
+
+**[PR #210](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/210) MERGED** su `main` commit `918c38b9085ee29f0f10b496695265fa7bb33fa6`, head tecnico `2b00f8e56d99e36d269775c69b3461068926ef47`. [Actions #43656784381](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43656784381): FAST/FULL/required **SUCCESS 3/3**, verificato log FULL: `SMETER_KICAD_ERC Found 0 violations`, `SMETER_MAIN_FRONT_BENCH_VOLTAGE_DRIVE_UNQUALIFIED`, `PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX`. File tecnici reali: `03_Verifiche/V2.7/verify_smeter_main_front_voltage_contract.py`, integrazione nel gate nativo FRONT e rapporto tecnico. Schema KiCad standalone e master MAIN V2.6 **non modificati**. Nessuna PCB creata, nessuna DRC di scheda.
+
+Il test verifica che un follower di banco MCP6002 alimentato a 5V non sia assunto direttamente come driver di bobina su FRONT con 2×100kΩ: nel modello ideale (5V limite superiore, R a −5%, Rcoil=0) la corrente max calcolata è **26,315789µA**; FSD ipotetica 50µA richiederebbe almeno **9,5V**. Non si deduce la FSD reale, non è definita la connessione MAIN→FRONT e non è autorizzata maggiore tensione. Priorità: scegliere/qualificare OEM in produzione per bobina S-meter (FSD, Rcoil, danni/sovracorrente) e progettare driver corrente controllata THT fail-closed, quindi interfaccia AGC MAIN / cable/connector e vere PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 15 novembre 2026 — PR #209 MERGED; MAIN/FRONT S-meter 5V drive contract (branch non integrato)
+
+**[PR #209](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/209) MERGED** su main `d4488b560235867ff5a254df362c06303d23e969`, head `23639a7de22cedcdfa955a7d4be20cd8da42c537`, [Actions #43656253619](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43656253619) FAST/FULL/required **SUCCESS 3/3**. Log FULL `SMETER_KICAD_ERC Found 0 violations`, `FRONT_SMETER_FSD_CURRENT_FAULT_SCREEN_FAIL_CLOSED` con 105,263µA modello 20V R1801/R1802 integre, 210,526µA un corto; nessun FSD/driver reale qualificato. Lo stesso FULL contiene limiti RF varactor esplicitamente FAIL nel modello bench: CI di regressione verde NON equivale a qualifica RF.
+
+**Prossima revisione su branch, NON integrata:** `v27-smeter-main-front-drive-interface-screen-20261115` base main SHA qui sopra. Confronta il banco follower MCP6002 a 5V con due resistori da 100k FRONT; a 5V ipotetici max 26,316µA, insufficiente per FSD puramente ipotetica 50µA (minimo 9,5V). Impone contratto di incompatibilità potenziale tra uscita tensione di banco e bobina di corrente, non connette fisicamente i moduli, e integra controllo nel gate nativo FRONT. **Attendere PR e CI FAST/FULL/required sul final head**. Serve FSD/Rcoil OEM reale, driver corrente limitata fail-closed, AGC reale e interboard cabling. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #208 MERGED; nuova revisione FRONT FSD (branch, non ancora integrata)
+
+**[PR #208](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/208) MERGED** su `main` commit `10bef3ac3e96de8f7970e443021124f88a8e2ef9`, head tecnico `00a9d35106ecb761d5e6603fc868f09e2fdf0471`, [Actions #43655759379](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43655759379): FAST/FULL/required **3/3 SUCCESS**. Log FULL: ERC MCP6002 0 violazioni, `SMETER_R1903_YAGEO_FAULT_ENVELOPE_FAIL_CLOSED`, 13 riferimenti / 7 reti / 32 pin netlist standalone. R1903 cutoff modello DC −200V circa 126,5812°C: pass teorico 125°C, fail 130°C. Non prova hardware, ESD, temperatura corporea o MCP6002 stress.
+
+**In preparazione, NON integrato** branch `v27-front-smeter-fsd-drive-screen-20261115` da main SHA sopra: nuovo `verify_front_smeter_fsd_fault_screen.py` richiamato dopo ERC/netlist FRONT con screening DC guasti 0/1/2 resistori in corto, Rmin conservativa 95kΩ ciascuno e esempi FSD non selezionati. A 20V ipotetici senza Rcoil: ~105,263µA integri; ~210,526µA con un corto; nessun bound con due corti. Nessun MPN/FSD, driver, Rcoil, cavo o PCB qualificati. Attendere FAST/FULL/required CI sul commit finale e PR prima di integrare. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — V2.7 R1903 fault-envelope test in branch, NOT integrated until PR CI passes
+
+Branch tecnico `v27-smeter-yageo-fault-envelope-20261115`, base main `ebe7f8547d4839677bc57c913658c0647572edc9` (PR #207 checkpoint integrata, FAST+required PASS, FULL skipped documentale). Nuovo test `03_Verifiche/V2.7/verify_smeter_r1903_fault_envelope.py` collegato alla verifica nativa KiCad9 MCP6002, rapporto S-meter aggiornato. Calcolo ideale per R1903 Yageo 120kΩ ±0,5% 1W @70°C, cutoff derating teorico circa 126,6°C per guasto negativo −200V: 125°C passa MODELLO, 130°C FALLISCE MODELLO. Non confondere la corrente del ramo modellata con i 2mA di stress interno IC; nessuna protezione hardware, temperatura corporea o ESD qualificata. Master V2.6 e schemi PCB invariati. **Questa voce descrive un branch non ancora integrato; attendere FULL required CI sul suo HEAD e successivo merge**. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 15 novembre 2026 — PR #206 MERGED: R1903 OEM Yageo MFR1WSDRE52-120K, derating 130°C FAIL
+
+**[PR #206](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/206) MERGED** su main, commit `76da7f9fecf2a3b7102e5d542cdc38b928bcc761`, head tecnico `6f237fbf23643b75747f1cd620126ffb8a99b9e7`. [Actions #43645624151](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43645624151): tre job FAST/FULL/required **SUCCESS** verificati, inclusa esecuzione di suite KiCad9/ngspice; nessuna prova fisica. Main precedente `e08965c524a187bf5451ec17fcb2f0764aca08e8`, checkpoint PR205 già integrato.
+
+Modificato realmente schema KiCad9 standalone S-meter MCP6002, valore R1903 `120k_0P5PCT_1W_YAGEO_MFR1WSDRE52-120K_CANDIDATE`, rapporto tecnico e verificatore nativo; **nessuna modifica al master V2.6 e nessuna PCB**. MPN OEM candidato: MFR1WS 120kΩ ±0,5%, 1W @70°C, max nominale 400V limitato da RCWV/derating a 155°C. Modello ipotetico guasto continuo −200V, Vf=0,2V, Rmin=119,4kΩ: 0,334W; a 130°C P consentita ≈0,294W e RCWV≈187V: **FAIL**, NON qualificato. Limite 2mA MCP6002 = stress assoluto, non condizione operativa. Restano non verificati stato produttivo OEM effettivo MPN, lead forming, working voltage in assemblaggio, ESD/impulsi, temperatura corpo, leakage e power-off.
+
+**Prossimi gate:** valutare topologie fail-closed per stress/ESD/rail spento, accoppiamento AGC MAIN, interfaccia/driver bobina S-meter FRONT; completamento due schede, qualifica componenti vendor e prove fisiche. PR #143/#123 draft da trattare separatamente; non scambiare green CI per qualifica hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #204 MERGED: R1903 120k 1W THT, margine teorico negativo −200V ancora non qualificato
+
+**[PR #204](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/204) MERGED** su `main`, commit `7fc33f0e87243e588e9722e807812ae58b92cdbd`, head tecnico `0b2de9575f8e30979bd53cdc1b3f697edb34f385`. [Actions #43644885954](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43644885954): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1903_120K_200V_STRESS_MARGIN_STILL_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 di banco MCP6002: `R1903=120kΩ/1%/1W` THT DIN0411, impronta invariata. ERC0, netlist **13 refs / 7 reti / 32 pin**. Modello illustrativo guasto negativo −200V, Rmin=118,8kΩ, Vf(D1903)=0,2V: corrente≈**1,681818mA**, margine rispetto al limite assoluto 2mA≈**0,318182mA** e P≈0,336027W. Soglia teorica 2mA≈237,8V; oltre, e.g. −250V, modello NON sicuro. Per detector Thevenin 47kΩ e bias 22MΩ: perdita nominale≈**0,753372%**, fc RC con C1902=1nF≈**960,258Hz**, non include offset/leakage PVT, dinamica AGC reale. Il valore 2mA del datasheet è stress assoluto NON operatività consentita; mancano MPN reale, working voltage, impulse/thermal derating, protezioni ESD/rail spento e qualifiche PVT.
+
+**Blocker**: revisione completa stress/ESD/power-off, reali AGC MAIN e bobina/driver S-meter FRONT, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #202 MERGED: R1903 100k 1W DIN0411 THT ridimensionamento candidato, stress 2mA non qualificato
+
+**[PR #202](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/202) MERGED** su `main`, commit `20ec41238e1821f3714d8a3e20cfaeb2c25d75ad`, head tecnico `45a5988288e65bb3beef8e21f7b6670fa0214666`. [Actions #43643997643](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43643997643): **FAST/FULL/required SUCCESS 3/3**, log FULL `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1903_1W_THT_DERATING_STILL_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 standalone: `R1903=100kΩ/1%/1W` THT, impronta `Resistor_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal`, candidate power derating dopo stress negativo di PR200; stessa rete: **13 componenti / 7 reti / 32 pin**, ERC0. Modello teorico `−200V` e Vf(D1903)=0,7V => dissipazione nominale ~**0,397205W** (<1W); scenario R1903=99k e Vf=0,2V => I≈**2,018182mA**, supera limite assoluto 2mA del MCP6002; `−400V` => 1,594405W nominali (>1W). L'impronta non qualifica tensione massima di lavoro del resistore, MPN OEM, derating a caldo, impulsi o ESD. **Guasto −200V ancora NON qualificato**, dispositivo solo da banco.
+
+**Blocker**: validare modello sorgente, soglia stress interna/diode sharing, MPN di R1903 con working voltage e pulse rating, ESD/PVT, rail spento; mancano AGC MAIN, S-meter FSD/driver, PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #200 MERGED: D1903 DO35 clamp inferiore ingresso MCP6002 candidato, guasto −200V NON tollerato
+
+**[PR #200](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/200) MERGED** su `main`, commit `c9fad0484a904d8e87e65decd05d4fd3faa62829`, head tecnico `b4073e14e34336778343271093f04afc3845cdc6`. [Actions #43643037357](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43643037357): **FAST/FULL/required SUCCESS 3/3**; log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1903_LOWER_CLAMP_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS32_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Nel banco KiCad9 MCP6002 reale aggiunto `D1903=1N4148 DO-35 THT` con **catodo pad1 al segnale `AM_ENV_AFTER_R1903`** e **anodo pad2 a `SMBUF_BENCH_GND`**; rimangono D1901 clamp superiore, D1902 Zener rail e R1904 bleeder. Netlist nativa **13 componenti / 7 reti / 32 pin** ERC0. Modello illustrativo a Vf=0,7V e guasto DC da connettore: −20V => I≈0,193mA, P(R1903)≈0,003725W; −200V => I≈1,993mA, P(R1903)≈**0,397205W** (> rating **0,25W**). **Rischio termico non risolto**, né sono qualificati clamp interno, leakage PVT, surge/ESD o potenza/tensione impulsiva.
+
+**Blocker**: protezione negativa non approvata per guasti gravi; richiede revisione del limitatore d'ingresso reale, MPN/protezioni certificate e temperature, input AGC MAIN, driver FSD/coil, layout PCB MAIN/FRONT e test fisici. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #198 MERGED: D1902 Zener 5V6 THT e correzione polarità DO-35 pin↔pad D1901/D1902
+
+**[PR #198](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/198) MERGED** su `main`, commit `bb6b81cd2986545e312f9c3f5deec50dd8cb29c9`, head tecnico `715b106d5a279e8575b72119549df0036b9b5bfe`. [Actions #43642100791](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43642100791): **FAST/FULL/required SUCCESS 3/3**. FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1902_5V6_ZENER_LOW_CURRENT_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS30_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni PASS.
+
+Schema KiCad9 standalone: `D1902` candidato Zener BZX55C5V6 DO-35 THT da rail `VLAB5_BUFFER` a `SMBUF_BENCH_GND`. Corretto **difetto critico di polarità pin↔pad** sulla libreria KiCad `TH_SMETERBUF:D` e relativo simbolo embedded: DO-35 standard pad **1=catodo (K)**, pad **2=anodo (A)**; `D1901` ora pin2 A su ingresso e pin1 K a +5V; `D1902` pin2 A a massa e pin1 K a +5V. Gate KiCad9 nativo **12 refs / 7 reti / 30 pin**, ERC0. D1902 non è qualificato: Vz 5,2–6,0V è specificato a 5mA/25°C; il modello +200V/R1903=100k/R1904=4k7/Vf(D1901)=0,7V lascia soltanto ~0,7455mA nel diodo assumendo Vz=5,6V; la regolazione sub-mA e PVT non sono garantite. Conduzione inversa e protezione power-off/ESD/OVP non approvate.
+
+**Blocker**: manca conferma OEM MPN e V-I Zener a bassissima corrente e temperature, protezione reale off-state/ESD e guasti negativi, sorgente MAIN AGC, calibrazione FSD/driver S-meter, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #196 MERGED: R1904 4k7 THT scarico rail 5V da banco, power-off ancora NON qualificato
+
+**[PR #196](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/196) MERGED** su `main`, commit `6117047f975152c7112fb5a62bad0027568b9b3c`, head tecnico `049c4d780a79317feb6534ff2dbdbf384ce40140`. [Actions #43641067469](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43641067469): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_R1904_RAIL_BLEEDER_CANDIDATE`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS28_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema KiCad9 isolato `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto `R1904=4k7Ω/1%/0,25W` assiale THT da `VLAB5_BUFFER` a `SMBUF_BENCH_GND`, scarico/bias rail candidato. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py`: **11 refs / 7 reti / 28 pin**, ERC0. Con alimentazione 5V: I≈1,06383mA, dissipazione≈5,3191mW; modello ipotetico con R1903=100kΩ, D1901 Vf=0,7V, alimentatore spento aperto: guasto +20V genera Vrail≈**0,86638V** (NON qualificato per circuito spento), mentre +200V genera Vrail≈**8,94661V**, oltre il massimo assoluto 7V del MCP6002. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato.
+
+**Blocker**: scarico passivo non sostituisce protezione ESD/OVP/rail certificata; mancano definizione e tolleranze del reale rail/regolatore sink e stato spento, I/V PVT del diodo D1901, accuratezza a bassi livelli, sorgente AGC MAIN, FSD/driver della bobina, due PCB e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #194 MERGED: D1901 DO35 THT clamp superiore candidato, backfeed e leakage ancora NON qualificati
+
+**[PR #194](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/194) MERGED** su `main`, commit `399de599e33fe50f826c1d02274548c91d7ba420`, head tecnico `b2af4342a7519f8c1db6dd8063a571a7b1d4ef70`. [Actions #43640317607](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43640317607): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `MCP6002_HIGHZ_D1901_UPPER_DIODE_CANDIDATE_UNQUALIFIED`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS26_LAB_ONLY_NO_FAB_NO_TX` e 111 regressioni storiche PASS.
+
+Schema vero KiCad9 standalone `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: `D1901` candidato **1N4148 DO-35 THT**, simbolo reale in `TH_SMETERBUF.kicad_sym`, anodo (`D1901/1`) su `AM_ENV_AFTER_R1903` (pin U1901/3) e catodo (`D1901/2`) su `VLAB5_BUFFER`; `R1903=100kΩ` upstream. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py`: ERC KiCad9 0, **10 componenti / 7 reti / 26 pin**, modello ipotetico +20V porta 143µA al rail acceso e 193µA spento con Vf assunta 0,7V. Con solo 100nF di bypass, backfeeding di 1V possibile idealmente in ~0,518ms se alimentatore non assorbe; leakage *illustrativo* 25nA produrrebbe 3,65mV di offset equivalente a 146kΩ e 0,55V a connettore aperto con 22MΩ. Non sono prestazioni certificate del diodo reale in PVT. Report FRONT aggiornato.
+
+**Blocker**: il solo D1901 non qualifica protezione ESD/OVP e power-off; mancano sink/clamp del rail, reverse leakage PVT dell'MPN THT esatto, budget di accuratezza e test reali; mancano sorgente MAIN RX AGC, S-meter FSD/Rcoil, driver bobina, interconnessioni e PCB native. Buffer solo da banco, MASTER MAIN invariato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #192 MERGED: rischio sovratensione positiva MCP6002 esplicitamente bloccato
+
+**[PR #192](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/192) MERGED** su `main`, commit `eca950ec4e167a187565b195745034332b9c9677`, head tecnico `dfe0690f1ec84a408c6a974fcaf9bc6d36d229bb`. [Actions #43639549233](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43639549233): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`; `MCP6002_HIGHZ_POSITIVE_OVP_BLOCKED_NO_UPPER_CLAMP`; `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+**Rettifica tecnica di sicurezza**: secondo Microchip DS20001733L §4.1.2 e Figure 4-1/4-2 non esiste nel circuito una protezione alta a VDD+0.3V implementata o qualificata: il diodo esterno verso VDD deve ancora essere progettato con percorso di corrente/iniezione e verifica a circuito spento. Le stime +20V precedenti assumevano impropriamente la presenza del clamp. Il gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` ora dimostra, con modello resistivo senza clamp, che +20V a J1901 lascia `U1901/3` a circa **19.9095V**, violando il limite assoluto ingresso VDD+1V con alimentazione a 5V o a 0V; +12V produce circa 11.9457V e supera anch'esso il massimo a VDD 5V. Nel modello di clamp basso ipotetico, un guasto persistente −200V produce circa **0.3988W** su R1903, oltre 0.25W nominali. Numeri matematici per evidenziare i rischi, **non** una prova di sicurezza. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato. CAD invariato: **9 refs / 7 reti / 24 pin**, ERC0. Stato design: protezione positiva, ESD, startup/unpowered, leakage MPN, percorso alimentazione, driver bobina/FSD, AGC RX MAIN e PCB native **non qualificati**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #190 MERGED: filtro RF C1902 C0G THT sul buffer MCP6002 da banco
+
+**[PR #190](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/190) MERGED** su `main`, commit `7beda5bf0efe6949d34cf00e416fc3c2f1260e6e`, head tecnico `1e9beef7396314c5bbe709ace0e1e1670929eac1`. [Actions #43638630337](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43638630337): **FAST/FULL/required SUCCESS 3/3**, controllo nativo KiCad9 `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS24_LAB_ONLY_NO_FAB_NO_TX`, 111 regressioni storiche PASS.
+
+Schema reale KiCad9 isolato `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto C1902=1nF/50V C0G/NP0 **THT candidato** tra `AM_ENV_AFTER_R1903` al pin3 U1901 e `SMBUF_BENCH_GND`; 9 componenti, 7 reti, 24 pin esatti verificati da esportazione netlist nativa ed ERC0. Gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` esteso con `MCP6002_HIGHZ_RC_RF_LAB_ONLY`: con sorgente ideale Rdet=47kΩ, R1903=100kΩ, R1901=22MΩ, Rth≈146024Ω e fc≈1089,92Hz, guadagno lineare relativo a DC a 455kHz≈0,0023954; NON è test EMI reale, modellazione rivelatore AM nonlineare o validazione di cablaggio e PCB. Rapporto FRONT aggiornato. Restano non qualificati accuratezza assoluta sotto 1% a 100mV, offset/bias PVT, ESD/OVP e alimentazione spenta, sorgente AGC MAIN, driver bobina S-meter e FSD/Rcoil, MPN finali e due PCB fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #188 MERGED: modello PVT MCP6002, accuracy assoluta 1% non qualificata
+
+**[PR #188](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/188) MERGED** su `main`, commit `361ba8d0c1e9898bcb4169385356639bc631c1a5`, head tecnico `1a197369586f72e030a088eb14332ac0793a1a7f`. [Actions #43637735275](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43637735275): **FAST/FULL/required SUCCESS 3/3**. Log FULL: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`; `MCP6002_HIGHZ_PVT_UNQUALIFIED` presente; `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS22_LAB_ONLY_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+Nuovo gate quantitativo in `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`: distingue carico ideale ingresso 47k+100k verso R1901=22M da errore assoluto con offset opamp. Sulla sorgente idealtipica **100mV**, perdita resistiva **0,66375%** ma offset Microchip MCP6002 fino a ±4,5mV produce **≥5,16%** errore peggior segno includendo campioni di bias; a **125°C** usando solo dato di bias esemplificativo 1,1nA, ~**5,32%**, non un worst-case garantito. `Rth` detector collegato ~146kΩ contro **22MΩ** a J1901 scollegato: 1,1nA di bias causa ~0,161mV o 24,2mV rispettivamente. Scenari di corrente clamp e perdita resistore sono **solo modello ipotetico**; nessuna ESD/OVP reale, clamp verificato, sequenza off/on, modello RF, driver bobina S-meter o AGC MAIN completati. CAD e netlist invariati **8 refs / 7 reti / 22 pin**. La conformità all'1% **assoluto** non è dimostrata e non va rivendicata.
+
+**Blocker**: prima di collegare il ramo a MAIN o FRONTPANEL servono curva di trasferimento misurata, budget errore e calibrazione ammessa su FSD reale, verifica alimentazione e protezioni, MPN esatti correnti produzione e due PCB native. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #186 MERGED: R1903 THT ingresso MCP6002 e modello fault limitato
+
+**[PR #186](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/186) MERGED** su `main`, commit `21eb37d7f5c30c546ab17ef05722edeb47f7efd4`, head tecnico `980b9b42b60271a3aee311d9cf8b8c968de2b292`. [Actions #43636869212](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43636869212): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS22_LAB_ONLY_NO_FAB_NO_TX`, 111 comandi regressivi PASS.
+
+CAD reale KiCad9 `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: aggiunto `R1903=100kΩ/1%/0,25W` THT in serie tra ingresso `AM_ENV_DC_BENCH` del J1901 e nodo `AM_ENV_AFTER_R1903` al pin3 U1901 MCP6002 e `R1901=22MΩ` a GND. Gate nativo `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` controlla **8 riferimenti, 7 reti, 22 pin**, ERC0, impronte e modello resistivo; rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato. Stima ideale attenuazione su ingresso opamp 47k/(47k+100k+22M) più caduta serie complessiva = **0,66375%**; distinta dalla sola perdita detector circa **0,2122%**. R serie soltanto *candidato limitatore di corrente*: il modello a clamp ipotetico ±0,3V presso rail non verifica corrente di injection ammessa, diodi ESD fisici, back-power quando U1901 spento, leakage PVT, offset, RF/EMI, fault energetici o tensioni reali.
+
+**Blocker**: componenti e protezioni ESD/OVP esterne non approvati, alimentazione e sequenza spento ancora non qualificate, sorgente AGC RX MAIN non presente, driver bobina e movimento FSD/Rcoil sconosciuti, front/main PCB non completate. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #184 MERGED: buffer alta impedenza S-meter MCP6002 PDIP8 THT isolato da banco
+
+**[PR #184](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/184) MERGED** su `main`, commit `fdd242d121489bb0cb6184acba29719bd223e060`, head tecnico `d413f71b2c9a6d75686e05315524ca9d660ad979`. [Actions #43635972860](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43635972860): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `MCP6002_HIGHZ_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_MCP6002_PDIP8_THT_HIGHZ_BUFFER_ERC0_PINS20_LAB_ONLY_NO_FAB_NO_TX`, 111 comandi storici PASS. Due precedenti run FULL falliti su libreria locale non registrata: corretti mediante `TH_SMETERBUF.kicad_sym`, `sym-lib-table` e progetto `.kicad_pro`; nessun waiver.
+
+CAD KiCad9 reale `04_KiCad/V2.7_DRAFT/SMETER_MCP6002_HIGHZ_BENCH/SMETER_MCP6002_HIGHZ_BENCH_V2_7_DRAFT.kicad_sch`: `U1901` MCP6002-I/P candidato THT PDIP-8, A buffer a guadagno unitario con pin 1/2 in feedback e ingresso pin3; B parcheggiato a massa pin5 e pin6/7 in feedback; pin8 alimentazione **5V di banco**, pin4 GND; R1901 22MΩ bias ingresso; R1902 1kΩ uscita; C1901 100nF bypass; J1901/J1902/J1903 connettori banco THT. **7 componenti, 6 reti, 20 pin** controllati contro netlist KiCad9 nativa + simboli footprint; perdita lineare idealizzata 47k||22M circa **0.213%**. Nuovo gate `03_Verifiche/V2.7/verify_smeter_mcp6002_highz_native.py` in FULL. MPN, disponibilità e parametri PVT ancora da qualificare sul codice esatto prima della BOM release.
+
+**Blocker**: uscita `SMBUF_VOUT_BENCH` **solo tensione di laboratorio**, NON driver bobina S-meter; ingresso `AM_ENV_DC_BENCH` NON connesso ad `AM_RECTIFIED_ENV` del detector né a MAIN RX. Mancano AGC sorgente MAIN reale, protezioni di input ESD/OVP/reverse, impedenza effettiva PVT, corrente massima e fault, noise, saturazione rail, FSD/Rcoil/MPN e taratura movimento, interboard cable e due PCB vere. Master MAIN V2.6 invariato, prototipo isolato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #182 MERGED: contratto alta impedenza buffer S-meter AM455 (ancora solo analitico)
+
+**[PR #182](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/182) MERGED** su `main`, commit `bd4be948a1fbadcf9ee30c33512945c65ca0b110`, head tecnico `f068fe258fce973608da2d817b63db67c814b122`. [Actions #43634509632](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43634509632): **FAST/FULL/required SUCCESS 3/3**, log FULL `PASS_AM455_ENVELOPE_32_KCL_BUFFER_INPUT_IMPEDANCE_GATE_NO_REAL_DRIVER_NO_FAB_NO_TX`; 111 comandi storici PASS.
+
+Nuovo `03_Verifiche/V2.7/verify_smeter_buffer_input_loading_contract.py` obbligatorio in FULL CI: verifica netlist KiCad9 AM455 da banco, confronta 32 casi numerici KCL (8 carichi, 4 livelli) con formula chiusa indipendente. Con `R1501=47kΩ`, `C1501=1nF` e sorgente Norton *ideale* richiede `Rin_eff >=4.653MΩ` per errore statico da carico <=1%; **target preliminare >=10MΩ effettivi**, includendo ingressi/bias/leakage/cablaggio, non MPN approvato. Trim FRONT 10k diretto ridurrebbe livello ideale ~82.46%, spostando taglio equivalente 3.39→19.3kHz; **non** è modellazione di rivelazione nonlineare. Rapporto S-meter V2.7 esteso.
+
+Non esiste ancora alcun buffer THT reale progettato né una sorgente AGC MAIN, livello RX FM/SSB, FSD/Rcoil/MPN del movimento, driver di corrente, connettore/cavo qualificato o PCB MAIN/FRONT. Prossimo lavoro: sviluppare buffer reale **isolato da banco** con KiCad9 ERC/netlist, limiti comuni, PVT, rumore, carichi e difetti, prima di connettere all'architettura RX. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #180 MERGED: tracciamento sorgente reale S-meter RX e blocco falsa AGC
+
+**[PR #180](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/180) MERGED** su `main`, commit `6022af2a2677520a97da3d3339337ce8d236dc00`, head tecnico `6c688e327ace7a089e2c9a2e568064922f95bb57`. [Actions #43633620095](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43633620095): FAST, FULL, required **SUCCESS 3/3**. Dal log FULL: `PASS_NATIVE_RX_SOURCE_TRACE_AM_ENVELOPE_NOT_DC_AGC_NOT_MAIN_NO_FAB_NO_TX` e `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES {'executed_commands': 111}`.
+
+Nuovo test integrato nella FULL `03_Verifiche/V2.7/verify_rx_smeter_source_trace_native.py` percorre il vero master KiCad9 MAIN V2.6 + sei figli gerarchici e verifica che non vi siano segnali etichettati AGC/S-meter/RSSI/RX_LEVEL da attribuire senza nuova revisione. Esporta le netlist native AM455 laboratorio e S-meter FRONT: il nodo interno `AM_RECTIFIED_ENV` collega `D1501/1`, `R1501/1`, `C1501/1` e `C1502/1`, mentre `J1502/1` espone `AM_DEMOD_AF_BENCH` **dopo C1502 100nF di accoppiamento AC**, quindi **non** il livello DC e **non** una sorgente S-meter del vero RX MAIN. La rete meter FRONT resta scollegata dalla MAIN. Risultato di carico lineare *ipotetico*: pot 10k direttamente parallelo al detector 47k implica `Req≈8.25kΩ`, `fc≈3.39→19.3kHz` con C1nF; il comportamento del diodo nonlineare non è qualificato. Documento tecnico ampliato `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`.
+
+**Azioni aperte**: sviluppare una catena ricevente MAIN reale con detector livello/AGC per modulazioni AM/FM/SSB, buffer ad alta impedenza, limiti di uscita e isolamento verso FRONT; validare movimento S-meter reale (FSD, resistenza, calibrazione, tolleranze, fault), interconnessione/cavo e PCB. Master MAIN V2.6 invariato, V2.7 sempre DRAFT isolato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #178 MERGED: doppia resistenza serie THT per S-meter analogico FRONT
+
+**[PR #178](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/178) MERGED** su `main`, commit `c58db4a0570008109dfd5f2eac1e6fbbe7020f6b`, head tecnico `a1bc4b658e24d3b183fa384570ecce9902100187`. [Actions #43632571437](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43632571437): **FAST/FULL/required SUCCESS 3/3**. Log FULL verificato: `SMETER_KICAD_ERC Found 0 violations`, `PASS_KICAD9_FRONT_SMETER_ERC0_DUAL_SERIES_THT_LIMITERS_NETLIST_NO_FSD_NO_FAB_NO_TX`, `PASS_FRONT_SMETER_135_KCL_DUAL_LIMITERS_SINGLE_FAULT_NO_FSD_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_FRONT_SMETER_AUDIO_DOMAIN_ISOLATION_NO_MAIN_DRIVER_NO_FAB_NO_TX`, **111 comandi storici**.
+
+CAD KiCad9 standalone reale `04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` aggiornato: aggiunto `R1802` resistenza assiale THT 100kΩ candidata in serie a `R1801` THT 100kΩ su nodo distinto `METER_LIMIT_STAGE1`; **5 componenti, 5 reti, 11 pin** imposti da verifica netlist nativa, più gate isolamento FRONT/audio. `03_Verifiche/V2.7/verify_front_smeter_current_fault_envelope.py` mantiene 135 crosscheck KCL indipendenti e aggiunge guasti singolo/doppio corto. Controesempi *ipotetici* con bobina cortocircuitata e sorgente ideale: 6V -> 30µA nominali, 60µA con un solo corto; 20V -> 100µA nominali, 200µA con un solo corto; doppio corto con bobina fittizia da 100Ω e 6V -> circa 60mA. Nuova ridondanza **non è safety qualification**, né dimostra il FSD o la calibrabilità di un movimento reale. Mancano sorgente e limiti MAIN, MPN/FSD/Rcoil, stress tolleranze/termica, connettori mating e cavo, ESD/EMI. Master MAIN V2.6 immutato; PCB-MAIN/FRONT reali assenti, DRC non applicabile. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #176 MERGED: isolamento cablaggio S-meter FRONT vs audio
+
+**[PR #176](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/176) MERGED** su `main`, commit `1a91b42792e2f326661dafb7a6748e6c3e10f083`, head tecnico `734af024c24a8d95052ce3b223a7484a281d98ab`. [Actions #43631671307](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43631671307): **FAST/FULL/required SUCCESS 3/3**; log FULL verificato `SMETER_KICAD_ERC Found 0 violations`, `PASS_NATIVE_KICAD9_FRONT_SMETER_AUDIO_DOMAIN_ISOLATION_NO_MAIN_DRIVER_NO_FAB_NO_TX`, **111 comandi storici**.
+
+Nuovo gate nativo obbligatorio `03_Verifiche/V2.7/verify_smeter_front_harness_isolation_native.py` richiamato da `ci/full_regressions.py`, report `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` esteso. Esporta e verifica **tre netlist KiCad9 reali** (FRONT S-meter, FRONT volume, pilot MAIN audio), controlla esattamente 4 reti/9 pin dello S-meter e 3 reti frontali audio, rileva corto/assegnazione impropria di reti e verifica domini e ritorni isolati. Boundary solo lato FRONT: `J1801/1=METER_DRIVE_CANDIDATE`, `J1801/2=METER_RETURN`, **nessuna origine/pin MAIN S-meter progettata**, nessun ponte automatico verso `AF_GND`, no potenza/rail/TX, connettori mating e cablaggio non qualificati. Master MAIN V2.6, PCB-MAIN/PCB-FRONT reali assenti, nessun PCB DRC. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #174 MERGED: S-meter THT controllo correnti Thevenin/KCL e guasti
+
+**[PR #174](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/174) MERGED** su `main`, commit `151389087b21296367bb1c194084f88a9744b536`, head tecnico `ad4f21f49285dce4bf7442782cc273ad312679fa`. [Actions #43630698739](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43630698739): **FAST/FULL/required SUCCESS 3/3**; log FULL conferma `SMETER_KICAD_ERC Found 0 violations`, `PASS_FRONT_SMETER_135_INDEPENDENT_KCL_FAULT_ENVELOPE_NO_FSD_NO_FAB_NO_TX`, e **111 comandi storici**. Nuovo `03_Verifiche/V2.7/verify_front_smeter_current_fault_envelope.py`, eseguito obbligatoriamente in `ci/full_regressions.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md` aggiornato.
+
+Controlli fisici **analitici ipotetici** a valori provvisori 10kΩ pot/100kΩ limitatore: 135 crosscheck con equazioni nodali indipendenti per tre tensioni, tre impedenze sorgente, tre Rcoil e cinque posizioni cursore; endstop e guasti open/short. Controesempi: a 6V ideali con bobina short 60µA massimi (non raggiunge FSD da 100µA); a 20V 200µA (sovracorrente per FSD da 50µA); limitatore short a 6V con Rcoil 100Ω ~60mA; pot pista ideale 40mW a 20V. **NON** significa misura OEM, ngspice specifico, funzionalità del vero AGC/MAIN, rating verificato, protezione ESD, FSD noto o sicurezza del circuito: attendere dati di campo/datasheet, progettare driver, limiter fail-safe e interfaccia reale. Nessuna modifica ai componenti/nets del master MAIN V2.6 o a PCB-FRONT/PCB-MAIN (inesistenti). **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #172 MERGED: primo S-meter analogico PCB-FRONT standalone THT con ERC nativo
+
+**[PR #172](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/172) MERGED** su `main`, commit `81ed7c5a0e8c7cd1a727c726ca92be612e84ded3`, head finale `c0b78cd57138ea9978cc7af43444bab4d8add562`. [Actions #43629578707](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43629578707): **FAST/FULL/required SUCCESS 3/3**; log FULL verificato: `SMETER_KICAD_ERC Found 0 violations`, `PASS_KICAD9_FRONT_SMETER_ERC0_PASSIVE_THT_LIMITER_NETLIST_NO_FSD_NO_FAB_NO_TX`, **9 pin/4 reti** da esportazione KiCad9 e **111 comandi storici**. La prima [run #43629312062](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43629312062) fallì giustamente per 5 avvisi KiCad librerie simboli/impronte mancanti; corretto tramite vere librerie `TH_FRONT.kicad_sym`, `TH_SMETER.kicad_sym`, `sym-lib-table`, `fp-lib-table` e file progetto, senza waiver.
+
+Nuovo schematico standalone `04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch`, con `J1801` input drive/return, `RV1801` potenziometro THT 10k provvisorio, `R1801` resistenza serie 100kΩ THT provvisoria e `J1802` collegamento coil/return. Test `03_Verifiche/V2.7/verify_front_smeter_native.py`, gate `ci/full_regressions.py`, report `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_ANALOG_PASSIVE_DRAFT.md`. **NON è ancora un driver S-meter qualificato:** nessun MPN movimento, resistenza bobina, corrente fondo scala, drive MAIN misurato, calibrazione o protezione ESD/EMI; footprint potenziometro **PROVISIONAL DO NOT FAB**. Master MAIN V2.6 sette fogli/138 riferimenti invariato, nessuna PCB-FRONT o PCB-MAIN reale, DRC PCB non applicabile, BOM non approvata. Restano aperti issue #141, PR #123 e #143. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #170 MERGED: IF455 S2P con sorgente Thevenin complessa
+
+**[PR #170](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/170) MERGED** su `main`, commit `1055777d01a6c1cad72f7ff81382269668d5e871`, head tecnico `56482547af8c8d8eca2dc58757168ef5a468d07f`. [Actions #43628262564](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43628262564) **FAST/FULL/required SUCCESS 3/3**, log FULL verificato: `PASS_IF455_TOUCHSTONE_TWO_PORT_81_COMPLEX_SOURCE_LOAD_TESTS_NO_OEM_NO_FAB_NO_TX` con **81 crosscheck analitici sintetici**, `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES` con **111 comandi storici**, nessun errore nei log FULL.
+
+Esteso `03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py` a sorgente Thevenin Zs complessa, oltre al carico ZL complesso. Verifica con resistenza serie fittizia (100Ω), Z0=2kΩ, formati RI/MA/DB, tre frequenze, tre carichi e tre sorgenti (81 casi), con confronto indipendente di `Vload/Vs=Zload/(Zsource+100Ω+Zload)`; CLI `--source-real-ohm` e `--source-imag-ohm`. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_S2P_TWO_PORT_MEASUREMENT_CONTRACT_DRAFT.md` ampliato. **Non sono misure OEM, né 81 simulazioni ngspice**; nessuna impedenza reale mixer LO-driven è stata misurata e nessun S2P di filtro reale acquisito. Il master KiCad MAIN V2.6 7 fogli/138 refs invariato, PCB/DRC assenti e BOM ancora non qualificata. Issue #141 e PR #123/#143 restano aperte. Prossimo gate: misure effettive del filtro IF455 e mixer sotto LO, qualifica MPN e selettività per modo. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #168 MERGED: contratto Touchstone IF455 a due porte
+
+**[PR #168](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/168) MERGED** su `main`, commit `bfedde80315a5948f47de224c858c20e643b4c50`, head tecnico `f33423c39235b54be54084417867c1cfa6fcccdd`. [Actions #43627531475](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43627531475) **FAST/FULL/required SUCCESS 3/3**, log FULL ispezionato: `PASS_IF455_TOUCHSTONE_TWO_PORT_27_ANALYTICAL_TERMINATION_TESTS_NO_OEM_NO_FAB_NO_TX`, **27 verifiche analitiche sintetiche**; `PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES`, **111 comandi storici**; nessun errore nei log FULL.
+
+Script `03_Verifiche/V2.7/verify_if455_touchstone_twoport_contract.py`: accetta misure esterne Touchstone v1 `.s2p` RI/MA/DB, rete a due porte S11/S21/S12/S22, terminazione ZL complessa, Zin e trasferimento Vload/Vsource con sorgente adattata Z0. Fixture di test sintetica: R serie 100Ω, Z0 2kΩ, 445/455/465kHz, carichi resistivi e complessi; 27 crosscheck con algebra indipendente, **non sono misure OEM né 27 simulazioni SPICE**. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_S2P_TWO_PORT_MEASUREMENT_CONTRACT_DRAFT.md`. FULL CI obbligatoria. **Non esiste tuttora alcun campione misurato o file S2P calibrato**; catalogo non identifica una funzione complessa unica né autorizza scelta del filtro/impedenza. Necessaria qualifica OEM e misure mixer LO-driven. Master V2.6 7 fogli/138 refs invariato; PCB/DRC assenti; BOM non qualificata. Issue #141 e PR draft #123/#143 ancora aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 14 novembre 2026 — PR #166 MERGED: sensibilità IF455/KSP10 a carico complesso RC ipotetico, 72 AC native
+
+**[PR #166](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/166) MERGED** su `main`, commit `46deeb17fd3fc6b5ae93e3e960c227222cb78b20`, head tecnico `48d2518ad592ffd5a769128b074a1af148a2dbf5`. [Actions #43626609419](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43626609419) **FAST/FULL/required SUCCESS 3/3**, log FULL verificato: `PASS_NATIVE_KICAD9_IF455_KSP10_72_HYPOTHETICAL_COMPLEX_RC_LOAD_NGSPICE_NO_OEM_NO_FAB_NO_TX`, **72 vere risoluzioni ngspice AC**, **111 comandi storici**, nessun `##[error]`.
+
+Nuovo test `03_Verifiche/V2.7/verify_if455_ksp10_hypothetical_complex_rc_load_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_HYPOTHETICAL_RC_LOAD_DRAFT.md`, registrazione obbligatoria in `ci/full_regressions.py`. Esportazione netlist KiCad9 dei circuiti IF455 e KSP10 con verifiche pin↔net; banco condiviso a 6V e transistor BJT **generico**, `beta=40/80/160` × R carico `1500/2000Ω` × C fittizia in parallelo `0/100/330/1000pF` × frequenza `445/455/465kHz`.
+
+Nel **solo** caso modellistico beta160/R2k/455kHz: aggiunta di 100/330/1000pF comporta rapporto tensione follower vs solo R rispettivamente `0,992593872` / `0,974280578` / `0,913639099`. **Non** è la funzione di trasferimento di un filtro ceramico reale: R||C è uno stress fittizio, non una misura OEM FB455/LTM455, né dimostra prestazioni in rumore, IF/LO, dinamica, banda o selettività AM/FM/SSB/CW. Non adottare tali C su KiCad né qualificare un filtro.
+
+Master MAIN V2.6 sette fogli/138 riferimenti invariato, PCB MAIN/FRONT inesistenti, DRC non applicabile, BOM non qualificata. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141), [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123), [PR #143](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) aperte. **Prossimo gate:** modello a due porte o misure OEM dell'effettivo filtro 455kHz e impedenze con mixer LO-driven; decidere sul carico e sull'interfaccia soltanto dopo qualifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #164 MERGED: KSP10 full tank, 72 AC complesse native
+
+**[PR #164](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/164) MERGED** su `main` al commit `7a74320180dbefff58da15ccc8e03dfea1c87a18` (head tecnico `e9a7621dc88cd3f7f72a0972af6bf344528bba1e`). [Actions #43625741215](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43625741215) **FAST/FULL/required 3/3 SUCCESS**, log ispezionati: marker `PASS_NATIVE_KICAD9_KSP10_72_FULL_TANK_COMPLEX_TRANSFER_NGSPICE_NO_OEM_NO_FAB_NO_TX`, **72 reali risoluzioni AC ngspice**, **111 comandi storici**, esportazione netlist KiCad9 KSP10 e tank IF455. Nessun errore Actions; warning Node20 deprecation di checkout/upload non rappresenta un failure test.
+
+Script `03_Verifiche/V2.7/verify_if455_ksp10_full_tank_complex_transfer_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_KSP10_FULL_TANK_COMPLEX_TRANSFER_DRAFT.md`, gate aggiunto a `ci/full_regressions.py`. Banco full-tank esistente, BJT **generico non OEM** 6V, `beta=40/80/160` × carico resistivo dummy `1,5/2kΩ` × CIN temporaneo `10/100/1000/10000pF` × `445/455/465kHz` = **72 casi** con tensioni complesse e fase tank→uscita follower.
+
+A 455kHz, a parità di corner, passando da CIN 10pF a 10nF **la tensione sul tank cala al 78,48–78,61%**, mentre l'uscita follower sale al **149,84–151,22%** del confronto 10pF: documenta il compromesso di carico, **non** miglioramento dimostrato di sensibilità, rumore o selettività. No impedenza complessa reale del filtro, mixer LO-driven, KSP10 OEM NF/IMD, Q/SRF fisici o PCB. **Non adottare nuovi valori CIN** dal solo AC.
+
+Restano aperte [issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) sulla selettività AM/FM/USB/LSB/CW, e PR [#123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) / [#143](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) **DRAFT/UNQUALIFIED**. **Prossimo lavoro:** stimare il carico complesso e trasferimento RF in presenza di un filtro ceramico realistico misurato, e qualifica OEM/noise/linearity, prima di scegliere eventuale CIN/buffer. MAIN V2.6 sette fogli/138 riferimenti invariato; PCB MAIN/FRONT ancora inesistenti, nessun DRC applicabile, BOM non qualificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #162 MERGED: impedenza complessa KSP10 a 455kHz, 144 test nativi
+
+**[PR #162](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/162) MERGED**, commit `main` verificato `a4418afabc77d7948a9e23b1f3d2bbb332f31a73`, head tecnico `3dd5246d7a6a81bcdd7a598bc014d9904ca50ac9`. Run autorevole finale [Actions #43603485990](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43603485990) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**: **144 risoluzioni AC native ngspice**, **72 verifiche della reattanza complessa serie**, **111 comandi storici**, marker `PASS_NATIVE_KICAD9_KSP10_144_NGSPICE_COMPLEX_PORT_AND_BASE_SERIES_REACTANCE_CASES_NO_OEM_NO_FAB_NO_TX`. La prima Actions [#43602819651](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43602819651) era **FAILED** per parser/export SPICE: `ir(vport)` non supportata dalla versione ngspice in CI. Corretta l'esportazione usando vettori nativi complessi `wrdata port.dat v(port) i(vport)`; il FAIL iniziale non è stato nascosto e **non** è il gate valido per il merge.
+
+Nuovo verificatore `03_Verifiche/V2.7/verify_if455_ksp10_complex_input_port_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_KSP10_INPUT_COMPLEX_IMPEDANCE_DRAFT.md`, test FULL in `ci/full_regressions.py`. Si esportano e controllano le vere netlist KiCad9 standalone KSP10 (Q1701 pin1 base / pin2 emettitore / pin3 collettore) e tank IF455, **senza modificarne i componenti**. Nel banco SPICE solo modellistico KSP10 generico (6V, bias22k/10k, emettitore2k2) si misurano `beta=40/80/160` × carico output resistivo fittizio `1500/2000Ω` × `f=445/455/465kHz` × CIN `10/100/1000/10000pF`: **72 casi porto** e **72 casi riferimento** verso la base, con condensatore DC-block nominale da 1F, la cui reattanza è calcolata e tolta. Il solver di porta e quello di base danno `Zport≈Zbase+1/(j2πfCIN)` con errore relativo <0,08%, verifica matematica delle componenti complesse non una misura fisica OEM.
+
+Per `beta80`, `Rload2kΩ`, `455kHz`, ingresso base `Zbase≈6393,984381−j137,172239Ω` nel modello. Con CIN **10pF** `Zport≈6393,984513−j35116,278036Ω` (|Z|35693,64Ω); **100pF** `6393,984520−j3635,080521Ω` (|Z|7355,06Ω); **1nF** `6393,984525−j486,960748Ω` (|Z|6412,50Ω); **10nF** `6393,984516−j172,148770Ω` (|Z|6396,30Ω). Ciò **spiega la componente capacitiva del carico tank** nei precedenti PR156/158/160, ma NON implica che un CIN maggiore o minore sia qualificato: l'interazione full-tank/trasferimento, stabilità, noise/IMD, Q induttore reale, Zout mixer SBL-1+ con LO, impedenza complessa e filtro ceramico reale sono ancora non qualificati. Non introdurre valori o un buffer nella radio da soli risultati AC.
+
+[Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) resta aperta su requisiti selettività AM/FM/USB/LSB/CW. Master MAIN V2.6 sette fogli/138 refs, standalone e BOM invariati; PCB MAIN/FRONT ancora assenti, routing 0%, nessun PCB DRC. [PR #123 impronta A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 filtro FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) rimangono **DRAFT** per qualifica OEM dimensionale e orientamento. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #160 MERGED: isolamento resistivo KSP10/tank IF455, 30 simulazioni native
+
+**[PR #160](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/160) MERGED**, commit verificato su `main` `aca6a6b18b12a21a874274d046c2b3208a0fb69e`, HEAD tecnico `f4ea1168a7b3ced08b9ae6c20f996ef736941984`. [Actions #43601637470](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43601637470) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**: log FULL verificati con **30 casi reali ngspice**, **111 comandi storici** e marker `PASS_NATIVE_KICAD9_KSP10_30_IF455_SERIES_ISOLATION_RESISTOR_TANK_OUTPUT_CASES_NO_OEM_NO_FAB_NO_TX`.
+
+Nuovo script `03_Verifiche/V2.7/verify_if455_ksp10_series_isolation_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_KSP10_SERIES_ISOLATION_IF455_DRAFT.md`, registrazione FULL obbligatoria `ci/full_regressions.py`. Il benchmark mantiene le netlist native KiCad9 KSP10 e IF455, il modello BJT **generico** e il banco di [PR156](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/156) (sorgente 50Ω ipotetica, tank IF455 con L1mH e R16,5Ω utilizzata come proxy RF non qualificata, alimentazione 6V, CIN10nF, COUT10nF, resistori fittizi carico ingresso filtro ceramico 1,5/2kΩ). Varia **solo in deck ngspice temporaneo** una resistenza serie fra `out` del tank e condensatore ingresso CIN: `0,1k,4,7k,10k,47kΩ` × beta BJT generici `40/80/160` × dummy 1,5k/2kΩ = 30 casi AC a 455kHz. Verifica anche il precedente riferimento exact PR156 beta80/2kΩ/Riso0 `Vtank=0,124579814` e `Vbuffer=0,119093670`.
+
+**Risultati beta80/2kΩ**: `Riso0→Vtank 0,124579814, Vout 0,119093670`; `1kΩ→0,140982744 / 0,116557353`; `4,7kΩ→0,195952289 / 0,107989227`; `10kΩ→0,261694324 / 0,097601337`; `47kΩ→0,504815190 / 0,057810637` (rapporti V/V su generatore 1V AC). Isolare resistivamente il tank aumenta Vtank nel banco ma **abbassa il segnale effettivo in uscita**; la perdita resistiva introduce anche rumore termico non studiato. Non approvare una Riso sulla sola tensione di tank o uscita: richiede vero Z(f) del filtro ceramico, Zout LO-driven del mixer SBL-1+, modelli OEM KSP10 e figure di rumore, intermodulazione, banda/selectivity, dinamica, tolleranze e PVT.
+
+**Stato hardware invariato:** nessuna resistenza serie aggiunta allo schema; KSP10 resta con CIN10nF originale nello standalone, nessun dispositivo buffer qualificato. Master MAIN V2.6 sette fogli e 138 riferimenti invariato, PCB MAIN/FRONT non progettate, nessun DRC PCB, BOM non rilasciata. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) RX AM/FM/USB/LSB/CW resta aperta; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano DRAFT per qualifica footprint fisica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #158 MERGED: KSP10 accoppiamento tank IF455, 48 simulazioni e tradeoff d'ingresso
+
+**[PR #158](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/158) MERGED**, commit tecnico `main` `2d8c5a4827aa9dbaaec21d0ec2ad62873ccf909a`, HEAD PR `7a21fc471f697bb3fb2f8acf161571879f38d8d9`. [Actions #43600719889](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43600719889) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log FULL controllati: **48 simulazioni ngspice AC native**, **111 comandi storici**, marker `PASS_NATIVE_KICAD9_KSP10_48_IF455_CIN_PF_TANK_VS_OUTPUT_TRADEOFF_NO_VENDOR_NO_FAB_NO_TX`.
+
+File nuovi: `03_Verifiche/V2.7/verify_if455_ksp10_coupling_tradeoff_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_CIN_TRADEOFF_DRAFT.md`, suite obbligatoria `ci/full_regressions.py`. Esportati per controllo i veri netlist KiCad9 standalone KSP10BU (B1/E2/C3) e tank IF455; il banco riusa la stessa sorgente 50Ω ipotetica, tank IF455 con Rcoil16,5Ω NON RF qualificato, supply 6V, output 10nF di [PR156](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/156). Solo nel **deck ngspice temporaneo** sono provati otto CIN in pF `10,22,47,100,220,470,1000,10000` × tre beta BJT **generici** `40,80,160` × due resistori dummy carico filtro ceramico `1,5k/2kΩ`: 48 casi AC a 455kHz. Registrati il livello `Vtank/Vsrc`, `Vbuffer/Vsrc`, `Vbase/Vsrc`, gli stessi rapporti normalizzati, e preservati due ancoraggi numerici PR156 (beta80, 2kΩ, 10pF e 10nF).
+
+**Risultato modello beta80/2kΩ**: CIN10pF → `Vtank 0,462701267`, `Vout 0,079264690`; 22pF → `0,283560252`, `0,100429850`; 47pF → `0,179665919`, `0,110786642`; 100pF → `0,138793024`, `0,115385592`; 220pF → `0,127246963`, `0,117477115`; 470pF → `0,124945474`, `0,118367172`; 1nF → `0,124559612`, `0,118773549`; 10nF originale → `0,124579814`, `0,119093670`. Il maggiore valore CIN dà solo un lieve incremento di Vout nel range superiore ma **il tank è già pesantemente caricato da ~100–220pF**. Non approvare alcun CIN per massimizzazione output; un accoppiamento con ingresso ad alta impedenza e un buffer/terminazione con Q/rumore/IMD validati richiede vero studio circuitale.
+
+Non sono stati cambiati i componenti o gli schemi KiCad: KSP10 standalone rimane con CIN **10nF**, master V2.6 7 fogli/138 refs invariato; NO filtro ceramico reale modellato, NO Zout SBL-1+ LO-driven, NO Q/SRF inductor reale, NO modelli OEM di rumore/distorsione/temperatura. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) su IF multi-modo AM/FM/USB/LSB/CW aperta. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) entrambe **DRAFT non qualificate**, footprint NON assegnate. PCB MAIN/FRONT ancora NON realizzate, DRC PCB non applicabile; BOM non rilasciata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #156 MERGED: banco comune J113/KSP10 su tank IF455, 54 simulazioni e carico 10nF
+
+**[PR #156](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/156) MERGED**, commit `main` verificato `19ed9ca3aab38c8cb96b828a7790a093c3505899`, HEAD tecnico `bff16818c4b25e7c29346fdecd2151852581c491`. [Actions #43599679277](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43599679277) **FAST, FULL KiCad9/ngspice e required gate 3/3 SUCCESS**; log FULL verificati con **54 simulazioni reali ngspice AC**, **36 confronti carico dummy 1,5/2kΩ contro 100kΩ allo stesso corner e coupling**, **9 misure esplicite del caricamento tank KSP10 10nF contro 10pF** e **111 comandi legacy**, marker `PASS_NATIVE_KICAD9_IF455_SHARED_TANK_54_NGSPICE_J113_KSP10_COUPLING_LOAD_CORNERS_NO_OEM_NO_FAB_NO_TX`.
+
+Nuovo `03_Verifiche/V2.7/verify_if455_j113_ksp10_shared_tank_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_J113_KSP10_SHARED_TANK_54_CASES_DRAFT.md`, suite obbligatoria `ci/full_regressions.py`. Le tre vere netlist KiCad9 standalone (IF455 1mH tank, onsemi J113 D1/S2/G3, KSP10 B1/E2/C3) sono verificate. Sono calcolate in deck SPICE temporanei le due famiglie di buffer sullo **stesso tank** `C1601=10pF,L1601=1mH,Rcoil16,5Ω,C1602=82pF,C1603=30pF,R1601=47k,C1604=10pF,R1602=100k`, stessa sorgente Thevenin **50Ω ipotetica**, 1V AC, supply 6V laboratorio, capacità uscita 10nF, carico input ceramico **solo resistenza fittizia** 100k/2k/1,5kΩ. J113 = 6 corner NJF generici `VTO −0,5/−1,5/−3V × Idss 2/10mA`, KSP10 = 3 beta generici `40/80/160`; entrambi provati con capacità d'ingresso di accoppiamento **10pF e 10nF** (anche le varianti contrarie al loro schematico sono solo scenari di banco), per `(6+3)×2×3=54` casi. Mantenuto ancoraggio numerico nativo J113 `VTO−3V,Idss2mA,10pF,2kΩ→Vbuffer/Vsrc=0,261831624` della PR148.
+
+**Risultato centrale: IL CARICO DEL TANK È UN BLOCKER.** Per KSP10 beta80 carico2kΩ **coupling 10pF**: `Vtank/Vsrc=0,462701267`, `Vbuffer/Vsrc=0,079264690`; **coupling 10nF** come candidato KSP10: `Vtank/Vsrc=0,124579814`, `Vbuffer/Vsrc=0,119093670`. Rapporto **Vtank(10nF)/Vtank(10pF)=0,269244592** nel modello comune: l'uso di 10nF trasferisce il segnale più efficacemente alla base, ma carica gravemente il tank e ne diminuisce la tensione. Non inferire un migliore transistor dall'uscita relativa e NON collegare direttamente KSP10 alla rete IF455 senza qualificare l'interfaccia. J113 modello VTO−3V,Idss2mA carico2kΩ 10pF: Vtank/Vsrc `0,741448557`, Vbuffer/Vsrc `0,261831624`, ma non è una vittoria in rumore/sensibilità reale. **Il KSP10 al banco senza tank della PR154 non era confrontabile al J113**, e questo gate corregge tale errore.
+
+**Limiti essenziali:** modelli J113/NPN **generici**, nessun modello OEM onsemi, rumore, IP3/IMD, clipping, temperatura/lotto, vera impedenza complessa dell'ingresso ceramico FB455, Ruscita filtro, filtro LC reale Q/SRF, o LO-driven SBL-1+ Zout IF; il test AC 455kHz non include demodulazione AM/SSB/FM/CW o segnale debole e non qualifica alcun dispositivo. Non sostituire 10nF/10pF o Rsource fisici in CAD sulla sola base di questi dati. Il prossimo gate elettrico è caratterizzare **impedenza di ingresso del BJT e carico del tank**, considerare interfaccia isolante/buffer/diplexer e qualificare rumore e linearità in un banco uniforme con reali MPN, prima di scegliere un filtro di canale per i modi RX previsti (issue [#141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141)).
+
+MASTER V2.6 7 schemi/138 refs e standalone intatti, PCB MAIN/FRONT ancora non esistenti, DRC PCB non applicabile, BOM non approvata. [PR #123 SBL-1+ A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano **DRAFT UNQUALIFIED**, footprint non assegnate. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #154 MERGED: KSP10 THT 27 corner di carico IF455 ceramico resistivo
+
+**[PR #154](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/154) MERGED**, commit su `main` verificato `5ce2730f83238760859254ca492e15c189d8a979`, HEAD tecnico `a17d4e02f3720db3645912238855e00992789baf`. [Actions #43598753078](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43598753078) **FAST/FULL native KiCad9/ngspice/required 3/3 SUCCESS**, log verificati: **27 test ngspice bias DC+AC** a 455kHz, 18 confronti di livello caricato rispetto al 100kΩ allo stesso rail/BETA e **111 comandi storici**. Marker `PASS_NATIVE_KICAD9_KSP10_27_CERAMIC_LOAD_GENERIC_BJT_AC_BIAS_CORNERS_NO_OEM_NO_FAB_NO_TX`.
+
+Nuovo script `03_Verifiche/V2.7/verify_if455_ksp10_ceramic_load_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10_CERAMIC_LOAD_DRAFT.md`, invocazione obbligatoria `ci/full_regressions.py`. Si riutilizzano davvero KiCad9 standalone KSP10BU 10-THT (Q1701 pin1 **BASE**, pin2 **EMETTITORE**, pin3 **COLLETTORE**, 22k/10k bias, 2k2 emettitore, 10n accoppiamento, 6V laboratorio) e deck originale BJT **generico**, NON modello onsemi certificato. Verificate native netlist KiCad9 KSP10 e filtro LC IF455 (standalone), ma per la **simulazione KSP10 il tank IF455 NON è collegato**: l'ingresso è generatore ideale + 50Ω. Tre rail ipotetici `5,5/6/6,5V` × beta illustrativi `40/80/160` × finto carico resistivo `100kΩ` riferimento, `2kΩ`, `1,5kΩ`; per ogni caso dati DC B/E/rail e tensione AC 455kHz. Il dummy **NON** rappresenta filtro ceramico completo, frequenza/impedenza complessa, maschere filtro, rumore o mixer LO-driven.
+
+**Risultato nel SOLO modello:** `Vout(2k)/Vout(100k)` **0,973134675…0,980042689**; `Vout(1,5k)/Vout(100k)` **0,964261882…0,973373754**. La corrente DC è disaccoppiata dal carico AC nominale tramite C10n nel modello. Referenza PR99 `Vout/Vsource(455k, 6V beta80 100k)=0,970670` conservata dal test. **Il KSP10 mostra carico resistivo relativamente leggero nel banco generico**, ma NON è ancora qualificato come migliore del J113: lo screening J113 PR148 usa il tank IF455, quindi i valori assoluti non sono comparabili tra banchi diversi. Non dedurre una migliore sensibilità, NF, reiezione canale o linearità dal solo rapporto AC caricato.
+
+**Prossimo gate:** simulare **entrambi i buffer con ingresso IF455/tank/detector/filtri identici**, verificare un vero MPN onsemi con dati di rumore, `hFE(f,I_C,T)`, polarizzazione, IMD/overload a grande segnale, stabilità, source/load 1,5–2kΩ del filtro OEM e restituzione di un percorso selettivo per modi RX AM/FM/USB/LSB/CW ([issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141)). Master MAIN V2.6 sette fogli/138 refs e schemi standalone intatti, PCB MAIN/FRONT non esistono, DRC PCB non applicabile, BOM non rilasciata. [PR #123 SBL-1+ A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) ancora DRAFT/UNQUALIFIED per orientamento/case/fori OEM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #152 MERGED: J113 6V, 18 verifiche DC e Kirchhoff su corrente di source
+
+**[PR #152](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/152) MERGED**, commit su `main` verificato `b5eafab95425e5c113e3d032408d81290ae69f6d`, HEAD tecnico `b52991327639693e031a3436d770d5df8d81a7a5`. [Actions #43597863004](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43597863004) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**. Log FULL ispezionato con **18 effettive simulazioni ngspice transitorie con campionamento del regime DC**, **111 comandi storici** e marker `PASS_NATIVE_KICAD9_J113_18_GENERIC_DC_BIAS_AND_INDEPENDENT_R_SOURCE_KCL_NO_OEM_NO_FAB_NO_TX`.
+
+Script `03_Verifiche/V2.7/verify_if455_j113_native_dc_bias.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_J113_NATIVE_DC_BIAS_DRAFT.md`, suite obbligatoria `ci/full_regressions.py`: esportano vere netlist KiCad9 standalone onsemi J113 THT (Q1801 drain pin1, source pin2, gate pin3, ingresso/uscita accoppiati in AC) e tank IF455; verificano per un modello **NJF generic non OEM** 6V, Rsource provvisorie **680/1000/2200Ω** × `VTO=−0,5/−1,5/−3V` × `Idss=2/10mA`: Vgate (≈0), Vsource, Vdrain (≈6V), Vgs, Vds, I_supply, e indipendentemente `I_source=Vsource/Rsource` contro `−I(VLAB)` (errore KCL verificato minore dell'1%, solitamente <1e−7 relativo). Capacità di coupling disaccoppiano in DC il finto carico 2kΩ; queste non sono prove di segnale 455kHz, rumore, ripple o limite termico.
+
+**Numeri del modello**: Rsource corrente **2,2kΩ** → `Id≈0,164071972…0,950072102mA`, `Vsource≈0,360958325…2,09015861V`, `Vds≈3,90984139…5,639041675V`. Alternativa 680Ω → `Id≈0,408470584…2,30987164mA`, con Vsource≈0,277759992…1,57071271V. Il cambio Rsource influisce sulla corrente e sul margine DC ma il precedente [PR #150](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/150) ha mostrato **tutti i 24 confronti AC 680/1000Ω peggiori di 2,2kΩ** nei corner: **NON modificare il valore Rsource da 2,2kΩ** sulla base di queste evidenze. Il J113 non è approvato: questi `VTO`/`Idss` sono solo esempi del modello, non limiti di produzione; manca OEM I_D(V_GS,T), noise figure, IMD/compressione, potenza, condizioni LO reale e prova AM debole (precedente AFpp ≈24,34% del diretto). Non introdurre buffer nel master senza misure di componenti reali e caratterizzazione di filtro ceramico THT.
+
+[Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) continua requisiti selettività AM/FM/USB/LSB/CW; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano **DRAFT** per qualifica OEM/meccanica. Master V2.6 7 fogli/138 refs immutato; CAD standalone J113 non alterato; PCB MAIN/FRONT non esistono, nessuna DRC PCB, BOM non approvata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #150 MERGED: sweep Rsource J113, alternative 680Ω/1kΩ peggiorano il modello
+
+**[PR #150](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/150) MERGED**, commit su `main` verificato `8eda65a88960ac1aff6dc9c00ab0782915102731`, HEAD tecnico `c2407baada57aee7b0a9891ed3f7c7797ff56f0d`. [Actions #43596935218](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43596935218) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log nativo FULL controllato: **36 casi ngspice AC**, **24 comparazioni con Rsource originale 2,2kΩ**, **111 comandi storici**; marker `PASS_NATIVE_KICAD9_J113_36_SOURCE_RESISTOR_CERAMIC_DUMMY_AC_CORNERS_NOT_OEM_NO_FAB_NO_TX`.
+
+Nuovo script `03_Verifiche/V2.7/verify_if455_j113_source_bias_load_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_J113_SOURCE_RESISTOR_CERAMIC_DRAFT.md`, richiamo `ci/full_regressions.py`. Riutilizzano veri netlist KiCad9 dello standalone onsemi J113 (Q1801 pin1 Drain/2 Source/3 Gate) e tank IF455, generico NJF 6V laboratorio già presente; 3 **soli Rsource SPICE temporanei** (680Ω, 1kΩ, 2,2kΩ corrente) × 3 `VTO=-0,5/-1,5/-3V` × 2 `Idss=2/10mA` ipotetici × 2 soli carichi fittizi resistivi 1,5/2kΩ, AC 445–465kHz. Il riferimento numerico esatto del precedente [PR #148](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/148) (Rsource=2,2kΩ, VTO−3V, Idss2mA, carico2kΩ → `Vout/Vsource(455k)=0,261831624`) è incluso nel test per impedire alterazioni silenziose del banco.
+
+**Risultato decisivo entro il modello:** nei **24 confronti** fra R680/R1000 e R2200 allo stesso VTO/Idss/carico, `Vout455(R680/R1000)/Vout455(R2200)` varia **0,728355476…0,980589567**, **tutti <1**. Peggiore caso R680Ω, VTO−3V/Idss2mA/carico2kΩ: **72,84%** del livello originario; migliore caso R1kΩ, VTO−0,5V/Idss10mA/carico1,5kΩ: **98,06%**. **Decisione: mantenere Rsource 2,2kΩ del candidato J113**, non promuovere alternative 680/1kΩ e non modificare KiCad/BOM per questi dati. **Non significa che il buffer J113 sia qualificato**: dati da modello JFET generico (no vendor), nessuna caratterizzazione DC indipendente, rumore, NF, intermodulazione, margine grande segnale, output filtro ceramico, LO-driven mixer; precedente insufficienza sul debole AM (AFpp 24,34% del diretto) resta non risolta. Non promuovere un rapporto AC a sensibilità RX reale.
+
+Continua [issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) per maschere/filtri AM/FM/USB/LSB/CW; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano **DRAFT** per orientamento/foro/qualifica OEM. Master MAIN V2.6 7 fogli/138 refs invariato, buffer solo standalone, PCBs MAIN+FRONT non esistenti, DRC PCB non applicabile, routing 0%, BOM non approvata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #148 MERGED: carico ceramico 1500/2000Ω sul J113 THT già esistente
+
+**[PR #148](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/148) MERGED**, commit `main` verificato `c687feff5e6b72a2ce08a82e33724f986e96669b`, HEAD tecnico `588d446605d0472a42d9acf6708f97668f82c5fc`. [Actions #43595989414](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43595989414) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; FULL logs ispezionati: **18 run ngspice AC con piccolo segnale** + **111 comandi legacy**, marker `PASS_NATIVE_KICAD9_J113_18_NGSPICE_455K_CERAMIC_RESISTIVE_LOAD_CORNERS_GENERIC_NO_OEM_NO_FAB_NO_TX`.
+
+Il verificatore `03_Verifiche/V2.7/verify_if455_j113_ceramic_load_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_J113_CERAMIC_LOAD_DRAFT.md`, invocazione obbligatoria `ci/full_regressions.py` riutilizzano **veramente la netlist KiCad9 J113 THT standalone già progettata** (Q1801: onsemi TO-92 pin1 drain / pin2 source / pin3 gate; alimentazione prova 6V, source R2,2k, gate R1Meg, ingresso C10pF, uscita C10nF) e la netlist tank IF455. Nei deck ngspice temporanei il modello transistor rimane **generico** `NJF` con `VTO=-0,5/-1,5/-3V` × `Idss=2/10mA`, tre carichi resistivi fittizi di ingresso filtro ceramico **100kΩ riferimento/2kΩ/1,5kΩ** (18 sweep 445–465kHz). Questi non rappresentano impedenza complessa/canale del filtro FB455, né un macromodello onsemi, rumore o non linearità grande segnale.
+
+A 455kHz **Vout(2k)/Vout(100k) = 0,6738…0,8907** nei sei corner generici; **Vout(1,5k)/Vout(100k) = 0,6065…0,8588**. Al corner più sfavorevole `VTO=-3V, Idss=2mA, load2kΩ`: `Vout/Vsource=0,261831624`, `Vout/Vtank=0,353135253`, confrontato al corner favorevole `VTO=-0,5V, Idss=10mA, load2kΩ`: `Vout/Vsource=0,574805784`. Il follower riduce considerevolmente il segnale modellato quando pilotato dal filtro ceramico resistivo. **Soprattutto PR #106 J113 aveva già un corner debole AM transitorio pari al 24,34% dell'AF del percorso diretto**: questo problema NON è risolto dal nuovo test AC e l'attuale J113 resta **NON APPROVATO** come buffer dell'interfaccia radio. Non selezionare un candidato realizzato in hardware soltanto perché presente a catalogo.
+
+[onsemi J113 datasheet](https://www.onsemi.com/pdf/datasheet/mmbfj113-d.pdf) e [DigiKey J113](https://www.digikey.com/en/products/detail/onsemi/J113/1048989): dispositivo THT TO-92 attivo a catalogo ma non caratterizzato qui come amplificatore a basso rumore a 455kHz. Serve verifica OEM/acquisizione modelli gm/rumore e campioni, DC bias e variazioni, IMD/overload, adattamento reale filtro 1500/2000Ω e carico uscita, catena demodulazione per modi RX AM/FM/USB/LSB/CW [issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141), caratteristiche LO-driven IF effettive mixer. Master MAIN V2.6 7 fogli/138 refs invariato; nessuna modifica KiCad hardware, BOM non rilasciata; PCB MAIN/FRONT assenti, nessuna DRC PCB. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) restano DRAFT in attesa di misure OEM/meccanica; niente assegnazione footprint. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #146 MERGED: confronto tre famiglie interfaccia mixer→IF455, 48 simulazioni native
+
+**[PR #146](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/146) MERGED**, commit main `df8ec13306cb26521e3af2873938e7d81cff4dbe`; head tecnico `cf9306efc854c77cd8bbe612a727453a626b36aa`. [Actions #43594909355](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43594909355) **FAST/FULL native KiCad9/ngspice/required 3/3 SUCCESS**; log verificati: **111 comandi legacy**, 48 misure native ngspice contro 48 calcoli analitici complessi, `PASS_NATIVE_KICAD9_IF455_48_NGSPICE_RESISTIVE_LMATCH_BUFFER_IDEAL_COMPARISONS_NO_VENDOR_FAB_NO_TX`.
+
+Verificatore `03_Verifiche/V2.7/verify_if455_three_interface_topologies_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_THREE_INTERFACE_TOPOLOGIES_DRAFT.md`, test obbligatorio in `ci/full_regressions.py`. Esportate le vere netlist KiCad9 standalone del mixer SBL-1+ (IF3+IF4, J1703, GND) e del candidato tank IF455 (J1601→C1601 e GND). **48 soli deck di prova**, Rg Thevenin ipotetica 50/500Ω × carico input ceramico simulato con **semplice resistenza fittizia** 1500/2000Ω × frequenze 445/455/465kHz × quattro varianti: diretto, serie R1 secondo banco OEM, ideale L-match passa-basso, buffer **ideale** controllato in tensione (Zin100kΩ, Zout100Ω, guadagno1). Nessuna frequenza di filtro ceramico, perdita d'inserzione, banda, LO reale, NF/rumore/distorsione buffer o carico all'uscita del filtro sono modellati.
+
+Con Rg50Ω e Rload2000Ω al centro 455kHz: diretto **0,975609756 V/V**; R1 OEM1950Ω **0,5 V/V**; L-match ideale **3,162277661 V/V** (NON guadagno di potenza) con **Lserie≈109,222µH, Cshunt≈1,092222nF**, `Zin(455kHz)=50+j0Ω` *solo modello lossless*; buffer ideale **0,951905 V/V**. L-match ideale attorno al centro dà un rigetto fittizio ±10kHz di appena **0,0773/0,0808 dB**. Nessuna delle reti risolve da sola selettività canale, rumore, terminazione broadband dei prodotti di mixer o compatibilità fisica THT. [Mini-Circuits AN00-009](https://www.minicircuits.com/appdoc/AN00-009.html) usa 50Ω come **condizione di caratterizzazione**, NON stabilisce Zout IF reale SBL-1+ sotto LO e carichi. [NextGen FB datasheet](https://www.nextgencomponent.com/uploads/soft/20241011/1-241011155152A8.pdf) specifica Rg+R1=R2=Znom nel banco OEM, non un'interfaccia universale con mixer. **Non inserire L/C o buffer reale** prima di qualificare componenti, rumore/IMD, THT bias, L/C Q/SRF, alimentazioni, e maschere RX AM/FM/USB/LSB/CW [issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141).
+
+**CAD stato:** master V2.6 7 fogli/138 riferimenti immutato, candidate IF455/mixer isolate, filtro ceramico non assegnato, BOM non rilasciata, PCB MAIN/FRONT ancora assenti e routing 0%, nessuna DRC PCB. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) e [PR #143 NextGen FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) **ancora DRAFT** per qualifica meccanica TOP/fori. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #144 MERGED: filtro ceramico FB455 1500/2000Ω, termine sorgente/carico del banco OEM
+
+**[PR #144](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/144) MERGED**, commit `main` verificato `8a69c22ec028f81fd8126da139367433fef1c2c6`, head tecnico `f52dd80352bea999349b53444927b2966848cb58`. [Actions #43593787466](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43593787466) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**, log FULL ispezionato: **111 comandi storici**, **12 simulazioni native ngspice**, marker `PASS_NATIVE_KICAD9_IF455_12_NGSPICE_FB455_1500_2000_RG_R1_TEST_DUMMY_NO_VENDOR_TRANSFER_NO_FAB_NO_TX`.
+
+Nuovo `03_Verifiche/V2.7/verify_fb455_1500_2000_termination_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_FB455_SOURCE_LOAD_1500_2000_DRAFT.md`, regressione obbligatoria `ci/full_regressions.py`. Il test esporta le vere netlist KiCad9 delle porte standalone **SBL-1+ IF3+IF4/J1703** e **filtro LC IF455 J1601/C1601**, conserva gli schemi esistenti, poi verifica la relazione di misura NextGen FB Case11070 [datasheet OEM, p4](https://www.nextgencomponent.com/uploads/soft/20241011/1-241011155152A8.pdf): `Rg+R1=R2=Z nominale`. I 12 deck ngspice temporanei sono **generatori resistivi e carichi resistivi fittizi (NON filtri ceramici)**: Rg ipotetico `50/500/1500Ω`, Znom `1500/2000Ω`, due configurazioni (R1=0 diretto; R1=Znom−Rg da banco OEM). Per ognuna è confrontata la V d'ingresso a 455kHz con algebra di Ohm indipendente, `Vpin/Vsrc=Znom/(Rg+R1+Znom)`. La **resistenza R2 sull'uscita del vero filtro NON è simulata** e resta requisito di interfaccia da progettare.
+
+Esempio Rg50Ω ipotetico e porta nominale FB455 2000Ω: diretto `Vpin/Vsrc=0,975609756`, nella condizione di banco `R1=1950Ω`, `Vpin/Vsrc=0,5` (circa **−5,8dB** rispetto al livello diretto); a Znom1500Ω il banco richiede `R1=1450Ω`, Vpin/Vsrc=0,5. Sono **rapporti di partizione del carico fittizio**, NON conversion loss del SBL-1+, insertion loss ceramica, noise figure, matching broadband IF, passband o selettività reale. Mini-Circuits [AN00-009](https://www.minicircuits.com/appdoc/AN00-009.html) specifica condizioni di misura 50Ω ma il vero `Zout_IF(f,LO,RF)` dello SBL-1+ nella radio è ignoto. **Non aggiungere 1950/1450Ω al circuito reale** senza qualifica OEM/rumore/guadagno e carico selettivo a valle.
+
+[Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) mantiene aperte le bande/reiezioni quantitative per modi RX AM/FM/USB/LSB/CW. [PR #143 FB455](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/143) impronta THT candidata ancora **DRAFT** pur con CI verde per orientamento TOP e fori/assemblaggio OEM; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) resta **DRAFT** per analoghi blocchi. Master V2.6 sette fogli/138 riferimenti immutato, filtro ceramico NON assegnato, PCB MAIN/FRONT assenti, no DRC PCB/nessun BOM release. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #140 MERGED: selettività offset canale IF455, filtro LC singolo insufficiente
+
+**[PR #140](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/140) MERGED**, verificato su main commit `60aea20c847cf216e49b78217f9b08be921f40c2`, ultimo head tecnico `1622b47b3530e2dc1a76ee71891a085c2c123723`. [Actions #43591777373](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43591777373) **FAST, FULL KiCad9/ngspice e required gate 3/3 SUCCESS**; log FULL nativi verificati con **111 comandi storici** e marker `PASS_NATIVE_KICAD9_IF455_FOUR_CHANNEL_OFFSET_NGSPICE_SWEEPS_NO_RECEIVER_MASK_NO_FAB_NO_TX`.
+
+Nuovo verificatore `03_Verifiche/V2.7/verify_if455_channel_selectivity_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_CHANNEL_SELECTIVITY_DRAFT.md`, test obbligatorio in `ci/full_regressions.py`. Dal vero schematico KiCad9 IF455 standalone viene verificato J1601→C1601→L1601 e GND; 4 sweep AC nativi ngspice 300–650kHz, fonte Thevenin ipotetica 50Ω, 2 carichi (100kΩ, gate RC passivo) × 2 perdite bobina ipotetiche (16,5Ω DCR-usata-come-proxy o 82,7286Ω teorici da Q790, **non RF455 misurato**). Il verificatore estrae Vout a esattamente 455kHz e attenuazioni **separate lato basso e lato alto** a ±3/5/10/20/40kHz, normalizzate a Vout(455kHz).
+
+**Evidenza numerica:** sorgente 50Ω, carico 100kΩ, perdita proxy 16,5Ω → picco **454750Hz**, BW −3dB **42556,7Hz**, attenuazione relativa a 455kHz a −10kHz **0,8938dB**, +10kHz **0,8565dB**; a −20kHz **3,0289dB**, +20kHz **2,5440dB**. Variante carico gate RC: picco **450250Hz**, BW **36296,4Hz**, a −5kHz attenuazione **−0,2683dB** (segnale offset maggiore del segnale a 455kHz), +5kHz **0,7577dB**; a ±10kHz peggiore **0,1085dB**. Cambiare perdita a 82,7286Ω allarga il BW di riferimento a **53697,9Hz**, peggiorando il rigetto peggiore a ±10kHz a **0,4554dB**. Tutti i quattro casi hanno almeno un lato di ±10kHz con rigetto **inferiore a 3dB**: questo tank isolato **non** è un filtro di selettività di canale stretto qualificato.
+
+**Requisiti autoritativi** `01_Specifiche/REQUISITI_V0.1.md`: modi RX **AM, FM, USB, LSB, CW già confermati**; target prestazionali e banda per modo ancora `TBD`, IF1 10.695MHz/IF2 455kHz solo candidate, non congelate. [Issue #141](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/141) aperta per specifiche quantitative per modo e selezione filtro THT dedicato. Non attribuire arbitrariamente 3kHz SSB/6kHz AM/10kHz FM come valori di progetto approvati; occorre definire canali, larghezza occupata, insertion loss, rigetto adiacente, dinamica, demodulazione e MPN OEM. **Nessun filtro scelto né circuito fisico alterato**. Master V2.6 sette fogli/138 refs immutato; PCB MAIN e FRONT assenti, routing 0%, DRC PCB non applicabile; [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) resta DRAFT per qualifica meccanica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #138 MERGED: Q a 790kHz NON è DCR/ESR RF a 455kHz, Delevan 2500-28J
+
+**[PR #138](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/138) MERGED**, verificato su main commit `db4815f187aa0dcc61ff8e2c3b861f799fd288c4`; head tecnico `d811e55831e2028b84d5acc78f857ccb2466938c`. [Actions #43590750543](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43590750543) **FAST/FULL KiCad9-ngspice/required 3/3 SUCCESS**, log FULL verificati con **111 comandi storici** e `PASS_NATIVE_KICAD9_NGSPICE_IF455_8_AC_LOSS_TRIALS_NO_Q455_INFERENCE_NO_FAB_NO_TX`.
+
+File `03_Verifiche/V2.7/verify_if455_2500_28j_q_vs_dcr_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_2500_28J_Q_VS_DCR_IF455_DRAFT.md`, suite FULL `ci/full_regressions.py`. Sul vero schematico KiCad9 standalone IF455 L1601 resta `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED`. Il distributore OEM elenca **DCR MAX 16,5Ω** e **Q=60 @790kHz**, non una misura ESR/QL a 455kHz. `2π×790000×0,001/60≈82,728607Ω` è solo equivalente ideale **alla frequenza 790kHz** e non un dato RF a 455kHz. Le 8 prove native ngspice in deck temporanei utilizzano 4 resistenze serie ipotetiche (16,5 / 41,3643 / 82,7286 / 165,4572Ω) × 2 carichi output ipotetici (100kΩ, gate RC passivo). Con sorgente 50Ω e carico 100kΩ: R16,5Ω→picco454750Hz, BW42556,7Hz, Vout/Vsrc455=0,835055562; R82,7286Ω→picco455750Hz, BW53697,9Hz, Vout/Vsrc455=0,667749442. Questi sono risultati **del modello**, non prestazioni OEM né canale RX completo. L'impiego fisico della DCR come resistenza di perdita RF è ancora **NON QUALIFICATO**, e non sono stati cambiati schemi/MPN/BOM/PCB.
+
+**Stato invariato:** master V2.6 sette fogli, 138 refs, frontend/mixer/IF V2.7 isolati, PCB MAIN/FRONT non progettate (routing 0%), DRC PCB non applicabile; no release BOM. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) ancora DRAFT bench-only, CI verde ma footprint non assegnato fino a qualifica meccanica reale. Prossima attività sostanziale: definire la banda IF obiettivo per modalità AM/FM/SSB e verificare se un singolo tank da banda 40–60kHz può mai costituire selettività di canale, prima della selezione filtro THT reale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #136 MERGED: IF455 1mH THT, sensibilità capacità parassita e SRF
+
+**[PR #136](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/136) MERGED**, main commit `1c6b92b32f71b85d0d8cf1dbcc93f28c77d2470c`; HEAD tecnico `63e0fe54d8bacbdb20a0aedc92555281723d487f`. [Actions #43589919230](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43589919230) **FAST, FULL native KiCad9/ngspice e required gate 3/3 SUCCESS**, verificati log: `PASS_NATIVE_KICAD9_IF455_COIL_12_PARASITIC_AC_COMPLEX_Z_CROSSCHECK_SRF_UNQUALIFIED_NO_FAB_NO_TX`; **12 simulazioni ngspice reali** con 12 confronti indipendenti di algebra nodale complessa e 111 comandi legacy FULL.
+
+File: `03_Verifiche/V2.7/verify_if455_coil_parasitic_srf_native.py`; rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_COIL_PARASITIC_SRF_DRAFT.md`; test incluso nella FULL `ci/full_regressions.py`. Dal vero schema KiCad9 IF455 L1601 1mH viene esplorata **solo in netlist SPICE temporanee** Cp ipotetica 0/0,1/1/10pF in parallelo al ramo bobina serie R16,5Ω+L1mH, a 455kHz/1MHz/30MHz. A 455kHz con Cp0 il modello dà `Zin=18530.8105−j19747.3349Ω` (modulo 27080.402Ω); con Cp10pF `30917.3079−j37011.2265Ω` (modulo 48225.624Ω). Il cambiamento è reale **nel modello**, ma Cp non è misurata né inferita dall'OEM; 30MHz non è una predizione RF fisica.
+
+**Evidenza MPN:** L1601 è etichettato `DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED`. [Scheda distributore DigiKey 2500-28J](https://www.digikey.it/it/products/detail/delevan/2500-28J/3479912) e [catalogo Delevan 2025](https://www.delevan.com/-/media/Project/Altramotion/shared/files/Literature/brand/Delevan/pdf/delevan-2025-magnetics-catalog.pdf) riportano **1mH, DCR massima 16,5Ω, Q 60 a 790kHz, SRF MINIMA 2,8MHz e 88mA**. La SRF minima **non** è SRF esatta; 16,5Ω DCR **non** è resistenza RF valida automaticamente. Il test non sostituisce curve OEM Q(f)/Z(f), selezione THT fisica, verifica di tolleranze e montaggio. Master MAIN V2.6 7 fogli/138 refs e V2.7 schematici invariati; PCB MAIN/FRONT ancora assenti; nessuna DRC PCB; nessuna BOM approvata. [PR #123 A06](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) resta **draft**, anche dopo CI verde, per verifica meccanica fori/pin menisco e campione; nessuna assegnazione footprint al mixer. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #134 MERGED: port IF, ammettenza complessa di carichi RC a 3 frequenze
+
+**[PR #134](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/134) MERGED**, commit su main verificato `0f38454bda541e7eb8bf22749c7c03445e1304cc`, HEAD tecnico `9caf5dd6988796254e843b81adbc2d6a4fc0820f`. [Actions #43588038836](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43588038836) **FAST/FULL native KiCad9/ngspice/required gate 3/3 SUCCESS**; log FULL verificato: **111 comandi legacy**, **12 simulazioni ngspice native** con `PASS_NATIVE_KICAD9_IF_PORT_12_NGSPICE_COMPLEX_ADMITTANCE_CASES_NO_REAL_DIPLEXER_NO_FAB_NO_TX`. Nuovo verificatore `03_Verifiche/V2.7/verify_if_port_shunt_frequency_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF_PORT_SHUNT_FREQUENCY_DRAFT.md`, script obbligatorio in `ci/full_regressions.py`.
+
+Il verificatore esporta le vere netlist KiCad9 di mixer SBL-1+ e filtro IF455, preserva IF3+IF4 e J1601/1→C1601/1, poi prova quattro configurazioni di porta IF **solo modello** (nessuna terminazione; 50Ω a massa; 50Ω+100pF in serie; 50Ω+1nF in serie) × **455kHz, 1MHz, 30MHz**. Per ciascuna misura complessa di impedenza, controlla con algebra indipendente `Y_shunt=1/Z_loaded−1/Z_unloaded` contro ammettenza analitica R/C. Un 50Ω+100pF serie a 30MHz comporta `Zin` dell'intero modello ≈ **41,684−j51,893Ω**, modulo **66,562Ω**, non è garanzia di matching a 50Ω del mixer reale. Le simulazioni fino a 30MHz sono ideali e non modellano SRF bobina 1mH, parassiti THT, layout, leakage e non linearità mixer.
+
+Prima CI [#43587582419](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43587582419) **FAIL** sul parser che richiedeva due righe ngspice anziché un unico campione valido ad una frequenza; corretto il controllo accettando 1–2 righe finite e imponendo prima riga alla frequenza esatta, senza inventare valori. L'unica CI finale accreditata è #43588038836 **3/3 PASS**. Nessun vero diplexer selezionato né alcuna modifica a V2.6 master/PCB/BOM; mixer IF reale e resistenza di terminazione restano **non qualificati**, PR #123 footprint OEM A06 ancora DRAFT. PCB MAIN/FRONT non esistono, DRC PCB non applicabile; routing **0%**. Prossima fase: qualificare risposta OEM SBL-1+ a carichi complessi e LO reale +7dBm, poi topologia biforcata IF/broadband e noise/gain/armoniche senza usare un semplice RC come diplexer verificato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #132 MERGED: contratto nativo terminazione porta IF SBL-1+ → IF455
+
+**[PR #132](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/132) MERGED**, verificato su main commit `844ecd4caadebd99ceb07bb92487b70cd09e091b`, ultimo head tecnico `e31dcaf3f5de4118f021b5aac9bfa95613adcd83`. [Actions #43586879554](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586879554) **FAST/FULL KiCad9/ngspice/required 3/3 SUCCESS**; log FULL verificati con 111 comandi storici, 9 sweep ngspice AC nativi e `PASS_NATIVE_KICAD9_MIXER_IF_PORT_AND_9_NGSPICE_TERMINATION_CASES_NO_OEM_LOAD_QUALIFICATION_NO_FAB_NO_TX`.
+
+Nuovo verificatore `03_Verifiche/V2.7/verify_mixer_if_termination_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_MIXER_IF_TERMINATION_PORT_DRAFT.md`, registrazione obbligatoria in `ci/full_regressions.py`. Due esportazioni vere KiCad9 controllano connessioni SBL-1+ IF3/IF4 su J1703/1, masse e J1601/1→C1601/1; verificano che **non esiste** alcuna terminazione fisica nella candidata. Nove modelli temporanei per Rs upstream ipotetica 50Ω/1kΩ/10kΩ × shunt IF nessuno/50Ω/100Ω. A 455kHz, con Rs50Ω, `Vout/Vsource` senza shunt=**0,835055562**, shunt50Ω=**0,417791658**, shunt100Ω=**0,556938244**. Con Rs1kΩ senza=0,815223437, shunt50Ω=0,039766943. Numeri del **solo modello passivo** a sorgente Thevenin, NON prova che lo SBL-1+ presenti Zout resistiva 50Ω o che una terminazione 50Ω sia corretta in circuito reale. Nessun diplexer, analisi di prodotti fuori banda, rumore/linearità o conversion loss OEM qualificati.
+
+**Stato CAD:** MAIN V2.6 7 fogli/138 riferimenti invariata; mixer+IF455 V2.7 rimangono schematici standalone; C1601=10pF e nessuna resistenza di terminazione assegnata. PCB MAIN e FRONT reali non esistono, nessuna DRC PCB, routing 0%; BOM non rilasciata. [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) ancora DRAFT, footprint A06 non approvata. Prossima attività: ottenere modello o caratterizzazione verificabile della sorgente IF reale sotto LO+7dBm e carichi, valutare diplexer/carico rispetto al rumore e livello IF, solo dopo modificare lo schematico. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #130 MERGED: IF455 C1601 native passband/source sensitivity
+
+**[PR #130](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/130) MERGED**, verified main commit `898d75a453359e2980973082ce2ada97271ae759`, technical head `608f8d1ae8fe0b59f63c2349a9aa47dd0ad68e0d`. [Actions #43586012507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43586012507) FAST, FULL KiCad9/ngspice, required gate **3/3 SUCCESS**, native FULL logs audited: **111 legacy commands** plus `PASS_NGSPICE_IF455_C1601_15_CASES_BRACKETED_OR_EXPLICITLY_OUT_OF_WINDOW_NO_VENDOR_MIXER_NO_FAB_NO_TX`.
+
+New native test `03_Verifiche/V2.7/verify_if455_c1601_bandwidth_native.py` and report `03_Verifiche/V2.7/RAPPORTO_C1601_BANDWIDTH_SOURCE_DRAFT.md`; test included in `ci/full_regressions.py`. 15 native ngspice linear AC sweeps 300–650kHz (1401 steps), C1601 10/47/100/470/1000 pF × hypothetical Rs 50/1000/10000Ω. **11/15** transfer curves have two bracketed -3dB crossings; **4/15** (470/1000pF × 50/1000Ω) do not have full -3dB bandwidth inside the requested span and are reported with **null boundaries/BW**, not made-up Q. Nominal 10pF / Rs50Ω: peak **454750Hz**, two -3dB boundaries **435080.8Hz** and **477637.5Hz**, modeled bandwidth **42556.7Hz**, Vout/Vsource at 455kHz **0.835055562**. For 47pF/Rs50Ω peak shifts to **398250Hz**; for 100pF/Rs50Ω to **344750Hz**: selection by response *only at 455kHz* is unjustified.
+
+First [Actions #43584881817](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43584881817) **FAIL** on unbracketed response at sweep left edge; corrected classification and preserved all runs without bypassing real failure. The final run #43586012507 3/3 PASS is the **only gate credited**. No real SBL-1+ complex IF source impedance/nonlinear model; source Rs and filter losses are bench assumptions only. **C1601 remains 10pF in unchanged real schematic**, V2.6 master still 7 sheets/138 refs; no PCB MAIN/FRONT, no actual DRC or production BOM. PR #123 A06 footprint remains unqualified DRAFT, not merged. Next technical focus: OEM IF port loading/LO conversion vs source-matched IF455 topology, detector load and noise with vendor/physical qualification. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #128 MERGED: native ngspice sweep accoppiamento C1601 IF455
+
+**[PR #128](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/128) MERGED** e verificata su main commit `d403412915c5abe26bdb36b8e9bce7768e7f3dad`; head tecnico `06585aaa5cb0fd3fc5659ef5c4de652d81d15e27`. [Actions #43583597932](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43583597932) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; log FULL verificato con 111 comandi storici e `PASS_NGSPICE_IF455_C1601_15_CANDIDATE_SOURCE_CASES_NO_MIXER_MODEL_NO_FAB_NO_TX`.
+
+Nuovo verificatore reale `03_Verifiche/V2.7/verify_if455_c1601_source_sweep_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_C1601_SOURCE_SWEEP_DRAFT.md`, test obbligatorio registrato nella FULL CI. **15 sweep ngspice AC nativi**: C1601 10/47/100/470/1000 pF × Rs ipotetiche 50/1000/10000Ω; a 455kHz e Rs50Ω trasferimenti |Vout/Vsource| rispettivamente **0,835055562; 1,123823840; 1,030331830; 0,960992122; 0,951119294**. Reactance ideale nominale C1601 10pF: **34979,108Ω**. Le combinazioni sono **solo temporanee nel modello ngspice**; C1601 fisico resta 10pF nello schematico e non è stata selezionata nessuna sostituzione. Nessun modello impedenza complessa/non lineare reale SBL-1+, nessun adattamento o qualità del ricevitore dimostrati.
+
+**Stato CAD:** MAIN V2.6 a sette fogli/138 refs invariata; standalone mixer/filtro IF V2.7 non integrati; entrambe le vere PCB MAIN e FRONT ancora assenti, routing 0%, DRC PCB non applicabile. [PR #123](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/123) rimane DRAFT non integrata: footprint A06 THT meccanicamente non qualificata, non assegnare a MX1701 nonostante sua CI verde. Prossima attività: carico/impedenza mixer IF OEM e prova del disegno meccanico TOP/BOTTOM; analizzare banda/rumore e opzioni per interfaccia senza promuovere modelli di banco a hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #126 MERGED: contratto nativo mixer SBL-1+ IF → filtro IF455
+
+**[PR #126](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/126) MERGED**, merge commit `f2b6d60b7d63b0bbe47bbdc16c625f93cbfd6c5e`, head verificato `c9b539f9b8cdd8e7b1e9873de4116c3c20572898`. [Actions #43571786977](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43571786977) **FAST, FULL native KiCad9/ngspice, required gate 3/3 SUCCESS**; 111 regressioni storiche, log `PASS_NATIVE_KICAD9_MIXER_TO_IF455_TWO_PIN_IF3_IF4_TIED_C1601_REACTANCE_NO_MATCH_NO_FAB_NO_TX`. Nuovo verificatore reale `03_Verifiche/V2.7/verify_mixer_if455_interface_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_MIXER_TO_IF455_INTERFACE_THT_DRAFT.md`, test aggiunto a `ci/full_regressions.py`.
+
+Il test usa **due esportazioni di netlist KiCad9 effettive**, non string matching, e verifica proposta **solo banco** `MX1701/3,MX1701/4→J1703/1→J1601/1→C1601/1` e `J1703/2→J1601/2` massa, oltre alle reti RF/LO, LC IF455, uscita J1602 e assenza di corti/rail vietati. `C1601=10pF` ha reattanza in serie ideale **34.979,108Ω a 455kHz**, non è prova di adattamento a impedenza RF 50Ω, né misura del mixer. Mancano **Zout complessa/nonlineare del mixer IF, LO reale +7dBm, load/diplexer, amplificazione IF, rumore e selettività**, più qualifica dell'OEM A06; **PR #123** rimane DRAFT aperta NON MERGED con meccanica TOP/BOTTOM e drill ancora da validare. La MAIN V2.6 a 7 fogli /138 refs e le PCB MAIN e FRONT non sono state modificate; routing 0%, nessun DRC PCB o release BOM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 14 novembre 2026 — PR #124 MERGED: contratto nativo VCO → mixer SBL-1+ LO (nessuna qualifica hardware)
+
+**[PR #124](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/124) MERGED**, commit `93473c2650e410a29e37ff8b581d4b9bb2e93f78`, branch originale `engineering/v27-sbl1-lo-drive-native-contract`, head tecnico `2888cd4deb7e2c69e7b8708fc7452c547abd0e90`. [Actions #43530252508](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43530252508) **FAST/FULL/required 3/3 SUCCESS**, FULL native con 111 comandi originali e risultato `PASS_NATIVE_KICAD9_VCO_TO_MIXER_LO_PORT_SEPARATE_7DBM_THEVENIN_ENVELOPE_NOT_A_VCO_OUTPUT_MEASUREMENT_NO_FAB_NO_TX` verificato nei log. Nuovo test `03_Verifiche/V2.7/verify_sbl1_lo_drive_budget_native.py` e rapporto `RAPPORTO_SBL1_LO_DRIVE_VCO_V26_CONTRACT_DRAFT.md`: obbligo di esportare con KiCad9 le vere netlist VCO V2.6 e SBL-1+ V2.7, controllare connettori `J522` CMOS / `J523` analogico separati, pin LO `MX1701/8` e ritorni a massa; matrice teorica di potenza +7dBm su 50Ω di terminazione **assunta**, due possibili iniezioni 26,545/27,455 MHz per RF27 MHz e IF455 kHz. Il nuovo test è registrato nella FULL CI. Non è una misura di uscita RF del VCO, né un modello del mixer non lineare, né approvazione dell'interconnessione. PR #123 footprint A06 ancora DRAFT indipendente e NON MERGED: [run #43524908848](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43524908848) FAST/FULL/required 3/3 SUCCESS sul suo ultimo HEAD noto `64eb81c7918a47cfcff232a9bb12dc5deff00ba7`, ma gate grafico TOP/BOTTOM e drill/courtyard ancora aperti, quindi non integrare. **Main ora contiene la sola PR #124**, mentre PCB MAIN/FRONT non esistono e routing=0%. Nessuna qualifica LO di potenza, né footprint OEM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #120 MERGED: schematico THT KiCad9 mixer SBL-1+ OEM 4 reti, ERC0
+
+**[PR #120](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/120) MERGED**, commit `2bfa1a76e4d78f14cfec58151db19dbb6791e093`, final head `39ddef12e9694198118b9147f10c16dbd1be3179`. [GitHub Actions #43519722696](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43519722696): **FAST, FULL KiCad9 ERC/netlist/ngspice e required gate 3/3 SUCCESS**, 111 regressioni storiche e `PASS_NATIVE_KICAD9_SBL1_4REF_4NETS_ERC0_OEM_IF3_IF4_SHORT_A06_FOOTPRINT_NOT_QUALIFIED_NO_FAB_NO_TX`. **Nuovo schematico CAD reale standalone** `04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE/MIXER_SBL1_BENCH_THT_V2_7_DRAFT.kicad_sch`, `.kicad_pro`, test nativo `03_Verifiche/V2.7/verify_sbl1_mixer_bench_kicad_native.py`. Comprende mixer passivo `MX1701` Mini-Circuits **SBL-1+** A06 THT e 3 connettori THT J1701 RF, J1702 LO, J1703 IF, **ERC 0 errori / 0 avvisi** su KiCad9 e **netlist reale 4 riferimenti / 4 reti**. Verifica pin↔net nativi: `IF455_MIXER_IF = MX1701/3, MX1701/4, J1703/1` (IF3 e IF4 **uniti esternamente realmente**, obbligo OEM); `RF_27MHZ_INPUT_PENDING = MX1701/1, J1701/1`; `LO_27MHZ_OFFSET_PENDING = MX1701/8, J1702/1`; `IF_BENCH_GND = MX1701/2,/5,/6,/7 e J1701/2,J1702/2,J1703/2`. Il simbolo OEM e il connettore J2 sono presenti nella libreria `SBL1_MIXER_OEM_PINOUT.kicad_sym` e **ambedue esportati nativamente da KiCad9**. Il campo **Footprint MX1701 è volutamente VUOTO**: nessuna PCB/layout e nessun DRC.
+
+**CI corretta onestamente senza waiver:** prima run [#43519032284](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43519032284) FULL FAIL con **3 warning** `lib_symbol_issues` per i connettori J2 incorporati nello schematico ma assenti dalla libreria esterna. Aggiunti i simboli THT J2 alla libreria, aggiornato il test del pinout OEM per isolare i pin dell'SBL-1+ dal J2 e verificare l'esportazione di **due simboli**. Seconda run **#43519722696 3/3 verde** e ERC **0/0**, nessun warning ignorato.
+
+**Bloccanti reali prima di master/PCB:** (1) footprint OEM A06 da disegnare e confrontare con **viste TOP/BOTTOM reali** e dimensioni/raster fori, non usare un DIP8 generico; (2) verificare che il VCO master V2.6, con `Q501/Q502` 2N3904, `U520` SN74AC14N e uscite `LO1_ANALOG_OUT` e `LO1_CMOS_BUFFERED`, possa fornire in modo lineare e filtrato **+7dBm LO** al carico reale (su 50Ω teorici equivale a 5,011872mW / 0,500593Vrms / 1,415892Vpp; **NON misurati** sul VCO); (3) adattamento RF/IF del mixer passivo verso la porta IF455 misurata nella PR #117, guadagno e rumore mixer, oscillatore LO, AGC, selettività e rumore AM/FM/SSB. La perdita di conversione OEM 5,6dB tipica non garantisce il livello ai pin del rivelatore. **Nessuna integrazione nel master gerarchico MAIN V2.6** (7 fogli/138 ref) né nelle PCB MAIN+FRONT (routing **0%**). Progresso generale ~20% stima, release BOM ancora bloccata; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**. GitHub protetto, solo branch→PR→CI→merge.
+
+---
+
+## 13 novembre 2026 — PR #119 MERGED: simbolo KiCad9 OEM Mini-Circuits SBL-1+ A06 passivo
+
+**[PR #119](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/119) MERGED**, commit `b4408d2d372ee5dd90e2700b6bd0c4ba214e6f57`, final head `44d67e0b2a3667b2dc4a883a1b3b8519b6295ee0`. [GitHub Actions #43517848737](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43517848737): **FAST/FULL KiCad9/ngspice/required 3/3 PASS**, 111 comandi storici e `PASS_KICAD9_SBL1_OEM_8_PIN_A06_SYMBOL_LO_POWER_CONTRACT_NO_FOOTPRINT_NO_FAB_NO_TX`. **Nuova vera libreria KiCad9** `04_KiCad/V2.7_DRAFT/MIXER_SBL1_CANDIDATE/SBL1_MIXER_OEM_PINOUT.kicad_sym` e `sym-lib-table`: simbolo passivo `SBL-1_PLUS`, pin numerati OEM 1=RF, 8=LO, 3+4=IF da **collegare esternamente**, 2/5/6/7=GND. KiCad9 `sym export svg` **nativo PASS**, esportato SVG 32717 bytes. Campo Footprint volutamente **VUOTO**: Mini-Circuits A06 THT **non** è un DIP8 standard; quote meccaniche, pitch, verifica vista TOP/BOTTOM e pad↔pin per futuro PCB ancora assenti. Report `03_Verifiche/V2.7/RAPPORTO_MIXER_SBL1_OEM_PINOUT_LO_THT_DRAFT.md` e test `03_Verifiche/V2.7/verify_sbl1_mixer_oem_symbol_lo_contract_native.py`.
+
+**Scelta OEM in corso:** NXP SA612AN DIP8 è **No Longer Manufactured** (fonte NXP originale); Mini-Circuits SBL-1+ è a catalogo THT passivo level-7 1–500MHz LO/RF, IF DC–500MHz, perdita conversione **5,6dB tipica**; non ha guadagno attivo. LO **+7dBm** su 50Ω ipotizzati equivale a **5,011872mW / 0,500593Vrms / 1,415892Vpp**, non è una misura dell'uscita del buffer VCO V2.6. La perdita di conversione OEM **non** è l'attenuazione in tensione con il filtro IF455 reale. Distribuzione: produttore attivo, disponibilità negozi variabile/stock a confermare. AD831 production ma *non dimostrato THT* e richiede rail 9V single/±4,5V dual: non automaticamente alternativo pin-compatibile.
+
+**Prossimo passo concreto:** realizzare schematico KiCad9 **standalone** con MX1701 OEM, 3 connettori RF/LO/IF, **pin IF 3 e 4 uniti in netlist reale**, tutti GND e test nativi KiCad9 ERC/netlist; sempre **senza footprint mixer** e senza integrazione master. Poi qualificare LO drive VCO reale, matching IF455 a 455kHz, rumore mixer/LNA/AGC/AM/FM/SSB, MPN produzione/footprint A06 e prove hardware. Master MAIN V2.6 sette fogli/138 refs resta intatto; PCB MAIN/FRONT non esistono/routing **0%**, progresso completo ~20% stima, nessun DRC PCB. Repo main protetto, nessuna deroga CI. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #117 MERGED: modello impedenza d'ingresso IF455 verso futuro mixer
+
+**[PR #117](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/117) MERGED** su `main` commit `403846c498f3ab8db138d9c01e68cab435bef9db`, codice tecnico final head `84a45e659e575ea245dfc4bcfae991ecc915cbba`. [Actions #43514708784](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43514708784): **FAST + FULL KiCad9/ngspice + required 3/3 SUCCESS**, 111 regressioni storiche ed esito `PASS_NGSPICE_IF455_6_SOURCE_PORT_AC_PLUS_2_COMPLEX_ZIN_NO_MIXER_NO_FAB_NO_TX`. Nuovo test `03_Verifiche/V2.7/verify_if455_two_port_source_impedance_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_CONTRATTO_PORTA_MIXER_SOURCE_Z_DRAFT.md`.
+
+**Contratto KiCad standalone verificato:** `J1601/1 = IF455_SOURCE`, `J1601/2 = IF_BENCH_GND`; `J1602/1 = IF455_FILTER_OUT`, `J1602/2 = IF_BENCH_GND`. Non esiste mixer/IF reale integrato nel master V2.6. Le 8 AC native sono **6 combinazioni** sorgente di Thevenin puramente ipotetica `Rs=50Ω, 1kΩ, 10kΩ` × downstream `R100k` o surrogato JFET **passivo** `C10p/R1M/C7p`, più **2 sonde** di `Zin` complessa del filtro disconnesso dalla sorgente esterna. Sweep 300–650kHz, 1401 punti, 455kHz esatto, 16,5Ω perdita RF bobina **assunta**, trimmer 30p, R damping47k, uscita100k.
+
+**Risultati del SOLO modello a 455kHz**, `Rs→|Vout/Vsource|`: con `R100k` **50Ω→0,835055562; 1kΩ→0,815223437; 10kΩ→0,652547922**; con gate JFET passivo **50Ω→0,665186786; 1kΩ→0,648714664; 10kΩ→0,519566010**. `Zin` del modulo J1601/1 rispetto alla massa **senza Rs esterna, downstream incluso**: con R100k `18530,81 − j19747,33 Ω` (modulo 27080,40Ω); con gate passivo `23604,58 − j18218,50 Ω` (modulo 29817,61Ω). Ingresso presenta una componente capacitiva e impedenza non definibile come puro resistor; `Rs=50Ω` NON è valore reale OEM del mixer. Il test mostra perdita del trasferimento al crescere di Rs e riproduce PR #110 a 50Ω.
+
+**Errore CI rimosso con verifica completa:** prima run [#43513982822](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43513982822) FULL FAIL su guard testuale per identificatore `H455` assente nel sorgente di test precedente, prima degli 8 ngspice. Corretto il riferimento al contratto `CONTRACT=(...` e `RGEN src gen 50`, senza bypass, eseguita nuovamente intera FULL #43514708784 PASS 3/3. Il master originale MAIN V2.6 7 fogli/138 refs è intatto; PCB MAIN/FRONT non progettate (routing **0%**, ~20% completamento complessivo stimato), DRC fisico non applicabile.
+
+**Prossima progettazione vincolata:** identificare e qualificare reale mixer THT e stadi IF (impedenza complessa fonte `Zsource(f)`, conversion gain/loss, rumore, uscita al livello AGC, alimentazione e LO leakage/spur) e rivelatore AM con carico reale e PVT. Solo dopo ha senso interconnettere i due blocchi nativi KiCad e scegliere R1601/R1602/C1603 e buffer. Non usare i numeri del solo generatore da banco per sensibilità d'antenna, SNR/SINAD, banda AM/FM/SSB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**; repository pubblico protetto, nessun merge non verde.
+
+---
+
+## 13 novembre 2026 — PR #115 MERGED: incrocio nativo banda RF e rumore di 6 valori IF455
+
+**[PR #115](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/115) MERGED**, commit `9e677634f9facde583cab8a48c9b190d4337b5af`, final head `3b08819af20a444c874c0afe6dafeef5cd645fd2`. [Actions #43508971077](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43508971077) **FAST/FULL KiCad9/ngspice/required 3/3 PASS**, 111 comandi storici e `PASS_NGSPICE_IF455_6_NOISE_TRADEOFF_AC_BANDWIDTH_NATIVE_NOT_RECEIVER_NO_FAB_NO_TX`. Nuovo script `03_Verifiche/V2.7/verify_if455_resistor_noise_bandwidth_crosscheck_native.py`, report `03_Verifiche/V2.7/RAPPORTO_IF455_NOISE_VS_BANDA_R_LOAD_DRAFT.md`: sei sweep AC nativi 300–650kHz/1401 punti che convalidano i 6 H455 della PR #114 e calcolano banda−3dB, fpeak e rapporto H455/Hpeak.
+
+**Dati modello R1601 smorzamento/R1602 uscita → H455 (V/V); fpeak (kHz); BW−3dB (kHz); rumore PR114 riferito a generatore (nV/√Hz):** 47k/100k → **0,835056; 454,75; 42,557; 27,755**; 47k/220k → **1,016659; 456,00; 36,521; 24,486**; 100k/100k → **1,280374; 454,00; 27,482; 21,300**; 100k/220k → **1,711592; 455,50; 21,576; 18,306**; 220k/100k → **1,723341; 454,00; 20,289; 17,955**; 220k/220k → **2,556853; 455,25; 14,419; 14,736**. L'ultima combinazione è la migliore nel SOLO confronto di singolo risonatore passivo e noise termico a 455kHz; **NON** equivale a una banda utile/interferenza di un ricevitore AM/FM/SSB completo, né a guadagno RF attivo o sensibilità d'antenna. Rcoil 16,5Ω è ipotesi AC non OEM, sorgente50Ω ideale, nessun rumore J113/KSP10, mixer o diodo reale.
+
+**BLOCKER obbligatorio:** specificare architettura mixer e stadio IF con livelli, impedenza complessa, reiezione canale adiacente, guadagno RF/IF, SNR/SINAD/THD e AGC reali, selezionare OEM THT in produzione e PVT/rumore, poi variare R1601/R1602 e capacità di accordo in schemi KiCad validati. Nessuna autorizzazione a promuovere l'assetto 220k/220k; master MAIN V2.6 sette fogli/138 refs, due PCB MAIN/FRONT non progettate **0% routing**, progresso complessivo ~20% stima. Nessun DRC fisico. Repository main protetto, merge via PR con required CI senza waiver. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #114 MERGED: 30 trasferimenti rumore/attenuazione RF su 6 R IF455
+
+**[PR #114](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/114) MERGED**, commit `88ccfbd1cf9ce856078922e48a1ae08bca4f1682`, final head `2ee10222ca02b5600f58c6ca1fa23263a37bd4e8`. [GitHub Actions #43507681428](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43507681428) **FAST+FULL KiCad9/ngspice+required 3/3 SUCCESS**, 111 comandi storici, test `PASS_NGSPICE_IF455_R_DAMP_R_LOAD_30_NATIVE_NOISE_AND_TRANSFER_PROBES_NOT_RECEIVER_NO_FAB_NO_TX`. Script nuovo `03_Verifiche/V2.7/verify_if455_passive_resistor_noise_load_tradeoff_native.py`; rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_PASSIVE_NOISE_DAMP_LOAD_TRADEOFF_DRAFT.md`. **30 ngspice AC reali**: 3 valori R1601 damping 47/100/220k × 2 valori R1602 output 100/220k × 5 trasferimenti (segnale più rumore indipendente di RGEN/RCOIL/RDAMP/RLOAD), temperatura290K, integrazione RF 451–459kHz, no transistor/modello OEM.
+
+**Misure a 455k nel modello (R1601/R1602 → |H|; output nV/√Hz; rumore equivalente al GENERATORE nV/√Hz):** 47k/100k → **0,835056; 23,17706; 27,75511**; 47k/220k → **1,016659; 24,8944; 24,48648**; 100k/100k → **1,280374; 27,27151; 21,29965**; 100k/220k → **1,711592; 31,33268; 18,30617**; 220k/100k → **1,723341; 30,9425; 17,95495**; 220k/220k → **2,556853; 37,67653; 14,73551**. Valori transfer >1 da risonanza passiva in tensione NON significano guadagno di potenza né sensibilità antenna. La variante che ha il **rumore input-referred minore a 455k** presenta **rumore d'uscita maggiore** e guadagno di tensione maggiore; occorre controllare BW/accordo/selettività e noise mixer/active prima di scegliere un prodotto.
+
+La prima [run #43506659503](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43506659503) è FALLITA per mancata creazione directory temporanee del test, **non** per un limite RF; corretta la gestione directory, ripetuta **intera FULL** #43507681428 e tutti e tre i gate verdi, nessun bypass. **Priorità successiva:** verificare banda a −3dB e spostamenti di accordo per i medesimi sei corner di rumore; scegliere il carico soltanto insieme a una reale maschera selettività e un modello IF mixer+amplificazione e budget rumore completo. Master MAIN V2.6 7 fogli/138 refs e due PCB THT MAIN/FRONT non modificati, **PCB routing 0%** e ~20% di progetto stima; no OEM RF/Q/ESR PVT, AM/FM/SSB SNR/THD/SINAD, NO FAB/TX/BATTERIA/VEICOLO. Protezioni GitHub PR+CI mantenute.
+
+---
+
+## 13 novembre 2026 — PR #113 MERGED: primo budget di rumore termico RF passivo IF455
+
+**[PR #113](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/113) MERGED**, commit `276918b93ae6a26540abee83f22711a10ae4e88d`, final head `2667024532c6d0955c4e646a9bacb953d1043a64`. [GitHub Actions #43505458793](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43505458793): **FAST+FULL KiCad9/ngspice+required gate 3/3 SUCCESS**, 111 storici, `PASS_NGSPICE_IF455_PASSIVE_THERMAL_RF_RESISTORS_2_LOADS_NOT_NF_NO_FAB_NO_TX`. Nuovo script `03_Verifiche/V2.7/verify_if455_passive_resistor_noise_budget_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_BUDGET_RUMORE_TERMICO_PASSIVO_DRAFT.md`: 11 AC ngspice reali, 2 carichi passivi × sorgente e rumore indipendente Johnson di RGEN50Ω/RCOIL16,5Ω/RDAMP47kΩ/RLOAD100kΩ/più R_GATE1MΩ su surrogato JFET. PSD sommerse come `4kTR×|H|²`, temperatura nominale assunta **290K**, solo RF 451–459kHz (8kHz RF), nessuna uscita audio/SNR.
+
+**Risultati modello passivo:** riferimento R100k `|H455|=0,835055562`, densità RF output **23,17706nV/√Hz**, RF 8kHz **2,063867µV RMS**, rumore input-referred **27,75511nV/√Hz** alla **sorgente ideale del banco**, NON all'antenna. Surrogato passivo gate JFET 10p/1M/7p `|H455|=0,665186786`, rumore output **18,59163nV/√Hz**, integrato **1,654389µV RMS**, input-referred **27,94949nV/√Hz**. Contributi dominanti al riferimento: R1601 damping47k ~**17,051nV/√Hz**, R1602 load100k ~**14,775nV/√Hz**, bobina perdita assunta16,5Ω ~**5,252nV/√Hz**, Rgen50Ω ~**0,747nV/√Hz** (sommati quadraticamente); il rumore d'uscita minore dopo il carico JFET passivo **NON prova miglior SNR**, perché decade anche il trasferimento utile.
+
+**Errore tecnico CI corretto senza bypass:** la prima [run #43504675995](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43504675995) è FALLITA per una verifica testuale che richiedeva la stringa `Zport` in un rapporto che la chiamava diversamente, prima di eseguire ngspice. Corretto il contratto documentale senza rimuovere verifiche elettriche, poi seconda run completa 3/3 PASS. Nessuna deroga ERC/DRC.
+
+**Prossimo blocco tecnico:** quantificare il trade-off R1601/R1602 (rumore Johnson vs trasferimento vs larghezza di banda e centro), stimare input budget **soltanto dopo** identificazione vero mixer/IF, e ottenere dati OEM Rcoil/Q reale, J113/KSP10BU, demodulatore e alimentazione. Niente noise figure OEM, niente SNR/SINAD AM, niente front end completo; **nessuna sensibilità antenna deducibile**. Master MAIN V2.6 7 fogli/138 refs invariato; PCB-MAIN/PCB-FRONT fisiche e routing **0%**, progresso totale **~20% stima**. I moduli attivi standalone sono solo candidati e **NON** approvati. GitHub Actions consentite per gate tecnici, PR branch protetto. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #111 MERGED: 36 sweep IF455 trimmer sotto carico, no falsa compensazione di perdite RF
+
+**[PR #111](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/111) MERGED**, commit `0ed6b1c2fe7c3a41c96b826568eef6a34bf5ac05`, head tecnico/documentale `cb897fe2430569f586c4098d3bc4f98f1f905799`. [Actions #43497158192](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43497158192) **FAST + FULL KiCad9/ngspice + required gate 3/3 SUCCESS**, 111 comandi legacy e `PASS_NGSPICE_IF455_36_REAL_TRIM_LOAD_AC_CASES_UNQUALIFIED_NO_FAB_NO_TX`. Script nativo `03_Verifiche/V2.7/verify_if455_loaded_trimmer_retune_native.py`, rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_TRIMMER_CARICO_RITARATURA_AC_DRAFT.md`. 36 AC ngspice nativi su filtro passivo IF455 1mH/82pF/16,5Ω ESR solo **ipotizzata**: 4 carichi × 9 Ctrim 10–50pF a passi 5pF, sweep 350–550kHz/1001 punti, 455kHz esatto, controllo valori 30pF PR #110 e direzione dell'accordo.
+
+**Risultati a 455kHz del solo modello:** con riferimento R100k il massimo fra i nove trim è **30pF, |H|=0,835055562, fpeak≈454,8kHz**; +10k shunt **20pF, |H|=0,236347233 (+30,74% rispetto a 30pF, fpeak458,2kHz)**; +1k shunt **20pF, |H|=0,033471412 (+51,635% vs 30pF, fpeak456,8kHz)**; surrogato passivo JFET gate 10pF/1M/7pF **25pF, |H|=0,681552505 (+2,46% vs30pF, fpeak459,6kHz)**. Il carico1k perfino dopo accordo dà solo **4,01%** del trasferimento del port R100k, e il 10k **28,30%**: l'accordo **non corregge un errato carico resistivo**. La ricerca discreta non assicura un optimum continuo, reale Q/ESR, tolleranze OEM, impedenza d'ingresso J113 reale, rumore, SINAD e selettività AM/FM/SSB.
+
+**Decisione e next engineering blocker:** fissare il **contratto IF reale** prima di integrare RX; livelli *effettivamente al pin* post mixer/IF, banda necessaria, noise budget/cascata, maschera selettività, AGC/AM/FM/SSB, impedenza complessa e buffer a carico noto. Non attribuire sensibilità antenna a modelli con generatore50Ω e diodo generic. Il master MAIN V2.6 7 fogli/138 refs rimane intatto e non è stato creato PCB-MAIN/FRONT: routing **0%**, avanzamento complessivo **~20% stima**. Componenti finali esclusivamente THT OEM attivamente prodotti, moduli KSP10BU e J113 autonomi NON QUALIFICATI, no DRC fisico. Repository pubblico protetto, modifiche con branch PR e Actions gate reali, nessuna forzatura. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #110 MERGED: Z complessa e BW passiva al port IF455, quattro carichi
+
+**[PR #110](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/110) MERGED**, commit `4700929d0d0948b02cee5fbbdeddf2a44f21cfe7`, su codice finale `417537c431ebc333df5dabb05a94bbacf870366c`. [GitHub Actions #43495492840](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43495492840) **FAST / FULL KiCad9+ngspice / required gate 3/3 SUCCESS**, 111 comandi legacy. Nuovo script `03_Verifiche/V2.7/verify_if455_passive_port_impedance_selectivity_native.py`: **8 analisi AC ngspice native** (4 carichi × transfer/porta Zout), 300–650kHz/1401 punti, vettori complessi Re/Im, fpeak e BW−3dB. Report `03_Verifiche/V2.7/RAPPORTO_IF455_PORT_Z_COMPLESSA_BANDA_AC_DRAFT.md`. Modello passivo: L=1mH, 16,5Ω Rcoil RF **assunta da DCR non certificata RF**, C=82p + trimmer 30p, C ingresso/uscita 10p, R damping47k e R uscita100k, sorgente50Ω.
+
+**Dati modellati al port `out` verso 455kHz:** R100k isolata `|H455|=0,835056`, `fpeak=454,75kHz`, BW−3dB **42,557kHz**, `Zport≈33541−j15429 Ω` (con R100k inclusa); shunt10k: `|H455|=0,180772`, `fpeak=440,25kHz`, BW37,418kHz, `Zport≈7959,5−j723,1Ω`; shunt1k: `|H455|=0,022074`, `fpeak=439,0kHz`, BW29,765kHz, `Zport≈975,9−j10,8Ω`; gate JFET **SURROGATO PASSIVO** 10p/1M/7p: `|H455|=0,665187`, `fpeak=450,25kHz`, BW36,296kHz, `Zport≈21582−j19978Ω`. Attenzione: `Zport` è impedenza **complessa con carico già incluso**, la sorgente è spenta in AC e si inietta 1A di prova nel simulatore. Non è impedenza intrinseca senza carico, noise figure, selettività CB completa, frequenza/rumore OEM garantiti o impedenza effettiva del J113 fisico. Il `fpeak/BW` cresce per alcuni carichi shunt nonostante l'ampiezza crolli: **non è prova di Q RF migliore**.
+
+**Conclusione progettuale:** serve riaccordare IF455 **con il carico finale effettivamente collegato** e conoscere reale ESR/Q e impedenza; la tensione a 455kHz può perdere 78% (10k) o 97% (1k) rispetto al riferimento. Il J113 e KSP10BU standalone rimangono **non qualificati**; il modulo master MAIN V2.6 7 fogli/138 refs è intatto, PCB MAIN/FRONT **0%**. Prossima revisione studio di ritaratura 10–50pF carico-dipendente senza alterare master. Progetto completo ~20% stima, OEM/rumore/PVT/THD/AGC/FM/SSB ancora aperti. GitHub branch protetto, PR+required CI e nessun waiver, Actions usate in base alla necessità. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #108 MERGED: 10 casi IF455 a livello basso; nessuna sensibilità antenna deducibile
+
+**[PR #108](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/108) MERGED**, commit `a7e67b5c001cbb809b3876d0907aaddf07e6a691`. [GitHub Actions #43484801445](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43484801445) sul HEAD `c98af789d7e528eaea280754d6b437ef87acd25d`: **FAST + FULL native KiCad9/ngspice + required gate 3/3 SUCCESS** con 111 comandi storici e `PASS_NGSPICE_IF455_10_LOWLEVEL_GENERIC_DIODE_J113_CASES_NO_SENSITIVITY_CLAIM_NO_FAB_NO_TX`. Nuovo script `03_Verifiche/V2.7/verify_if455_lowlevel_envelope_native.py` e rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_LIVELLI_BASSI_SOGLIA_DEMOD_DRAFT.md`.
+
+**Esperimento:** generatore di prova ideale prima del filtro IF455, AM portante 455kHz/mod. 1kHz al 50%, `Rgen=50Ω` *assunta*, 5 ampiezze carrier picco **100µV/1mV/10mV/100mV/500mV** × due corner J113 `NJF GENERICO` IDSS2mA/VTO−0,5 o −3V; riferimento senza buffer e ramo con J113 e diodo `DGENERIC`, a 25ns. A 100µV fonte l'AFpp nel modello **senza JFET** ≈**0,804167µV**, con J113 worst −3V ≈**0,463908µV**. A 1mV: **8,041947µV** diretto contro **4,639164µV** worst; a 10mV **80,44396µV** vs **46,39673µV**; a 100mV **0,8103563mV** vs **0,4654612mV**. A 500mV: **23,925459mV** diretto vs **5,823876mV** worst. Segnale estremamente piccolo e risposta non lineare in alcune condizioni **MA** ngspice è privo di rumore e modelli OEM, perciò AFpp>0 **NON dimostra audio ascoltabile, SNR, SINAD o sensibilità antenna in µV**.
+
+**Nuovo blocker vincolante:** definire il piano di interfaccia dal mixer al rivelatore IF455 con livello **misurato al nodo IF**, guadagno reale precedente, impedenza complessa del filtro e carico, Q/banda, margine AM, AGC, modalità FM/SSB, rumore e THD prima di selezionare/adattare un amplificatore THT. Evitare nuovi sweep del solo generatore ideale spacciati per miglioramenti di sensibilità. Gli schematici standalone KSP10BU e onsemi J113 restano candidati NON QUALIFICATI e non collegati al master. Master V2.6 7 fogli/138 refs intatto, due PCB MAIN+FRONT non disegnate/routing **0%**, avanzamento complessivo conservativo **~20%**; MPN vendor attivi finali e PVT/OEM ancora aperti. Repository PR protetto e required CI obbligatori, Actions usabili per verifiche necessarie senza limite di minuti imposto. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #106 MERGED: 18 corner IF455 J113 con C ingresso/R source, tentativo NON QUALIFICATO
+
+**[PR #106](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/106) MERGED**, commit `b2f0d12adb33d8ab2aa67f200e939bef43adff7a`. Esecuzione ngspice sul commit tecnico `54560c8b9861b9a6136b624424fd22e8e09648f3`: [Actions #43481864363](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43481864363) **FAST+FULL+required 3/3 SUCCESS**, 111 comandi storici e `PASS_NGSPICE_IF455_J113_GENERIC_18_WORSTCORNER_CAP_SOURCE_NO_OEM_NO_FAB_NO_TX`. Esecuzione sul commit finale `2f466cf3b2f1dbec95f8827b2cda0dafb0a42477`, [#43482723008](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43482723008): **FAST/FULL/required 3/3 SUCCESS**. Nuovo script `03_Verifiche/V2.7/verify_if455_j113_worst_corner_coupling_source_native.py`, report `03_Verifiche/V2.7/RAPPORTO_J113_IF455_WORST_CORNER_C_SOURCE_DRAFT.md`. 18 transienti ngspice nativi: C1801 10/47/100pF × R1802 source 680/1k/2k2 × sorgente AM0,5/2V picco; corner **NJF GENERICO VTO=−3V IDSS=2mA**, non garanzia OEM.
+
+**Esiti fondamentali del SOLO modello:** con ingresso sorgente 0,5V picco, AFpp riferimento diretto ~**23,925mV**; J113 baseline **C1801=10p/Rs2k2: 5,824mV (24,34%)**, modifica 47p/2k2 **9,326mV (38,98%)**, 100p/2k2 **10,058mV (42,04%)**. Con ingresso 2V il riferimento è ~**216,306mV** e J113 100p/2k2 produce **366,805mV (169,58%)**. Diminuire Rs a 680Ω/1kΩ **peggiora** il caso 0,5V nel modello; a 2V si rileva `VGSmax>0` per vari casi Rs680 e per 100p/1k, con **conduzione gate nel modello**. AFpp maggiore non è prova di qualità radio. L'opzione 100p/2k2 resta **INSUFFICIENTE ai segnali deboli** e non diviene approvata. Il KiCad J113 PR105 da banco resta invariato; il master MAIN V2.6 è intatto.
+
+**Priorità corretta:** non fare tuning infinito con modelli generic e generatori da 0,5/2V (non livelli realistici di sensibilità RX): definire con criteri verificabili una **specifica di interfaccia IF455** (ampiezze e impedenze realistiche, noise figure/SNR/SINAD, selettività, banda passante, linearità di diodo e stadio attivo, AGC/AM/FM/SSB, PVT), reperire modelli e parametri OEM onsemi J113 e diodo, validare pinout/footprint e il circuito nel master KiCad gerarchico prima delle PCB. La sola geometria KiCad9 J113 standalone ha ERC0/netlist9refs/6nets, **non** DRC PCB. Due PCB MAIN + FRONT 100% THT, nessun layout/routing (**0%**), avanzamento complessivo conservativo **~20%**, master sette fogli/138 refs. Repository pubblico protetto, tutte le modifiche via PR e gate required; GitHub Actions autorizzate secondo qualità tecnica senza restrizioni volontarie sui minuti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #105 MERGED: nuovo onsemi J113 THT source follower, KiCad9 ERC0 e 12 corner NJF
+
+**[PR #105](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/105) MERGED**, commit `6d25c020b7d61263fb1b990ff922b290c4ba8b70`. GitHub Actions [#43480011279](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43480011279) sul commit `45beaf42a4dc67cfd0f351c519196fe37509a8bb` e run finale [#43480919521](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43480919521) sul commit `c3a7adeea56e2b1501473b07a21dec060b549c18`: **FAST+FULL+required gate 3/3 SUCCESS** e 111 comandi legacy FULL. Nuovo schema nativo `04_KiCad/V2.7_DRAFT/IF455_J113_SOURCE_FOLLOWER/IF455_J113_SOURCE_FOLLOWER_THT_V2_7_DRAFT.kicad_sch` + symbol-lib-table, `TH_J113.kicad_sym`, `.kicad_pro`: **9 refs THT / 6 nets, ERC0 errori/0 warning**, pin1 D / pin2 S / pin3 G onsemi J113 TO‑92 dichiarati esplicitamente e verificati con export netlist KiCad9. Attenzione: altri produttori J113 possono usare pinout diverso, perciò il componente è **OEM lockato e non automaticamente sostituibile**. Prova `PASS_NATIVE_KICAD9_ONSEMI_J113_TO92_9THT_6NETS_ERC0_PIN1D_2S_3G_NO_FAB_NO_TX`.
+
+Nuovo deck `03_Verifiche/V2.7/spice/if455_j113_am455_generic_jfet_transient.cir` e 12 transienti ngspice (2 ampiezze AM sorgente 0,5/2V × VTO−0,5/−1,5/−3V × IDSS modellati 2/10mA), confrontando filtro LC + diodo diretto e filtro LC + JFET + diodo; `PASS_NGSPICE_IF455_ONSEMI_J113_GENERIC_NJF_12_CORNERS_NOT_OEM_NO_FAB_NO_TX`. **MODELLO NJF GENERICO, non onsemi SPICE OEM**: a 0,5V AFpp con JFET varia **5,823876–41,574927mV** (diretto ~23,925mV); a 2V varia **294,03445–532,03390mV** (diretto ~216,30mV). Corner peggiore VTO=−3/IDSS=2mA dà a 0,5V **5,823876mV**, solo **24,34%** del diretto: lo schema J113 **non è approvato** per integrazione, benché l'interfaccia ad alta Z sia più promettente del BJT precedente. Alcuni corner 2V portano source vicino/sotto 0V; AFpp non misura distorsione/SNR. La prima FULL ha fallito per comando ngspice incapace di risolvere `v(gate,source)` in `.meas`; corretto con sonda di tensione differenziale VCVS ad ingresso idealmente infinito `EGS`, non rimosso il controllo. Report `03_Verifiche/V2.7/RAPPORTO_IF455_ONSEMI_J113_SOURCE_FOLLOWER_DRAFT.md`.
+
+**Passaggio successivo già definito:** esplorare C1801 accoppiamento e R1802 source con scenario VTO=−3/IDSS=2mA per migliorare segnale debole senza peggiorare swing, poi verificare bias PVT OEM, linearità THD/IMD, rumore, impedenza vera, decoupling alimentazioni e gate-source alla presenza di RF. Master MAIN V2.6 7 fogli/138 refs intatto; moduli V2.7 autonomi, due PCB non avviate, routing 0%, avanzamento ~20% stima. Repository pubblico con protezioni branch PR+required CI, user non impone limiti minuti Actions. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #104 MERGED: 16 casi ngspice del BJT IF455 ad alta impedenza (NON APPROVATO)
+
+**[PR #104](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/104) MERGED**, commit `d1fda6af10a5534d335ab647268a4d1c7d887f44`. Esecuzione nativa [GitHub Actions #43477471030](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43477471030) (modifica tecnica, 111 comandi storici) **FAST+FULL+required SUCCESS 3/3**; run finale dopo aggiornamento del report [#43478153999](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43478153999) anch'esso **3/3 SUCCESS**. Nuovo verificatore `03_Verifiche/V2.7/verify_if455_highz_bias_coupling_screen_native.py`, integrato nel runner FULL preesistente: 8 configurazioni reali di C1701/partitore KSP10 con sorgente AM 0,5V e 2V picco (16 transienti ngspice), modello BJT e diodo generic, passo 25ns, confronto tank e AFpp non lineare. Report `03_Verifiche/V2.7/RAPPORTO_IF455_HIGHZ_BIAS_COUPLING_SCREEN_DRAFT.md`.
+
+**Numeri importanti del SOLO modello:** baseline C1701=10n/partitore22k–10k → AFpp con buffer **0,752869mV** a 0,5V e **15,565562mV** a 2V; con partitore 220k–100k e C1701=47p → **10,80998mV / 372,99562mV**; con 470k–220k e C1701=10n → **23,966195mV / 468,95129mV**; percorso diretto senza buffer ≈**23,925mV / 216,298mV**. A ingresso 2V i casi con alto bias presentano source/emitter in alcuni istanti circa **0V o lievemente negativo**, sicché AFpp più grande non dimostra buona linearità o qualificazione RF. La sola diminuzione di C1701 a 2,2p **non risolve** i segnali deboli. **Topologia KSP10 non ancora approvata**: servono controllo PVT, noise, distorsione, ingresso tank e modelli OEM. Lo screening ha motivato la separata proposta di source follower JFET onsemi J113 THT (da validare autonomamente con PR, non automaticamente promuovere).
+
+Master MAIN KiCad V2.6 7 fogli/138 refs intatto; due PCB fisiche ancora non disegnate, **0% layout/routing**, progresso complessivo **~20% stima**. Nessuna deroga di ERC/DRC o promessa di produzione. Repository protetto: commit tecnici via PR e required Actions; nessun limite di minuti imposto per risparmio, ma controlli basati sul rischio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #102 MERGED: convergenza numerica della cascata IF455–KSP10–AM455
+
+**[PR #102](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/102) MERGED**, commit `1582ca3e905a10e4c299f8617616dddb0121aa29`. GitHub Actions [#43474856530](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43474856530) sul commit finale `10e3e1447d624716b71fbf57159f1b0e07a8fa26`: **FAST / FULL native KiCad9+ngspice / required gate 3/3 SUCCESS**; 111 comandi regressivi storici eseguiti, nuovo gate `PASS_NGSPICE_IF455_KSP10_AM455_6_TIMESTEP_AUDITS_NOT_OEM_NO_FAB_NO_TX`. Lo script nativo `03_Verifiche/V2.7/verify_if455_ksp10_cascade_timestep_convergence_native.py` impone ora **variazione inferiore al 2% fra 25 e 12,5 ns per tutte le otto metriche RF/AF** (due livelli × quattro misure): tutte superate realmente, massimo rilevato **1,4955%** (AF buffer, ingresso 2V). Report completo `03_Verifiche/V2.7/RAPPORTO_CASCATA_IF455_KSP10_CONVERGENZA_TIMESTEP.md`.
+
+**Esito quantitativo MODELLO GENERICO a timestep 12,5ns:** sorgente AM 0,5V picco → audio senza buffer **0,024045417 Vpp**, con buffer Q1701 **0,000755608 Vpp** (**3,1424% del diretto**). Sorgente AM 2V picco → audio senza buffer **0,216750780 Vpp**, con buffer **0,015801883 Vpp** (**7,2903% del diretto**). La riduzione del segnale nel filtro caricato dal follower rimane forte. L'architettura Q1701 KSP10BU con polarizzazione 22k/10k e accoppiamento 10nF è **NON APPROVATA** per integrazione nel master. Non significa che il transistor fisico KSP10BU sia intrinsecamente inadatto: l'insieme polarizzazione/adattamento/diodo e i modelli devono essere revisionati.
+
+**Nota storica critica:** i valori 200ns delle PR #94/#95/#96 erano sensibili al timestep, come già precisato nella #101. Il test #102 dimostra convergenza *pratica limitata alle misure e al modello* fra 25→12,5ns, NON modello OEM o prestazioni hardware. Mancano dati vendor e qualifica produzione RF attiva, input Z complessa, rumore/AGC/FM/SSB, alimentazioni sicure, PCB-MAIN e FRONT, BOM e footprint. Master MAIN V2.6 sette fogli/138 refs intatto; V2.7 moduli standalone; PCB routing/DRC reale **0%**, progetto completo **~20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+**Prossima priorità ingegneristica:** confrontare alternative THT di adattamento IF a elevata impedenza d'ingresso, prima su modelli espliciti con carico filtro e diodo, quindi su KiCad 9 nativo/ERC/netlist con componenti OEM attivamente prodotti; valutare bias PVT, rumore, selettività e alimentazioni prima di qualunque integrazione nel master. Actions usabili senza limite di minuti come scelta dell'utente, ma PR protette e required gate rimangono obbligatori. `main` protetto: checkpoint aggiornato tramite PR, non push diretto.
+
+---
+
+## 13 novembre 2026 — PR #101 MERGED: filtro IF455→KSP10→AM455, buffer candidato respinto dal modello
+
+**[PR #101](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/101) MERGED**, commit `cf1078c3ed557ec728c32113b179435675eb2b15`. L'esecuzione finale [GitHub Actions #43473518325](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43473518325) sul final commit tecnico/documentale `b0bf220e7f644d06b0536f4083eab947a7ab0269` è **FAST+FULL+required gate 3/3 SUCCESS**. Run precedente [#43473046507](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43473046507) ha eseguito il calcolo nativo a 50ns: `PASS_NGSPICE_IF455_KSP10_AM455_GENERIC_NONLINEAR_CASCADE_NOT_OEM_NO_FAB_NO_TX`, 111 comandi storici FULL, ripetibilità del riferimento a 50ns < **0,061%**.
+
+**Misure ngspice MODELLO GENERICO**: a 0,5V picco AFpp filtro diretto+diodo **23,326606mV**, con Q1701 buffer+diodo **0,741563mV** (3,179% del diretto), picco RF tank **0,3938995V → 0,09449585V**. A 2,0V picco AFpp diretto **214,324050mV**, con Q1701 **14,614407mV** (6,8188% del diretto), RF tank **0,7549801V → 0,3779901V**. Nel modello, **la polarizzazione e il collegamento tramite C1701 da 10nF caricano il filtro invece di adattarlo: l'attuale follower KSP10BU NON va integrato nella radio**. KiCad Q1701 PR #97 rimane *schematico da banco*, non un modulo RF approvato.
+
+**Anomalia numerica importante:** il modello legacy a 200ns (PR #94/#95) aveva `0,17444891Vpp` a 2V picco, ma lo stesso deck ricalcolato a 50ns fornisce `0,21445359Vpp` (+22,9%). La referenza diretta PR #101 a 50ns dà `0,21432405Vpp` (-0,0604% dal deck legacy ricalcolato allo stesso passo). I dati storici sono **sensibili al timestep**, non dimensionamenti convergenti. Il primo run PR #101 è fallito correttamente per discrepanza fra passi 200ns e 50ns; la correzione ha aumentato la risoluzione e introdotto controllo indipendente a parità di passo, **nessun bypass**. Per qualifica serve sweep 50/25/12,5ns, in questa revisione successiva in corso. Report `03_Verifiche/V2.7/RAPPORTO_CASCATA_IF455_KSP10_AM455_TRANSIENT_GENERIC_DRAFT.md` e deck/script reali.
+
+**Stato fisico:** master MAIN V2.6 7 fogli/138 refs intatto, Q1701 standalone non interconnesso, PCB-MAIN e PCB-FRONT non progettate fisicamente, layout 0%; progresso complessivo ancora **~20% stima**. Mancano modello OEM, impedenza, rumore, selettività, FM/SSB, AGC, alimentazioni sicure, BOM THT attiva e footprint finali. L'uso GitHub Actions rimane orientato alla qualità, protezioni PR+CI sempre attive. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #99 MERGED: KSP10BU THT bench 9 corner DC + AC ngspice GENERICO
+
+**[PR #99](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/99) MERGED** commit `30dca9bc5187b40a9a54a6fbb2af079ea5d59ec5`, GitHub Actions [#43469630157](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43469630157) sul final commit tecnico `e12c2e681f498e89bdd97ecdd65dea61782c96c8`: **FAST + FULL + required gate 3/3 SUCCESS** con 111 comandi storici FULL e `PASS_NGSPICE_IF455_KSP10_GENERIC_BJT_9_BIAS_AC_CORNERS_NOT_OEM_NO_FAB_NO_TX`.
+
+Nuovo deck nativo `03_Verifiche/V2.7/spice/if455_ksp10_generic_bjt_bias_ac.cir`, script `verify_if455_ksp10_generic_bjt_bias_ac.py`, gate nel runner FULL esistente. Nove transienti+AC a **455 kHz** di un circuito che riprende lo schematico KiCad9 della PR #97: alimentazione banco 5,5/6/6,5 V × beta generic40/80/160. Nel **solo modello** emettitore **1,011065–1,364428 V**, corrente emettitore **0,459575–0,620195 mA**, rapporto AC ampiezza `Vout/Vsource` **0,966637–0,973451**; per rail 6V β80: base **1,830799V**, emettitore **1,192877V**, corrente **0,542217mA**, ampiezza AC **0,970670**. Report con tutti e 9 i casi `03_Verifiche/V2.7/RAPPORTO_KSP10_IF455_GENERIC_BJT_DC_AC_CORNERS_DRAFT.md`.
+
+**Non equivocare:** BJT `QGEN` non è un modello OEM di KSP10BU, beta e capacità non sono tolleranze certificate, il test non include filtro tank/demod AM, rumore, PVT, selettività, guadagno IF o instabilità hardware. Il Q1701 KSP10BU resta CANDIDATO THT con pinout OEM verificato, non parte BOM finale qualificata. La policy Actions è lasciata abilitata per ogni controllo necessario, senza trattare il costo dei minuti come vincolo progettuale secondo la decisione dell'utente; rami protetti e PR/CI obbligatorie restano. Master MAIN V2.6 7 fogli/138 refs intatto; nuovo follower V2.7 isolato, nessuna PCB reale, layout/routing **0%**, avanzamento complessivo **~20% stima**. Prossimo gate: prova di interfaccia filtro IF455→follower→rivelatore AM con carico non lineare, datasheet OEM e caratterizzazione del rumore/stabilità prima di revisione RF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #97 MERGED: primo stadio IF455 THT KSP10BU, KiCad9 nativo ERC0
+
+**[PR #97](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/97) MERGED**, commit `b16778889558d08c4fb8e98c54cd2d41a6238526`. GitHub Actions [#43468430403](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43468430403) sul final HEAD tecnico `1807d9520aab12f9e49154073bf5abbe01e5d964`: **FAST + FULL + required gate 3/3 SUCCESS**; 111 comandi legacy eseguiti. Nuovo test `PASS_NATIVE_KICAD9_IF455_KSP10BU_BENCH_THT10_PINPAD_NET_ERC0_NO_FAB_NO_TX`: **KiCad9 ERC 0 errori / 0 warning**, netlist esportata e controllata: 10 componenti THT, 6 reti, tutte pin↔net verificate.
+
+**Revisione CAD reale**: standalone `04_KiCad/V2.7_DRAFT/IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch` + progetto `.kicad_pro`, symbol library `TH_IFBUF.kicad_sym` + `sym-lib-table`. Circuito banco a collettore comune Q1701 onsemi **KSP10BU RF TO-92 candidato**: pin1 BASE/pin2 EMETTITORE/pin3 COLLETTORE secondo datasheet OEM, rail laboratorio 6V separato, 22k/10k bias, 2k2 emettitore, due 10nF AC e carico 100k. DigiKey Italia elenca KSP10BU come ACTIVE; qualifica OEM di produzione, guadagno/noise/PVT/impedenza a 455k, layout e stabilità **ancora aperti**. Prime due esecuzioni FULL avevano correttamente bloccato errori filo e warning libreria; risolti con correzioni CAD reali, **nessun waiver**. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_KSP10BU_FOLLOWER_CAD_DRAFT.md`.
+
+**Protezione repository:** il tentativo di aggiornare direttamente `main` dopo merge è stato respinto da GitHub (`Changes must be made through a pull request`), quindi questo checkpoint è inviato via branch e PR dedicata, rispettando la protezione. L'utente ha comunicato che i repository ora sono pubblici e non desidera vincolare l'uso di Actions ai costi: la priorità resta controlli tecnici necessari, non risparmio runner; mantenere gate verdi per ogni merge.
+
+Il master V2.6 sette fogli/138 refs non è stato modificato; i moduli V2.7 restano isolati, PCB-MAIN e PCB-FRONT non disegnate, layout/routing **0%**, avanzamento complessivo ancora **~20% stima**, non aumentare per un test KiCad bench. Prossimo blocco tecnico: simulazione di polarizzazione e piccoli segnali dello stadio KSP10 con modelli non OEM chiaramente etichettati, poi modello/dati OEM, impedenza d'ingresso effettiva sul tank, rumore e selettività. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #96 MERGED: matrice impedenza sorgente IF455 e livelli AM, simulazione nativa
+
+**[PR #96](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/96) MERGED**, commit `4c5b5293fb1d1f6fc9d667fa6add008c7fc24f98`. Workflow [#43460892882](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43460892882) sul commit tecnico `40ca3846c2db35a7267750e34d79c01712ae88d2`: **FAST + FULL native KiCad9/ngspice + required gate 3/3 SUCCESS**, con **111 comandi legacy** eseguiti e `PASS_NGSPICE_IF455_SOURCE_IMPEDANCE_LEVEL_MATRIX_GENERIC_ONLY_NO_FAB_NO_TX`. Nuovo verificatore `03_Verifiche/V2.7/verify_if455_source_impedance_matrix_native.py`: sei transienti **ngspice reali**, incrocio Rs 50/500/5000Ω con AM 0,5/2,0 V picco. Uscite AFpp filtro+diodo `DGENERIC` ai tre Rs: per 0,5V **0,011504869 / 0,011262692 / 0,009101405 V**; per 2V **0,17444891 / 0,18185761 / 0,1527582 V**. Riduzione (50→5000Ω) di ~**20,89%** e **12,43%** nel modello rispettivamente. Risposte **non monotone** a tutti gli Rs: a 2V il risultato con 500Ω supera quello con 50Ω, quindi nessuna conclusione puramente lineare. Riferimenti diretti e picchi RF documentati in `03_Verifiche/V2.7/RAPPORTO_IF455_ZSOURCE_LIVELLO_MATRIX_DRAFT.md` aggiornato dopo merge. Gancio nel runner FULL esistente senza job Actions addizionali.
+
+**Limiti irrisolti:** modello diodo non OEM, Rs puramente resistivo, Rcoil 16,5Ω ipotetica non perdita RF misurata; assenti guadagno/impedenza complessa del driver, rumore, SNR/SINAD, bande FM/SSB, PVT, filtri selettivi, prova banco e buffer THT qualificato. Il master MAIN V2.6 resta **7 fogli / 138 posizioni**; draft V2.7 separati, nessuna PCB-MAIN o PCB-FRONT instradata, **layout 0%, stima progetto ~20%**. Prossimo intervento prioritario: definire specifiche e candidati reali attivi OEM THT per interfaccia IF, validare circuiti con KiCad nativo e prove di carico/rumore prima di integrazione. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #95 MERGED: risposta transitoria AM455 ai livelli IF, modello generico
+
+**PR [#95](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/95) MERGED**, SHA `bc7eebff2b11103b1daa372780afc8fed3974929`. CI [#43456512235](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43456512235) sul HEAD tecnico `4bcbb33c0437f288c1e246f6b3f23ab731bd407e`: **FAST + FULL + required gate 3/3 SUCCESS**, 111 comandi legacy eseguiti; `PASS_NGSPICE_IF455_AM455_GENERIC_DIODE_INPUT_LEVEL_SWEEP_NOT_OEM_NO_FAB_NO_TX`. Verificatore reale `03_Verifiche/V2.7/verify_if455_am455_input_level_sweep_native.py` usa ngspice quattro volte sul deck combinato PR #94, con sorgente AM 455kHz modulata 1kHz 50% e Vpicco `0,2/0,5/1/2`. Risultati modello AFpp *filtrato* **0,001312202/0,011504869/0,06547246/0,17444891 V**; AFpp *diretto di riferimento* **0,006729355/0,23901695/0,8542723/2,0377306 V**; rapporti **19,50/4,81/7,66/8,56%**, NON monotoni. Sono risultati di diodo generico e sorgente ideale, **non** sensibilità del ricevitore, rumore, SINAD o comportamento OEM 1N4148; il riferimento diretto non è candidato di filtro. Runner FULL preesistente, nessun nuovo job GitHub Actions. Report `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_SWEEP_LIVELLO_GENERIC_DRAFT.md` aggiornato con le misure dopo il merge.
+
+**Prossimo blocco concreto:** definire il livello/impedenza del driver IF reale e un modello OEM con variazioni PVT; valutare stadio THT di adattamento/buffer con misure RF e analisi del rumore prima di abilitare l'integrazione del rivelatore. Master MAIN V2.6 a 7 fogli / 138 refs invariato; entrambi i pilot IF455 e AM455 standalone, PCB-MAIN e PCB-FRONT non instradate, layout 0%, complessivo **~20% stima**. L1601 footprint coil ancora provvisorio, C1603 trimmer non ancora validato su PCB, sicurezza alimentazioni/FМ/SSB/AGC/S-meter e BOM finale aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #94 MERGED: transitorio non lineare IF455→AM455 con diodo GENERICO
+
+**PR [#94](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/94) MERGED** con SHA `9f218cbcc888b03247a03399bca41ea3b57c5bd9`. La CI del commit tecnico `75b6271b59d6ab16dddddf1d3ce2732041bb2f46`, [run #43455702580](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43455702580), ha **FAST + FULL + required gate 3/3 SUCCESS**, con **111 comandi storici FULL** eseguiti. Il log nativo ngspice riporta `PASS_NGSPICE_GENERIC_DIODE_TRANSIENT_NOT_OEM_NOT_HARDWARE_NO_FAB_NO_TX` e misure sul modello: AF picco-picco filtro+diodo **0,17444891 V**, AF del rivelatore alimentato direttamente **2,0377306 V**, rapporto **8,56094%**, massimo RF positivo al nodo uscita filtro **0,6972108 V**. Il deck assume sorgente AM 455kHz picco 2V, modulazione 1kHz 50%, 50Ω, L1mH, 82pF+30pF trimmer, Rcoil16,5Ω ipotetica; diodo `DGENERIC` già usato nel banco. **NON è macromodello OEM della 1N4148** e il confronto diretto non è un'architettura RF approvata: non esprime sensibilità reale della radio né giustifica ancora un buffer scelto.
+
+**Modifiche reali integrate**: deck `03_Verifiche/V2.7/spice/if455_am455_nonlinear_transient_generic.cir`, verificatore `verify_if455_am455_nonlinear_transient_native.py`, gancio nel runner `ci/full_regressions.py` **senza nuovo job GitHub Actions**, rapporto `RAPPORTO_IF455_AM455_TRANSITORIO_NONLINEARE_GENERIC_DRAFT.md` aggiornato successivamente con risultati CI. **Master MAIN V2.6 ancora invariato**, sette fogli/138 posizioni; moduli KiCad9 V2.7 standalone, non interconnessi su scheda fisica. Prossimo blocco: sweep transitorio di ampiezza e modelli/corner diodi, caratterizzazione IF source/input, scelta IF/buffer THT e selettività, poi FM/SSB/AGC/S-meter e alimentazioni. Induttanza L1601 footprint non qualificato, disegno PCB-MAIN e PCB-FRONT **0%**, complessivo **~20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 13 novembre 2026 — PR #92 MERGED: sensibilità al carico d'uscita IF455 verificata in ngspice
+
+**PR [#92](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/92) MERGED** su `main` SHA `a965d3bc585e4a0cfe9ded4edea59086c6bcf7cf`. GitHub Actions [#43442916740](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43442916740) **3/3 PASS** sul HEAD `ede2503195a25abd15ec77f0f64a1b4302c8f44f`: FAST PASS, FULL KiCad9/ngspice con **111 comandi storici** PASS, required gate PASS. Log nativo ngspice `PASS_NGSPICE_IF455_DETECTOR_LOAD_SENSITIVITY_SURROGATES_NOT_DIODE_NO_FAB`: rapporto trasferimento |Vout/Vin| a 455 kHz del **modello** con tank L1mH, C82pF, Ctrim30pF, Ccoupling10pF, Rcoil16,5Ω **assunta**:
+- Solo R1602 uscita 100kΩ: `0.835056`.
+- In parallelo ulteriore resistenza 10kΩ: `0.180772` (circa **−78,35%** rispetto al riferimento).
+- In parallelo ulteriore resistenza 1kΩ: `0.022074` (circa **−97,36%**).
+
+**Interpretazione vincolante:** i due carichi aggiunti sono **surrogati resistivi**, NON l'impedenza reale non lineare della 1N4148. I risultati dimostrano la vulnerabilità del circuito al carico, **non** provano che il diodo reale abbia quegli effetti o che un buffer specifico sia obbligatorio. Serve la simulazione transitoria dello stadio combinato e qualifica del livello/impedenza dell'amplificatore IF. Report `03_Verifiche/V2.7/RAPPORTO_IF455_AM455_CARICO_USCITA_NGSPICE.md`; deck/script nelle verifiche V2.7. Riutilizzato runner FULL senza job Actions aggiuntivo.
+
+**Gestione corretta delle PR concorrenti:** il contratto KiCad9 a due fogli J1602→J1501 era già MERGED con PR #89 e relativo checkpoint PR #90; le PR #88 e #91, duplicate o in conflitto documentale, sono state CLOSED senza merge, evitando di sovrascrivere `main` o duplicare test. Solo il nuovo studio di carico della #92 è integrato.
+
+**Rilascio NON autorizzato:** master MAIN V2.6 7 fogli/138 posizioni intatto; IF455 e AM455 sono moduli KiCad9 standalone senza cablaggio fisico; mancano IF/mixer, FM/SSB, AGC, S-meter, alimentazioni sicure, selettività e BOM/footprint finali, PCB layout 0%, complessivo circa **20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #89 MERGED: contratto pin IF455 TANK→AM455 ENVELOPE
+
+**PR [#89](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/89) MERGED** su main `214e063a7c016613ae4c28f77f79ff01f3a4d2b3`; run [#43441748177](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43441748177) **3/3 PASS** su final HEAD `d47b7baaff79d0ebcc9a829dd74447e92b6bc9e6`, FAST/FULL KiCad9/ngspice/required gate tutti verdi e 111 comandi legacy conclusi. La nuova verifica `PASS_KICAD9_NATIVE_IF455_AM455_2WIRE_IF_CONTRACT_NO_FAB_NO_TX` ha esportato e confrontato **realmente le due netlist autonome KiCad9**, stabilendo J1602.1→J1501.1 (RF IF 455kHz e anodo D1501.2), J1602.2→J1501.2 (massa/ritorno), assenza di commistione 6V AUDIO, PLL, TX e 13,8V. La mappa cavi è **logica da banco**, non un PCB o un cablaggio reale costruito o qualificato. Nuovi file `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` e `RAPPORTO_CONTRATTO_IF455_AM455_THT.md`, nuovo gate nel runner FULL esistente.
+
+**Prossima priorità concreta:** simulare l'effetto del **diodo AM non lineare** sull'impedenza e sull'accordo del filtro IF455 con C1603 trimmer regolabile; precedenti sweep hanno Rload100k ma non carico reale D1501. Mancano OEM RF model, guadagno IF, SSB/FM/AGC, filtro reale, layout e DRC. L1601 bobina footprint PROVISIONAL, C1603 EW GKG50015 ora P5mm da disegno OEM ma clearance PCB non provata; master V2.6 7 fogli/138 refs e tutte le partizioni THT invariati. Completamento complessivo **~20% stima**, PCB fisiche e routing **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — nuovo contratto pin↔net IF455 Tank→AM455 Envelope, in revisione
+
+**Base main verificata:** commit `54dc37e09368073e2c3cd58f416fd08464dfe061` (PR #86/#87 MERGED, nessuna PR aperta). Nuovo branch tecnico `engineering/if455-am455-native-interface-20261113`, ancora **NON INTEGRATO**: verifica `03_Verifiche/V2.7/verify_if455_am455_interface_native.py` con **due netlist esportate da KiCad9 reale** per assicurare collegamento logico fra J1602 del tank IF455 e J1501 del rivelatore AM455 (pad1 segnale 455k AM IF, pad2 massa), anodo D1501 pin2 in ingresso, resto rivelatore J1502 AF out, nessuna commistione con rail 6V audio/PLL/TX/13,8V. Aggiunto al runner FULL preesistente `ci/full_regressions.py` senza job extra Actions. Rapporto `03_Verifiche/V2.7/RAPPORTO_CONTRATTO_IF455_AM455_THT.md`. **CI ancora da verificare; non merge fino al gate verde**.
+
+**Limite cruciale:** **NON** è un collegamento di PCB o un harness fisico, e la simulazione AC del tank con Rload100k **NON** garantisce risposta quando caricato dal diodo 1N4148 **non lineare**; serve simulazione transitoria dell'assieme e un IF driver/buffer qualificato. Filtro e detector restano 2 pilot THT separati, master MAIN V2.6 7 fogli/138 refs non modificato, bobina L1601 con footprint PROVISIONAL, C1603 GKG50015 quote OEM ma clearance PCB ancora non validata, 2 PCB fisiche non disegnate, layout0%, complessivo ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #86 MERGED: correzione meccanica C1603 GKG50015
+
+**PR [#86](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/86) MERGED** su main, SHA `20e417126d89af9aa66be5ff78d4be636d0c19ae`. Run [#43440490803](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43440490803) **3/3 PASS** sul final HEAD `91c062c6005a345129bd98e840580701b87421a5`: FAST success, FULL KiCad9/ngspice + 111 comandi storici success, required gate success. Log: ERC **0 errori/0 warning**, `PASS_KICAD9_IF455_THT9_ERC0_VARIABLE_10TO50PF_PROVISIONAL_NO_FAB`, `PASS_NGSPICE_IF455_VARIABLE_10TO50P_TUNING_RANGE_ONLY_NOT_RF_QUALIFIED_NO_FAB`.
+
+**Correzione CAD concreta**: il trimmer C1603 EW GKG50015 precedente aveva footprint provvisorio *sbagliato* a 2,50mm. Dal disegno EW serie GKGxx015 top-adjust risultano **2 fori da Ø1,2mm distanti 5,0mm** e terminali rotor/stator. Rimossa l'impronta sbagliata `Trimmer_GKG50015_2pad_PROVISIONAL`; aggiunta vera impronta KiCad9 `TH_TANK:Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT` (pad2 rotor collegato GND a x0, pad1 stator nodo IF455_TANK a x5; rame Ø2,2mm, footprint F.Fab Ø6mm e F.CrtYd conservative). Aggiornati schema nativo, simbolo locale e test che controlla pad/drill/passo e rifiuta footprint vecchio. Il datasheet indica TCC del GKG50015 **N2200±800ppm/°C**, non NPO; Q @1MHz non equivale a garanzia @455kHz. La bobina L1601 Delevan conserva footprint coil 15,24mm **PROVISIONAL** non verificato come passo di montaggio; progetto **NO FAB**. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_GKG50015_TRIM_REGOLABILE_DRAFT.md` aggiornato.
+
+**Non confondere ERC con DRC:** manca un file PCB reale, quindi DRC fisico e clearance reali non ancora eseguiti. Master MAIN V2.6 7 fogli/138 refs non modificato; moduli V2.7 IF455, AM455, audio ancora separati. Layout/routing delle due PCB **0%**, avanzamento complessivo ~20% stima. Prossimo gate di progetto: continuità pin↔net IF455 filter→AM455 demod da verificare e poi effetto del carico del rivelatore su accordo/AF. **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
+## 13 novembre 2026 — nuovo footprint C1603 GKG50015 corretto da disegno OEM, PR in review
+
+**Bootstrap verificato live su main:** commit `03ea2ec6bf33afd1a6095097246723ec1394d792`, nessuna PR aperta, AGENTS e checkpoint riletti. Branch `cad/if455-gkg50015-oem-footprint-20261113` NON ancora integrato. La fonte **OEM EW Electronics GKGxx015** [disegno meccanico](https://datasheet.ersaelectronics.com/static/datasheets/ew-electronics/ew-electronics-gkg30015.pdf) mostra per C1603 **GKG50015 top-adjust** due fori THT **Ø1,2mm con interasse 5,0mm**, diametro corpo Ø6,0±0,2mm e terminali rotor/stator. **Scoperto e corretto errore nella precedente footprint**: `TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL` simulava erroneamente 2,50mm ed è stata rimossa. Nuovo file reale `04_KiCad/V2.7_DRAFT/IF455_TANK/TH_TANK.pretty/Trimmer_EW_GKG50015_P5.00mm_OEM_DRAFT.kicad_mod`, pad2 x0=rotore a `IF_BENCH_GND`, pad1 x5=statore al `IF455_TANK`, foro1,2mm, rame Ø2,2mm deciso CAD, corpo F.Fab Ø6mm, courtyard tentativo. Simbolo `TH_TANK:CT`, schema embedded e libreria locale aggiornati. `verify_if455_tank_native.py` ora **rifiuta la vecchia impronta** e verifica coordinate 5,00mm, ordine pad/ruolo, drill e netlist nativa. Nuovo rapporto nel `RAPPORTO_IF455_GKG50015_TRIM_REGOLABILE_DRAFT.md`. La CI finale della PR deve ancora confermare gate nativi.
+
+**Qualifica ancora aperta:** installazione e rotore/statore da confrontare su campione con orientamento reale OEM; pad Ø2,2mm/clearance e processo saldatura non validati su PCB. EW GKG50015 è **N2200±800ppm/°C** (non NPO), Q dato @1MHz e non @455kHz. **L1601 Delevan 2500-28J conserva footprint 15,24mm PROVISIONAL** non qualificato per piegatura/assemblaggio; datasheet di serie fornisce corpo Ø4,83mm×11,18mm e reofori Ø0,635mm ma non validazione foro/passoreale. Continuità e ERC non garantiscono stabilità/riduzione spur/canale. Il master V2.6 7 fogli/138 refs e architettura 2 PCB rimangono invariati; schematico tank separato; layout/routing0%, avanzamento ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #84 MERGED: accordo IF455 regolabile su schema THT e simulazione ai corner
+
+**PR [#84](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/84) MERGED** su main `ce74fb2b929986c587fdec5677f51729ea67d702`; GitHub Actions [#43414613097](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43414613097) **3/3 PASS** sul final HEAD `9bba90431c3ded21231417e8b72605c0e7d15d95`: FAST, FULL KiCad9/ngspice e required gate success. Log FULL reali: `PASS_KICAD9_IF455_THT9_ERC0_VARIABLE_10TO50PF_PROVISIONAL_NO_FAB` con `0 Errors 0 Warnings`; `PASS_NGSPICE_IF455_VARIABLE_10TO50P_TUNING_RANGE_ONLY_NOT_RF_QUALIFIED_NO_FAB`, 1201 righe AC per 8 reti, con picchi **estremi** misurati: L−5% `510533.333/432400Hz`, Lnom `497466.667/421466.667Hz`, L+5% `485466.667/411200Hz`, Lnom+Cpar3.23pF `489733.333/416666.667Hz` (Ctrim=10pF/50pF). Il valore 455kHz si trova all'interno dei quattro intervalli del modello; 111 comandi legacy PASS. Non equivale a precisione di taratura, Q, banda selettiva o prestazione hardware.
+
+**Nuovo schema KiCad9 reale:** nel tank IF455 C1602 da 110pF a **82pF C0G THT** e C1603 da 2,2pF a **EW Electronics GKG50015 THT trimmer 10–50pF CANDIDATO**; nuovo simbolo `TH_TANK:CT`, footprint locale `TH_TANK:Trimmer_GKG50015_2pad_PROVISIONAL` con **geometria non verificata da disegno OEM, NO FAB**. L1601 resta Delevan 2500-28J 1mH candidato con footprint coil PROVISIONAL. Tutti gli ingressi/uscite e i nove riferimenti, quattro reti restano invariati. Vecchie simulazioni del circuito 110pF fisso ancora eseguite come regressioni storiche, con documentazione del loro perimetro.
+
+**Blocchi attivi:** MPN e impronte coil/trimmer industrialmente confermate e misure RF (Q a 455k, SRF reale, ESR, perdite, risposta IF con ingressi e carichi reali, accessibilità trim), filtro selettivo e amplificatore IF, mixer 10,695→455, demod FM e SSB, AGC, S-meter, audio adeguato e alimentazione sicura. MASTER MAIN V2.6 7 fogli/138 refs invariato; tutti i pilot V2.7 separati, nessuna PCB né DRC fisico; layout/routing **0%**, avanzamento progetto **~20% stima**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #83 MERGED; IF455 regolabile C1602+C1603 trimmer, nuova revisione in review
+
+**PR [#83](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/83) MERGED** sul main `c9f1a473bf00080bf961693bd397eb9982df4667`; Actions [#43413234046](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43413234046) **3/3 SUCCESS** sul final HEAD `d99880b7c13a02005f3c7308c72f6cac89752bf9`: FAST, FULL native KiCad9/ngspice, required gate PASS, 111 comandi legacy. Nuovo ngspice AC 2001 punti ha misurato, nel SOLO modello RLC semplificato con Delevan 1mH ±5% e 16,5Ω di perdita assunta: picco `466220Hz` con L−5%, `454395Hz` nominale, `443395Hz` con L+5%, `448510Hz` con Cpar 3,23pF equivalente SRF. Rilevato esplicitamente `REJECT_FIXED_110PF_IF455_TANK_WITH_5PCT_COIL_UNTIL_TRIM_AND_RF_MEASUREMENTS`. **Test PASS significa che il rischio è stato individuato**, non che la bobina è qualificata. L1601 sullo schema è ora `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED`, footprint locale ANCORA PROVISIONAL. Candidato Delevan 2500-28J active 1mH±5%, Q@790k e SRF2,8MHz catalogo; Xicon IF storico obsoleto, escluso.
+
+**Nuovo ramo `cad/if455-variable-trimmer-gkg50015-v27-20261113` (NON ancora merged):** modifica nativa KiCad9 sul tank IF455, sempre 9 refs THT/4 nets, **C1602 110pF→82pF C0G** e **C1603 2,2pF fisso→EW Electronics GKG50015 trimmer 10–50pF THT** (DigiKey ACTIVE, Q200 @1MHz non @455kHz) con simbolo separato `TH_TANK:CT` e footprint THT locale **PROVISIONAL** 2 pad (geometria OEM ancora da confermare, NO FAB). Capacità di shunt nel banco 92–132pF per coprire in teoria i corner ±5% e capacità parassita del modello, rispetto a 110pF non regolabile. Nuova simulazione ngspice 8 reti/1201 punti `verify_if455_trimmer_range_ngspice.py` impone peak min-cap>458k e peak max-cap<452k per ogni corner; test aggiunto al runner FULL esistente senza Actions aggiuntive. Rapporti in `03_Verifiche/V2.7/RAPPORTO_IF455_GKG50015_TRIM_REGOLABILE_DRAFT.md` e `RAPPORTO_L1601_DELEVAN_2500_28J_TOLLERANZE_IF455.md`.
+
+**Non dichiarare validata la seconda revisione prima del gate 3/3 CI sul final HEAD.** V2.6 MAIN 7 fogli/138 componenti invariata, quattro draft audio/AM455, tank IF455 ancora separati, nessun layout fisico/DRC, progetto circa 20% stima e routing0%. Apertura RF/IF + AGC/S-meter/SSB/FM, sicurezza e MPN restano. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — L1601 candidato OEM attivo + sweep IF455 tolleranze, lavoro in revisione
+
+**Bootstrap live:** MAIN HEAD `909396c0e8530fe296f8345c46c8b6af882eeef5`, nessuna PR aperta; AGENTS e checkpoint riletti da main. L1601 sul pilot IF455 rimane **1mH THT con footprint provvisorio**, non ancora fabbricabile. La ricerca corrente ha individuato un MPN industriale concreto: **Delevan `2500-28J`** (distributore DigiKey indica `Active`), induttore assiale 1mH ±5%, DCR max16,5Ω, Q60 @790kHz, SRF2,8MHz, Ø4,83×11,18mm, −55…105°C. `Q@790kHz` **NON** è Q@455kHz, DCR **NON** è perdita RF AC e SRF non fissa il comportamento del filtro. Alcuni Xicon `42IF102-RC` oggi sono dichiarati **Obsolete** e NON candidati per la distinta finale.
+
+**Nuovo branch `engineering/if455-delevan-tolerance-review-20261113` NON ancora integrato:** nello schematico KiCad9 il valore di L1601 è identificato `1mH_DELEVAN_2500-28J_CANDIDATE_NOT_QUALIFIED` ma **non cambia** pin↔net, valore nominale, né footprint THT **PROVISIONAL**. Nuovo deck ngspice `spice/if455_delevan_2500_28j_tolerance_ac.cir` con quattro casi: L=0,95/1,00/1,05mH e nominale con Cpar3,23pF derivata da SRF 2,8MHz **come ipotesi**, Rserie16,5Ω scenariale e sorgente/carichi precedenti. Nuovo test nativo `verify_if455_delevan_tolerance_ngspice.py` fa scansione AC 2001 punti e impone di rilevare spostamento di frequenza che **blocca la release del filtro a capacità fissa 110pF senza taratura**. Nuovo controllo nel runner FULL esistente, nessun nuovo workflow GitHub Actions e nessuna modifica alla policy economica. Rapporto `03_Verifiche/V2.7/RAPPORTO_L1601_DELEVAN_2500_28J_TOLLERANZE_IF455.md`. **Non dichiarare PASS prima della CI finale della PR.**
+
+**Continuano i blocchi:** serve sorgente a impedenza reale, filtro IF adatto AM/FM, mixer, AGC, S-meter, selezione bobina/tuning, modello OEM e layout fisico; Xicon obsoleti esclusi; nessun DRC PCB o fabbricazione, master MAIN V2.6 7 fogli/138 refs intatto, pilot standalone, layout/routing 0%, complessivo ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #81 MERGED: tank IF455 THT ricalibrato sotto carico e verificato ngspice
+
+**PR [#81](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/81) MERGED**, SHA `3a217a5135696355309fd89e482c84e3aa02c54e`. GitHub Actions [#43411046493](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43411046493) **3/3 PASS** sul commit HEAD `d8a7929c50fa32f263233163829e36a826f09f4c`: FAST, FULL nativo KiCad9+ngspice, required gate tutti SUCCESS. Log tecnici: `PASS_KICAD9_IF455_THT9_ERC0_1MH_112P2_UNLOADED_PROVISIONAL_NO_FAB` con ERC **0 errori/0 avvisi**, 9 refs/4 reti pin↔net verificati; `PASS_NGSPICE_IF455_LOADED_RESONANCE_RETUNE_GENERIC_RLC_NOT_OEM_NO_FAB`, scansione AC nativa **1001 punti** con `old=437000.0Hz`, `updated=454500.0Hz`, LC ideale scarico `475142.31Hz`, modulo gain picco nuovo `0.79366` **soltanto nel modello**; legacy `executed_commands=111` PASS.
+
+**Modifica CAD reale:** il risonatore IF455 standalone di PR #80 conserva J1601/J1602, C1601/C1604 10pF, L1601 1mH footprint THT **provisorio e vietato alla fabbricazione**, R1601=47kΩ, R1602=100kΩ, C1603=2,2pF; C1602 è stato corretto **da 120pF a 110pF**. Motivo: la rete accoppiata, con generatore 50Ω, capacità di ingresso/uscita 10pF e resistenza della bobina **30Ω ipotetica**, ha picco simulato 437kHz nel precedente schema, non 455kHz; nuovo valore sposta il picco simulato a **454,5kHz**. Il valore LC scarico nuovo è 475,14kHz e non deve essere confuso con la risposta della rete completa.
+
+**Limitazioni inderogabili:** Q, SRF, perdita, variazioni con temperatura e capacità parassita della bobina OEM **ignota**, C0G e geometria di PCB da verificare; la simulazione si basa su perdite di bobina assunte e sorgente/carico di prova, non rappresenta il vero IF e non determina selettività di canale, SINAD, sensibilità o BER. Occorrono filtro e trasformatore IF regolabili/qualificati, mixer 10,695→455, guadagno AGC e percorso FM/SSB separato, collegamento elettrico fra moduli, prove di banco. Master MAIN V2.6 7 fogli/138 refs invariato, pilot AM455 7 refs e draft audio separati, layout fisico delle PCB 0% e avanzamento complessivo ~20% **stima**, non aumentare sulla base di questa verifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #80 MERGED, correzione accordo IF455 sotto carico in revisione
+
+**PR [#80](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/80) MERGED**, commit main `63343cc924ae86e50ae682ca17ad3176839f802f`; Actions [#43410035549](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43410035549) 3/3 PASS sul final head `029667747cf2f1e43eec362b17f93f17dbf43d19`, `PASS_KICAD9_IF455_THT9_ERC0_1MH_122P2_NOMINAL_PROVISIONAL_NO_FAB`, ERC0/0 warning, 9 refs THT/4 reti, 111 comandi legacy PASS. Scheda IF455 risonante DRAFT autonoma; footprint L1601 15,24mm **provvisorio non produttivo**.
+
+**Correzione tecnica successiva in branch `cad/if455-loaded-resonance-ngspice-v27-20261113` NON ancora merged:** il picco della rete **caricata** da C coupling 10pF input/output, sorgente50Ω e coil loss assunta30Ω non coincide con 455,29kHz della LC isolata 1mH+122,2pF; nel modello semplice il picco era circa 437kHz. Modificato lo schema nativo per C1602 **110pF** (in precedenza 120pF), C1603 2,2pF; `f_LC_scarica≈475,14kHz` ora volutamente diverso dal picco di rete accoppiata atteso ~454,5kHz. Aggiunto vero AC sweep ngspice 350–600kHz vecchio/nuovo con analisi di 1001 punti, script `verify_if455_loaded_ac_ngspice.py` che estrae `wrdata` e impone miglioramento frequenza; test inserito in FULL già esistente. ERC/netlist aggiornati sulla nuova capacità, rapporto `RAPPORTO_IF455_TANK_THT_BENCH_DRAFT.md`. **CI finale ancora da verificare**; nessuna dichiarazione di selettività garantita. Perdita coil30Ω non OEM, carico del diodo non qualificato, bobina attualmente prodotta da selezionare; NO FAB.
+
+**Stato globale:** MAIN V2.6 7 fogli/138 refs immutata, quattro draft audio+AM455 e nuovo tank IF455 standalone, non una PCB completa; layout 0%, percentuale di progetto circa 20% stima. Non alimentare radio da veicolo/batteria, NO TX.
+
+---
+
+## 13 novembre 2026 — IF455 tank passivo THT KiCad9, PR tecnica in revisione
+
+**Bootstrap live main:** SHA `11f055fd2a2ff9380696178c0e09bd0811bc7c1d`, PR #77/#78/#79 integrate e nessuna PR aperta. Nuova branch `cad/if455-passive-tank-bench-v27-20261113` **non ancora integrata**: creato il vero schema KiCad9 `04_KiCad/V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch`, 9 refs THT, 4 reti, con C1601=10pF, L1601=1mH THT **induttore RF OEM non identificato, footprint 2 pad THT PROVVISORIO e NO FAB**, C1602=120pF + C1603=2,2pF C0G, R1601=47kΩ carico Q, C1604=10pF e R1602=100kΩ, ingressi J1601 e uscita J1602. `f≈455,29kHz` **solo formula LC ideale**, senza dati SRF/Q/ESR, accoppiamento, filtri o carico reale del diodo AM. Nessuna selettività garantita e nessun collegamento alla MAIN.
+
+**Gate nativo proposto** `03_Verifiche/V2.7/verify_if455_tank_native.py` esegue KiCad9 ERC --exit-code-violations, netlist e controllo pin↔net 9 refs/4 reti e footprint induttore THT 15,24mm nominalmente provvisorio; chiamato da `ci/full_regressions.py` senza nuovo job. Rapporto `03_Verifiche/V2.7/RAPPORTO_IF455_TANK_THT_BENCH_DRAFT.md`. **Nessun PASS dichiarato finché la CI finale non conclude su SHA HEAD.** AM/FM IF455 non include SSB IF10,695. Bloccano il circuito finito: MPN e Q/SRF bobina attiva OEM, carico/filtri RF, simulazione selettività/tolleranze, stadi attivi IF e mixer, AGC, S-meter, input safety.
+
+**Stato generale:** master MAIN V2.6 7 fogli/138 refs invariato, pilot AM455 7 refs e tre pilot audio separati, PCB-MAIN/FRONT non sbrogliate, DRC fisico assente, percentuale complessiva ~20% stima e layout 0%. **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #78 MERGED: simulazione 455kHz AM con ngspice reale, diodo generico
+
+**PR [#78](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/78) MERGED** su main, SHA `caa5288fbb5ea6d6c26c8099ef62fb2f51b800fd`. Workflow [#43407974037](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407974037) **3/3 PASS** sul final HEAD `5968ee408df3904c243c11faa3ccbeec2a1f6157`: FAST, FULL KiCad9 + ngspice e GATE obbligatorio tutti success. Log veri: AM455 KiCad9 ERC `0 Errors 0 Warnings`, `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`, ngspice `PASS_NGSPICE_AM455_GENERIC_DIODE_AM_VS_UNMOD_BENCH_NO_FAB_NO_SSB_FM`, tutte le 111 regressioni storiche eseguite.
+
+**Risultato simulato:** portante bench 455kHz, ampiezza 2,0Vpk, modulazione AM 1kHz indice 0,5, diodo **generic model non OEM**; test in finestra 30–40ms ha misurato AF picco-picco circa **1,9125V** (portante modulata) contro **0,1255V** (portante non modulata). Il residuo secondo caso contiene transitorio del condensatore di accoppiamento AC e ripple del modello; non interpretarlo come dato di reiezione RF o prestazione audio dell'hardware. Il test certifica soltanto differenza funzionale dentro la simulazione ed è integrato nel runner FULL esistente **senza job Actions aggiuntivo**. Rapporto `03_Verifiche/V2.7/RAPPORTO_AM455_NGSPICE_GENERIC_DIODE_BENCH.md`, deck ngspice e validatore in V2.7.
+
+**Confini non modificati:** PR #77 ha integrato solo un DRAFT AM455 con 7 refs THT/4 reti KiCad9; il master MAIN V2.6 7 fogli/138 riferimenti, i 3 pilot audio e la PCB-FRONT restano **non integrati**. Il 3900 storico usa IF 10,695MHz + 455kHz per AM/FM e IF 10,695MHz per SSB; il rivelatore AM non è FM o SSB, non ha amplificazione/AGC, né funziona direttamente con segnali d'antenna microvolt. Manca PCB layout/routing (0%), DRC PCB e approvvigionamento OEM finale; avanzamento complessivo circa **20% solo stima**. Prossima priorità: catena IF/mixer e stadi di selezione/AGC, distinguendo rivelatori AM, FM e SSB, oltre a specifica potenza audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #77 MERGED; simulazione AM455 ngspice generica in revisione
+
+**PR [#77](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/77) MERGED** su `main`, commit `0a56a9bf2e1b99506e706fdc1ad708062ae1b35c`, Actions [#43407170875](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43407170875) **3/3 SUCCESS** sul final HEAD `9ddefff104aa5f94e830d461fcbfeef928d46701`. Esempio nativo nuovo `PASS_KICAD9_AM455_THT7_ERC0_DIODE_CATHODE_NETS_BENCH_ONLY_NO_FAB`: KiCad9 ERC **0 errori, 0 warning**, 7 refs/4 reti/pin direzione D1501 verificati con export netlist, e 111 comandi storici FULL superati. **È il primo pilot di demodulazione AM IF455 THT reale in KiCad9**, standalone **solo laboratorio**, non circuito finale della radio.
+
+**Nuovo lavoro sulla branch `simulation/am455-am-demod-ngspice-bench-20261113` (non ancora integrato):** `03_Verifiche/V2.7/spice/am455_envelope_1khz_generic_diode_bench.cir` implementa una vera simulazione transitoria ngspice per AM 455kHz/tono 1kHz/indice0,5 su generatore 2Vpk, confrontata con portante NON modulata, due rivelatori D `DGENERIC`+47kΩ/1nF+100nF/100kΩ come nel CAD; `verify_am455_generic_diode_spice.py` legge max/min in banda audio dal simulatore e verifica una differenza misurabile. Inserito nella FULL `ci/full_regressions.py`; **modello diodo genericamente stimato, NON datasheet Vishay né simulazione vendor**. Rapporto `03_Verifiche/V2.7/RAPPORTO_AM455_NGSPICE_GENERIC_DIODE_BENCH.md`; CI ngspice finale non ancora verificata.
+
+**Nessun master integrato:** V2.6 MAIN 7 fogli/138 refs invariato, tre pilot audio e ora quarto pilot AM455 7 refs separati. IF AM/FM 10.695→455 e IF SSB 10.695, mixer/filtri/AGC/S-meter e alimentazione veicolare ancora incompleti; layout e routing PCB-MAIN/FRONT 0%, avanzamento complessivo circa 20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — nuovo CAD AM IF 455kHz rivelatore d'inviluppo THT, in revisione
+
+**main verificato a inizio lavoro:** SHA `8c9ffefc334d56521aac5928a977b3ffe5ea57a2` (PR #75 e #76 MERGED; zero PR aperte); `AGENTS.md`, checkpoint, stato progetto e handoff letti live. Ripresa priorità radio dopo ottimizzazione GitHub Actions.
+
+**Nuovo ramo `cad/am455-envelope-detector-bench-v27-20261113` (NON ancora merged):** realizzato `04_KiCad/V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch` con **7 riferimenti fisici tutti THT**, libreria locale `TH_DEMOD.kicad_sym`, progetto e tabella. Ingresso AM 455kHz **da banco** J1501, D1501 Vishay **1N4148-TAP candidato DO-35** (anodo pin2 IF, catodo pin1 envelope), RC R1501 47kΩ/C1501 1nF (tau ~47µs, fc equivalente ~3,39kHz), C1502 100nF AC coupling, R1502 100kΩ riferimento AF e J1502 uscita AM audio bench. **Nessun collegamento** al master MAIN V2.6, all'amplificatore LM386 o alla FRONT, nessuna alimentazione, nessuna RF da antenna.
+
+**Vincolo architettura:** documenti storici Superstar 3900 riportano AM/FM prima IF 10,695MHz/seconda IF 455kHz, SSB su 10,695MHz; un semplice rivelatore d'inviluppo **non è FM/SSB**, e senza IF amplificata non soddisfa la sensibilità RX. Il pilot serve soltanto a provare il principio a livello segnale IF grande. Diodo MPN OEM e carico RC da qualificare; uscita caricata dal volume FRONT 10k potrebbe alterare drasticamente la risposta. Inoltre pilot LM386 6V/8ohm non fornisce i watt dell'audio radio di alcune versioni originali: specifica audio ancora da decidere. Fonti e blocchi dettagliati `03_Verifiche/V2.7/RAPPORTO_AM455_ENVELOPE_THT_BENCH_DRAFT.md`.
+
+**Nuovo controllo nativo** `03_Verifiche/V2.7/verify_am455_bench_native.py` nella FULL verifica ERC KiCad9, netlist e 7 refs/pin del diodo e quattro reti; **CI finale ancora da verificare e merge NON autorizzato prima del PASS**. Master MAIN V2.6 7 fogli/138 posizioni invariato, due PCB reali/routing ancora assenti, complessivo circa 20% stima e layout 0%. Gate #27/#42/IF critica intatti, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #75 MERGED: Actions FAST-only selettivo per 4 file analitici
+
+**Main verificato:** commit merge `eb9518662caa6c4d55d5ff55f85552a02579eaf1`, PR [#75](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/75) **MERGED**. GitHub Actions [run #43404924743](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43404924743) **3/3 SUCCESS** sul final HEAD `d14c4470b2cdfb8e02cf5840b5ab52b19e6067b4`: FAST, KiCad9/ngspice FULL e required gate PASS. **La PR di modifica della policy ha superato la FULL**; nessun ERC/netlist, SPICE o controllo storico eliminato.
+
+**Ottimizzazione reale:** `ci/ci_scope.py` ha una allowlist esatta `FAST_ONLY_ANALYTICAL` con **due script Python di sola aritmetica** `verify_audio_load_envelope.py` e `verify_audio_rail_current_graph_v27.py`, più i due CSV associati. Gli script sono eseguiti in `ci/fast_regressions.py` **ad ogni PR**. Se il diff contiene soltanto documentazione o i quattro file ammessi, la FULL viene SKIPPED dopo successo FAST; se contiene anche un solo file KiCad, SPICE, test nativo, workflow, policy, BOM o file ignoto, è obbligatorio il FULL KiCad9/ngspice e il required gate impone PASS. `ci/ci_scope.py --selftest` include casi di file nuovi e diff misti che non possono saltare FULL. Manual `workflow_dispatch` rimane FULL. AGENTS e `ci/CI_COST_OPTIMIZATION.md` allineati.
+
+**Nessun risparmio in euro quantificato:** la regola riduce i job KiCad9 solo in futuri casi circoscritti di cambi puramente numerici, che in precedenza triggeravano FULL. Nessuna modifica al progetto elettrico o ai tre draft; il master radio MAIN V2.6 rimane 7 fogli/138 refs; PCB-MAIN/PCB-FRONT fisiche e piste ancora assenti; complessivo ~20% stimato, routing 0%. Priority next: sviluppare RF/IF e demod RX in KiCad nativo, non moltiplicare report. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #73 MERGED: connettori THT JST XH 2,50mm audio LAB
+
+**PR [#73](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/73) integrata** su `main`, merge SHA `c17f5843c8cb694e3fb225198dbc1569f495aa72`. GitHub Actions [#43403815473](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43403815473) **3/3 PASS** sul final HEAD `534867ed039ffa532fa975e97be07df6efc57b9f`: FAST success, FULL native KiCad9/ngspice/111 regressioni storiche success, required gate success. Log: `PASS_KICAD9_JST_XH_2P50_TH_HEADER_PAD1_PAD2_PITCH_BOTH_MODULES` e `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`.
+
+**CAD realmente modificato:** nei due schematici standalone V2.7, con librerie embedded/locali concordanti, i connettori **J1402 PSU 6V** e **J1201 LM386** hanno l'impronta THT `Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` anziché header generico 2,54mm. Pad1 +6V lab e pad2 ritorno audio verificati via export netlist native; il test ora legge l'effettivo footprint installato in KiCad9 con 2 pad THT a pitch 2,50mm. **Solo test CAD, non un DRC su PCB.** Primo run CI [#43403435479](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43403435479) era fallito per regex errata nel nuovo test: parser corretto senza diminuire i gate, run finale sopra SUCCESS.
+
+**Candidati cablaggio OEM JST presenti nel catalogo corrente:** B2B-XH-A (2 header PCB), XHP-2 (2 housing femmina), SXH-001T-P0.6 (4 crimp), cavo AWG26 candidato entro range di contatto; non sono ancora una BOM/fornitura qualificata né un cavetto montato. Da qualificare *lifecycle OEM esatto*, crimpatura, pin1 orientamento, anti-inversione anche dei fili crimpati, ritenzione, vibrazione, schermatura/routing RF, lunghezza, caduta su entrambi i conduttori, strain relief, isolamento da tab +6V LM317 e sicurezza. Dati e fonte nel `03_Verifiche/V2.7/RAPPORTO_HARNESS_JST_XH_AUDIO_6V_LAB_DRAFT.md`.
+
+**Stato generale:** master MAIN V2.6 7 fogli/138 componenti invariato; LM386 MAIN, LM317 LAB, controllo volume FRONT sono tre schemi DRAFT autonomi, nessuna PCB fisica, nessuna fabbricazione o DRC, layout 0%; progressione complessiva circa 20% **stima senza incremento artificiale**. Alimentatore LM317 bench richiede 10–10,5V al pin IN, NON ingresso veicolo 13,8V; simulazioni ngspice sono comportamentali, non modello OEM. Prossima priorità sostanziale: chiudere architettura ricevitore RF/IF e valutare schematici MAIN mancanti, non restare indefinitamente su verifiche software del pilot audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — connettori di alimentazione LAB PSU↔LM386 JST XH 2,50mm, in revisione
+
+**Bootstrap:** HEAD `ab2e9ad89b200375fd0929158fd8e6a34ed130f4`, PR #70/#71/#72 MERGED e nessuna PR aperta. Branch tecnica `cad/audio-jst-xh-two-pin-lab-harness-20261113`, **non ancora integrata**. Per collegamento lab 6V PSU→LM386, modifica KiCad **reale**: i footprint a due pad di **J1402 PSU** e **J1201 LM386**, embedded e librerie locali, sono ora `Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` (sostituisce header generico 2,54mm). Pad 1 alimentazione `AUDIO_6V_LAB`, pad 2 massa locale/ritorno. Per un cavo fisico con due header da PCB sono previste **due housing femmina JST XHP-2** e quattro terminali a crimpare **SXH-001T-P0.6**, AWG 22–28 come documentato dal catalogo ufficiale JST. Codici *candidati OEM documentati*, stato manufacturing dei singoli MPN, crimpatura, sicurezza/anti-inversione e resistenza alle vibrazioni **non ancora qualificati**.
+
+**Gate tecnico esteso:** `03_Verifiche/V2.7/verify_audio_6v_supply_contract_native.py` richiede due istanze CAD, due simboli embedded e due librerie con footprint esatto; confronta il **file footprint originale installato in KiCad9** e impone 2 pad through-hole, passo 2,50mm, pin1/pin2; continua export netlist nativa e prova separazione RF/PLL. Report `03_Verifiche/V2.7/RAPPORTO_HARNESS_JST_XH_AUDIO_6V_LAB_DRAFT.md`. **CI FINAL HEAD da verificare prima di merge**, non dichiarare preventivamente ERC o footprint validati.
+
+**Perimetro:** il resto dei connettori e PCB-MAIN V2.6 138 posizioni non cambia; PSU LM317 e audio LM386 restano schemi standalone non cablati. Un housing polarizzato NON protegge da crimp invertiti, +6V vs massa, corti o vibrazioni; no fabbricazione. Alimentatore 10–10,5V solo LAB, nessuna idoneità 13,8V, NO FAB / NO TX / NO BATTERIA / NO VEICOLO. Layout fisico due PCB ~0%, complessivo ~20% stima.
+
+---
+
+## 13 novembre 2026 — PR #71 MERGED: transitorio ngspice differenziale 2 fili e ground bounce
+
+**PR [#71](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/71) MERGED** su `main`, SHA `48bbe6d02c8dcfcf17a5ea62fe9e456c54e14434`. Workflow [#43400933150](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43400933150) **3/3 PASS** su final HEAD `28d4701f200a5a115193c2fcc4cf8d37cccb8e2d`: FAST PASS, FULL native KiCad9/ngspice e 111 regressioni legacy PASS, required gate PASS. Evidenza log `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` con **droop_good=0,078 V**, **droop_bad=0,390 V**, ground bounce **0,028 V** e **0,210 V**. Nessun waiver.
+
+**Correzione tecnica essenziale:** i risultati 54/210mV della prima PR #70 valevano soltanto per il **ritorno di massa idealmente perfetto**. La nuova versione della stessa netlist comportamentale modella anche il **filo di ritorno**, usa un voltmetro ideale non caricante `EAMPDIFF` per acquisire `V(amp+,amp_gnd)` (la sintassi diretta `.meas FIND v(a,b)` aveva fallito un primo tentativo CI), e verifica anche `vgndload`. Resistenze scenario andata e ritorno rispettivamente 0,20Ω/0,20Ω o 1,50Ω/1,50Ω, più R PSU **assunta** 0,25Ω; gradino 20→140mA, C1402 10µF e C1206 100µF ideali. Prima CI del branch annullata da commit successivo, seconda con measure differenziale non supportata, **solo l'ultima è valida**.
+
+**Maturità NON acquisita:** questo è ngspice realmente eseguito su una rete passiva **senza macromodelli OEM LM317/LM386**, ESL/ESR, risposta del chip al clipping, cavo o hardware fisici. Non prova prestazioni, EMC, THD, dissipazione, SOA o sicurezza automotive. LM317 PSU richiede 10–10,5V **solo laboratorio**; NON collegare a 13,8V batteria/veicolo. Schemi KiCad MAIN V2.6 (7 fogli/138 refs) e DRAFT LM386, LM317, FRONT non modificati; PCB-MAIN/FRONT layout ancora 0%, complessivo ~20% **stima**. #27 sicurezza, #42 BOM fabbricazione e RF U401/L501 ancora aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #70 MERGED, correzione ritorno massa nella simulazione in review
+
+**PR [#70](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/70) MERGED** su `main` SHA `da9dec49ffbe4bb337cd57d7f33f45a1d7f3d723`; Actions [#43399709031](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43399709031) **3/3 PASS** sul final HEAD `e34955a487400cd0e6198ad092c8bac00f381fc2`. Questo integra **ngspice realmente eseguito** per il modello comportamentale passivo rail 6V: `PASS_NGSPICE_BEHAVIORAL_AUDIO_6V_RAIL_STEP_NO_VENDOR_OR_FAB` con droop 54mV e 210mV **solo sotto l'ipotesi precedente di massa/ritorno ideale**. Full KiCad9/ngspice legacy PASS con 111 comandi storici; niente waiver.
+
+**Difetto di approssimazione individuato dopo merge:** il primo circuito modellava solo la resistenza di andata. La nuova branch `simulation/audio-6v-rail-return-path-20261113` (NON ancora merged) aggiunge **il conduttore di ritorno** da LM386 a PSU, misura il rail differenziale `V(AMP+, AMP_GND_LOCALE)` e il ground bounce, con test ngspice che impone misure reali di entrambi. Le resistenze **ipotetiche** sono ora 0,20Ω andata + 0,20Ω ritorno, oppure 1,50Ω + 1,50Ω. Caduta attesa col gradino 20→140mA: **78mV e 390mV**; ground bounce di 28mV/210mV al carico. Non sono misure fino alla CI final HEAD. Aggiornato `RAPPORTO_TRANSITORIO_RAIL_AUDIO_6V_NGSPICE.md` e test `verify_audio_rail_step_ngspice.py`; la fonte 5,952V e R interna 0,25Ω sono sempre **comportamentali e NON vendor**.
+
+**Stato fisico invariato:** LM317 bench 10–10,5V ingresso, LM386 PSU→AMP è solo un contratto fra due draft THT, non esiste cablaggio, DRC PCB o Gerber. MAIN V2.6 7 fogli/138 refs, FRONT draft, layout 0%, stima complessiva ~20%. Alimentazione veicolare, termica, rumore e sicurezza #27/MPN #42 sono aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.** Integrazione della seconda PR solo dopo gate nativi HEAD verde.
+
+---
+
+## 13 novembre 2026 — circuito ngspice reale per transitorio del rail 6V audio, in review
+
+**Baseline main letta all'avvio:** SHA `b9f96bdec552620e8230d83861dbb045a69710fb` (PR #68/#69 MERGED, nessuna PR aperta); `AGENTS.md` e questo checkpoint letti da main. Branch `simulation/audio-6v-rail-step-spice-20261113`, **NON ancora integrato**. Nuova simulazione ngspice **reale** `03_Verifiche/V2.7/spice/audio_6v_lab_rail_step_behavioral.cir` e validatore `03_Verifiche/V2.7/verify_audio_rail_step_ngspice.py` agganciato a `ci/full_regressions.py` (riutilizza ngspice già installato e runner FULL, senza ulteriore job). La rete passiva corrisponde ai condensatori di PSU C1402=10µF e LM386 C1206=100µF, con **sorgente IDEALE** 5,952V, resistenza interna ipotetica 0,25Ω e resistenze cavo ipotetiche 0,20/1,50Ω; gradino carico forzato 20→140mA di 5ms, misure native `.meas` di droop/ripristino a 4/8/15ms. Attese analitiche: **54mV** con R totale 0,45Ω e **210mV** con R totale 1,75Ω; questi non sono risultati misurati prima dell'esito CI. Rapporto `03_Verifiche/V2.7/RAPPORTO_TRANSITORIO_RAIL_AUDIO_6V_NGSPICE.md`.
+
+**Limitazioni obbligatorie:** modello comportamentale idealizzato, **NON macromodello TI LM317/LM386**, niente impedenze reali di cavi, condensatori con ESR/ESL, USB/veicolo, né simulazione THD, startup o transitori di batteria. Il test PASS indica coerenza della simulazione ngspice con un modello passivo, non idoneità alla fabbricazione o alla trasmissione. L'LM317 rimane solo LAB 10–10,5V e l'LM386 solo DRAFT. **CI e merge sul final SHA ancora da verificare**. Master V2.6 7 fogli/138 refs invariato, PCB-MAIN/FRONT non sbrogliate, layout/routing 0%, percentuale complessiva ~20% stima. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — PR #68 MERGED: corrente media tipica LM386 stimata da Fig. 6-7 TI
+
+**PR [#68](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/68) MERGED** sul ramo `main`, SHA `83b9c820a5d4c96b37c931e5aa87f52e87ca3b92`; Actions [#43397404736](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43397404736) **3/3 PASS** sul final HEAD `f1a39edbe004f4e49040d6512937c2873b723384`: FAST, FULL KiCad9/ngspice/legacy e required gate SUCCESS. Log FAST `PASS_LM386_TYPICAL_CURRENT_GRAPH_ENVELOPE_NOT_VENDOR_SPICE_OR_FAB` con scenari `(0.125, 0.071, 0.091, 0.082, 0.103, 85.2)` e `(0.25, 0.105, 0.133, 0.116, 0.145, 95.6)`; le ultime temperature sono **solo** per θJA=50°C/W assunto e Tamb=60°C.
+
+**Nuova evidenza e regola:** dalla curva **tipica, non garantita** del grafico OEM TI LM386 SNAS545D Fig.6-7, con ampi intervalli visivi, sono state stimate correnti medie 6V/8Ω LM386 ~71–91mA a 125mW, ~105–133mA a 250mW; aggiungendo il feedback R1401 LM317 ~10,8–11,94mA -> ~82–103mA e ~116–145mA illustrative sul regolatore. Registrati file `03_Verifiche/V2.7/verify_audio_rail_current_graph_v27.py`, `LM386_GRAPH_6V_RAIL_CURRENT_BRACKETS.csv`, `RAPPORTO_CORRENTE_REALE_STIMATA_LM386_FIG6_7.md`, e test FAST in `ci/fast_regressions.py`; nessun runner EDA aggiuntivo per sola aritmetica. **Non** è misura, worst-case TI, qualifica PVT, SPICE vendor o certezza della corrente reale.
+
+**Decisione ancora aperta:** analizzare riserva PSU startup/clip/temperatura e rumore, LM386 THD e temperature reali, dissipation package e dissipatore, protezioni, speaker 8Ω fisico/cavo meccanico. L'LM317 bench rimane con VIN **10–10,5V da LAB**, non 13,8V veicolare, senza protezione automotive. Nessun cambiamento alle net KiCad, master MAIN V2.6 7 fogli/138 refs e 3 moduli standalone invariati, nessuna PCB o DRC, progettazione complessiva ~20% stima e layout/routing 0%. **NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
+## 13 novembre 2026 — stima corrente di rail LM386 da figura OEM, revisione in PR
+
+**Stato main verificato all'apertura:** SHA `e502141b49bc7fb01ceb42e24ede539bb05dbb28`, PR #66/#67 MERGED, nessuna PR aperta. Branch nuova `engineering/audio-6v-supply-current-typical-20261113` non ancora fusa. Dai grafici **tipici** TI LM386 SNAS545D §6.6 Figura 6-7 (dissipazione chip vs potenza di uscita a 6V/8Ω), calcolati intervalli **approssimativi, NON min/max garantiti** di corrente media di rail: 125mW speaker → ~71–91mA LM386, 250mW → ~105–133mA LM386; aggiungere ~10,8–11,94mA di feedback R1401 LM317 → intervalli di corrente **illustrativi** ~82–103mA e ~116–145mA al pin OUT LM317. I 125mA speaker RMS non sono 125mA supply DC. La dissipazione LM317 per un carico tipico non equivale alla capacità continua garantita; 0,35A teorici continuano a violare il caso termico ipotetico.
+
+**Nuova verifica economica:** `03_Verifiche/V2.7/verify_audio_rail_current_graph_v27.py` + CSV di intervalli di lettura grafico + `RAPPORTO_CORRENTE_REALE_STIMATA_LM386_FIG6_7.md`, invocati da `ci/fast_regressions.py`. Nessun nuovo test nativo KiCad per sola aritmetica e nessun wafer/hardware/SPICE TI testato. **CI della nuova PR da verificare prima di merge**. La baseline MAIN V2.6 7 fogli/138 THT, DRAFT audio MAIN/FRONT/PSU rimangono immutati. Il 6V è **solo laboratorio**, input PSU 10–10,5V da banco; nessuna protezione veicolare. Layout 0%, stima progetto ~20%; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 13 novembre 2026 — PR #66 MERGED: gate numerico corrente speaker e termica LM317
+
+**PR [#66](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/66) integrata** su `main`, SHA `f1a6d570a095141b91f06c053310372e168937f6`. CI [#43395884826](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43395884826): **3/3 SUCCESS** sul final HEAD `dea1540a8d7512aaf3374178f6f16b16d054d874` (fast unit PASS, full native KiCad9/ngspice/legacy PASS, gate obbligatorio PASS). Nei log veloci `PASS_LM386_LM317_ANALYTICAL_LOAD_ENVELOPE_NO_POWER_CERTIFICATION`, LM317 termica simulata solo per ipotesi `tj_at_0p2A_C=108.94`, `max_theta_at_0p35A_C_per_W=37.94`. Nessuna nuova suite nativa: riusate le regressioni FULL, calcolo numerico collocato nelle FAST.
+
+**File integrati:** `03_Verifiche/V2.7/verify_audio_load_envelope.py`, `AUDIO_LOAD_ENVELOPE_LM386_6V.csv`, `RAPPORTO_LM386_LM317_ENVELOPE_CARICO_AUDIO.md` e aggiornamento `ci/fast_regressions.py`. Scenari 4/8Ω e 100/125/250mW distinguono V/I RMS/picco nel carico dalla corrente **non nota** del rail. TI LM386: 250mW MIN a 6V/8Ω ma **THD 10%**; 0,2% THD è dato TYP a 125mW/1kHz. Con PSU laboratorio VIN10,5V, VOUT parametrico minimo 5,6055V, Tamb60°C, θJA assunto 50°C/W, **0,35A supply DC ipotetici** darebbero ~145,7°C, sopra il budget prudenziale Tj≤125°C. Queste sono formule illustrative, NON una prova SPICE vendor o verifica hardware. La PSU e la linea RF restano scollegate.
+
+**Prossima attività critica:** scegliere target audio e altoparlante 8Ω, ricavare profilo realistico di corrente e THD a 6V con modello/misure, definire dissipatore/PCB termico e soluzione audio PSU da 13,8V con protezioni prima di freeze dell'alimentazione. Non dedurre che 8Ω 125mW corrisponda a I_regolatore=125mA. Master MAIN V2.6 7 fogli/138 refs invariato, 3 schemi audio standalone, PCB fisiche/layout e DRC assenti, progresso globale circa 20% stimato e layout **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — gate numerico potenza LM386 / termica LM317 in revisione
+
+**Bootstrap verificato:** SHA main `c9e95217372bb15d013b615e51902f90cfd49944` (PR #65 MERGED, nessuna PR aperta). Nuova branch `engineering/audio-6v-load-envelope-20261113` in review, **nessuna modifica ai simboli/footprint o alle reti KiCad**. Implementato `03_Verifiche/V2.7/verify_audio_load_envelope.py` con tabella `AUDIO_LOAD_ENVELOPE_LM386_6V.csv` e relazione `RAPPORTO_LM386_LM317_ENVELOPE_CARICO_AUDIO.md`; integrato nella **CI FAST** per evitare un nuovo job nativo solo per aritmetica.
+
+**Evidenza OEM:** TI LM386N-1 a 6V/8Ω: potenza 250mW minima / 325mW tipica **a 10% THD**, valore 0,2% THD **tipico a 125mW /1kHz**; non confondere le condizioni, né potenza altoparlante con potenza dal rail. I nuovi calcoli a 8Ω e 4Ω per 100/125/250mW ricavano corrente speaker RMS/picco e taglio RC ideale del C1202 220µF. La PSU LM317 resta **10–10,5V da banco**: modello termico illustrativo con VIN10,5V, VOUT statico min ~5,6055V, Tamb60°C, θJA assunto 50°C/W -> ~109°C a 0,2 A **ipotetici DC supply**, ~146°C a 0,35 A, oltre soglia prudenziale 125°C; non sono misure/limiti garantiti. Definire consumo DC e pulsato reale LM386, carico/speaker, THD/ripple, SOA e dissipatore prima di fissare circuiti.
+
+**Ancora NON convalidato su CI HEAD della branch** al momento della stesura; nessun nuovo prodotto hardware testato, nessun rilascio. Master MAIN V2.6 7 fogli/138 refs e moduli standalone invariati, nessuna PCB fisica o DRC PCB, stima complessiva ~20%, routing 0%. Resta NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 13 novembre 2026 — PR #64 MERGED: rete 6V LM386 e contratto PSU pin↔net integrati
+
+**PR [#64](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/64) MERGED su `main`** SHA `0098877dc5bd195cc774be7c6b91e183e48a501a`. Actions [#43392859696](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43392859696) **3/3 PASS** su HEAD `a010b707be652431e4c6429e46e9621b254bf0ac`, incluso ERC0 reale KiCad9 su LM386 e PSU, test interfaccia FRONT invariato, test `PASS_NATIVE_6V_PSU_LM386_PIN_CONTRACT_NO_FAB_NO_BATTERY`, 111 comandi nativi storici eseguiti. Il gate obbligatorio ha autorizzato il merge, senza waiver.
+
+**CAD aggiornato realmente:** nel foglio DRAFT audio RX LM386 e libreria `TH_AUDIO.kicad_sym`, la rete di alimentazione da laboratorio **`AUDIO_5V` è diventata `AUDIO_6V_LAB`**; sono invariati gli altri collegamenti fisici, i 12 refs THT e la scheda MAIN V2.6. I due fogli PSU/LM386 continuano standalone ma ora sono verificati tramite 2 netlist KiCad9: J1402 PSU pin1→J1201 LM386 pin1 rail `AUDIO_6V_LAB`, pin2→pin2 ritorno, con `U1401.2` e `U1201.6` entrambi sul corretto rail locale dei rispettivi fogli. Aggiunti `verify_audio_6v_supply_contract_native.py` e test nel gate FULL; aggiornata la specifica LM386 e il contratto FRONT per la rete +6V. Rapporto `03_Verifiche/V2.7/CONTRATTO_6V_PSU_LM386_BENCH_DRAFT.md`.
+
+**Limiti immutati:** la connessione tra schemi è una **mappa logica**, non è ancora un cablaggio fisico né due PCB integrate. J1402/J1201 sono pin-header entrambi maschi; crimp, antinversione, carico potenza e ritorni da qualificare. PSU richiede 10–10,5V al suo ingresso da banco, non compatibile con alimentazione veicolare 13,8V. LM386 audio output, THD/potenza, corrente/surriscaldamento e layout RF non sono qualificati. Il master MAIN V2.6 mantiene 7 fogli/138 refs e nessun PCB layout/routing; tre draft standalone con 12/3/10 refs. Stima complessiva ~20%, routing 0%. Issue #27/#42 e RF U401/L501 bloccanti. **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
+## 13 novembre 2026 — collegamento logico LAB 6V LM317 → LM386, KiCad9 in review
+
+**Ultimo main verificato:** SHA `c4baf599e6aa956b3893fea12e577ee0710d27d1` (PR #62, #63 MERGED), nessuna PR aperta. **Branch `cad/audio-lm386-6v-lab-interface-20261113` NON ancora integrato:** nel vero schematico DRAFT LM386, rail del connettore bench +5V `AUDIO_5V` rinominato `AUDIO_6V_LAB`, mantenendo identici i pad e i nodi circuitali: U1201.6, C1205.1, C1206.1, J1201.1. Lato PSU già esiste `AUDIO_6V_LAB` da U1401.2 a J1402.1. In libreria `TH_AUDIO.kicad_sym` e simbolo embedded il connettore adesso è `BENCH_6V_CONN` (soltanto dichiarazione di alimentazione laboratorio).
+
+**Test nativo aggiunto in `ci/full_regressions.py`:** `verify_audio_6v_supply_contract_native.py` riesporta netlist PSU e LM386 e controlla mappa **J1402→J1201 pin1 6V/pin2 ritorno**, nessuna commistione di rail PLL RF e intervallo statico di riferimento LM317 compatibile col range LM386N-1. Aggiornati i test ERC/netlist dei due moduli e del contratto audio FRONT. Report `03_Verifiche/V2.7/CONTRATTO_6V_PSU_LM386_BENCH_DRAFT.md`. Tutte le prove native sul nuovo SHA devono terminare **PASS** prima di merge.
+
+**Vincoli fermi:** ancora **nessuna connessione fisica fra due schede, nessun ingresso 13,8V automotive**, connettori maschi richiedono cavo/distanziamento/anti-inversione; test corrente, THD/EMI, termica, protezioni e alimentatore definitivo non completati. MASTER MAIN V2.6 7 fogli/138 refs invariato, FRONT volume draft 3 refs, PSU 10 refs e LM386 12 refs separati, PCB/routing **0%**, stima complessiva **~20%**. NO FAB/NO TX/NO BATTERIA/VEICOLO.
+
+---
+
+## 13 novembre 2026 — PR #62 integrata: headroom LM317 audio corretto e verificato
+
+**PR [#62](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/62) MERGED** su `main`, SHA `ce4ccf33272d2e76ffb2524a4627b47f307baa8a`. GitHub Actions [#43391899904](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43391899904) **3/3 PASS** sul commit finale `0aa80817558863644751443ea8576361d0d050d9`: veloce PASS, FULL nativo KiCad9/legacy PASS, required gate PASS. Il test PSU nativo ha riportato `ERC messages: 0 Errors 0 Warnings`, `PASS_KICAD9_AUDIO_6V_LM317_PSU_ERC0_THT10_PINNET_NO_FAB` e output statico `LM317_REFERENCE_ENDPOINTS_NOT_FULL_PVT 5.6055 6.3091`. Nessun waiver; 111 comandi storici FULL.
+
+**Modifica tecnica CAD reale:** il draft `AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch` e la libreria `TH_PSU.kicad_sym` ora riportano ingresso lab `LAB_VIN_10TO10P5V` e 10–10,5V **al pin IN** del regolatore, correggendo vecchio 9–10V che non soddisfaceva il VIN−VOUT≥3V nelle condizioni parametrizzate alte. Test KiCad9 e PVT di riferimento ±1% ripetibili, rapporto `RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md` aggiornato. Non altera gli altri draft (LM386/FRONT) né il master V2.6.
+
+**Restano bloccanti:** la connettività PSU→LM386 non è stata realizzata, la sorgente 10–10,5V è esterna da laboratorio e NON è alimentazione della radio 13,8V, nessuna qualifica SOA/dissipazione reale, ripple, load transients, protezione inversione, protezione ingresso o chassis/tab attivo; MPN OEM finali non completi, RF/PLL e Issue #27 aperte. MAIN V2.6 7 fogli/138 refs, PCB-MAIN e PCB-FRONT layout/routing **0%**; percentuale complessiva approssimativa **20%** senza crescita artificiale. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — correzione input headroom LM317 6V LAB, CAD in review
+
+**Baseline verificata su main:** merge PR #61 `e0d1be6230ca04833a872a98d7d5e542d48f6d44`, nessuna PR aperta. I tre draft KiCad9 audio (LM386 MAIN, volume FRONT, PSU LM317) rimangono **standalone**; 7 fogli MAIN V2.6 e 138 refs invariati, layout PCB 0%.
+
+**Lavoro in branch `cad/audio-lm317-input-headroom-pvt-20261113`, NON ancora integrato:** il regolatore audio PSU 6V precedente definiva erroneamente **9–10V ingresso LAB** mentre TI LM317-N garantisce le caratteristiche sul range con **VIN−VOUT≥3V**. All'estremo alto VREF/IADJ e resistenze ±1% si ricava VOUT≈6,31V: a 9V resterebbero solo ≈2,69V. Modificati **file KiCad9 reale e libreria locale**, J1401 e net name in `LAB_VIN_10TO10P5V`, intervallo vincolato **10–10,5V misurati al pin IN del regolatore**, bench a corrente limitata senza batteria/veicolo. Calcolo 6V nominale ~5,952V, estremi statici ~5,61–6,31V non equivalenti a qualifica PVT completa. Aggiornati test di copertura netlist e vincoli di headroom (9V volutamente FAIL come condizione), con nuovi stress termici 10 e 10,5V. Rapporto aggiornato `03_Verifiche/V2.7/RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md`.
+
+**Manca gate CI completo su HEAD**, nessuna integrazione PSU→LM386 autorizzata. Un alimentatore a 10–10,5V NON è un rail finale radio: terminazione audio, protezioni transitori/inversione, SOA/sink del TO220 tab LIVE e potenza speaker da verificare. Distinta OEM per fabbricazione ancora BLOCCATA e NO FAB / NO TX / NO BATTERIA / NO VEICOLO. Stima gestione circa 20%, routing 0%.
+
+---
+
+## 13 novembre 2026 — PR #60 MERGED: alimentazione THT audio 6V da banco validata con KiCad9
+
+**PR #60 MERGED** su `main`, commit `aa3118a8f89ea37253e3482ef898d3744fcc2c42`. Azioni [#43330851162](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43330851162): **3/3 SUCCESS** sul final head `188065066667d1f8b8383901f0e04071ddce4e9f` — test rapido PASS, suite full KiCad9 native/legacy PASS, required gate PASS. Il nuovo `verify_audio_psu_lm317_native.py` ha esportato la netlist reale, confermato **10 refs THT**, pinout LM317 ADJ/OUT/IN, diodi e polarità C1402/C1403, **ERC nativo 0 errori e 0 warning**. Anche il controllo aritmetico vincola il derivatore R=110Ω/412Ω, Vout nominale 5.952V e l'esclusione del caso termico 13.8V/0.2A. **NON è SPICE vendor, né qualifica termica o prova hardware**.
+
+**Artefatto nuovo `04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch`**, con libreria `TH_PSU.kicad_sym`, progetto, `sym-lib-table`, e 10 posizioni THT: U1401 TI LM317T/NOPB dichiarato ACTIVE OEM TO220 pin1 ADJ pin2 OUT+TAB pin3 IN, R1401/1402, C1401/1402/1403, D1401/1402 e J1401/1402. Alimentazione isolata **esclusivamente 9–10V da banco limitata in corrente**, uscita 6V verso test. **Non collegata all'LM386** né al master radio. Rischi: protezione inversione e transitori ingresso assente, OEM diodi/passivi da qualificare, SOA, dissipatore con TAB LIVE e 6V+ termica, speaker load e budget corrente. Anche a 10V/0.35A, modello termico illustrativo supera la soglia progettuale.
+
+**Stato radio corretto:** la V2.6 MAIN resta 7 fogli/138 posizioni, non esiste alcun PCB-MAIN/FRONT fisico completo o routing; il pilot MAIN LM386 12 ref, FRONT volume 3 ref e PSU audio 10 ref sono DRAFT separati, senza conteggio BOM integrato. Il criterio passivi standard ADR-002 consente proseguimento degli schemi, ma la fabbricazione è bloccata da BOM #42, protezioni #27 e RF U401/L501. Completamento progetto circa **20% stima**, routing **0%**. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 13 novembre 2026 — nuovo schema nativo 6 V audio indipendente solo laboratorio (PR tecnica in revisione)
+
+**Main iniziale:** SHA `72a0dbd175d1e6033061d4a06fcb82b2441fed12`, PR #58/#59 integrate e nessuna PR aperta. Master MAIN V2.6 invariato, due draft KiCad9 MAIN audio LM386 e FRONT volume già integrati, nessuna PCB/Routing.
+
+**Nuovo lavoro nella branch `cad/audio-dedicated-6v-lm317-bench-20261113` (non ancora MERGED):** standalone `04_KiCad/V2.7_DRAFT/AUDIO_PSU_6V/AUDIO_PSU_LM317_6V_LAB_DRAFT.kicad_sch` con **10 componenti THT**: U1401 TI LM317T/NOPB ACTIVE **TO‑220 3 pin NDE**, R1401 110Ω/1%, R1402 412Ω/1%, C1401 ingresso 100nF, C1402 uscita 10µF polarizzato, C1403 ADJ 10µF polarizzato, D1401 diodo OUT→IN, D1402 diodo ADJ→OUT, J1401 ingresso lab **9–10V soltanto**, J1402 uscita 6V. Regolatore live pin1 ADJ, pin2 OUT + linguetta, pin3 INPUT. Impostato valore nominale circa **5,952 V**, divider worst-case minimo >10mA; **NESSUN collegamento all'LM386** né ai rail radio o veicolo. `03_Verifiche/V2.7/verify_audio_psu_lm317_native.py` aggiunto a CI FULL, deve verificare ERC, netlist 10 THT, protezioni e polarità. Rapporto: `03_Verifiche/V2.7/RAPPORTO_AUDIO_PSU_6V_LM317_BENCH.md`.
+
+**Termica ancora da qualificare**: budget illustrativo a 60°C e θJA=50°C/W, 0.2A: Vin9→90°C stimati, Vin10→100°C, Vin13.8→138°C (NON ammissibile nell'esempio). 13.8V **vietati per questo pilot**; ingresso non reverse-protected, corrente reale LM386 e SOA ignoti. Non proclamare qualifica su semplice calcolo o ERC; test nativo da controllare prima del merge. Master radio V2.6 138 refs intatto; tre draft THT separati non sono la PCB. Stima progetto circa 20% e layout 0%, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 13 novembre 2026 — PR #58 integrata, polarità elettrolitici audio verificata
+
+**PR #58 MERGED su main** SHA `9230f55c1b500b736f95c332ffe6f1e7a8b35e8c` e [GitHub Actions #43328377827](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43328377827) **3/3 PASS** su head `d47e793f18d4602c31eb863184e2a5e6218171e3`: native KiCad9 audio ERC **0 errori / 0 warning**, `PASS_POLARITY_C1202_C1204_C1206_3_THT_ELECTROLYTICS`, `PASS_KICAD9_AUDIO_DRAFT_ERC0_NETLIST_12_THT`, FRONT-volume e MAIN/FRONT native pin contract PASS, regressioni storiche complete. Nessun waiver.
+
+**Modifiche integrate:** simbolo `TH_AUDIO:CP` embedded e libreria locale con pin1 `POS_+` e pin2 `NEG_-`; test pin↔net nativi C1202 positivo `AMP_OUT` negativo `SPK_HOT`, C1204 positivo `BYPASS` negativo `GND`, C1206 positivo `AUDIO_5V` negativo `GND`; rapporto `03_Verifiche/V2.7/RAPPORTO_AUDIO_POLARITA_E_POWER_BUDGET.md`. È una modifica reale KiCad9 a **schema DRAFT isolato**, non al master V2.6.
+
+**Blocco aperto:** LM386N-1 produce la potenza 250–325mW (a 8ohm, THD10%) dichiarata OEM **a 6V**, non garantita a 5V; da verificare rail audio dedicato, corrente speaker, termica, controllo volume effettivo e polarità fisica MPN dei capacitori. MASTER V2.6 7 fogli/138 refs invariato; PCB-MAIN/FRONT layout **0%**; avanzamento globale stimato circa **20%** invariato. **NO FAB / NO GERBER DI PRODUZIONE / NO TX / NO BATTERIA-VEICOLO**.
+
+---
+
+## 13 novembre 2026 — revisione CAD polarità elettrolitici audio e gate alimentazione
+
+**Main verificato alla partenza:** `7d0395316729134429172fe5225affdec69a30e4`; PR #56/#57 MERGED, nessuna PR aperta; master MAIN V2.6 e FRONT senza layout, NO FAB. **Branch `cad/audio-lm386-electrolytic-polarity-20261113` (NON ancora fuso):** `TH_AUDIO:CP` nel pilot audio LM386 e nella libreria locale ora esplicita **pin1 POS+**, **pin2 NEG-** per C1202/C1204/C1206, senza alterare reti o numerazione dei pad. Il controllo nativo `verify_audio_draft_native.py` è stato rafforzato per confrontare simbolo embedded/libreria e le membership pin-net dai file **KiCad9 netlist**: C1202 positivo AMP_OUT negativo SPK_HOT, C1204 positivo BYPASS negativo GND, C1206 positivo AUDIO_5V negativo GND. Rapporto OEM e calcoli illustrativi in `03_Verifiche/V2.7/RAPPORTO_AUDIO_POLARITA_E_POWER_BUDGET.md`.
+
+**Problema potenza ancora aperto:** TI specifica LM386N-1 output nominale 250–325mW su 8ohm e **6V**, THD10%; non è garanzia della potenza a **5V** del pilot. La corrente di riposo 4mA tip/8mA max a 6V non è corrente di picco richiesta dal carico speaker. Non collegare LM386 a 7805 PLL senza analisi corrente, termica, rumore e compatibilità RF; temperatura OEM 0..70°C. Le polarità ora sono dichiarate ma la forma fisica/MPN dei condensatori non è qualificata. Gate native CI su HEAD definitivo da verificare prima di merge; ERC0 da solo non prova sicurezza o fabbricabilità. Stima progetto circa **20%**, layout **0%**, nessun numero aumentato grazie alla sola nuova audit. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+## 12 novembre 2026 — PR #56 MERGED: contratto audio MAIN ↔ FRONT validato su netlist native
+
+**PR #56 MERGED** su `main`: SHA `e9ea0c20e4ba0404b286eab637d4ab3c992c2230`. CI [run #43274571617](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43274571617) **3/3 PASS**, su HEAD `1acf42bc431b8ae1c5a575de5a3292e67b5afd2c`. Il nuovo controllo native KiCad9 `verify_interboard_audio_contract_native.py` ha esportato entrambe le netlist reali dei pilot MAIN-audio e FRONT-volume e verificato: FRONT J1301-1→RV1301-1 `DEMOD_AUDIO`, RV1301-2→J1302-1 `VOL_WIPER_TO_AMP`, J1301-2/RV1301-3/J1302-2 `AF_GND`; lato MAIN J1202-1/C1201-1 `AUDIO_IN`, J1202-2/U1201-4 `GND` e J1201-1/U1201-6 `AUDIO_5V`. La connessione **logica** del cablaggio previsto è J1302 FRONT pin1→J1202 MAIN pin1, pin2→pin2. Tutte le suite storiche eseguite e PASS.
+
+**Non è ancora un collegamento PCB fisico:** nessun cablaggio/PCB assemblato, nessun PCB-MAIN/FRONT layout, nessun DRC PCB. Le due estremità sono pin-header maschi, quindi un cavo idoneo è ancora da progettare e scegliere; pot 10k/footprint provvisorio e demod RX non ancora qualificati. Il rail audio +5V del banco NON è connesso al +5V PLL/RF; alimentazione dedicata da progettare. Master MAIN V2.6 invariato; 138 refs di baseline non includono i 15 componenti dei due DRAFT.
+
+**Stima progetto documentata:** circa **20%** ingegnerizzazione complessiva delle due PCB (incertezza alta), **0%** layout/routing, non equiparare a 6/138 OEM attivi (gate BOM). **NO FAB / NO TX / NO BATTERIA/VEICOLO**. Prossime priorità: scelta concreta di cablaggio/mating headers, qualifica di pot THT e interfaccia demod, budget corrente e isolamento audio prima di disegnare PCB.
+
+---
+
+## 12 novembre 2026 — bozza contratto elettrico MAIN ↔ FRONT audio con pin-net verificabili
+
+**Main verificato prima del lavoro:** SHA `c9362037015fbad2792af3c67fca821e60a6677c`, PR #54 e #55 integrate, nessuna PR aperta. Schemi principali V2.6 invariati. Due moduli standalone V2.7 DRAFT già integrati nella repository: LM386 RX MAIN (12 ref THT, ERC0) e volume FRONT (3 ref THT, ERC0). **Nessuna PCB**.
+
+**Nuova branch in revisione:** `verification/interboard-audio-pin-contract-20261112`. Aggiunto `03_Verifiche/V2.7/CONTRATTO_AUDIO_INTERBOARD_MAIN_FRONT_DRAFT.md` con schema cavo **a 2 conduttori**: J1302 FRONT pin1 segnale wiper RV1301 → J1202 MAIN pin1 AUDIO_IN; J1302 pin2 AF_GND → J1202 pin2 GND. Le schede restano isolate: contratto è **logico, NON una connessione fisica**. Il demod RX, il potenziometro/shaft definitivo e il 5V audio dedicato restano da qualificare. Entrambe le estremità utilizzano header maschi da PCB: **non accoppiabili direttamente**, serve cavo con contatti femmina o soluzione interboard diversa con MPN verificati.
+
+**Controllo reale previsto nella CI FULL:** `03_Verifiche/V2.7/verify_interboard_audio_contract_native.py` esporta entrambe le netlist usando KiCad9 e verifica membership pin→net per 2 connessioni e potenziometro; aggiunto al `ci/full_regressions.py`, nessuna deroga ERC. **Non dichiarare PASS finché non siano verificati i log del commit finale**.
+
+**Stima gestionale al 12/11:** ~**20%** progettazione globale delle due PCB, **0% layout e routing fisico**; stima non metrica formale. 6/138 MPN confermati per MAIN V2.6 è solo progresso BOM di fabbricazione, **non** percentuale progetto. Gate sicurezza #27 e approvvigionamento #42 aperti; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 12 novembre 2026 — PR #54 MERGED: primo schema KiCad9 FRONT_VOLUME THT validato
+
+**Stato LIVE dopo il merge:** PR [#54](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/54) MERGED su `main`, SHA `31e84a6c91fc47c810e1090f13759af94519540b`, CI FULL [run #43257852754](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43257852754) **3/3 SUCCESS** sul final HEAD `4f167d5a61164a1f6bc84eec0cd7b1456f83a117`. Nativa KiCad9: **ERC 0 errori, 0 warning**; tre componenti THT `RV1301`, `J1301`, `J1302`; export netlist ufficiale conferma `/AF_GND`, `/DEMOD_AUDIO`, `/VOL_WIPER_TO_AMP`. Tutte regressioni storiche della MAIN eseguite e superate, nessun waiver.
+
+**Artefatti nuovi reali:** `04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch`, simboli custom `TH_FRONT.kicad_sym`, tabelle librerie, progetto KiCad, footprint a tre pad `TH_FRONT.pretty/Potentiometer_THT_3Pin_PROVISIONAL.kicad_mod` e verificatore `03_Verifiche/V2.7/verify_front_volume_native.py` agganciato al gate FULL. L'utente ha approvato la separazione delle PCB (ADR-001). Il pot 10 kΩ lineare è solo una **scelta elettronica preliminare**: impronta e posizione dell'albero non sono qualificate, e devono essere sostituite da un vero MPN OEM THT ancora prodotto PRIMA del layout/frontale definitivo.
+
+**Non affermare:** non esiste ancora un'interconnessione reale master MAIN / FRONT, un demod RX, una PCB-FRONT tracciata, una prova audio o un DRC su PCB. Il master radio **MAIN V2.6 rimane 7 fogli, 138 refs, 76 reti**; il pilot MAIN RX audio da 12 ref e questo FRONT_VOLUME da 3 ref sono schematici DRAFT **separati**, non entrano nel denominatore della BOM V2.6. Da progettare: alimentazione audio senza disturbi RF, segnale dal demodulatore, impedenze/livello e volume audio ergonomico, connettore fisico interboard e massa. Issue #27 sicurezza, #19 Coilcraft, #42 MPN finali ancora aperte. **NO FAB / NO GERBER DI PRODUZIONE / NO TX / NO BATTERIA-VEICOLO.**
+
+---
+
+## 12 novembre 2026 — Primo schema nativo PCB-FRONT volume THT in revisione
+
+**Main live al bootstrap:** `564f2084f8ddbc4488b4a85562acf6806a493780`, PR #53 MERGED, nessuna PR aperta; master V2.6 ancora **7 fogli/138 THT/76 reti**. Precedente audio RX LM386 V2.7 DRAFT isolato 12 THT, ERC0 con [CI #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252), nessuna PCB reale.
+
+**Lavoro nuovo in branch `cad/front-volume-audio-v27-draft-20261112`, NON ancora integrato:** schema KiCad9 `04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch`, 3 ref THT: J1301 segnale/audio GND da demod RX, RV1301 pot 10k lineare THT (pin1 ingresso, pin2 cursore, pin3 massa), J1302 ingresso del modulo LM386. `TH_FRONT.kicad_sym`, `sym-lib-table`, `fp-lib-table` e file progetto, footprint locale **PROVVISORIO tre pad**, NON associato a un OEM pot di produzione, assolutamente **NO PCB FAB**. Il test `03_Verifiche/V2.7/verify_front_volume_native.py` è incluso nella CI FULL per imporre ERC KiCad9 e netlist; report `03_Verifiche/V2.7/RAPPORTO_FRONT_VOLUME_THT_DRAFT.md`.
+
+**Limiti:** nessuna continuità pin↔net fra due PCB ancora dimostrata, nessun demod reale, ergonomia/audio pot 10k da validare, alimentazione audio MAIN indipendente ancora da progettare, componenti DRAFT aggiuntivi NON inclusi nei 138 MAIN. Nessun PCB routing, DRC o misure elettroniche. Merge soltanto dopo gate CI sul final HEAD, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 12 novembre 2026 — PR #52 integrata: primo schema audio RX THT nativo V2.7 DRAFT
+
+**PR #52 MERGED** nel `main` vero: SHA `78f077a9132a2067d50330d8a5bcbdc62ba4b3f3`. CI FULL [run #43254795252](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43254795252): **3/3 SUCCESS** su HEAD `7e07cc47b7421048ccaa1670e75daebe088f6c5a`. Il controllo effettivo `kicad-cli sch erc --exit-code-violations` sul nuovo foglio audio riporta **0 errori / 0 warning**, netlist KiCad9 esportata e verificati **12 ref THT**; tutte le 22 suite storiche CI FULL hanno completato (111 comandi reali). Nessun waiver ERC.
+
+**Artefatti reali nuovi, senza alterare la baseline:** `04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch` con U1201 TI LM386N-1/NOPB PDIP-8 (MPN OEM dichiarato ACTIVE, ma temporaneamente non disponibile sul sito TI), R1201–R1202, C1201–C1206, J1201 (+5 V da laboratorio), J1202 ingresso audio RX, J1203 uscita speaker, 12 componenti fisici THT; simboli progetto `TH_AUDIO.kicad_sym`, `sym-lib-table`, `.kicad_pro`. Validatore nativo `03_Verifiche/V2.7/verify_audio_draft_native.py` aggiunto alla CI FULL. Il primo ERC era 8 errori + 40 warning, il secondo 2 + 10, il finale 0 + 0 dopo correzioni **vere** di griglia, connettori e libreria.
+
+**Distinzione fondamentale:** questo è **uno schematico nativo DRAFT isolato e verificato**, non un master radio V2.7, non una PCB. La sezione non è connessa al V2.6 MAIN: gli attuali **7 fogli, 138 refs, 76 reti** restano immutati. I 12 ref audio NON si aggiungono ancora al denominatore dei 138 dell'inventario master, ma richiederanno verifica MPN finale. Il 5V viene solo dal connettore **da banco** J1201: non alimentare dal 7805 RF/PLL senza budget corrente, separazione masse/rumore e qualifica termica. Mancano demodulatore AM/FM, controllo volume su PCB-FRONT, integrazione alimentazione, speaker load/THD e test PVT. **ERC0 non significa qualifica funzionale o sicurezza.**
+
+**Prossimo sviluppo:** revisionare e integrare un sottosistema RF/IF/audio coerente con ADR-001, verificare lo stadio audio con sorgente/corrente e prestazioni realistiche; U401/L501 e sicurezza #27 rimangono bloccanti per le proprie parti. Gate BOM finale #42 resta attivo (6/138 confermati). **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 12 novembre 2026 — nuovo pilot KiCad9 V2.7 audio RX isolato in revisione
+
+**Ultimo main verificato alla partenza:** commit `06c902240fdd0865a60a942ba551ccf9f1a6ed98` (PR #51 merged, checkpoint ADR-002). Nessuna PR aperta al bootstrap. **CAD integrato ancora MAIN V2.6** e NO PCB-FRONT.
+
+**Lavoro in branch `cad/v27-rx-audio-lm386-tbd` NON integrato:** nuovo schematico nativo KiCad `04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch`, 12 piazzole THT (LM386N-1/NOPB TI PDIP-8 dichiarato ACTIVE ma al momento senza stock TI, 2 R, 6 C, 1 connettore d'alimentazione banco, 2 connettori AF in / speaker out). Sottosistema indipendente RX audio con alimentazione +5V esclusiva da laboratorio simulata da J1201, con input/5V/GND/speaker come interfacce da integrare **solo dopo review**; non è un master V2.7 completato. `03_Verifiche/V2.7/verify_audio_draft_native.py` impone ERC e netlist KiCad9 reali, invocati dalla CI FULL. Vedi `03_Verifiche/V2.7/RAPPORTO_AUDIO_RX_THT_LM386_PILOT.md`.
+
+**Diagnosi ERC native preliminari**: run #43252593439 e #43253022016 FALLITI per il nuovo pilot (8 errori e 40 warning all'inizio): label gerarchiche sul root, due pin di alimentazione non pilotati, 31 coordinate off-grid e 9 simboli senza libreria. Schematic e libreria aggiornati nel branch per risolvere le cause, senza waiver; Secondo run #43254009373 ha ridotto le segnalazioni a 2 errori e 10 warning; aggiunti J1202/J1203 e progetto locale KiCad per affrontare i due errori e i warning. CI finale da verificare prima del merge.\n\n**Attenzione:** alimentare audio dalla 5 V RF/PLL senza verifica può degradare rumore e sovraccaricare il 7805: pilot non collegato al master, nessuna trasmissione. Le caratteristiche di altoparlante, guadagno, dissipazione, temp. 0..70°C, indice di fabbricabilità e frontale non sono approvate. U401/L501 e sicurezza #27 restano bloccanti per i rispettivi circuiti. Gate BOM finale obbligatorio. **NO FAB / NO TX / NO BATTERIA/VEICOLO.** Integrare solo dopo required CI gate verde sullo SHA finale del branch.
+
+---
+
+## 12 novembre 2026 — ADR-002 ratificato e nuovo gate progettazione/fabbricazione
+
+**PR #50 MERGED** su `main`: SHA reale `bca0c76bf1f8b6fcfc08d645b759ba7c820efaed`. CI [run #43250659897](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43250659897) **3/3 SUCCESS**, inclusi test Python veloci, regressioni KiCad9 native e required gate sullo SHA head `757db03812e007b12ac4569b88cf9d990cebee73`. Aggiunta [ADR-002](ADR-002_GATE_DESIGN_PASSIVI_STANDARD_THT.md), aggiornato `AGENTS.md`, introdotto `classify_design_risk_v26.py` e esteso `verify_mpn_inventory_v26.py` con asserzioni su tutte le 138 posizioni.
+
+**VINCOLO REVISIONATO SU RICHIESTA UTENTE:** componenti R/C standard selezionabili a specifica per sviluppare il circuito, senza MPN OEM esatto subito; 37 posizioni classificate `STANDARD_PASSIVE` in prima analisi cautelativa, altre reti RF/PLL/sicurezza sono a gate dedicato. Per FAB/BOM finale resta l'obbligo di MPN OEM attivo THT su ciascun componente **montato**, con DNI C805 risolto. L'issue #42 è stata aggiornata e resta aperta come gate di fabbricazione. Conteggio OEM confermati **6/138**, non indice completamento radio.
+
+**PROSSIMA REVISIONE TECNICA:** ricominciare V2.7 nelle porzioni **indipendenti** dai blocchi U401/L501/#27 (solo con CAD vero e test), mentre verificare produzione attuale della PLL Lansdale, disponibilità Coilcraft RF e rischi di sicurezza; documentare pin↔pad↔net e PVT. Elettronica integrata **V2.6** con 7 fogli; nessuna PCB MAIN/FRONT completa né DRC hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 12 novembre 2026 — decisione committente ADR-002: passivi standard non bloccano più gli schemi
+
+**PR #49 integrata** su `main`, commit `e1596756a6086151c9c140df831a14c934f9abf6`; CI [#43249465480](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43249465480) 3/3 PASS. L'audit di 8 condensatori da cross-reference storica Vishay è documentazione, non approvazione OEM.
+
+**Nuovo lavoro in branch (NON su main finché non merge)**: [ADR-002](ADR-002_GATE_DESIGN_PASSIVI_STANDARD_THT.md) recepisce il cambio esplicito deciso dall'utente: resistenze/condensatori comuni possono essere specificati per requisiti, senza MPN produttivo esatto per continuare le sezioni V2.7 indipendenti; componente RF/sicurezza/PLL/boost richiede gate di settore prima del design freeze. `classify_design_risk_v26.py` classifica tutte le 138 refs e l'inventory verifier ne controlla la copertura. **Il gate BOM finale `--release` rimane obbligatoriamente bloccante** finché mancano MPN attivamente fabbricati e DNI risolti. 6/138 certificati OEM, 132 da verificare; numeri di **fabbricazione**, NON percentuale di completamento del progetto.
+
+**Prossima attività tecnica:** riprendere schemi reali delle sezioni indipendenti e accertare fattibilità PLL U401 e RF L501 prima di congelare tali reti; la sicurezza input #27 rimane aperta e la protezione non è dichiarata pronta. MAIN KiCad V2.6 invariata, PCB-FRONT non iniziata. NO FAB/NO TX/NO batteria/veicolo. Gate CI della policy in attesa.
+
+---
+
+## 12 novembre 2026 — PR #48 integrata e otto ulteriori posizioni THT sotto audit
+
+**PR #48 MERGED** sul ramo `main`, SHA `9d714b41e223eb7e940b0d533ec7dc401acb6ed1`, Actions [#43248555956](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43248555956) **3/3 PASS**. Sei posizioni passive (tre resistori 10k, tre ceramici 100nF) con MPN candidati Yageo/Vishay, **non ancora qualificati**.
+
+**Lotto successivo in branch, NON integrato**: `03_Verifiche/V2.6/RAPPORTO_PASSIVI_LOTTO2_C0G_X7R.md` e 8 posizioni in inventario: C403/C404 (22pF C0G PLL), C507/C510 (100pF C0G VCO), C602/C614/C615/C616 (100nF X7R bypass 5V). I candidati sono ricavati da cross-reference Vishay rev. **23/08/2012**, che NON dimostra fabbricazione corrente. Pitch documentato **2.54mm**, KiCad **2.50mm**: non qualificare come drop-in fino a confronto meccanico. Nessuna modifica CAD, nessuna simulazione vendor dichiarata.
+
+**Resta** 6/138 `ATTIVO_CONFERMATO`, 132/138 `DA_VERIFICARE`, release BOM BLOCCATA. Issue #42 OEM U401/L501 e Issue #27 sicurezza ancora bloccanti. STOP V2.7, NO FAB / NO TX / NO batteria/veicolo.
+
+---
+
+## 12 novembre 2026 — PR #47 integrata; audit passivi lotto 1 in corso
+
+**PR #47 MERGED** su `main`, commit `e210a17642c89c8825694b6a1cfbdfc66cc2189c`, CI [#43245509954](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43245509954) **3/3 PASS** incluse native KiCad9/regressioni e required gate. Aggiunto lo strumento di raggruppamento acquisti e verifica copertura di **138 refs / 114 gruppi (Value, footprint)**, senza allentare il gate BOM.
+
+**Lotto passivi in revisione, NON integrato:** R403/R502/R804 (Yageo CFR-25JB-52-10K candidato 10k THT, stato OEM MPN da certificare), C401/C405/C406 (Vishay K104K15X7RF53L2 candidato X7R 100nF, passo OEM 2.54mm vs CAD 2.50mm da verificare); `03_Verifiche/V2.6/RAPPORTO_PASSIVI_LOTTO1_CANDIDATI.md`. Nessun valore o footprint CAD modificato, nessun lifecycle promosso, **6/138 ACTIVE e 132/138 DA_VERIFICARE**. Conferma produttiva corrente e fit/performance mancanti. STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 12 novembre 2026 — PR #46 integrata e nuovo gate di copertura audit approvvigionamento
+
+**PR #46 MERGED** su `main`: SHA `696e6d19dc04d96f07517c46b441db223885fca9`, CI [#43218640115](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43218640115) fast PASS, required gate PASS, KiCad native SKIPPED per solo checkpoint documentale. Confermata la necessità di evidenza OEM sui nuovi lotti per U401 ML145151YP e L501 Coilcraft 150-05J08L.
+
+**Lavoro nuovo in PR #47 (NON ancora integrato):** strumento `03_Verifiche/V2.6/group_procurement_v26.py`, relativo rapporto e rafforzamento del verificatore inventario per garantire esattamente **114 gruppi valore/impronta e 138 riferimenti fisici non duplicati**. Il raggruppamento **non** certifica equivalenza elettrica, disponibilità né ciclo produttivo. La CI deve verificare la modifica allo script prima dell'integrazione. Stato BOM **6/138 ACTIVE, 132/138 DA_VERIFICARE**, ultima V2.6 CAD, nessuna PCB. STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 12 novembre 2026 — PR #45 MERGED e conferma blocchi produttivi principali
+
+**PR #45 integrata** su `main`: commit `3f2c34b004081de964c70229651793d34a8b3531`. GitHub Actions [run #43217910409](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43217910409) **3/3 SUCCESS** sullo SHA head `72ad054f482344570b6ab1838140522ada9bf3cf`, incluse suite fast, KiCad9 nativa/regressioni e required gate. Inventario V2.6 arricchito con prove OEM relative a D701/D804/D805/D920, L920, F701 e rapporto `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO3_DIODES_FUSE_L920.md`. **Nessun cambiamento circuitale.**
+
+**Nuovo controllo diretto documentazione OEM (registrato in Issue #42 e #19):** Lansdale pubblica il cross-reference `MC145151P2 -> ML145151YP` PDIP28 e modulo «Request a Quote», **non prova nuova fabbricazione corrente**. Coilcraft Uni7 `150-05J08L`: L regolabile **137–193 nH** (nom. 165 nH), Q min **114 a 50 MHz**, SRF min **650 MHz**, DCR **13,2 mΩ** nella pagina OEM; pagina segnala anche configurazione non acquistabile online, condizione **non sinonimo EOL**. Produttori devono confermare nuovi lotti fabbricati, continuità produttiva, conformità e modalità ordini. I due MPN **non sono promossi a ACTIVE**. Links: https://www.lansdale.com/datasheets.php ; https://www.lansdale.com/parts_reference.php?manufacturer=Motorola%2FFreescale&series=Wireless ; https://www.coilcraft.com/en-us/products/rf/tunable-rf-inductors/vertical-mount/uni7/?skuId=27487 .
+
+**STATO reale**: MAIN KiCad V2.6, 7 fogli, 138 THT e 76 reti; FRONT ancora da progettare. **6/138 MPN posizionali produttivi confermati, 132 DA_VERIFICARE**, gate `--release` bloccato. Non è stata inviata una richiesta commerciale ai fabbricanti e nessuna risposta scritta OEM acquisita. Prossimo passo: ottenere riscontri esatti su U401/L501/L920, selezionare MPN dei passivi e identificare fattibilità del criterio B, poi qualifica sicurezza #27. **STOP V2.7, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+## 12 novembre 2026 — PR #44 integrata; lotto 3 audit Schottky/boost/fusibile in revisione
+
+**PR #44 MERGED** su `main`, commit `a600627c3933ad12c331eb49bd8e309fd1837d97`. CI [#43216359795](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43216359795): fast PASS, required gate PASS, suite native **SKIPPED correttamente** per diff esclusivamente documentale. Documento pinout preliminare TI U801/U803/U912 integrato; nessuna modifica CAD.
+
+**Lotto 3 in branch (non ancora integrato):** `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO3_DIODES_FUSE_L920.md`, 6 righe di inventario arricchite di fonti senza promozione lifecycle: D701/D804/D805/D920 Vishay 1N5819 (SKU precisi da scegliere, 40 V nominali impongono test fault/transient), L920 Bourns RLB0914-681KL PCN e parametri, F701 Littelfuse 0251.500MXL dichiarazione REACH con Pb. I documenti di qualità/PCN/conformità non provano produzione OEM attuale. Conteggio **6/138 ACTIVE** e **132/138 DA_VERIFICARE** invariato. Nessuna simulazione vendor, ERC nuova, BOM-release o progetto PCB dichiarati.
+
+**Priorità:** verifica MPN SKU OEM scritta e prodotto ancora fabbricato; selezione MPN esatti, controllo VRRM/guasti, L920 corrente/saturazione, U401 PLL e L501 Coilcraft; poi qualifica CAD. Resta STOP V2.7 e BOM-release, Issue #27 sicurezza. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+## 12 novembre 2026 — PR #43 integrata, audit di pin candidati successivo in corso
+
+**PR #43 MERGED** su `main`: merge SHA `5a43da52e5eb73188832f050c7786c01ec24d0a1`. CI definitiva [run #43215777733](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43215777733) **3/3 PASS** sul commit head `55a90ddfa7e21bc9a030b8736f48b089f62c966b`: fast, suite native KiCad9/ngspice e gate. File aggiunti/aggiornati: inventario OEM V2.6 e `03_Verifiche/V2.6/RAPPORTO_AUDIT_OEM_LOTTO2_2026-11-12.md`. Le prove produttive di tre **candidati** TI (LM393N/NOPB, LM358N/NOPB, LM317T/NOPB) NON costituiscono promozione dei MPN CAD; F701 ha evidenza RoHS ma non lifecycle. **6/138 confermati; 132/138 da verificare.**
+
+**Lavoro successivo non ancora integrato:** [`RAPPORTO_PINOUT_CANDIDATI_TI_LOTTO2.md`](../../03_Verifiche/V2.6/RAPPORTO_PINOUT_CANDIDATI_TI_LOTTO2.md), audit documentale della corrispondenza pin numerici simbolo KiCad/OEM e intervalli termici 0..70°C U801/U803. Nessuna modifica ai file KiCad o al gate BOM; nessuna nuova KiCad ERC/netlist/CI dichiarata per questo branch. Prossimi blocker: qualifica sotto guasto #27, specifica MPN di tutti i passivi, U401 ML145151YP, L501, L920, verifica effettiva pin-pad-net e package meccanici. **V2.7 circuitale sospesa, NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
+
+## STOP V2.7 — Audit produttivo obbligatorio di TUTTI i 138 THT (12 novembre 2026)
+
+**Richiesta vincolante dell'utente:** prima di ulteriori revisioni elettroniche, essere certi che TUTTI i componenti siano **effettivamente fabbricati attualmente**, con **MPN/footprint 100% THT** e fonti **ufficiali dei produttori**, non scorte NOS o semplice presenza di un datasheet. Questo requisito prevale sulle precedenti priorita di progettare subito la doppia protezione.
+
+**PR #41 MERGED:** merge `8c45a1f1e9c3deb0dbf665bc90895d0bb3eee4a2` e [Actions #43119368514](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43119368514) **3/3 PASS** sul head tecnico `694924f02b3971894507290786009472857d7f50`. Inventario aggiornato `03_Verifiche/V2.6/INVENTARIO_MPN_V26.csv`; [rapporto gate produttivo](../../03_Verifiche/V2.6/RAPPORTO_GATE_PRODUZIONE_138_THT.md). **6/138 MPN esatti attivi confermati** con pagine OEM: Q801 IRF9540NPBF, U802 TL431BCLP, U520 SN74AC14N, U601 L7805CV, U911 MC34063ABN, D806 Diotec 1N5352B (lead-free No/esenzione RoHS 7(a)-I). **132/138 NON VERIFICATI**, non significa EOL. Stato produttivo non è qualifica elettrica/termica. Vecchio conflitto U911 ST tra categoria e tabella prodotto: riga esatta MC34063ABN indicata active in volume production sul sito ST.
+
+**Nuovo gate di rilascio:** `python3 03_Verifiche/V2.6/verify_mpn_inventory_v26.py --release` DEVE RIFIUTARE BOM mentre anche una sola posizione non è OEM ACTIVE; la CI ordinaria verifica solo integrita CAD e NON approva produzione. [Issue #42 — BLOCCANTE BOM](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/42) creato per tracciare la certificazione. Priorita assolute: ML145151YP Lansdale produzione esatta, L501 Coilcraft 150-05J08L produzione, L920 Bourns, 45 resistori/42 condensatori/22 connettori/1 quarzo con MPN non generici, associare pinout e suffix per U801/U803/U912, risolvere C805 DNI. Su Coilcraft 150-05J08L sito OEM riporta configurazione non acquistabile online: non scambiare per EOL senza conferma. Lansdale afferma fabbricazione aftermarket come attivita generale ma non garantisce specifico ML145151YP senza risposta puntuale.
+
+**STOP nuova V2.7 circuitale, RF/IF/audio e PCB** finche il vincolo produttivo non è risolto. La PCB-FRONT futura richiedera audit separato. Ultimo KiCad MAIN reale V2.6, 7 fogli, 138 componenti THT, 76 reti; ADR-001 due PCB / frontalino Evolution / S-meter analogico confermati. Issue #27 sicurezza OVP/UVLO resta aperta. **NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
+## PR #39 MERGED — RETTIFICA BOM FISICA E PRIMA QUALIFICA LIFECYCLE (12 novembre 2026)
+
+**Merge commit:** `70857c04468930a6cc53accad9c225b1728be45c`. [PR #39](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/39) MERGED. [GitHub Actions #43118083104](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43118083104): **3/3 PASS** sul commit tecnico `ac0a8b6e1eef5bb1d4b848f222248222201d8e30`, incluso test rapido e KiCad9/regressioni legacy reali.
+
+**Correzione sostanziale:** precedente `INVENTARIO_MPN_V26.csv` aveva 138 righe ma non rappresentava tutti i 138 componenti fisici: includeva erroneamente PWR701/PWR801/PWR802, marcatori ERC senza componente, e ometteva **Q801, D804, R1011**. Nuovo parser controlla **singoli blocchi di simbolo** e verifica esattamente i 138 componenti della gerarchia V2.6; nessun elemento ERC-only inventariato. Nuovo rapporto [RAPPORTO_MPN_PRIORITARI_PRODUTTORI_2026.md](../../03_Verifiche/V2.6/RAPPORTO_MPN_PRIORITARI_PRODUTTORI_2026.md) con fonti originali e data.
+
+**Stato produttivo verificato per 6 posizioni critiche:** **Q801 Infineon IRF9540NPBF TO220** e **U802 TI TL431BCLP TO92** attivi sul codice d'ordine esatto; **U911 ST MC34063ABN DIP8 CONFLITTO_FONTI** (pagine ST Active vs NRND), sospendere approvazione; **U401 ML145151YP** presente nel datasheet del costruttore Lansdale (PDIP28), ma **produzione corrente dell'esatto codice non ancora dimostrata**, non sostituire preventivamente; **U402 Toshiba TC74AC74P(F)** part number rappresentativo ancora da confermare; **U801 TI LM393N/NOPB** attivo come candidato, ma CAD ha descrizione LM393N_DIP8_DUAL da associare al codice esatto. Conteggio del CSV: 2 `ATTIVO_CONFERMATO`, 1 `CONFLITTO_FONTI`, 135 `DA_VERIFICARE`. Nessuna prova di fabbricazione corrente degli altri 135 componenti, nessuna BOM qualificata.
+
+**Prossimo blocker:** conferma scritta Lansdale per ML145151YP (non solo fondi di magazzino/die banking) e ST per stato ABN; qualificare temperature e pinout dei componenti di sicurezza, poi progettare **vera V2.7 circuitale KiCad** con secondo power-good indipendente (contratto PR #35), test guasti/corner e riferimento separato. L'Issue #27 resta OPEN. **CAD MAIN ancora V2.6, 7 fogli, 138 THT, 76 reti; PCB-FRONT approvata ma non disegnata. ADR-001 confermata. NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
+## PR #37 MERGED — inventario di tutti i 138 riferimenti THT (11 novembre 2026)
+
+**PR #37 MERGED**: commit `ace025d02f42c0ec55b5252ab28755b8ba14d0b5`, head tecnico `0ff34d307f0cd3fa7d656ce534f3afa5769b741b`. [CI finale 43113341328](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43113341328) **3/3 PASS** (fast, KiCad9 nativo, gate). Prima esecuzione 43113260951 fallita per classificazione test troppo restrittiva del footprint quarzo `Crystal:Crystal_HC49-U_Vertical`; corretta e riverificata, senza nascondere l'esito fallito originario.
+
+Nuovi file: `03_Verifiche/V2.6/INVENTARIO_MPN_V26.csv` (138 riferimenti unici da sette fogli nativi), `verify_mpn_inventory_v26.py` e `RAPPORTO_AUDIT_LIFECYCLE_THT_V26.md`; check incluso nei test rapidi a ogni PR. **Tutti i lifecycle risultano DA_VERIFICARE, non dichiarati attivi**; campi `Value` non garantiscono MPN esatto. Priorità verifica produttore U401 ML145151YP PLL legacy, U402 TC74AC74P(F), protezione LM393/TL431, Q801, U911 e induttori RF. **Nessun componente sostituito**, BOM non approvata.
+
+**CAD elettrico MAIN ancora V2.6**, sette fogli e 76 reti; seconda catena PG prevista dalla PR #35 ma non realizzata. Vincolo **due PCB THT FRONT/MAIN con S-meter analogico** e criterio **componenti ancora in produzione** permanenti. Issue #27 bloccante; #19, #21, #29 non risolte. **NO FAB / NO TX / NO BATTERIA/VEICOLO**.
+
+---
+
+## Regola permanente di approvvigionamento — componenti THT attualmente in produzione (criterio B, 11 novembre 2026)
+
+**Requisito vincolante approvato dall'utente e valido per entrambe le PCB, ogni nuova chat e ogni revisione:** tutti i componenti da approvare per la distinta definitiva devono essere **ancora attivamente prodotti dal rispettivo fabbricante** (codice produttore/MPN esatto), con contenitore e montaggio **100% THT**. Sono ammesse sostituzioni con equivalenti **attualmente prodotti**, anche di altra marca, ma solo dopo qualificazione documentata di pinout, tensioni/correnti, tolleranze, stabilità, dissipazione, caratteristiche RF, dimensioni e footprint, prestazioni e interazione con il circuito. La reperibilità di scorte presso un distributore **non** prova che un codice sia ancora in produzione; non considerare fondi di magazzino, NOS, componenti EOL/NRND/obsoleti come scelte finali senza autorizzazione esplicita dell'utente. Favorire canali autorizzati e pluralità di fornitori, distinguendoli dalla conferma di stato produttivo del fabbricante.
+
+**Procedura obbligatoria prima di consolidare la BOM e prima di ogni sostituzione:** audit di tutti gli MPN distinti già presenti nella V2.6 (138 riferimenti fisici, non necessariamente 138 MPN distinti), poi verifica dei nuovi MPN con fonti ufficiali aggiornate e data della verifica; classificare «attivo confermato», «da verificare», «obsoleto/NRND da sostituire». Ogni componente non confermato rimane **candidato non qualificato**, non automaticamente approvato. Riesaminare periodicamente lo stato in vista della produzione. Se un equivalente altera il circuito, applicare il normale ciclo branch → CAD → controlli → PR → CI → merge. **Nessun componente, schema o BOM viene modificato per effetto della sola adozione di questa regola:** prima svolgere l'audit, poi proporre le sostituzioni e discuterle con l'utente.
+
+## PR #35 MERGED — CONTRATTO PRE-CAD PER SECONDO POWER-GOOD INDIPENDENTE (11 novembre 2026)
+
+**main merge:** `ca244f885811c0065751128d4bd2ad231ad7fcc9`. [PR #35](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/35) integrata. [Actions run #43110429072](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43110429072) **3/3 PASS** sul commit finale `996e3437f4292b27cd0b524342f15ee001ab822b`. ERC0, 76 reti KiCad9 native, 111 comandi regressione storica. Script `03_Verifiche/V2.6/screen_independent_pg_contract_v26.py` esegue **48 stati logici di guasto singolo**: 10 stati pericolosi nel solo percorso primario attuale, 0 nella **sola ipotesi matematica** di due interruttori e due canali OVP/UVLO indipendenti, più 3 stati pericolosi di guasto comune entrambi bloccati su consenso. **Q804 e secondo supervisore NON ESISTONO ancora nel CAD**, quindi zero sicurezza fisica dimostrata; nessuna "V2.7 KiCad", MPN, simulazione vendor o PCB creata. Rapporto: [contratto PG indipendente](../../03_Verifiche/V2.6/RAPPORTO_CONTRATTO_POWERGOOD_INDIPENDENTE.md).
+
+**Prossimo lavoro prioritario:** realizzare **una vera revisione KiCad con secondo interruttore e supervisore indipendenti**, selezionare MPN/footprint THT, evitare deadlock di accensione e reference/supply comuni, controllare ULVO/OVP, gate IRF9540N VGS ed eventuale transistor short, monitor PG e audio/TX mute di default. Validare schema con export KiCad9 e SPICE vendor/test banco, quindi non chiudere Issue #27 prematuramente. L501 Coilcraft 150-05J08L e L920 Bourns RLB0914-681KL hanno già candidati THT e footprint locale: #19/#21 restano aperte per qualifica RF, saturazione, termica e layout (non riaprire vecchio lavoro di sola selezione). **CAD MAIN ultima V2.6, 7 fogli, nessuna PCB**, ADR-001 due PCB THT e frontalino Evolution con S-meter analogico confermata, **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
+## PR #34 MERGED — Q802/Q803 UN SOLO CORTO ELUDE OVP O UVLO (11 novembre 2026)
+
+**main merge:** `3fea7099edd996a2e03e4c79c17092522ff003d9`. [PR #34](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/34) integrata, [CI 43107738831](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43107738831) **3/3 PASS** sul commit finale `df89d21bc13db9aab2738ac7c266c9ade0d578f0`. KiCad9 ERC0 e netlist nativa V2.6 **76 reti**, 111 comandi di regressione storica, nuovo script indipendente `03_Verifiche/V2.6/audit_q802_q803_single_fault_v26.py`: **20 combinazioni binarie** con transistor sano, C-E corto e C-E aperto; verifica pin↔net Q802/Q803/R1009/R1007/R1016/Q801/D803.
+
+**Risultato BLOCCANTE:** con Q802 C-E corto e UVLO che consente, GATE_SINK può attivarsi **anche se OVP nega**. Con Q803 C-E corto e OVP che consente, può attivarsi **anche se UVLO nega**. I due NPN in serie sono AND solo *nominale*, NON un sistema fail-closed a guasto singolo. Questo è un modello logico, non simulazione transistor/PVT/bench. [Rapporto](../../03_Verifiche/V2.6/RAPPORTO_Q802_Q803_GUASTO_SINGOLO.md). Il log conserva anche test RF esplorativi storici con `FAIL_VARACTOR_FORWARD_IN_MODEL` per alcuni corner non qualificati: i gate software sono verdi, la RF NON è qualificata.
+
+**Ultima revisione CAD MAIN: V2.6**, nessuna variazione elettrica o PCB. **ADR-001 due PCB FRONT/MAIN + S-meter analogico** rimane approvata e integrata. Prossima revisione sostanziale: progettare con true KiCad9 THT una catena di **power-good + mute indipendente** dal sink Q802/Q803 e validare guasti singoli LM393/TL431/Q802/Q803, transitori, reverse, VGS. Issue #27 resta OPEN; #19 VCO e #21 boost ancora aperte. **NO FAB/NO TX/NO BATTERIA/VEICOLO**.
+
+---
+
+## PR #32 INTEGRATA — AUDIT R1011/D806 E BIAS LM393/TL431 (11 novembre 2026)
+
+**Main merge SHA:** `a602c4698c902dcbbaaed620cf8b552382b349b6`. [PR #32](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/32) MERGED. **CI finale** [run 43106337951](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43106337951) **3/3 PASS**, native KiCad9 ERC0, 76 netlist reali, regressioni storiche complete 111 comandi; test `03_Verifiche/V2.6/audit_r1011_d806_thermal_fault.py` 675 combinazioni e `03_Verifiche/V2.6/screen_ctl_rail_bias_v26.py` 2268 combinazioni (entrambe analisi **idealizzate**, NON qualifica hardware). Prima CI run 43106061528 FAILURE per un bug Python nel nuovo test, corretto su HEAD e poi CI finale tutta verde: **non occultare la failure storica**.
+
+**Risultati indicativi:** a VIN=13,8V, `OVP_CTL_VCC` 7,815..10,099 V nel modello caricato R1011/R1001/U801; D806 15V idealizzato spento; a VIN=11,5V rail 6,286..8,470V. La tensione di clamp D806 NON è garantita alle correnti inferiori ai 75mA di specifica. A 48V / 140°C alcuni corner superano il limite termico teorico PR03; D806 corto può sovraccaricare R1011. Con D806 aperto e TL431 sano, 48V → 30,562..34,317V nel modello, **ma con guasto congiunto del riferimento si può superare 36V**: nessun fail-safe dimostrato. <https://github.com/jd3485/Superstar3900-THT-Evolution/blob/main/03_Verifiche/V2.6/RAPPORTO_BIAS_LM393_TL431_V26.md>.
+
+**CAD MAIN ancora V2.6**, nessuna modifica KiCad/PCB; futura architettura due PCB **ADR-001 è integrata** e resta vincolante. **Priorità #27 aperta:** scelta topologia a guasto sicuro rail LM393/TL431, controllo reference-open e latch/power-good fail-closed; prove PVT/vendor, poi gestione RF #19/#21. Nessun layout, DRC scheda, prototipo, fab o TX. **NO FAB / NO TX / NO BATTERIA/VEICOLO.**
+
+---
+
+## ADR-001 INTEGRATA SU MAIN — PR #33 (11 novembre 2026)
+
+**Decisioni confermate e persistenti tra chat:** due PCB THT (PCB-MAIN radio + PCB-FRONT comandi/display), stile Superstar 3900 **Evolution**, manopole e comandi tradizionali, **S-meter analogico a lancetta**. Documento decisionale [ADR-001](ADR-001_DUE_PCB_FRONTALE_EVOLUTION.md), istruzione permanente aggiornata in [AGENTS.md](../AGENTS.md). **PR #33 MERGED**, merge commit `6fac6ed458c02778197d179aa1d088e8baa75f7c`, [Actions 43103277921](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43103277921) PASS (fast e gate; native saltato correttamente per soli documenti). La scelta sostituisce il precedente obiettivo di PCB unica senza toccare i sette fogli della V2.6; nessuna PCB FRONT è ancora disegnata.
+
+**Priorità ingegneristica invariata:** riprendere la [PR #32](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/32) audit R1011/D806, [run 43096018510](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43096018510) in coda all'ultima verifica, poi protezione LM393 e blocchi RF. Issue #27 resta aperta; NO FAB / NO TX / NO BATTERIA/VEICOLO.
+
+---
+
+## ADR-001 — nuova architettura approvata: due PCB e frontalino Evolution
+
+L'utente approva **PCB-MAIN radio + PCB-FRONT** con manopole fisiche e **S-meter analogico a lancetta**, display moderno discreto, look Superstar 3900 Evolution. Decisione completa: [ADR-001](ADR-001_DUE_PCB_FRONTALE_EVOLUTION.md). Il mandato storico «PCB unica» è sostituito **solo come architettura futura**, non significa che la frontale esista già. V2.6 rimane ultima CAD MAIN integrata; PCB-FRONT senza schemi/layout/footprint qualificati. PR #32 resta bozza di audit termico e CI #43096018510 in coda all'ultimo controllo. Tutti i rischi #27 e NO FAB/NO TX restano.
+
+---
+
+## CHECKPOINT SUCCESSIVO: PR #31 AUDIT D803 INTEGRATA SU MAIN (11 novembre 2026)
+
+**Ultima revisione CAD integrata: V2.6**, invariata elettricamente. [PR #31](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/31) MERGED, merge commit `0d28a2c38c785d92421c7b99aec4a039a3962c12`. Test ufficiale sull'ultimo HEAD tecnico `0f97a724bd283baf47dc877aa8e71071560a3946`: [CI 43081722718](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43081722718) **3/3 PASS**. ERC0, 76 netlist reali, D803 1N4742A catodo verso source Q801/FUSED_RAW e anodo verso gate/PFET_GATE; 486 corner Python ideali; tutte le regressioni KiCad/ngspice consolidate PASS. **Nessuna componente o netlist modificata** rispetto a V2.6. Il report `03_Verifiche/V2.6/RAPPORTO_D803_GATE_CLAMP.md` sostituisce l'inferenza senza Zener del precedente test R1008/R1009: l'allarme |VGS| >20V a 48V è riferibile a **D803 aperto**, mentre la Vz reale è non qualificata alle correnti ~3mA, inferiori ai 21mA di specifica.
+
+**Blocchi ancora aperti:** issue #27 sicurezza a guasto, LM393 max 36V, Q802/Q803, VGS transitoria, onsemi D803 open/short, coordinamento TVS/fusibile e PG/mute indipendenti; #19 VCO e #21 boost; nessuna PCB, DRC o Gerber. **NO FAB / NO TX / NO BATTERIA/VEICOLO**. Questo checkpoint è superiore temporalmente alle sezioni storiche successive.
+
+---
+
+## STATO CORRENTE — MERGE V2.6 VERIFICATO IL 11/11/2026
+
+**main integrato:** PR #28 [MERGED](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/28), merge SHA `998e619ed35af13a51b03ff58cd570e22cc877c5`. L'ultima revisione CAD effettivamente presente su main è **V2.6**. Master `04_KiCad/V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch` (sette fogli THT). V2.4/V2.5 conservate.
+
+**CI obbligatoria sul PR final HEAD `3e3f904358f7a0e4b384a2ecf9964076a1d8a896`:** [run 43076650377](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43076650377) PASS tutti e tre i job; KiCad9 ERC0, sette SVG reali, generatore riproducibile 10 file, V2.5→V2.6 73→76 netlist reali con sole migrazioni U801/7 e Q802/1, 138/138 campi footprint THT; regressioni precedenti KiCad/ngspice e Python PASS.
+
+**Sicurezza e completezza:** baseline CAD *candidata e NON qualificata*: Q803 2N3904 e R1014–R1017 aggiungono percorso di consenso UVLO separato dalla retroazione OVP; nessuna prova di fail-closed a guasto singolo, alimentazione a 48V, TL431, diodi/fusibile, VGS PFET, startup, termica o power-good/mute. Issue #27 aperta, più #19 e #21 componenti RF/boost e #29 infra storico. **La radio RX e PCB completa non esistono ancora; nessuna DRC, nessuna fabbricazione/TX autorizzati, niente batteria/veicolo.**
+
+Prossimo lavoro: validazione indipendente dei guasti della protezione, scelta di un clamp VGS e del mute/power-good, modelli vendor e qualifica magnetici, poi circuiti RF/IF/audio/controlli THT. Questo paragrafo è il checkpoint attuale; le sezioni seguenti descrivono **stati storici anteriori al merge e non devono sostituirlo**.
+
+---
+
+## ARCHIVIO: checkpoint PR #28 prima del merge — NON PIÙ STATO ATTUALE
+
+Al commit `4b957715ff28d149b322f6af8c5d378ccff8e2dd` la run ottimizzata [43075944405](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43075944405) ha superato realmente 3/3 job. **KiCad9 ERC0**, generatore V2.6 riproducibile (7 schemi + 3 librerie), netlist **73→76** gruppi e **138/138** impronte THT, sette SVG, tutte le regressioni native KiCad/ngspice e test Python precedenti. La V2.6 implementa Q803 + R1014..R1017, U801/7 su UVLO_OC e Q802/1 su SERIES_MID. V2.4/V2.5 preservate. Prove hardware, fault-tolerance, 48V, reverse, termica e power-good/mute restano OPEN: issue #27, #19, #21; nessuna PCB/DRC/Gerber.
+
+**Main osservato in questo checkpoint:** `b9dcca23725166573144079924e18f2852fafc58` / CAD V2.3. PR #28 ancora DRAFT, non fusa. La presente piccola revisione del checkpoint e dei soli flag diagnostici deve superare una nuova CI sul commit HEAD prima di qualsiasi integrazione. No hardware/fab qualification, NO FAB / NO TX / NO BATTERIA/VEICOLO.
+
+## Checkpoint supplementare PR #28 (SOLO BRANCH DRAFT, NON ANCORA SU MAIN)
+
+Verifica live 11 novembre 2026: main HEAD b9dcca23725166573144079924e18f2852fafc58, PR30 ottimizzazione CI merged; revisione CAD ufficiale V2.3. PR28 V2.4 resta draft e NON merged.
+La precedente CI #43057845067 PASS (ERC0, 72->73 netlist, 131 footprint fields) appartiene esclusivamente al precedente SHA 715c41c3ebcdef9c851f9434be3420132aac92a5.
+Questa revisione del branch modifica davvero master e generatore: R1011 ora Vishay PR03 820R/3W e D806 Diotec 1N5352B 15V/5W DO-201; aggiornati BOM, simbolo, impronte, test PVT con derating e rapporto. Prima di qualsiasi merge richiede nuova CI su HEAD finale; non attribuire al nuovo SHA il vecchio PASS. Qualifica elettrica, UVLO, fail-closed, reverse, F701/D702, thermals e 48V restano BLOCCATI. Il checkpoint su main rimane V2.3 finché PR28 non è merged. NO FAB / NO TX / NO BATTERIA/VEICOLO.
+
+## V2.5 candidate in PR #28 DRAFT — 11 novembre 2026 (NON MERGED)
+
+Sul branch `feature/v2.4-ovp-lm393-guard-15v-tht`, dopo la V2.4 candidata verificata da run #43060668801 sul commit 9d0b7d77, è stata preparata **una nuova revisione V2.5 con sette nuovi schemi KiCad9 nativi**, mantenendo V2.4 e tutta la storia. Le modifiche V2.5 sono limitate al circuito di supervisione:
+- U801 LM393B comparatore B: **pin5 da GND a UVLO_SENSE; pin7 da NC a CMP_OUT** insieme a pin1 del comparatore A (open-collector wired-AND); pin6 resta VREF2V5.
+- R1012 Yageo 36k/1% e R1013 Yageo 10k/1% THT per soglia UVLO nominale 11,5V; **R1001 Vishay PR01 da 3k3 a 1k8** per migliorare corrente TL431 alla soglia minima in modello ideale.
+- Nuovi generatore, audit netto dei pin-nets reali, PVT screening, delta BOM, rapporto e workflow v25 manuale, con tutti i gate nel job unico ottimizzato. Il benchmark precedente della V2.4 NON convalida la V2.5: serve CI sul HEAD finale nuovo.
+- Non è una soluzione fail-closed garantita sotto guasto singolo: TL431 open, clamp open/short, commutazioni a soglia senza isteresi, gate, F701/D702, prova di corrente reale, 48V e thermal rimangono APERTI. Non esiste PCB/DRC. **NO FAB / NO TX / NO BATTERIA/VEICOLO**.
+
+Main rimane V2.3 (ultimo HEAD osservato `b9dcca23725166573144079924e18f2852fafc58`) finché la PR #28 non è realmente fusa. Non dichiarare merge, ERC0 V2.5 o CI verde se non risultano da log SHA finale.
+
+## Ottimizzazione dei controlli GitHub Actions, distinta dallo stato elettrico
+
+La revisione CAD realmente integrata resta **V2.3** (PR #26,
+commit tecnico `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`).
+Nell'intervento infrastrutturale successivo sono stati identificati
+**20 workflow legacy** auto-attivati su ogni PR e su push main, di cui
+**14 native KiCad9** con download indipendente via PPA Launchpad,
+**5 simulazione ngspice**, **1 regressioni Python V0.1–V1.0**.
+Questo moltiplicava consumi e fallimenti di rete (issue #29).
+
+Policy disponibile nel nuovo `.github/workflows/ci_optimized.yml` e
+[ci/CI_COST_OPTIMIZATION.md](../ci/CI_COST_OPTIMIZATION.md):
+- nessun push main automatico o invocazione di venti suite distinte;
+- regressioni Python sulla PR, anche se solo documentale;
+- per qualunque modifica non documentale, **tutte** le 19 suite storiche
+  KiCad/ngspice eseguite in un solo job dentro il container KiCad 9.0.9
+  ufficiale, digest pinned e pilota ERC0 [43054348749](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43054348749);
+- 20 workflow originali restano invocabili manualmente e i loro singoli
+  step di verifica sono eseguiti fedelmente dal runner aggregato;
+- gate unico MUST PASS su SHA finale prima di ogni integrazione tecnica;
+  nessuna inferenza di DRC PCB senza PCB.
+**Avvertenza:** i file documentano la policy ma la piena migrazione si considera
+realizzata solo dopo esito CI e merge confermato della relativa PR su main.
+
+**Lavoro tecnico ancora OPEN**: [PR #28 V2.4](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/28)
+(candidato guardia LM393/R1011/D806 non integrato, ERC e netlist native
+V2.4 da ripetere con runner funzionante), [issue #27](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/27)
+(guasti, UVLO, power-good/mute fail-closed non qualificati), [issue #29](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/29)
+(storico PPA Launchpad); issue #19 e #21 RF/termica.
+Non cambiare il conto/budget Github. **NO FAB / NO TX**.
+
+## Ultima revisione realmente integrata — V2.3
+
+| Campo | Ultimo stato accertato |
+|---|---|
+| **Ultima revisione ELETTRICA/CAD MERGED** | **V2.3 — sette fogli KiCad9 RX PLL/VCO/5V/13,8V OVP/VTUNE20, footprint L501 Coilcraft candidato** |
+| **HEAD main all'ultimo controllo tecnico** | `faa146e2bdd12b13df1cbb4d20e67196ad5098b9` (merge PR #26; un successivo commit solo-documentale cambierà naturalmente HEAD: RIVERIFICARLO live) |
+| PR #20 **V2.1 MERGED** | [#20](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/20) — merge `b7b475e05b7279f2944fbfa6ea50d38680f874c4`, footprint assiali F701 e D702 THT candidati |
+| CI V2.1 sul final HEAD | **18/18 workflow PASS** (17 regressioni storiche + gate V2.1); [native KiCad run 42991959540, tentativo 3](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/42991959540): ERC 0, 72 partizioni pin-net, 7 SVG, 2 footprint SVG |
+| PR #24 **V2.2 MERGED** | [#24](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/24) — merge `30328084e72339f3909e618ff37162e8f31827d4`, footprint THT candidato L920 Bourns 680µH |
+| CI V2.2 sul final HEAD | **19/19 workflow PASS** su `574abd13c5591a1cbb3ccc0c8cd2289a2df05339`; [native run 43011468320](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43011468320): ERC0, 72 partizioni intatte, 128/129 campi footprint |
+| PR #26 **V2.3 MERGED** | [#26](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/26) — merge `faa146e2bdd12b13df1cbb4d20e67196ad5098b9`, candidato Coilcraft 150-05J08L L501 e nuova impronta THT |
+| CI V2.3 sul final HEAD | **20/20 workflow PASS** su `d0b31d413a044e0c8035c0460086b5193e52197f`; [native run 43012377058](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43012377058): KiCad9 ERC0, sette fogli SVG, **72 gruppi netlist e tutte le partizioni pin→net invariate** |
+| Master KiCad autorevole | [04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch](../04_KiCad/V2.3/PLL_RX_HIERARCHICAL_MASTER_V2.3.kicad_sch) |
+| Copertura CAD nel master RX **parziale** | **129 riferimenti fisici, 129/129 campi Footprint valorizzati**; passaggio di audit **non** equivale a qualifica componenti/package né al completamento radio |
+| PCB unica, routing, DRC PCB | **NON ESISTONO / NON ESEGUITI**. Nessun `.kicad_pcb` completo. Nessun Gerber produttivo, nessun prototipo o test hardware |
+| Autorizzazioni | **NO FAB / NO GERBER PRODUZIONE / NO TX**; vietata connessione a batteria, veicolo o catena TX senza autorizzazione |
+
+### File reali della revisione V2.3
+
+Sette schemi nativi nuovi `04_KiCad/V2.3/*.kicad_sch`, generatore
+`04_KiCad/V2.3/genera_L501_v23.js`, tabelle librerie e
+`THT_V23.pretty/Inductor_Coilcraft_150-05J08L_Uni7_Tunable_THT.kicad_mod`,
+audit `03_Verifiche/V2.3/verify_kicad_v23.py`, gate aritmetico
+`screen_vco_l501_v23.py`, rapporto `RAPPORTO_L501_VCO_V2.3.md`, workflow
+`.github/workflows/cad_native_v23.yml` e delta BOM. Solo proprietà
+**Value** e **Footprint** di L501 variate intenzionalmente da V2.2; tutte
+le 72 partizioni elettriche native invariate.
+La V2.2 conserva F701, D702, L920 e la gerarchia BOOST/VTUNE20; V2.1
+conserva l'intero master V2.0 a sette fogli.
+
+## Qualifiche ancora NON superate — blocchi reali
+
+1. **[Issue #19, L501 VCO](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/19)**: Coilcraft **150-05J08L THT regolabile** candidato 165nH, range 137–193nH, Q min 114 a 50 MHz, SRF min 650 MHz **senza nucleo**, impronta diagonale con foro 0,8/pad 1,8mm proposta. Non è una qualifica RF. Mancano campione/fit, disponibilità MPN, tuning con BB204G, **KVCO, lock 270 canali, phase noise, deriva termica, Q caricato, EMI** e schermatura del boost. [Datasheet Coilcraft](https://www.coilcraft.com/getmedia/aaa9fcd2-5ef1-4ee2-b9b8-0ec1aa8c8db0/uni7.pdf). Lasciare issue aperta.
+2. **[Issue #21, L920 boost](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/21)**: candidato Bourns **RLB0914-681KL** 680µH THT, footprint Ø2mm/drill1mm/pitch5mm. Irms tipica 0,49A, Isat tipica 0,9A, DCR max1,6Ω. Da validare stress, ripple, Ipk MC34063, saturazione termica, ingresso, EMC e spur sul VCO/IF; hardware e dimensioni pezzo. [Datasheet Bourns](https://www.bourns.com/docs/product-datasheets/rlb.pdf).
+3. **Ingresso 13,8 V / protezione**: LM393 upstream ha **36V massimo** non protetto per sovratensioni sopra limite; reverse battery, transitori, load dump e rete Q802/gate-source non qualificati. **F701** Littelfuse 0251.500MXL e **D702** ST P6KE20CA hanno impronte THT candidate ma **senza** coordinamento sorgente/fusibile I²t/TVS energy e senza prova meccanica del pitch assiale 12,70 mm.
+4. **Regolatori e sicurezza funzionale**: 7805/boost 20V LM317 non qualificati per correnti, termica, startup, brownout, PSRR/ripple e comportamento da guasto; **power-good/mute fail-closed non integrati**. Non attribuire sicurezza ai soli ERC0 o test ideali.
+5. **Ricevitore completo assente**: preselector/front-end RF, mixer, IF, demodulazione AM/FM/USB/LSB, audio, squelch, controllo canali e front-panel completamente da progettare THT. Nessuna PCB completa, nessuna DRC, layout RF/IF o netlist↔PCB qualificata.
+6. **Sola evidenza da software**: ngspice storico è modello surrogato/comportamentale; non sono eseguiti macro-modelli vendor completi o misure elettriche/RF su prototipi. Nessuna trasmissione ammessa.
+
+## Issue, PR e GitHub Actions al checkpoint
+
+- **Issue #22 (quota Actions)**: [CLOSED](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/22), 2.000/2.000 minuti consumati in precedenza; titolare ha sbloccato Actions. Runner ripartiti: gate V2.1/V2.2/V2.3 **eseguiti davvero** e passati. Diversi tentativi hanno incontrato **HTTP 500/504 Launchpad PPA** durante installazione KiCad; quelli falliti sono stati ritentati, non reinterpretati come test CAD. Non cambiare budget senza consenso.
+- Nessuna **PR tecnica** rimasta aperta al merge della V2.3. La sola PR documentale [#25](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/25) era OPEN/DRAFT ed è stata **aggiornata con questo checkpoint**. Verificare live prima di usarla come fonte.
+- Project SMD **mai modificato** in questa sessione. Non trasferire specifiche SMD.
+
+## Prossima sequenza tecnica autonoma
+
+Partire da `main` V2.3 e dagli issue aperti: prima progettare e verificare **protezione OVP del comparatore LM393 e network gate su fault, startup/brownout, power-good/mute fail-closed**, con datasheet originali e analisi fault; evitare falsi PWR_FLAG. Poi validare componenti magnetici/TVS con dimensionamento PVT, modelli vendor e criteri meccanici; proseguire verso front-end RF e mixer/IF THT, demodulazione/audio/controlli.
+Ogni revisione reale: branch → nuovo file KiCad nativo → ERC e netlist pin-net in KiCad9 + test appropriati → PR/CI su **HEAD finale** → merge solo dopo gate verdi. Dopo merge aggiornare questo checkpoint.
+Non creare una PCB dimostrativa o Gerber fintanto che l'intera radio RX/THT e safety non sono completati e riesaminati.
+
+**VINCOLI ASSOLUTI: NO FAB / NO TX, NO BATTERIA / VEICOLO.**
+
+## Ripresa in una nuova sessione
+
+«Leggi `AGENTS.md` e `00_Gestione_Progetto/WORK_STATO_CORRENTE.md` da `main` del repo `jd3485/Superstar3900-THT-Evolution`. Verifica in tempo reale SHA main, PR, Actions e issue. Riparti dall'ultima revisione effettivamente MERGED, prosegui autonomamente con più revisioni KiCad THT, CI e merge solo dopo tutti i test; aggiorna checkpoint. NO FAB / NO TX; non toccare SMD.»
+
+
+---
+
+## 16 novembre 2026 — finding Q804/Q805 gate condiviso, PR #325 in verifica
+
+Branch `engineering/v27-dual-pmos-single-gate-common-fault-20261116` / [PR #325](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/325): la regressione FULL `03_Verifiche/V2.7/verify_dual_pmos_common_gate_fault_native.py` esporta KiCad9 reale THT 27 pin/8 reti e verifica il nodo gate condiviso Q804/Q805/Q806. Modello matematico indipendente 216 casi; **36** con ENABLE0, Q806 C–E SHORT e Vsource≥13,8V applicano polarizzazione negativa a entrambi i gate. Il risultato è un finding topologico, non una simulazione OEM di conduzione. [PR #324](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/324) integrata su main `49d4d10bc098642cd67de6953f6bc005718cbf93` dopo run #43900393435 3/3 verdi. Branch #325/CI resta non integrato fino a gate sul commit finale. MAIN V2.6 e FRONT senza PCB, issue #27 APERTA; **NO FAB/TX/BATTERIA/VEICOLO**.## 16 novembre 2026 — PR #327 MERGED, guasto direzionale body diode isolato
 
 [PR #327](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/327) integrata su main `08204e0064b886fa48a896b7200518415883a522`, HEAD `a5dfd7c0d9a2f8b433de5c36eeb248bdb5daa0b5`, run #43911111583 **FAST/FULL/Required 3/3 SUCCESS**. Nuovo banco THT isolato con 4 Zener su due gate, 20 simboli / 44 pin / 12 reti; resta NON safety-qualified.
 
