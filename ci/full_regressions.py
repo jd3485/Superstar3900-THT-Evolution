@@ -194,6 +194,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_postmute_loaded_ac_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # A nonenergized NC relay only attenuates capacitively injected audio if
+    # its contact and AF_GND return are continuous. The full native fault
+    # screen compares two independent complex solvers for 120 cases.
+    print("::group::V2.7 FRONT MUTE NC COUPLED AUDIO FAULT 120 KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_mute_nc_coupled_audio_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # The post-mute J1902 connector may be externally forced during a cable
     # fault. Native pin-net anchored R1902/R1901 thermal bound, hypothetical.
     print("::group::V2.7 FRONT MUTE J1902 OVERVOLTAGE RESISTOR SCREEN",flush=True)

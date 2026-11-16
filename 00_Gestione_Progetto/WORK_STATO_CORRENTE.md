@@ -1,8 +1,20 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #293 MERGED, gate audio fault NC integrato
+
+**PR #293** integrata su main SHA `688a5a9a93b7b86840898b9c7345a06afad8ba4e`, CI #43813871295 FAST/FULL/Required 3/3 SUCCESS, marker nativo `PASS_NATIVE_KICAD9_FRONT_MUTE_120_AC_INJECTION_FAULT_CASES_AF_GND_OPEN_FAIL_CLOSED_NONFAB` confermato nel log. Il modello non costituisce prova di mute fail-safe. NO FAB/NO TX.
+
+---
+
 ## 16 novembre 2026 — candidato gate termico guasto esterno J1902 post-mute
 
 **Branch indipendente:** `engineering/v27-front-mute-input-overvoltage-resistor-screen-20261116` da main PR #291 integrata `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. Nuovo test `03_Verifiche/V2.7/verify_front_mute_j1902_overvoltage_resistor_screen_native.py`, in suite FULL, verifica topologia KiCad9 R1902 1k e R1901 100k in parallelo con K1901 NC su AF_GND e valuta sovratensioni esterne forzate a J1902/1. A -5% R, 20 V forzati danno **0,421 W R1902**; con limite 0,25 W solo ipotetico, soglia 15,41 V; nessuna qualifica. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_J1902_OVER_VOLTAGE_20261116.md`. Issue #292 e PR #293 su mute NC separate. **Branch NON ancora validato in CI**; nessuna autorizzazione FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+## 16 novembre 2026 — FRONT mute NC, guasto AF_GND e interferenza audio: gate candidato
+
+**Baseline:** PR #291 MERGED in main SHA `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. CI #43812854126 FAST/FULL/Required **SUCCESS 3/3**, test post-mute `PASS_FRONT_POSTMUTE_75_RX_AC_KCL_CASES_NATIVE_NETS_NONFAB` osservato nel log. **Branch attuale** `engineering/v27-front-nc-mute-coupled-audio-fault-screen-20261116` implementa un nuovo gate nativo `verify_front_mute_nc_coupled_audio_fault_native.py` e l'integrazione in `ci/full_regressions.py`: 60 combinazioni × due stati NC (120 casi), iniezione capacitiva ipotetica su audio MAIN, doppia soluzione AC KCL/impedenza, rigetto AF_GND open. Rshunt a NC integro con Rcontatto ipotetica 1Ω: 991,079Ω; NC aperto con ramo bleed ancora a massa: 100kΩ, +100,900×. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_NC_COUPLED_AUDIO_FAULT_20261116.md`, issue #292. **CI non ancora convalidata sul branch**: non integrare senza FAST/FULL/Required verdi. Nessuna prova hardware, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 
