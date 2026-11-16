@@ -285,6 +285,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_microchip_twin_zener_thermal_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # THT Vishay PR01 10k/1W OEM P70 derating: true isolated KiCad9
+    # 27-pin/8-net contract + 567 static heat/fault corners; not hardware.
+    print("::group::V2.7 PR01 R2102 THT 1W OEM 567 DERATING CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_r2102_pr01_native_derating.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
