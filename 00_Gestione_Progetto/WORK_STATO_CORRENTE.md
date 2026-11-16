@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #284 MERGED; master gerarchico FRONT 5 fogli THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #284 SHA `4d5467a87135698e755a2770cec663b75d8894ec`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #285 MERGED; collegamento reale volume→mute su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #285 SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #285 MERGED; primo collegamento elettrico reale FRONT sul branch
+
+**Verificato GitHub:** PR #285 MERGED su main SHA `121c7600f585ca9d186f5ec0aeb77bcd42ac28e2`; [Actions #43789747752](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43789747752) FAST/FULL/Required **SUCCESS 3/3**. FULL: `FRONT_PARTIAL_HIERARCHY_ERC_STDOUT Found 0 violations`, `PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_5SHEETS_32REFS_26NETS_71PINS_ERC0_NO_CROSS_RAIL_NO_FAB`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Riparata regressione indipendente di piazzamento 13ref.
+
+**Branch corrente** `engineering/v27-front-master-volume-to-mute-hierarchical-audio-20261116`: due vere connessioni KiCad9 nel master FRONT fra i fogli VOLUME e RELAY via pin gerarchici: `VOL_WIPER_TO_AMP` **J1302/1 ↔ J1901/1 ↔ K1901/3** e `AF_GND` **J1302/2 ↔ J1901/2 ↔ K1901/2**. Test netlist gerarchico aggiornato da 26 a **24 reti**, 71 endpoint pin; tutte le altre reti, incluse quelle bobina e LED, devono restare isolate. MPN relè e condizioni meccaniche non qualificati; niente interconnessione PCB MAIN, power/coil, routing/front PCB completo; nessun comportamento fail-safe certificato. CI branch da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #284 MERGED; master FRONT 5 sheet KiCad9 su branch
 
