@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #278 MERGED; footprint THT U2101/C2101 MCP100 sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #278 SHA `3f3224fff25adf678a2a87abadfd762715a0863f`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #279 MERGED; R1901 100k shunt fisico sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #279 SHA `22e0cc82a4a00eec2e4aa8eb3a1b618ba9a42276`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #279 MERGED; nuovo shunt analogico THT su branch
+
+**Verificato GitHub:** PR #279 MERGED su main SHA `22e0cc82a4a00eec2e4aa8eb3a1b618ba9a42276`; [Actions #43780724940](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43780724940) FAST/FULL/Required **SUCCESS 3/3**, `PASS_KICAD9_MCP100_450_DI_TO_D_BOND_3NET_ERC0_54_OEM_SCREEN_NONFAB`, ERC `Found 0 violations`, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. U2101 e C2101 hanno footprint THT candidati, non qualificati.
+
+**Branch corrente** `engineering/v27-front-muted-amp-input-100k-bleed-20261116`: vero **R1901 100 kΩ** THT nel foglio KiCad9 FRONT relay, fra **AMP_INPUT_MUTED** e **AF_GND**. Test di netlist KiCad9 esteso a entrambi i pin/componenti e footprint; rapporto tecnico aggiornato. Riduce ingresso flottante su contatto aperto ma non garantisce mute con NO saldato o AF_GND interrotta; carico audio su potenziometro va misurato. PCB prodotto invariata; CI branch non ancora conclusa. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #278 MERGED; impronte fisiche MCP100 sul nuovo branch
 
