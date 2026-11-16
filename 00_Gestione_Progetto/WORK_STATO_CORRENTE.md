@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #309 MERGED; supervisore THT LM2903P in screening PRE-CAD
+
+PR [#309](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/309) MERGED su main `c141213b02f9e87b9f36dc3254eb85478c34c33e`. Final head `88a8545b0c6a3ed56f92bc613c8071af1e62221e`, run [#43849944578](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43849944578), **FAST/FULL/Required 3/3 SUCCESS**. Test `PASS_NATIVE_KICAD9_PR01_DRIVER_1080_FAULT_CASES_NONFAB`, vera netlist KiCad9 THT 27 pin/8 reti, 1080 corner teorici: 180 casi Q806 C–E SHORT ON senza ENABLE, 108 di R2102 SHORT |VGS|>20V *unclamped*, 216 di R2102 OPEN pull-up OFF idealizzato. Questo dimostra che il driver secondario non è fail-closed; #27 APERTA, NO FAB/TX/BATTERIA/VEICOLO.
+
+Nuovo branch `engineering/v27-lm2903p-preconditioned-window-thresholds-20261116`, verifica `03_Verifiche/V2.7/verify_lm2903p_secondary_window_passive.py` registrata in FULL (**128 corner** di 6 resistori ±1% e VREF ±1%), rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_WINDOW_THT_PRECAD_20261116.md`. Candidato **TI LM2903P PDIP8 THT** e comparazione con supply 5V e VREF2,5V **ancora esterne, NON generate e NON qualificate**. Partitori proposti: Vsense 100k/5k (48V sintetici→2,286V nominale); UVLO 10V, OVP 15V; casistiche corner nominali. **GRAVE difetto sensore**: Rlow5k OPEN fa salire il pin sense verso VIN fino a 48V ipotetici, oltre compatibilità comparator VCC5V; serve protezione indipendente e fail-OFF. **Solo studio PRE-CAD**: nessun simbolo LM2903 creato, nessuna alimentazione o circuito hardware realizzato; nuova PR/CI non verificate. Nessuna autorizzazione VIN48V, PCB, TX, batteria o veicolo.
+
+---
+
+
 ## 16 novembre 2026 — PR #308 MERGED; Q806 C-E SHORT / R2102 OPEN-SHORT THT in test nativo
 
 PR [#308](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/308) **MERGED** su main `de971b34c2d06279d2aef95dd990c0bda5c058b1`; final PR head `ea3abe49e0497d9b92675bf1ad0a2e88a7bde059`, run [#43847987766](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43847987766) **FAST/FULL/Required 3/3 SUCCESS**; native ERC KiCad9 zero errori/warning, 27 pin/8 reti, marker `PASS_NATIVE_KICAD9_THT_PR01_R2102_27PIN_8NET_567_DERATING_NONFAB`. R2102 Vishay PR01000101002JR500 10k±5% 1W P70 e footprint generica DIN0207 sono soltanto **candidati banco isolato**. 567 corner statici, **36** fuori dal derating P70, a 175°C fault teorico 0,242526W > limite 0,1923W; rating OEM senza curva pulse/termica PCB. MAIN V2.6/FRONT invariati.
