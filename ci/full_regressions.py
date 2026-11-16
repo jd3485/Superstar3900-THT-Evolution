@@ -356,6 +356,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Independent tolerance bits for all 16 A/B resistors: 25,952,256
+    # ideal DC combinations. Native KiCad9 netlist guard, NOT safety.
+    print("::group::SPLIT VREF 16 INDEPENDENT RESISTORS 25.95M CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_independent_tolerances_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # KiCad9 two physically separate THT reference headers do not
     # prevent correlated VREF failures: 101376 synthetic cases.
     print("::group::V2.7 SPLIT LM2903P DOUBLE VREF 101376 CORNERS",flush=True)
