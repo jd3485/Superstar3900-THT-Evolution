@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #320 MERGED; nuovo controllo nativo pin↔net per 16 resistenze A/B
+
+PR [#320](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/320) MERGED su main `a6e33a4c36322a7e6724cf93b94fe47080bea06c`; final head `23e97f666a26afd11a7ffc18862e8c81656372d3`; run [#43894482289](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43894482289) FAST/FULL/Required 3/3 SUCCESS. KiCad9 isolato 60pin/14net; test matematico esatto 25.952.256 combinazioni e 231.760 falsi consensi teorici da riferimenti guasti, senza qualifica OEM.
+
+Branch `engineering/v27-split-vref-16r-pinmap-guard-20261116` rafforza il controllo native sui riferimenti A R2201/2202/2203/2204/2205/2206/2208/2209 e B R2210..R2217: esatta corrispondenza di ogni coppia di pin con le reti KiCad9, separazione A/B e output OC R2207/J2204 ancora non fail-OFF. Test registrato nella FULL già esistente; **PR/CI nuovi da verificare, non integrato**. #27 safety aperta, MAIN V2.6/FRONT senza PCB, NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
 ## 16 novembre 2026 — #319 MERGED; tolleranze 16 R A/B indipendenti in nuova revisione
 
 PR [#319](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/319) **MERGED** main `a1e6c0dca743136d4718be0fef732efaa6712891`; head `5963b655e682ad36098cb4c7fa4f028f260116ed`; run [#43893797542](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43893797542): FAST SUCCESS, Required SUCCESS, FULL skipped su diff documentale.
