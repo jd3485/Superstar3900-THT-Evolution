@@ -84,13 +84,35 @@ def main():
     assert ("D1911","1") in nets["COIL_PLUS_LAB"]
     assert ("D1911","2") in nets["COIL_MINUS_LAB"]
     assert nets["SERIES_MID"]=={("Q1911","3"),("Q1912","1")}
-    # 4 logic control combinations; connected coil has no independent ground
-    # unless BOTH switches conduct (idealized). Stuck-ON transistor cases
-    # are explicitly NOT protected by this simple two-enable chain.
-    for enable,good in product((False,True),repeat=2):
-        assert (enable and good)==(enable and good)
-        if not (enable and good):
-            assert not(enable and good)
+    # Two series transistor switches are NOT independent against stuck-ON
+    # faults. Enumerate all command/fault combinations instead of testing
+    # the tautology (enable and good) == (enable and good).
+    fault_modes=("normal","stuck_on","stuck_off")
+    def conducts(command: bool,mode: str)->bool:
+        return {"normal":command,"stuck_on":True,"stuck_off":False}[mode]
+    fault_cases=unexpected_energized=missed_enable=0
+    for enable,good,upper_mode,lower_mode in product(
+            (False,True),(False,True),fault_modes,fault_modes):
+        expected_energized=enable and good
+        energized=(conducts(enable,upper_mode)
+                   and conducts(good,lower_mode))
+        if upper_mode==lower_mode=="normal":
+            assert energized==expected_energized
+        unexpected_energized+=bool(energized and not expected_energized)
+        missed_enable+=bool(expected_energized and not energized)
+        fault_cases+=1
+    assert fault_cases==36
+    assert unexpected_energized==5
+    assert missed_enable==5
+    print("FRONT_DUAL_NPN_36_LOGICAL_FAULT_STATES_NOT_FAILSAFE",{
+        "cases":fault_cases,
+        "uncommanded_coil_energized_cases":unexpected_energized,
+        "commanded_coil_not_energized_cases":missed_enable,
+        "models_only":"ideal_switch_normal_stuck_on_stuck_off",
+        "excludes":"coil_open_short_welded_NO_AF_GND_open_rail_transients",
+        "physical_relay_and_fail_safe_qualified":False,
+        "NO_FAB_NO_TX":True},flush=True)
+    print("PASS_FRONT_DUAL_NPN_36_FAULT_STATES_EXPOSE_UNSAFE_ENERGIZATION_NONFAB",flush=True)
     checked=0
     margins=[]
     for rail,drive,rcoil,drop in product((4.5,5.0,5.5),(4.5,5.0),
