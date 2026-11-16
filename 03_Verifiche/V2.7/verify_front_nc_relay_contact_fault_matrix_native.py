@@ -79,7 +79,8 @@ def main():
                 assert audio and not ground
                 regular_audio+=1
         checked+=1
-    assert len(nets)==6, sorted(nets)\n    assert checked==64 and regular_muted==3 and regular_audio==1
+    assert len(nets)==6, sorted(nets)
+    assert checked==64 and regular_muted==3 and regular_audio==1
     assert len(unexpected_mute_bypass)==4
     assert all(fault=="welded_NO" and volume_ok
                for coil_ok,fault,gnd_ok,volume_ok in unexpected_mute_bypass)
