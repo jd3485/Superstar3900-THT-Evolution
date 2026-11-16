@@ -115,5 +115,5 @@
 (label "RELAY_COM_AUDIO" (at 107.95 184.15 0)(effects (font (size 1 1)))(uuid "867c0000-0000-4000-8000-000000000114"))
 (wire (pts (xy 138.43 184.15)(xy 143.51 184.15))(stroke (width 0)(type default))(uuid "867c0000-0000-4000-8000-000000000115"))
 (label "AMP_INPUT_MUTED" (at 143.51 184.15 0)(effects (font (size 1 1)))(uuid "867c0000-0000-4000-8000-000000000116"))
-(text "CANDIDATE ONLY: NC contact grounds amplifier input with coil unpowered. NO contact routes volume when deliberately energized. NO OEM relay MPN, coil driver or power-good; 1k R1902 series COM-to-input plus 100k shunt reduces floating input but DOES NOT protect against welded NO or lost AF_GND; no PCB, no safety approval, NO FAB / NO TX." (at 93.98 215.9 0)(effects (font (size 1 1)))(uuid "867c0000-0000-4000-8000-000000000095"))
+(text "CANDIDATE ONLY: NC contact grounds amplifier input with coil unpowered. NO contact routes volume when deliberately energized. NO OEM relay MPN, coil driver or power-good; 1k R1902 series COM-to-input plus 100k shunt reduces floating input but DOES NOT protect against welded NO or lost AF_GND; no PCB, no safety approval, NO FAB / NO TX." (at 93.98 205.74 0)(effects (font (size 1 1)))(uuid "867c0000-0000-4000-8000-000000000095"))
 (embedded_fonts no)(sheet_instances (path "/" (page "1"))))
