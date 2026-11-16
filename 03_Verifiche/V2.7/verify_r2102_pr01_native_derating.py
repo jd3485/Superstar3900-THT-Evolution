@@ -95,6 +95,14 @@ def main():
     # Fault-power crosses 1 W derating curve about 168.5C at Rmin.
     crossover=200.-130.*(48.**2/(PR01_R_OHM*(1-PR01_TOL)))
     assert 168.<crossover<169.
+    # Inverse derating bound: fault source voltage limit at each ambient
+    # under a SHORT clamp and R2102 at its -5% tolerance. This is NOT
+    # an allowable VIN rating of the radio, only a steady-state screen.
+    max_source_125=math.sqrt(pr01_derated(125.)*PR01_R_OHM*(1-PR01_TOL))
+    max_source_175=math.sqrt(pr01_derated(175.)*PR01_R_OHM*(1-PR01_TOL))
+    nominal_13v8_short_power=13.8**2/(PR01_R_OHM*(1-PR01_TOL))
+    assert max_source_125>48.>max_source_175
+    assert .019<nominal_13v8_short_power<.021
     print("PR01_R2102_NATIVE_DERATING_FAULT_SCREEN",{
         "pins":27,"nets":8,"static_cases":count,
         "pr01_oem_nominal_1W_at_70C":True,
@@ -103,6 +111,9 @@ def main():
         "min_static_headroom_125C_W":round(min_headroom_125,6),
         "thermal_limit_exceeded_model_cases":over_derating,
         "short_fault_limit_crossover_degC":round(crossover,5),
+        "max_synthetic_fault_source_125C_V":round(max_source_125,5),
+        "max_synthetic_fault_source_175C_V":round(max_source_175,5),
+        "nominal_13v8_short_power_W":round(nominal_13v8_short_power,6),
         "PR01_exact_MPN_OEM_lifecycle_verified":False,
         "PR01_OEM_mechanical_pad_alignment_verified":False,
         "PR01_pulse_short_safe_qualified":False,
