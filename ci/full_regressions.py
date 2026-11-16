@@ -342,6 +342,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_window_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Dual physical KiCad9 THT LM2903P channels share an EXTERNAL
+    # 2.5V reference: 16896 correlated fault cases, no safety claim.
+    print("::group::V2.7 DUAL LM2903P COMMON VREF 16896",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_common_reference_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
