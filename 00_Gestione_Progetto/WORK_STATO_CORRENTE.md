@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #276 MERGED; revisione matrice guasti doppio BJT sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #276 SHA `e8598fb756db6de156020362746851679ea0c752`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #277 MERGED; correzione B-E reale Q1911 sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #277 SHA `38cb061290075b6fd5f3defef5a9428617cc3e17`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #277 MERGED; R1913 verso emettitore su nuovo branch
+
+**Verificato GitHub:** PR #277 MERGED su main SHA `38cb061290075b6fd5f3defef5a9428617cc3e17`; [Actions #43778992240](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43778992240) FAST/FULL/Required **SUCCESS 3/3**. FULL include `PASS_FRONT_DUAL_NPN_36_FAULT_STATES_EXPOSE_UNSAFE_ENERGIZATION_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, ERC `Found 0 violations`, nessun Traceback o errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. La matrice rivela 5 energizzazioni indesiderate e 5 mancate energizzazioni nel modello ideale, non una mitigazione.
+
+**Branch in corso** `engineering/v27-front-upper-bjt-base-emitter-bleed-20261116`: modifica fisica della rete in KiCad9 R1913/2 da DRIVER_GND a SERIES_MID, riferimento all'emettitore Q1911; R1914 resta B-E Q1912. Test netlist delle 8 reti e modelli DC/Omron coerentemente aggiornati. Prima R1913 a massa non fissava VBE del transistor alto quando Q1912 disattivato: corretta la topologia, **senza affermare fail-safe né saturazione garantita**. CI branch ancora da verificare; nessuna PCB modificata. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #276 MERGED; fault screening doppio transistor su nuovo branch
 
