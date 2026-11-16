@@ -270,6 +270,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_q806_dual_zener_clamp_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Microchip 1N4106-1 isolated low-current THT twin clamp candidate:
+    # Native KiCad9 ERC/27 pins/8 nets; OEM IZT 250uA screening only.
+    print("::group::V2.7 MICROCHIP 1N4106 THT LOW CURRENT ZENER NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_q806_microchip_1n4106_low_current_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
