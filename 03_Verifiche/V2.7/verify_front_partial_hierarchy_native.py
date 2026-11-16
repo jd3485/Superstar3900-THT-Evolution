@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""KiCad9 hierarchical FRONT integration pilot, three isolated real THT sheets.
+"""KiCad9 hierarchical FRONT integration pilot, five isolated real THT sheets.
 
 Intended future FRONT parent but NOT an approved product schematic: existing
-volume, lab illumination and passive S-meter sheets are included without making power,
+volume, LED, S-meter, relay contact and dual NPN coil driver sheets are included without making power,
 return, cable or S-meter driver electrical interconnections. Fail on ERC violations
 and accidental net merging across child pages.
 """
@@ -17,6 +17,8 @@ CHILDREN=(
     ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch",
     ROOT/"04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_DRAFT.kicad_sch",
     ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch",
+    ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch",
+    ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch",
 )
 PARTITIONS={
     "DEMOD_AUDIO":{("J1301","1"),("RV1301","1")},
@@ -31,16 +33,28 @@ PARTITIONS={
     "METER_LIMIT_STAGE1":{("R1801","2"),("R1802","1")},
     "METER_POS_LIMITED":{("R1802","2"),("J1802","1")},
     "METER_RETURN":{("J1801","2"),("RV1801","3"),("J1802","2")},
+    "AMP_INPUT_MUTED":{("J1902","1"),("R1901","1"),("R1902","2")},
+    "RELAY_COM_AUDIO":{("K1901","1"),("R1902","1")},
+    "COIL_PLUS_LAB":{("K1901","4"),("J1903","1")},
+    "COIL_MINUS_LAB":{("K1901","5"),("J1903","2")},
+    "SERIES_MID":{("Q1911","3"),("Q1912","1"),("R1913","2")},
+    "DRIVER_GND":{("Q1912","3"),("R1914","2"),("J1911","2"),("J1912","2"),("J1913","2"),("C1911","2"),("C1912","2")},
+    "DRIVE1_BASE":{("Q1911","2"),("R1911","2"),("R1913","1")},
+    "DRIVE2_BASE":{("Q1912","2"),("R1912","2"),("R1914","1")},
+    "ENABLE_AUDIO_LAB":{("J1912","1"),("R1911","1")},
+    "POWER_GOOD_LAB":{("J1913","1"),("R1912","1")},
 }
 
 
 def verify():
     sch=SCH.read_text(encoding="utf-8")
-    assert sch.count("(sheet (at ")==3
-    assert sch.count('(property "Sheetfile"')==3
+    assert sch.count("(sheet (at ")==5
+    assert sch.count('(property "Sheetfile"')==5
     assert "FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch" in sch
     assert "FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_DRAFT.kicad_sch" in sch
     assert "FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch" in sch
+    assert "FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch" in sch
+    assert "FRONT_MUTE_COIL_DRIVER/FRONT_NC_MUTE_DUAL_ENABLE_COIL_DRIVER_V2_7_DRAFT.kicad_sch" in sch
     assert all(x.exists() for x in CHILDREN)
     project=SCH.with_suffix(".kicad_pro")
     symtab=SCH.parent/"sym-lib-table"
@@ -48,7 +62,7 @@ def verify():
     assert project.is_file() and symtab.is_file() and fptab.is_file()
     sym=symtab.read_text(encoding="utf-8")
     fp=fptab.read_text(encoding="utf-8")
-    for item in ("TH_FRONT", "TH_FRONT_ILLUM", "TH_SMETER", "TH_AUDIO"):
+    for item in ("TH_FRONT", "TH_FRONT_ILLUM", "TH_SMETER", "TH_AUDIO", "TH_MUTE", "TH_COIL"):
         assert '(name "'+item+'")' in sym,item
     for item in ("TH_FRONT", "TH_FRONT_ILLUM_LAB"):
         assert '(name "'+item+'")' in fp,item
@@ -81,17 +95,40 @@ def verify():
         members=set(re.findall(
             r'\(node\s+\(ref\s+"([^"]+)"\)\s+\(pin\s+"([^"]+)"\)',block))
         label=h.group(1).rsplit("/",1)[-1]
-        assert label not in found,(label,"duplicate or tied logical net")
-        found[label]=members
+        found.setdefault(label,[]).append(members)
     assert set(found)==set(PARTITIONS),(found.keys(),PARTITIONS.keys())
+    expected_multi={
+        "AF_GND":[
+            {("J1301","2"),("RV1301","3"),("J1302","2")},
+            {("K1901","2"),("J1901","2"),("J1902","2"),("R1901","2")}],
+        "VOL_WIPER_TO_AMP":[
+            {("RV1301","2"),("J1302","1")},
+            {("K1901","3"),("J1901","1")}],
+        "COIL_PLUS_LAB":[
+            {("K1901","4"),("J1903","1")},
+            {("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1"),("C1912","1")}],
+        "COIL_MINUS_LAB":[
+            {("K1901","5"),("J1903","2")},
+            {("J1914","2"),("D1911","2"),("Q1911","1")}],
+    }
     for name,expected in PARTITIONS.items():
-        assert found[name]==expected,(name,found[name],expected)
-    assert len(set().union(*found.values()))==sum(len(v) for v in found.values())==28
-    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_3SHEETS_13REFS_12NETS_28PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
-        "child_sheets":3,
-        "THT_components":13,
-        "independent_local_nets":12,
-        "pin_endpoints":28,
+        candidates=found[name]
+        if name in expected_multi:
+            assert {frozenset(x) for x in candidates}=={frozenset(x) for x in expected_multi[name]},(name,candidates)
+        else:
+            assert candidates==[expected],(name,candidates,expected)
+    all_nets=[pins for group in found.values() for pins in group]
+    assert len(all_nets)==26,len(all_nets)
+    assert len(set().union(*all_nets))==sum(map(len,all_nets))==71
+    for name in expected_multi:
+        assert len(found[name])==2,(name,found[name])
+    print("PASS_KICAD9_FRONT_PARTIAL_HIERARCHY_5SHEETS_32REFS_26NETS_71PINS_ERC0_NO_CROSS_RAIL_NO_FAB",{
+        "child_sheets":5,
+        "THT_components":32,
+        "independent_local_nets":26,
+        "pin_endpoints":71,
+        "relay_oem_qualified":False,
+        "relay_coil_interconnected_in_parent":False,
         "MAIN_FRONT_harness_qualified":False,
         "S_meter_passive_candidate_sheet_included":True,
         "S_meter_driver_FSD_coil_qualified":False,
