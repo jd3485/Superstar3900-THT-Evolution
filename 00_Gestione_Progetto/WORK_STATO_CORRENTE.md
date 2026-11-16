@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #327 MERGED, guasto direzionale body diode isolato
+
+[PR #327](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/327) integrata su main `08204e0064b886fa48a896b7200518415883a522`, HEAD `a5dfd7c0d9a2f8b433de5c36eeb248bdb5daa0b5`, run #43911111583 **FAST/FULL/Required 3/3 SUCCESS**. Nuovo banco THT isolato con 4 Zener su due gate, 20 simboli / 44 pin / 12 reti; resta NON safety-qualified.
+
+Nuova diagnosi su branch `engineering/v27-twin-zener-short-path-fault-screen-20261116` (CI/PR nuova DA VERIFICARE): test KiCad9 `03_Verifiche/V2.7/verify_twin_gate_directional_body_diode_native.py`, **16 stati driver ideali** e verifica topologia PMOS source comuni. Un solo Q807 C–E SHORT lascia il Q805 ON, Q804 OFF, ma **INPUT→OUTPUT via body diode Q804** resta possibile. Speculare OUTPUT→INPUT via Q805 se Q806 C–E SHORT. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_PMOS_BODY_DIODE_SINGLE_DRIVER_20261116.md`. Due driver separati non sono due interruttori bidirezionali indipendenti. Necessari due stadi completi anti-serie indipendenti e qualificati, source/power-good/return, OEM, PVT, termico. #27 aperta, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 16 novembre 2026 — variante THT quattro clamp su due gate separati, non qualificata
 
 Branch `engineering/v27-dual-gate-twin-clamps-lab-20261116` **deriva dalla PR #326 integrata su main** SHA `4bd4de847e05c38c9a7a816548fc5b5a080b8475` CI #43907346523 FAST/FULL/Required 3/3 SUCCESS; la variante #327 non è ancora integrata. Nuovo banco KiCad9 `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS_LAB_V2_7_DRAFT.kicad_sch` con **D2101+D2110** sul gate A e **D2102+D2111** sul gate B, 1N4106-1 DO-35 THT candidati, ora con libreria `LAB_OVP.kicad_sym`, `sym-lib-table` e project file dedicati. Resta una sola source comune, GND BJT comune e ENABLE A/B esterni non qualificati.
