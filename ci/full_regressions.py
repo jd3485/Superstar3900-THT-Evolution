@@ -209,6 +209,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_mute_j1902_overvoltage_resistor_screen_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Passive S-meter historical 2x100k network cannot be assumed to reach
+    # 50uA at 5V with hypothetical 20kohm movement. Check source compliance.
+    print("::group::V2.7 SMETER 675 SOURCE FSD COMPLIANCE NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_smeter_passive_source_fsd_compliance_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Source impedance at a detector output is UNKNOWN: sweep four illustrative
     # source resistances through real AM455 RC and FRONT/LM386 input loading.
     # Independent four-node complex KCL cross-check across 300 cases.
