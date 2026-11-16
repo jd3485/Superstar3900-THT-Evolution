@@ -363,6 +363,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_independent_tolerances_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Shared LM2903P open-collector node is NOT a secondary series
+    # power disconnect. Native netlist + 720896 independent 16R corners
+    # for hypothetical externally forced HIGH/LOW output states.
+    print("::group::SPLIT LM2903P SHARED OC FORCED NODE 720896 NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_shared_oc_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # KiCad9 two physically separate THT reference headers do not
     # prevent correlated VREF failures: 101376 synthetic cases.
     print("::group::V2.7 SPLIT LM2903P DOUBLE VREF 101376 CORNERS",flush=True)
