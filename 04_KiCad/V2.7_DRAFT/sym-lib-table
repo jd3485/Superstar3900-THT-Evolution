@@ -2,6 +2,8 @@
   (lib (name "TH_AUDIO") (type "KiCad") (uri "${KIPRJMOD}/TH_AUDIO.kicad_sym") (options "") (descr "THT LM386 RX audio pilot, project-local symbols"))
   (lib (name "TH_FRONT") (type "KiCad") (uri "${KIPRJMOD}/FRONT_VOLUME/TH_FRONT.kicad_sym") (options "") (descr "existing isolated THT RX volume symbols"))
   (lib (name "TH_FRONT_ILLUM") (type "KiCad") (uri "${KIPRJMOD}/FRONT_ILLUM_BENCH/TH_FRONT_ILLUM.kicad_sym") (options "") (descr "existing lab THT LED symbols"))
+  (lib (name "TH_MUTE") (type "KiCad") (uri "${KIPRJMOD}/FRONT_MUTE_NC_RELAY/TH_MUTE.kicad_sym") (options "") (descr "Unqualified standalone NC mute relay with THT passives"))
+  (lib (name "TH_COIL") (type "KiCad") (uri "${KIPRJMOD}/FRONT_MUTE_COIL_DRIVER/TH_COIL.kicad_sym") (options "") (descr "Unqualified dual enable THT coil driver with bypass and bulk"))
   (lib (name "TH_SMETER") (type "KiCad") (uri "${KIPRJMOD}/FRONT_SMETER/TH_SMETER.kicad_sym") (options "") (descr "isolated S-meter passive R candidate, unqualified"))
 
  (lib (name "THT_V10") (type "KiCad") (uri "${KIPRJMOD}/../V1.0/THT_V10.kicad_sym") (options "") (descr "THT analog"))
