@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""KiCad9 hierarchical FRONT integration pilot, five real THT sheets with two explicit inter-sheet nets.
+"""KiCad9 hierarchical FRONT integration pilot, five real THT sheets with four explicit inter-sheet nets.
 
 Intended future FRONT parent but NOT an approved product schematic: existing
 volume, LED, S-meter, relay contact and dual NPN coil driver sheets are included without making power,
@@ -66,9 +66,11 @@ def verify():
         assert '(name "'+item+'")' in sym,item
     for item in ("TH_FRONT", "TH_FRONT_ILLUM_LAB"):
         assert '(name "'+item+'")' in fp,item
-    assert sch.count("(wire (pts ")==6 and "(junction " not in sch
+    assert sch.count("(wire (pts ")==8 and "(junction " not in sch
     assert sch.count('(pin "VOL_WIPER_TO_AMP" passive')==2
     assert sch.count('(pin "AF_GND" passive')==2
+    assert sch.count('(pin "COIL_PLUS_LAB" passive')==2
+    assert sch.count('(pin "COIL_MINUS_LAB" passive')==2
     assert "NO FAB / NO TX" in sch
     with tempfile.TemporaryDirectory(prefix="tht_front_partial_hierarchy_") as temp:
         d=Path(temp)
@@ -99,42 +101,36 @@ def verify():
         label=h.group(1).rsplit("/",1)[-1]
         found.setdefault(label,[]).append(members)
     assert set(found)==set(PARTITIONS),(found.keys(),PARTITIONS.keys())
-    expected_multi={
-        "COIL_PLUS_LAB":[
-            {("K1901","4"),("J1903","1")},
-            {("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1"),("C1912","1")}],
-        "COIL_MINUS_LAB":[
-            {("K1901","5"),("J1903","2")},
-            {("J1914","2"),("D1911","2"),("Q1911","1")}],
-    }
     joined={
         "AF_GND":{("J1301","2"),("RV1301","3"),("J1302","2"),
                   ("K1901","2"),("J1901","2"),("J1902","2"),("R1901","2")},
         "VOL_WIPER_TO_AMP":{("RV1301","2"),("J1302","1"),("K1901","3"),("J1901","1")},
+        "COIL_PLUS_LAB":{("K1901","4"),("J1903","1"),("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1"),("C1912","1")},
+        "COIL_MINUS_LAB":{("K1901","5"),("J1903","2"),("J1914","2"),("D1911","2"),("Q1911","1")},
     }
     for name,expected in PARTITIONS.items():
         candidates=found[name]
         if name in joined:
             assert candidates==[joined[name]],(name,candidates,joined[name])
             continue
-        if name in expected_multi:
-            assert {frozenset(x) for x in candidates}=={frozenset(x) for x in expected_multi[name]},(name,candidates)
-        else:
-            assert candidates==[expected],(name,candidates,expected)
+        assert candidates==[expected],(name,candidates,expected)
     all_nets=[pins for group in found.values() for pins in group]
-    assert len(all_nets)==24,len(all_nets)
+    assert len(all_nets)==22,len(all_nets)
     assert len(set().union(*all_nets))==sum(map(len,all_nets))==71
-    for name in expected_multi:
-        assert len(found[name])==2,(name,found[name])
     assert all(len(found[name])==1 for name in joined)
-    print("PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_24NETS_71PINS_2REAL_AUDIO_GND_JOINS_ERC0_NONFAB",{
+    assert found["COIL_PLUS_LAB"][0].isdisjoint(found["COIL_MINUS_LAB"][0])
+    assert found["DRIVER_GND"][0].isdisjoint(found["AF_GND"][0])
+    assert found["ILLUM_RETURN_LAB"][0].isdisjoint(found["DRIVER_GND"][0])
+    print("PASS_KICAD9_FRONT_HIERARCHY_5SHEETS_32REFS_22NETS_71PINS_4REAL_AUDIO_COIL_JOINS_ERC0_NONFAB",{
         "child_sheets":5,
         "THT_components":32,
-        "hierarchical_nets":24,
+        "hierarchical_nets":22,
         "actual_volume_to_mute_signal_and_AF_GND_connections":2,
+        "actual_coil_plus_minus_connections":2,
         "pin_endpoints":71,
         "relay_oem_qualified":False,
-        "relay_coil_interconnected_in_parent":False,
+        "relay_coil_interconnected_in_parent":True,
+        "relay_coil_qualified_for_product":False,
         "MAIN_FRONT_harness_qualified":False,
         "S_meter_passive_candidate_sheet_included":True,
         "S_meter_driver_FSD_coil_qualified":False,

@@ -1,9 +1,26 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — PR #288 MERGED: FRONT bobina gerarchica KiCad9
+
+**Merge verificato su main:** PR #288 SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`; CI #43809446368 FAST/FULL/Required **SUCCESS 3/3** su HEAD `8ff4c674ebee4425ade6937616dcf2babbc4e6f5`. KiCad9: ERC0; master FRONT 5 fogli, 32 ref, **22 reti**, **71 pin**, **4 collegamenti fra fogli** (2 audio/AF_GND, 2 bobina COIL_PLUS/MINUS_LAB); verificati 36 stati di guasto logici del dual NPN, non fail-safe. Nessun MPN relè o driver qualificato, niente PCB prodotto. PR #289, gate S-meter FSD, separata e in verifica. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 16 novembre 2026 — safety gate analitico S-meter FSD single-fault su branch
 
 **Branch indipendente:** `engineering/v27-front-smeter-fsd-single-fault-bound-20261116` (da main `ab0a09bc11a21f442920af450f7c6999bc38eb1e`): estensione sostanziale del gate `03_Verifiche/V2.7/verify_front_smeter_fsd_fault_screen.py` che ricava tensione massima sorgente da FSD *ipotetica*, due resistenze da 100k con -5% e guasto singolo in corto. A 50 µA: **9,5 V** sani, **4,75 V** con un resistore corto; 20 V non qualificati. Rapporto `03_Verifiche/V2.7/RAPPORTO_SMETER_FSD_VOLTAGE_SINGLE_SHORT_20261116.md`. Schemi FRONT/MAIN invariati; nessuna FSD OEM certificata. Questo gate non è prova di sicurezza o permesso di alimentare hardware. PR/CI da verificare sullo SHA finale. PR #288 sulla bobina rimane indipendente e draft. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+
+
+## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
+
+**Baseline verificata:** PR #286 integrata (main SHA `5fb398a67f13a1523f938afef2bae9f093077a78`), PR #287 checkpoint integrata (main SHA `ab0a09bc11a21f442920af450f7c6999bc38eb1e`). PR #286 CI #43808193916 FAST/FULL/Required 3/3 SUCCESS e master FRONT 24 reti / 71 pin / 2 unioni audio.
+
+**Nuovo branch** `engineering/v27-front-master-coil-two-net-hierarchy-20261116`: due nuove connessioni gerarchiche elettriche KiCad9 tra RELAY e COIL_DRIVER (`COIL_PLUS_LAB` e `COIL_MINUS_LAB`), portando la topologia attesa a **22 reti / 71 endpoint / 4 unioni parent**. Test di netlist su tutte le partizioni, isolamenti AF_GND/DRIVER_GND/ILLUM_RETURN e ERC gerarchico aggiornati. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MASTER_COIL_HIERARCHY_20261116.md`. **Non ancora CI convalidata, non integrata su main**: procedere soltanto dopo FAST/FULL/Required verdi sullo SHA finale. Relè, rail e driver restano non qualificati. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
 ---
 

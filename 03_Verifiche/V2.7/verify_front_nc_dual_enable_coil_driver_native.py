@@ -22,6 +22,7 @@ SCH=BASE/(NAME+".kicad_sch")
 CONTACT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch"
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
 HARNESS=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_COIL_INTERCONNECT_LAB/FRONT_COIL_INTERCONNECT_PIN1_PIN2_NONFAB.kicad_sch"
+PARENT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 EXPECTED={
  "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1"),("C1912","1")},
  "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","1")},
@@ -69,6 +70,8 @@ def main():
     assert raw.count("Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")==1
     assert "(name \"K\"" in library and "(name \"A\"" in library
     assert "NO FAB / NO TX" in raw
+    assert raw.count('(hierarchical_label "COIL_PLUS_LAB" (shape passive)')==1
+    assert raw.count('(hierarchical_label "COIL_MINUS_LAB" (shape passive)')==1
     board=BOARD.read_text(encoding="utf-8")
     assert "Q1911" not in board and "Q1912" not in board
     assert board.count('(segment ')==35
@@ -76,7 +79,7 @@ def main():
         d=Path(td)
         erc=d/"coil_erc.rpt"
         run=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
-                            "-o",str(erc),str(SCH)],cwd=ROOT,
+                            "-o",str(erc),str(PARENT)],cwd=ROOT,
                            capture_output=True,text=True,timeout=120)
         print("DUAL_ENABLE_COIL_DRIVER_NATIVE_KICAD9_ERC",run.stdout,run.stderr,flush=True)
         if erc.exists():print(erc.read_text(encoding="utf-8"),flush=True)

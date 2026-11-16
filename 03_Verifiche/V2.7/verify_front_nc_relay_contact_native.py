@@ -51,6 +51,8 @@ def main():
     board=BOARD.read_text(encoding="utf-8")
     assert "K1901" not in board and board.count('(segment ')==35
     assert board.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==2
+    assert raw.count('(hierarchical_label "COIL_PLUS_LAB" (shape passive)')==1
+    assert raw.count('(hierarchical_label "COIL_MINUS_LAB" (shape passive)')==1
     # Hierarchical ports require an enclosing parent for native ERC.
     # Preserve child-only netlist audits below to catch inadvertent shorts.
     with tempfile.TemporaryDirectory(prefix="tht_front_nc_mute_") as td:
