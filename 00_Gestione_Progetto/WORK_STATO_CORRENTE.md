@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — FRONT mute NC, guasto AF_GND e interferenza audio: gate candidato
+
+**Baseline:** PR #291 MERGED in main SHA `ed7d461abc2f3eb997f94898d82a4ce415d5813d`. CI #43812854126 FAST/FULL/Required **SUCCESS 3/3**, test post-mute `PASS_FRONT_POSTMUTE_75_RX_AC_KCL_CASES_NATIVE_NETS_NONFAB` osservato nel log. **Branch attuale** `engineering/v27-front-nc-mute-coupled-audio-fault-screen-20261116` implementa un nuovo gate nativo `verify_front_mute_nc_coupled_audio_fault_native.py` e l'integrazione in `ci/full_regressions.py`: 60 combinazioni × due stati NC (120 casi), iniezione capacitiva ipotetica su audio MAIN, doppia soluzione AC KCL/impedenza, rigetto AF_GND open. Rshunt a NC integro con Rcontatto ipotetica 1Ω: 991,079Ω; NC aperto con ramo bleed ancora a massa: 100kΩ, +100,900×. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_NC_COUPLED_AUDIO_FAULT_20261116.md`, issue #292. **CI non ancora convalidata sul branch**: non integrare senza FAST/FULL/Required verdi. Nessuna prova hardware, NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #290 MERGED: audio interboard post-mute
 
 PR #290 integrata in main SHA `dfcc0be3e5c50e27e5f44eaaae2f492a606fc37d`, HEAD PR `88aaa5bce003c012197b24f40e012e6c70195fcd`, CI #43812063277 FAST/FULL/Required SUCCESS 3/3; schema interboard corretto J1902 post-mute → J1202 MAIN, escludendo bypass pre-mute J1302. Cablaggio meccanico e relè OEM ancora non qualificati. NO FAB / NO TX.
