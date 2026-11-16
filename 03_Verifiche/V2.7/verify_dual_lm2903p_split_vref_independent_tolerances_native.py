@@ -27,6 +27,45 @@ def main():
     assert ("J2203","1") in nets["EXTERNAL_VREF_2V5_UNQUALIFIED"]
     assert ("J2205","1") in nets["EXTERNAL_VREF_B_2V5_UNQUALIFIED"]
     assert nets["VIN_SENSE"].isdisjoint(nets["VIN_SENSE_B"])
+    # Guard the sixteen *actual* distinct physical THT resistor positions:
+    # A and B do not share sense or threshold resistors, even if they
+    # share the external 5V, raw VIN, return and open-collector node.
+    channel_a={
+        "R2208":("VIN_RAW_LAB","SENSE_SERIES_MID"),
+        "R2201":("SENSE_SERIES_MID","VIN_SENSE"),
+        "R2202":("VIN_SENSE","LAB_RETURN"),
+        "R2209":("VIN_SENSE","LAB_RETURN"),
+        "R2203":("EXTERNAL_VREF_2V5_UNQUALIFIED","OVP_REF"),
+        "R2204":("OVP_REF","LAB_RETURN"),
+        "R2205":("EXTERNAL_VREF_2V5_UNQUALIFIED","UVLO_REF"),
+        "R2206":("UVLO_REF","LAB_RETURN"),
+    }
+    channel_b={
+        "R2210":("VIN_RAW_LAB","SENSE_SERIES_MID_B"),
+        "R2211":("SENSE_SERIES_MID_B","VIN_SENSE_B"),
+        "R2212":("VIN_SENSE_B","LAB_RETURN"),
+        "R2213":("VIN_SENSE_B","LAB_RETURN"),
+        "R2214":("EXTERNAL_VREF_B_2V5_UNQUALIFIED","OVP_REF_B"),
+        "R2215":("OVP_REF_B","LAB_RETURN"),
+        "R2216":("EXTERNAL_VREF_B_2V5_UNQUALIFIED","UVLO_REF_B"),
+        "R2217":("UVLO_REF_B","LAB_RETURN"),
+    }
+    assert len(channel_a)==len(channel_b)==8
+    assert set(channel_a).isdisjoint(channel_b)
+    assert len(set(channel_a)|set(channel_b))==16
+    for ref,(net1,net2) in (channel_a|channel_b).items():
+        assert ("R"+ref[1:],"1") in nets[net1],(ref,net1)
+        assert (ref,"2") in nets[net2],(ref,net2)
+    # No physical resistor reference may escape its declared two nets.
+    for ref in channel_a|channel_b:
+        actual={(n,pin) for n,pins in nets.items()
+                for (r,pin) in pins if r==ref}
+        assert actual=={((channel_a|channel_b)[ref][0],"1"),
+                       ((channel_a|channel_b)[ref][1],"2")},(ref,actual)
+    assert ("R2207","1") in nets["EXTERNAL_5V_UNQUALIFIED"]
+    assert ("R2207","2") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
+    assert ("J2204","1") in nets["WINDOW_GOOD_OC_BIASED_LAB"]
+    # The biased OC output is not a series load disconnect.
     # Each physical channel owns eight separate resistor values. Counting
     # independently gives 256^2 possibilities, without a 26M nested loop.
     normal=[]
