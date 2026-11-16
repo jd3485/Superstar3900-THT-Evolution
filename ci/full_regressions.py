@@ -356,6 +356,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # KiCad9 two physically separate THT reference headers do not
+    # prevent correlated VREF failures: 101376 synthetic cases.
+    print("::group::V2.7 SPLIT LM2903P DOUBLE VREF 101376 CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_lm2903p_split_vref_double_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.
