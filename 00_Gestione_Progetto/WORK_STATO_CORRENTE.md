@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — #314 MERGED; secondo canale LM2903P THT reale in nuova PR DRAFT
+
+PR [#314](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/314) **MERGED** main SHA `04667a14426e869070a7c55cf9aaf5186fefda2d`, final head `a8b46f7ff2664d88809f4ecab8506b4e68f703b5`, run [#43859615060](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43859615060) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_REDUNDANT_34PIN_9NET_92160_DOUBLE_FAULT_NONFAB`, 92.160 casi, 9.216 fuori common-mode, 512 oltre input 36V assoluti, 0 falsi GOOD nel solo doppio-fault model. **3.072 falsi GOOD a GUASTO SINGOLO PR #313 rimangono**, NO FAB/TX/BATTERIA/VEICOLO.
+
+Nuovo branch `engineering/v27-dual-lm2903p-two-window-sense-physical-lab-20261116`: nuovo KiCad9 THT ISOLATO `04_KiCad/V2.7_DRAFT/MAIN_DUAL_LM2903P_INDEPENDENT_SENSE/MAIN_DUAL_LM2903P_INDEPENDENT_SENSE_LAB_V2_7_DRAFT.kicad_sch`, secondo U2202 LM2903P PDIP8 e R2210..R2217 8 resistori THT per senso e soglie UVLO/OVP B separati, output OC entrambi sul nodo finestra condiviso; native `03_Verifiche/V2.7/verify_dual_lm2903p_window_native.py` in FULL richiede ERC0, **58 pin/13 reti reali attesi**, **69.120** single-sensor-fault corner su A/B e VIN 0–48V teorico. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_69120_SENSE_20261116.md`. **CI/merge NUOVI NON verificati**, restare DRAFT. **Rail 5V/ref2,5V/RETURN/OC condivisi e non qualificati, nessuno switch serie autonomo, no fail-closed; MAIN V2.6/FRONT invariati.** #27 aperta. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #313 MERGED, nuovo screening 92.160 doppio guasto LM2903P THT
 
 PR [#313](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/313) **MERGED** su main `cac616c522d82701b9388675ae3d6f8c323571dc`, final head `2119dac6a5bcb9fdd5214ca4b34b4b7292213a0c`, run [#43857742450](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43857742450) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 ERC zero errori e warning, 34 pin/9 reti, 34.560 corner di guasto singolo su due TOP 100k serie e due BOTTOM 10k parallelo: **3.072 falsi consensi GOOD fuori finestra** (modello DC), massimo input sotto guasto singolo 2,329649V con source48V ipotetico e 5V esterno non qualificato. Nessun circuito fail-closed o PCB, MAIN V2.6/FRONT invariati.
