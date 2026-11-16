@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #315 MERGED; fault VREF comune doppio LM2903P THT
+
+PR [#315](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/315) **MERGED** main SHA `55141efe3afe5f554faf0eb740090297e4a86b8c`; final head `7132ae4abb9e035aab015a71f5f70cebd958972f`, run [#43861130262](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43861130262) FAST/FULL/Required **3/3 SUCCESS**. Native KiCad9 **ERC 0 errori / 0 warning**, marker `PASS_NATIVE_KICAD9_DUAL_LM2903P_THT_58PIN_13NET_69120_CORNERS_NONFAB`, 58 pin THT/13 reti, **69.120 corner** di un resistore sensing guasto in solo uno dei canali A/B; zero falsi HIGH fuori VIN9–16V nel modello quando l'altro canale è sano. 5V esterni, 2,5V REF comune, RAW/RETURN/uscita OC condivisi: **nessun fail-closed, niente supervisore o secondo switch indipendenti**; MAIN V2.6 e FRONT invariati.
+
+Nuovo branch `engineering/v27-dual-lm2903p-common-vref-fault-20261116`, verificatore `03_Verifiche/V2.7/verify_dual_lm2903p_common_reference_fault_native.py` registrato in FULL, 58pin/13net native, **16.896 corner** con 6 VREF comuni ipotizzate 0/1,25/2,475/2,5/2,525/5V e 11 VIN (0..48V sintetici), 256 tolleranze. **1.028** casi di consenso GOOD falsi fuori range9–16V con guasto comune riferimento, pur avendo due comparatori fisici separati: 512 con REF1,25V e 516 con REF5V. Rapporto `03_Verifiche/V2.7/RAPPORTO_DUAL_LM2903P_VREF_COMUNE_16896_20261116.md`. **CI e merge del nuovo branch DA VERIFICARE**; #27 OPEN. Supply/reference/switch autonoma, input TVS/fail-safe non progettati, nessun PCB. **NO FAB/TX/BATTERIA/VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — #314 MERGED; secondo canale LM2903P THT reale in nuova PR DRAFT
 
 PR [#314](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/314) **MERGED** main SHA `04667a14426e869070a7c55cf9aaf5186fefda2d`, final head `a8b46f7ff2664d88809f4ecab8506b4e68f703b5`, run [#43859615060](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43859615060) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_REDUNDANT_34PIN_9NET_92160_DOUBLE_FAULT_NONFAB`, 92.160 casi, 9.216 fuori common-mode, 512 oltre input 36V assoluti, 0 falsi GOOD nel solo doppio-fault model. **3.072 falsi GOOD a GUASTO SINGOLO PR #313 rimangono**, NO FAB/TX/BATTERIA/VEICOLO.
