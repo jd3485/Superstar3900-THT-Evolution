@@ -187,7 +187,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_am455_front_lm386_loaded_ac_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
-    # Real K1901 NO-contact receive path adds R1902 1k and R1901 100k\n    # before the LM386 input. Independent complex four-node KCL checks 75 cases.\n    print("::group::V2.7 POSTMUTE FRONT RELAY LM386 LOADED AC 75 KCL",flush=True)\n    subprocess.run([sys.executable,"-B",\n                    str(ROOT/"03_Verifiche/V2.7/verify_front_postmute_loaded_ac_native.py")],\n                   cwd=ROOT,check=True)\n    print("::endgroup::",flush=True)\n    # Source impedance at a detector output is UNKNOWN: sweep four illustrative
+    # Real K1901 NO-contact receive path adds R1902 1k and R1901 100k
+    # before the LM386 input. Independent complex four-node KCL checks 75 cases.
+    print("::group::V2.7 POSTMUTE FRONT RELAY LM386 LOADED AC 75 KCL",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_postmute_loaded_ac_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
+    # Source impedance at a detector output is UNKNOWN: sweep four illustrative
     # source resistances through real AM455 RC and FRONT/LM386 input loading.
     # Independent four-node complex KCL cross-check across 300 cases.
     print("::group::V2.7 AM455 ENVELOPE UNKNOWN SOURCE IMPEDANCE 300 KCL CASES",flush=True)
