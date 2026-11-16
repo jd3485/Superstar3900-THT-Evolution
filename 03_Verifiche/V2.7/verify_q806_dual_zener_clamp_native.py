@@ -97,9 +97,9 @@ def main():
     oem_izt_A=0.021
     oem_izk_A=0.00025
     oem_max_zzk_ohm=700.
-    max_possible_total_gate_path_A=(48.0-11.4)/9500.0
+    max_possible_total_gate_path_A=48.0/9500.0
     assert 0 < max_possible_total_gate_path_A < oem_izt_A
-    assert max_possible_total_gate_path_A < 0.004
+    assert max_possible_total_gate_path_A < 0.0051
     # This is total series current, NOT per-diode Iz; two parallel
     # branches can split unequally, and may both be below test IZT.
     # Therefore model's <20V under ONE OPEN must NOT imply a guaranteed
