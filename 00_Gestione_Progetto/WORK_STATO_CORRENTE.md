@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #275 MERGED: quattro resistori THT; BC33725BU OEM pinout sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #275 SHA `27fa5f51dec26c77319343b1ee703c027c225b1a`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #276 MERGED; revisione matrice guasti doppio BJT sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #276 SHA `e8598fb756db6de156020362746851679ea0c752`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #276 MERGED; fault screening doppio transistor su nuovo branch
+
+**Verificato GitHub:** PR #276 MERGED su main SHA `e8598fb756db6de156020362746851679ea0c752`; [Actions #43777796972](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43777796972) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `PASS_NATIVE_KICAD9_OMRON_G5V1_36_OEM_SCREEN_EXPECTED_FAIL_NOT_RELEASE`, KiCad9 `Found 0 violations`, nessun Traceback o errore; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. Q1911/Q1912 BC33725BU candidati in KiCad con TO-92, C1/B2/E3 OEM. Nessuna PCB aggiornata, bobina/contatti/safety non qualificati.
+
+**Branch in corso** `engineering/v27-front-coil-36-state-transistor-faults-20261116`: sostituito il controllo tautologico con **36 stati** (4 comandi × 3 stati Q1911 × 3 stati Q1912), esplicitando **5 energizzazioni non comandate** e **5 mancate energizzazioni** nel modello interruttore ideale. Non è una mitigazione fail-safe né una prova hardware; gate CI del branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #275 MERGED; Q1911/Q1912 BC33725BU OEM su nuovo branch
 
