@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — variante THT quattro clamp su due gate separati, non qualificata
+
+Branch `engineering/v27-dual-gate-twin-clamps-lab-20261116` **deriva dalla PR #326 integrata su main** SHA `4bd4de847e05c38c9a7a816548fc5b5a080b8475` CI #43907346523 FAST/FULL/Required 3/3 SUCCESS; la variante #327 non è ancora integrata. Nuovo banco KiCad9 `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS/MAIN_SECONDARY_OVP_DUAL_GATES_TWIN_ZENERS_LAB_V2_7_DRAFT.kicad_sch` con **D2101+D2110** sul gate A e **D2102+D2111** sul gate B, 1N4106-1 DO-35 THT candidati, ora con libreria `LAB_OVP.kicad_sym`, `sym-lib-table` e project file dedicati. Resta una sola source comune, GND BJT comune e ENABLE A/B esterni non qualificati.
+
+Verificatore nativo `03_Verifiche/V2.7/verify_dual_pmos_twin_clamps_native.py` aggiunto al FULL: richiede ERC0, **20 THT / 44 pin / 12 reti** e controlla **1.944** corner di modello Zener ideale NON OEM; **un clamp OPEN** per gate non supera 20V nel modello fittizio, mentre **entrambi OPEN** possono superare VGS assoluto. Report `03_Verifiche/V2.7/RAPPORTO_PMOS_DUE_GATE_QUATTRO_ZENER_THT_44PIN_12NET_20261116.md`. Non è una qualifica realistica di clamp, guasto D–S, fault comuni, carico, transitori o supply. **PR/CI nuovi non ancora confermati**. #27 aperta, MAIN/FRONT senza PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 16 novembre 2026 — doppio gate PMOS THT fisicamente separato, candidato isolato in PR
 
 Branch `engineering/v27-independent-q804-q805-gates-native-lab-20261116`: realizzato un **nuovo KiCad9 nativo** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES/MAIN_SECONDARY_OVP_DUAL_INDEPENDENT_GATES_LAB_V2_7_DRAFT.kicad_sch`, Q804/Q805 anti-serie con gate A/B separati, Q806/Q807 KSP42BU e R2101/R2110 pullup distinti, R2102/R2111 sink separati, J2103/J2104 ENABLE separati, un clamp THT D2101/D2102 per gate. Previsti **18 componenti/40 pin/12 reti**, validazione ERC/netlist KiCad9 e 16 combinazioni Boolean fault tramite `03_Verifiche/V2.7/verify_dual_pmos_independent_drivers_native.py` registrato in FULL. **Nuova PR/CI da verificare, non ancora su main.** Report `03_Verifiche/V2.7/RAPPORTO_PMOS_DUE_GATE_DUE_DRIVER_THT_40PIN_12NET_20261116.md`. Due enable/supply esterni, source/return comuni, Zener singolo per gate e rischio VGS/DS fault: **NON fail-OFF qualificato**. PR #325 MERGED su main b74253c4bfb57e8cdb7b80ef8cc8f7bbc5bddba0 con CI #43902519289 3/3 SUCCESS; #27 APERTA. MAIN V2.6 e FRONT senza PCB, **NO FAB/TX/BATTERIA/VEICOLO**.
