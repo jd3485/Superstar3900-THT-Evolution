@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #311 MERGED; LM2903P open-collector THT fault truth 3200 corner in nuova PR DRAFT
+
+PR [#311](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/311) **MERGED** main SHA `df7e088d4890075b378894d426a2b9594681ab25`; head finale `739c1d333613055d8f9be5aa3170811600caf7c1`, run [#43853755257](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43853755257): FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_PDIP8_30PIN_8NET_128_WINDOW_NONFAB`; ERC KiCad9 **0 errori/0 warning**, 30 pin reali/8 reti, 128 corner della finestra UVLO/OVP su U2201 LM2903P DIP8 e R2201..R2207. J2202 è connettore **ESTERNO** che dichiara formalmente il rail5V/return come `power_out` nel banco, non un vero alimentatore generato; nessuna PCB e nessuna qualifica. Prima iterazione #311 fallì correttamente ERC 11 violazioni, corrette prima del merge.
+
+Nuovo branch `engineering/v27-lm2903p-window-fault-truth-table-20261116`: test `03_Verifiche/V2.7/verify_lm2903p_oc_fault_truth_native.py` in FULL, netlist vera 30 pin/8 reti, **3200** casi ideali di uscita open collector, VIN 0/8/13,8/16/48 V ipotetici, R2202 OPEN/SHORT, VREF lost e supply5V lost. Rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_OC_3200_FAULT_TRUTH_20261116.md`. **CI/merge nuovi DA VERIFICARE; nulla integrato in MAIN.** Critici R2202 OPEN con ingresso sovratensione e supply persa con OC fluttuante, niente vero fail-OFF/secondo stadio serie. #27 aperta; NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #310 MERGED; primo schema THT LM2903P PDIP8 in PR #311 DRAFT
 
 PR [#310](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/310) **MERGED** main `b9e551051f7be9a738f9474cf365886259583a01`; final PR SHA `51b18cd5e17e41cb68b2ff08ec7b8dc17c43075b`, run [#43851491166](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43851491166), FAST/FULL/Required **3/3 SUCCESS**. Test `PASS_LM2903P_WINDOW_128_PASSIVE_CORNERS_NONFAB`: 128 corner resistivi, UVLO 9,557–10,462V, OVP 14,363–15,663V nel modello senza bias/isteresi. **R2202 ipotetico OPEN rende VIN_SENSE potenzialmente uguale al raw 48V**, non tollerabile senza protezione. Nessun CAD era presente in #310.
