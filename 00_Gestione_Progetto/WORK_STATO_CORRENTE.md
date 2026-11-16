@@ -1,6 +1,12 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
 
+## 16 novembre 2026 — fix candidato bypass MAIN AUDIO MUTE, branch
+
+**Nuovo branch:** `engineering/v27-main-front-audio-harness-post-mute-20261116`, baseline main PR #288 MERGED (SHA `5f92440dddd3bff93e73847bcd27ff476a6e414e`, Actions #43809446368 FAST/FULL/Required SUCCESS 3/3, 22 reti FRONT). Individuato errore reale di contratto: cavo MAIN/FRONT J2401 precedentemente puntato a **J1302**, presa wiper **pre-mute**, bypassando K1901 se usata come uscita verso LM386 MAIN. Corretto schema del cavo per **J1902/1 AMP_INPUT_MUTED → J1202/1 AUDIO_IN** e **J1902/2 AF_GND → J1202/2 GND**; aggiornato verificatore nativo per imporre netlist del master FRONT, separazione tra J1302 e J1902, e pin endpoint. Rapporto `03_Verifiche/V2.7/RAPPORTO_INTERBOARD_AUDIO_POST_MUTE_BYPASS_FIX_20261116.md`. **CI non ancora conclusa: non fondere** senza FAST/FULL/Required verdi sul commit finale. Nessuna scheda reale o MPN relè qualificato; resta NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — FRONT COIL gerarchico, revisione tecnica CANDIDATA su branch
 
 **Baseline verificata:** PR #286 integrata (main SHA `5fb398a67f13a1523f938afef2bae9f093077a78`), PR #287 checkpoint integrata (main SHA `ab0a09bc11a21f442920af450f7c6999bc38eb1e`). PR #286 CI #43808193916 FAST/FULL/Required 3/3 SUCCESS e master FRONT 24 reti / 71 pin / 2 unioni audio.
