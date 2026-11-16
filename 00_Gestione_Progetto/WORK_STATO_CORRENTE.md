@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #307 MERGED; R2102 Vishay PR01 1W THT candidata in PR #308 DRAFT
+
+PR [#307](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/307) MERGED su main SHA `4c019fce978ead98ed8a81809cb59bfa7c33d238`; final head `7931cc867e5e3417505ac9cf2f809687278f670e`, run [#43846653127](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43846653127) FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_1N4106_TWIN_THERMAL_7680_SYNTHETIC_FAULT_NONFAB`; netlist KiCad9 27 pin/8 reti, 7680 casi matematici (576 di double-open oltre |VGS|20V, nessuno single-open nel modello sintetico). R2102 footprint reale sul banco precedente **DIN0309 L9.0/D3.2/P12.70** verificato in regression; nessun rating OEM deriva dalla footprint.
+
+PR [#308](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/308) **DRAFT, NUOVO HEAD DA VERIFICARE DOPO REBASE/CI**: banco THT KiCad9 isolato `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_PR01_R2102/MAIN_SECONDARY_OVP_Q804_Q805_Q806_PR01_R2102_LAB_V2_7_DRAFT.kicad_sch` con R2102 candidato **Vishay PR01000101002JR500 10k ±5% 1W P70**, impronta provvisoria DIN0207 cambiata intenzionalmente (OEM corpo 6,5×2,5mm). Nuova FULL `03_Verifiche/V2.7/verify_r2102_pr01_native_derating.py`: richiede ERC0, 27 pin/8 reti e 567 scenari P70/guasto. A source ipotetico 48V e clamp SHORT Rmin9,5k dissipa teoricamente 0,24253W, sotto rating statico a125°C (~0,5769W) ma **sopra** rating a175°C (~0,1923W). Report `03_Verifiche/V2.7/RAPPORTO_R2102_PR01_1W_THT_FAULT_P70_20261116.md`. R2102/OEM footprint, pulse/termica reali, clamp, supervisor e safety NON qualificati. Master MAIN V2.6/FRONT invariati; issue #27 aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
+
 ## 16 novembre 2026 — PR #306 MERGED, gate termico/asimmetrie Microchip 1N4106-1 THT
 
 PR [#306](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/306) MERGED su main SHA `a827773cf1f0d921a7ed47701099d0ea98649b15`, final head `237a1f063d3fa912600606aa473f1b83e347086d`, run [#43844093319](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43844093319): FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_MICROCHIP_1N4106_27PIN_8NET_1944_IDEAL_NONFAB`. KiCad9 ERC zero errori/zero warning, 27 pin/8 reti; modello 1.944 casi. Ben **516 casi del test** scendono sotto i 250µA di IZT *per diodo* e non consentono di affermare clamp OEM garantito. Schematic KiCad9 isolato Microchip D2101/D2102 THT DO-35, MAIN V2.6 invariato.

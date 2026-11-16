@@ -1,0 +1,2 @@
+(sym_lib_table
+(lib (name "LAB_OVP")(type "KiCad")(uri "${KIPRJMOD}/LAB_OVP.kicad_sym")(options "")(descr "Isolated Q806 microchip clamp Vishay PR01 R2102 candidate")))
