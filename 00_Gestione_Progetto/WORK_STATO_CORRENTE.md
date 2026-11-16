@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #300 MERGED, nuovo banco KiCad9 Q804 OFF passivo
+
+PR #300 docs-only integrata in `main` SHA `dd03fd526e0d79a6e301aaf417da920f23dd2065`, HEAD `ed6bfb5c711365c4bd7853f0b95344ed79cb9c5a`, CI #43825264889 FAST/Required SUCCESS, FULL skipped per `CI_SCOPE full=false` (non 3/3 FULL). Contratto di integrazione secondo supervisore `03_Verifiche/V2.7/CONTRATTO_SUPERVISORE_OVP_SECONDARIO_20261116.md` resta tecnico e privo di circuito qualificato.
+
+Branch `engineering/v27-ovp-q804-off-default-toplevel-lab-20261116`: **vero schema isolato KiCad9 THT candidato** `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_PASSIVE_OFF/MAIN_SECONDARY_OVP_Q804_PASSIVE_OFF_LAB_V2_7_DRAFT.kicad_sch` con Q804 IRF9540NPBF TO-220, R2101 47k source↔gate per OFF passivo, D2101 1N4742A 12V gate clamp candidato e J2101-2103 (IN/OUT/GATE LAB). Nuovo test nativo `03_Verifiche/V2.7/verify_ovp_secondary_q804_passive_off_native.py` registrato nel FULL: ERC0 atteso e 13 pin/4 reti da verificare, CI ancora da concludere. Report `03_Verifiche/V2.7/RAPPORTO_Q804_PASSIVE_OFF_BENCH_20261116.md`. LM2903P TI Active PDIP-8 ipotesi futura: Vs max36V, alimentazione indipendente indispensabile; **nessun supervisore secondario è presente nel CAD**, nessuna protezione fail-closed qualificata. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #299 MERGED e architettura protezione indipendente
 
 PR #299 integrata in `main` SHA `840430f4d50cffdca21f6c064a5c7e56de6ffdce` (HEAD `3fc92e5c08740a8f949d5d288569cc5c2e5c305d`). CI #43823862585 FAST/FULL/Required **SUCCESS 3/3**; nel log FULL `PASS_NATIVE_KICAD9_V26_OVP_9072_DUAL_OPEN_RAIL_FAULT_CASES_NONFAB`. Netlist nativa MAIN 76 reti, 9.072 casi, **324 scenari** con D806 e U802 TL431 entrambi aperti sopra il limite 36V U801 in ipotesi VIN48V; massimo 47,4105V. Risultato diagnostico, NON protezione certificata né autorizzazione ad alimentare VIN48V.
