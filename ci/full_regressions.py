@@ -320,6 +320,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_oc_fault_truth_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # LM2903P THT isolated 2-series top / 2-parallel bottom divider:
+    # KiCad9 ERC and 34 pin/9 net plus 34560 one-resistor fault cases.
+    # Flags false positive OC window under single resistor faults.
+    print("::group::V2.7 LM2903P REDUNDANT SENSING NATIVE 34560",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_lm2903p_redundant_sense_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
     # absolute voltage limit during combined D806/TL431 open faults.
     # This screening is not a hardware fail-safe approval.

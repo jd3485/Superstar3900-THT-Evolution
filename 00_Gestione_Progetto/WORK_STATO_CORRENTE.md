@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #312 MERGED; sensing ridondante LM2903P nuovo banco KiCad9 THT
+
+PR [#312](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/312) MERGED main SHA `9e8a8bf81eafd3cd6e67efc27bcb1189ce22e202`; final head `c7286ace75fe72abee9927e7c059516fddcbdd48`, run [#43856438604](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43856438604): FAST/FULL/Required **3/3 SUCCESS**; marker `PASS_NATIVE_KICAD9_LM2903P_OC_30PIN_8NET_3200_FAULT_TRUTH_NONFAB`, schema KiCad9 30 pin/8 reti e 3200 scenari OC, sensing OPEN/SHORT e perdita VCC/ref. TI LM2903P non-B input max **36V assoluti**, common-mode 5V supply **0..3V funzionale**: R2202 OPEN e ingresso48V oltre limite assoluto, altre tensioni sopra 3V comunque non funzionali garantite. `#27` sicurezza aperta.
+
+Nuovo branch `engineering/v27-lm2903p-redundant-sense-fault-tolerant-lab-20261116`: schema KiCad9 reale isolato `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_LM2903P_REDUNDANT_SENSE/MAIN_SECONDARY_LM2903P_REDUNDANT_SENSE_LAB_V2_7_DRAFT.kicad_sch`. **Due 100k TOP in serie** (R2208+R2201), **due 10k BOTTOM in parallelo** (R2202||R2209); normal ratio 1/41, UVLO 10/OVP15 con riferimenti R2205 185k e R2203 116k, U2201 LM2903P DIP8. Test native `03_Verifiche/V2.7/verify_lm2903p_redundant_sense_native.py` in FULL ERC e **34 pin/9 reti attesi**, 34.560 corner sintetici; il single resistor fault OPEN/SHORT limita teoricamente VIN_SENSE sotto i 3V per VIN ipotetico 48V ma **falsi consensi HIGH in alcuni single-fault restano**. No 5V o VREF generati, no PWM o supervisore fail-OFF o secondo switch, nessun PCB. Rapporto `03_Verifiche/V2.7/RAPPORTO_LM2903P_SENSE_RIDONDANTE_34560_20261116.md`. **CI/merge del nuovo branch ancora DA VERIFICARE**. #27 aperta. NO FAB/TX/BATTERIA/VEICOLO.
+
+---
+
+
 ## 16 novembre 2026 — PR #311 MERGED; LM2903P open-collector THT fault truth 3200 corner in nuova PR DRAFT
 
 PR [#311](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/311) **MERGED** main SHA `df7e088d4890075b378894d426a2b9594681ab25`; head finale `739c1d333613055d8f9be5aa3170811600caf7c1`, run [#43853755257](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43853755257): FAST/FULL/Required **3/3 SUCCESS**. Marker `PASS_NATIVE_KICAD9_LM2903P_PDIP8_30PIN_8NET_128_WINDOW_NONFAB`; ERC KiCad9 **0 errori/0 warning**, 30 pin reali/8 reti, 128 corner della finestra UVLO/OVP su U2201 LM2903P DIP8 e R2201..R2207. J2202 è connettore **ESTERNO** che dichiara formalmente il rail5V/return come `power_out` nel banco, non un vero alimentatore generato; nessuna PCB e nessuna qualifica. Prima iterazione #311 fallì correttamente ERC 11 violazioni, corrette prima del merge.
