@@ -66,7 +66,7 @@ def main():
     # Verify the explicit R2102 property in the symbol instance, not
     # an unrelated resistor/embedded library default footprint.
     import re
-    r2102=re.search(r'\\(property "Reference" "R2102".*?\\(property "Footprint" "([^"]+)"',
+    r2102=re.search(r'\(property "Reference" "R2102".*?\(property "Footprint" "([^"]+)"',
                     s,flags=re.S)
     assert r2102 is not None
     assert r2102.group(1)=="Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal"
