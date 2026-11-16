@@ -22,11 +22,11 @@ SCH=BASE/(NAME+".kicad_sch")
 CONTACT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch"
 BOARD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb"
 EXPECTED={
- "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1")},
+ "COIL_PLUS_LAB":{("J1911","1"),("D1911","1"),("J1914","1"),("C1911","1")},
  "COIL_MINUS_LAB":{("J1914","2"),("D1911","2"),("Q1911","1")},
  "SERIES_MID":{("Q1911","3"),("Q1912","1"),("R1913","2")},
  "DRIVER_GND":{("Q1912","3"),("R1914","2"),
-               ("J1911","2"),("J1912","2"),("J1913","2")},
+               ("J1911","2"),("J1912","2"),("J1913","2"),("C1911","2")},
  "DRIVE1_BASE":{("Q1911","2"),("R1911","2"),("R1913","1")},
  "DRIVE2_BASE":{("Q1912","2"),("R1912","2"),("R1914","1")},
  "ENABLE_AUDIO_LAB":{("J1912","1"),("R1911","1")},
@@ -38,7 +38,7 @@ def main():
     assert '(name "TH_COIL")' in (BASE/"sym-lib-table").read_text(encoding="utf-8")
     library=(BASE/"TH_COIL.kicad_sym").read_text(encoding="utf-8")
     assert all('(symbol "'+s+'"' in library
-               for s in ("NPN_ABSTRACT","RESISTOR","FLYBACK_DIODE","PORT2"))
+               for s in ("NPN_ABSTRACT","RESISTOR","FLYBACK_DIODE","PORT2","CAP_DECOUPLE_THT"))
     assert raw.count('(symbol (lib_id "TH_COIL:NPN_ABSTRACT")')==2
     assert raw.count("BC33725BU_ONSEMI_CANDIDATE_NOT_DRIVER_RELEASE")==2
     assert raw.count("Package_TO_SOT_THT:TO-92_Inline")==2
@@ -50,6 +50,9 @@ def main():
     assert raw.count('(symbol (lib_id "TH_COIL:RESISTOR")')==4
     assert raw.count('(symbol (lib_id "TH_COIL:FLYBACK_DIODE")')==1
     assert raw.count('(symbol (lib_id "TH_COIL:PORT2")')==4
+    assert raw.count('(symbol (lib_id "TH_COIL:CAP_DECOUPLE_THT")')==1
+    assert raw.count("100n_COIL_RAIL_BYPASS_CANDIDATE")==1
+    assert raw.count("Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm")==2  # embedded library plus C1911 instance
     assert raw.count("1k5_THT_BASERES")==2
     assert raw.count("10k_THT_PULLDOWN")==2
     # Gate physical THT footprint on all four passive resistors (not a driver qualification).
