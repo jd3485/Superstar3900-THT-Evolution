@@ -21,7 +21,12 @@ def main():
     assert sch.count("(symbol (lib_id ") == 3
     assert "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" in sch
     assert all(sch.count(f'(property "Reference" "{ref}"') == 1 for ref in EXPECTED)
-    assert "(hierarchical_label " not in sch
+    # Standalone schematic now exposes two passive ports to its KiCad9 parent.
+    # Their net connectivity remains the same when this child is opened alone.
+    assert sch.count("(hierarchical_label ") == 2
+    assert sch.count('(hierarchical_label "VOL_WIPER_TO_AMP" (shape passive)') == 1
+    assert sch.count('(hierarchical_label "AF_GND" (shape passive)') == 1
+    assert '(hierarchical_label "DEMOD_AUDIO"' not in sch
     mod = MOD.read_text(encoding="utf-8")
     assert all(f'(pad "{p}" thru_hole ' in mod for p in ("1", "2", "3"))
     assert mod.count(" thru_hole ") == 3
