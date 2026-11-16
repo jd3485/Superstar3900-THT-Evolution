@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #302 MERGED; vero Q806 BJT gate driver THT isolato in prova
+
+PR [#302](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/302) MERGED su main SHA `1304f3651e06b5fc41e98c5a7b5546f66e5dbf79`; run [#43834085840](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43834085840) sul final head `261eca3bed9c332e7b1c52dfb015eeddbaa3f9be` FAST/FULL/Required **3/3 SUCCESS**, marker `PASS_NATIVE_KICAD9_THT_DUAL_PMOS_BACKTOBACK_18PINS_6NETS_IDEAL_SCREEN_NONFAB`, ERC0 zero warning e netlist **18 pin/6 reti**. L'anti-serie a source comuni Q804/Q805 è un banco isolato, non una protezione integrata.
+
+**Nuovo candidato indipendente** branch `engineering/v27-q806-bjt-gate-driver-physical-candidate-20261116`: nuovo vero schematico THT isolato `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DRIVER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_NPN_LAB_V2_7_DRAFT.kicad_sch` aggiunge Q806 onsemi 2N3904BU TO-92 E1/B2/C3, R2103 4k7 e R2104 100k per controllare R2102 gate sink via ingresso J2103/1 ENABLE_LOGIC_5V_LAB; source MOSFET separato da LAB_RETURN. Verificatore `03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py` aggiunto in FULL richiede KiCad9 **25 pin/8 reti, ERC0** e 7.290 scenari ideali PVT/fault, PR/CI ancora da verificare. Rapporto `03_Verifiche/V2.7/RAPPORTO_Q806_DRIVER_CANDIDATO_20261116.md`. **Criticità** Q806 OFF può avere VCE ~47,8V a VIN48V hipotetico > massimo 40V del dispositivo; D2101 OPEN con Q806 ON può dare |VGS|~39,58V > massimo 20V. Non esiste ancora un comparatore supervisore indipendente, PCB o prova hardware; issue #27 APERTA, master MAIN V2.6 invariato. **NO FAB/TX/BATTERIA/VEICOLO**.
+
+---
+
+
 ## 16 novembre 2026 — PR #301 MERGED; seconda topologia isolata Q804/Q805 anti-serie in verifica
 
 PR [#301](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/301) integrata su **main `02566b758a3d8b44949a9aaacd7ad807eb6fe1b3`**. Run [#43831897396](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43831897396): FAST/FULL/Required **3/3 SUCCESS** sul finale `d05c80db49a6ceadc32fc9e8f99ec1c94694c5ac`, marker `PASS_NATIVE_KICAD9_Q804_THT_PASSIVE_OFF_LAB_ERC_NETS_NONFAB`, KiCad9 ERC **0 errori/0 warning**, **13 pin in 4 reti** per il banco isolato Q804. Il master MAIN V2.6 resta invariato; NO sicurezza hardware acquisita.
