@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #280 MERGED; R1902 serie 1k ingresso audio sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #280 SHA `0a52d93e6d93cfa30536570007ecc32e9a65f62f`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #281 MERGED; C1911 bypass bobina THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #281 SHA `ea6f28d414f15abf76d6479bc36db22def8811dc`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #281 MERGED; bypass THT bobina su branch
+
+**Verificato GitHub:** PR #281 MERGED su main SHA `ea6f28d414f15abf76d6479bc36db22def8811dc`, [Actions #43784261629](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43784261629) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_NC_RELAY_2_THT_RESISTORS_6_ISOLATED_NETS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_NC_RELAY_64_FAULT_STATE_GRAPH_BOOLEAN_NO_FAILSAFE_RELEASE`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun errore/Traceback, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. R1902 1 kΩ serie, R1901 100 kΩ shunt solo schema standalone FRONT.
+
+**Branch corrente** `engineering/v27-front-coil-rail-100n-decouple-tht-20261116`: reale **C1911 100 nF THT** fra **COIL_PLUS_LAB** e **DRIVER_GND** sullo schema KiCad9 driver bobina, simbolo locale registrato e impronta ceramica radiale provvisoria. Regressione KiCad9 nativa 8 reti aggiornata con C1911/1 e C1911/2; documento limita esplicitamente claims di EMC, bulk, transienti e componenti OEM. PCB FRONT/MAIN inalterate. CI branch da verificare; nessuna qualifica produttiva. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #280 MERGED; R1902 serie 1k nell'ingresso audio
 
