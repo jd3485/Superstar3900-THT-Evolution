@@ -42,7 +42,8 @@ def main():
     normal_high=0
     low_on_good_vin=0
     low_when_ref_lost=0
-    input_overstressed=0
+    outside_5V_supply=0
+    above_OEM_absolute_max_36V=0
     powerless_ambiguous=0
     ref_loss_zero_boundary_ambiguous=0
     for ah,al,oh,ol,uh,ul,vref,vin,mode in itertools.product(
@@ -63,7 +64,11 @@ def main():
             # Comparator pins can be driven to raw VIN, no TVS/clamp.
             exposed=vin
             if exposed>5.:
-                input_overstressed+=1
+                outside_5V_supply+=1
+            # TI LM2903 non-B OEM absolute input limit 36V;
+            # larger than VCC is NOT automatically above absolute max.
+            if exposed>36.:
+                above_OEM_absolute_max_36V+=1
             # The ideal overvoltage comparator would sink at VIN>15V,
             # but its overstressed silicon cannot be relied upon.
         elif mode=="R2202_BOTTOM_SHORT":
@@ -84,14 +89,17 @@ def main():
         tested+=1
     assert tested==128*5*5==3200
     assert normal_high==128
-    assert input_overstressed==128*4
+    assert outside_5V_supply==128*4
+    assert above_OEM_absolute_max_36V==128
     assert low_when_ref_lost==128*4
     assert powerless_ambiguous==128*5
     assert ref_loss_zero_boundary_ambiguous==128
     print("LM2903P_THT_NATIVE_OPEN_COLLECTOR_FAULT_TRUTH",{
         "native_pins":30,"native_nets":8,"fault_cases":tested,
         "healthy_nominal_13v8_OC_high_scenarios":normal_high,
-        "bottom_open_pin_above_5V_cases":input_overstressed,
+        "bottom_open_pin_above_5V_cases":outside_5V_supply,
+        "bottom_open_pin_above_TI_OEM_36V_absolute_max_cases":above_OEM_absolute_max_36V,
+        "LM2903P_5V_common_mode_upper_limit_V":3.0,
         "VREF_lost_ideal_low_cases":low_when_ref_lost,
         "VREF_zero_input_boundary_ambiguous":ref_loss_zero_boundary_ambiguous,
         "VCC_lost_OC_output_unqualified_cases":powerless_ambiguous,
