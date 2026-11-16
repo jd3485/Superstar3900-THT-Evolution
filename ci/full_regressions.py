@@ -970,6 +970,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_independent_drivers_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Four THT low-current Zeners: two on each physically separate
+    # PMOS gate. This is a synthetic single-OPEN analysis, not OEM I/V.
+    print("::group::THT DUAL GATE TWIN ZENER CLAMP NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_dual_pmos_twin_clamps_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
