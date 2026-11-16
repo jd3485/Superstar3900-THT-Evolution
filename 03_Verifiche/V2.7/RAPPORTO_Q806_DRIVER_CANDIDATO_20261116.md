@@ -1,36 +1,27 @@
-# V2.7 — isolamento THT Q804/Q805 e pilotaggio candidato Q806 2N3904BU
+# V2.7 — banco THT Q804/Q805 anti-serie con gate driver Q806 KSP42BU 300 V
 
-**16 novembre 2026 — laboratorio KiCad9 ISOLATO, NON un supervisore OVP/UVLO né un circuito sicuro da alimentare.**
+**16 novembre 2026 — KiCad9 isolato, non un supervisore OVP/UVLO e NON autorizzato per l'alimentazione hardware.** Il master MAIN V2.6, la PCB FRONT e tutti i file storici restano invariati.
 
-## Implementazione CAD reale
+## Modifiche reali e interfaccia di abilitazione
 
-Schematic: `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DRIVER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_NPN_LAB_V2_7_DRAFT.kicad_sch`. Preserva l'anti-serie a source comuni Q804/Q805 IRF9540NPBF, R2101 47k source–gate (OFF passivo), D2101 Zener nominale 12V source–gate e R2102 10k tra gate e sink. Nessuna modifica al master MAIN V2.6.
+Schematic nativo `04_KiCad/V2.7_DRAFT/MAIN_SECONDARY_OVP_Q804_Q805_Q806_DRIVER/MAIN_SECONDARY_OVP_Q804_Q805_Q806_NPN_LAB_V2_7_DRAFT.kicad_sch`. Q804/Q805 Infineon IRF9540NPBF P-MOS TO-220 con source in comune, drain esterni separati, R2101 47k source→gate (default OFF ideale), D2101 1N4742A nominale 12 V clamp source–gate, R2102 10k serie dal sink al gate. Qualifica magnetica/RF/termica/isolamento tabs TO-220 non eseguita.
 
-Sostituisce la precedente possibilità di collegare direttamente un sink esterno J2103/1 con una **vera rete THT**:
+- **Q806**: candidato onsemi **KSP42BU**, NPN TO-92 CASE 135AN **pin1 emitter** su `LAB_RETURN_ONLY`, **pin2 base** su `Q806_BASE_LAB`, **pin3 collector** su `DRIVER_SINK_LAB`, connesso a gate P-MOS *solo attraverso R2102*. Sostituisce preliminare **2N3904BU VCEO 40V**, scartato per margine insufficiente nello scenario fault VIN48V.
+- **R2103** 4,7k dal connettore `J2103/1 ENABLE_LOGIC_5V_LAB` a Q806/2; **R2104** 100k fra Q806/2 e `LAB_RETURN_ONLY`. `J2103/2` ritorno. Il segnale ENABLE è **solo un ingresso di laboratorio**: non esiste ancora comparatore indipendente, reset qualificato, alimentazione monitorata né gate controllabile per guasti; non alimentare J2103.
+- Source comune Q804/Q805 **non** è LAB_RETURN; tab metallico dei due TO-220 è **drain**: dissipatore comune senza isolamento corto-circuita l'ingresso verso l'uscita. Tutte le impronte sono **candidate THT**; R, Zener, connettori e geometrie non qualificati.
 
-- **Q806** onsemi `2N3904BU`, NPN TO-92 E/B/C pin **1 EMITTER→LAB_RETURN_ONLY**, **2 BASE→Q806_BASE_LAB**, **3 COLLECTOR→DRIVER_SINK_LAB**. Footprint KiCad generico `Package_TO_SOT_THT:TO-92_Inline` soltanto candidato; quote OEM e campione ancora da controllare.
-- **R2103** 4,7 kΩ dal connettore `J2103/1 ENABLE_LOGIC_5V_LAB` alla base Q806; **R2104** 100 kΩ base–return per forzare Q806 spento senza comando. `J2103/2` è return. Tutte le resistenze e il connettore sono candidati THT privi di qualifica di carico/stress/assemblaggio.
-- Collettore Q806 porta al gate comune **solo attraverso R2102**. Non esiste più nel disegno un accesso diretto esterno al gate/sink. Il **source comune dei MOSFET resta flottante** e distinto dal return; le alette metalliche TO-220 Q804/Q805 sono DRAIN e non vanno cortocircuitate da un dissipatore comune non isolato.
-- La **logica `ENABLE_LOGIC_5V_LAB` è solamente un ingresso, senza sorgente né comparatore**; un eventuale livello alto non equivale a power-good. Non esiste alimentazione 5V indipendente, supervisor OVP/UVLO, controllo fail-safe o valore certo di VGS in transitorio.
+## Fonte OEM 16 novembre 2026 — candidate production audit
 
-## Riferimento OEM (non rilascio BOM)
+onsemi [KSP42/KSP43 Rev. 4 gennaio 2025](https://www.onsemi.com/pdf/datasheet/ksp43-d.pdf): KSP42BU TO-92 CASE135AN **E1/B2/C3**, **VCEO 300V**, VCBO 300V, VEBO 6V, IC 500mA, PC 625mW a 25°C. Le tabelle OEM elencano KSP42BU senza nota discontinued (**KSP43BU** è indicato discontinuato). [DigiKey KSP42BU](https://www.digikey.it/it/products/detail/onsemi/KSP42BU/1048030) attualmente riporta Active, ma servono comunque conferma diretta OEM e verifica del lead spacing/footprint prima della BOM definitiva. Per KSP42 VCE(sat) ≤0,5V è specificato **solo a IC=20mA, IB=2mA**; non estrapolare la saturazione a correnti, temperature o tensioni non coperte. Non confondere con onsemi **MPSA42G**, riportato obsoleto dal distributore.
 
-onsemi `2N3904/D`, datasheet Rev.3 ottobre 2024, [PDF OEM](https://www.onsemi.com/pdf/datasheet/2n3904-d.pdf): pin TO-92 CASE 135AN **E=1, B=2, C=3**; rating massimo **VCEO 40V, VCBO 60V, VEBO 6V, IC continuo 200mA, dissipazione 625mW a 25°C**. La gamma corrente onsemi mostra 2N3904BU THT, ma confermare formalmente stato produttivo OEM corrente, footprint specifico, derating e reperibilità prima di consolidare BOM. Il valore VCE(sat) ≤0,2V è specificato dal produttore a **IC=10mA, IB=1mA**: non estrapolarlo automaticamente a correnti/tensioni/temperature diverse.
+## Verifiche e limiti espliciti
 
-## Envelope teorico e guasti che NON devono essere ignorati
+`03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py` è registrato nella FULL: esige **ERC KiCad9 zero errori/zero warning** su schematico reale e confronto esatto degli **8 gruppi net** per **25 pin**, inclusi tutti i terminali E/B/C. Il test ideale esplora **7290** combinazioni ipotetiche (VIN0..48V, VBE0,65..0,95V, R a ±5%, caduta body diode 0,2/0,5/0,9V), con indipendenza dei terminali del gate, return e source; nessuna curva vendor SPICE o misura di banco.
 
-`03_Verifiche/V2.7/verify_ovp_q806_gate_driver_native.py` verifica tramite KiCad9 vero (ERC senza waiver + esportazione netlist) **25 estremità elettriche in 8 reti** e corretta continuità di E/B/C. Lo screening aritmetico di **7.290 combinazioni** assume ingressi statici da 0 a 48 V, VBE ipotetica 0,65–0,95V, R2101/R2102/R2103/R2104 a ±5%, caduta diodo ideale 0,2/0,5/0,9V, enable sempre 5V per il budget base. Le formule sono esclusivamente un modello didattico DC, **NON SPICE vendor, NON modello dinamico né prova hardware**.
+- Per 5V ENABLE ipotetico, `IB = (5−VBE)/R2103 − VBE/R2104` predice ~0,81–0,97mA, senza dimostrare effettiva saturazione PVT di KSP42BU o gli effetti di transitori.
+- Con Q806 OFF e source comune innalzato da body diode del PMOS a ipotetico VIN48V, collettore ideale può arrivare a ~47,8V. **2N3904BU 40V sarebbe sovrastressato**; **KSP42BU VCEO300V non supera quel limite specifico negli scenari statici definiti**, ma non c'è qualifica contro surge, SOA, isolamento, leakage, VBE reverse o bias del supervisore.
+- **Guasto Zener D2101 OPEN:** Q806 ideale ON porterebbe `|VGS|≈VIN×R2101/(R2101+R2102)`, ~39,58V a 48V nominali, **oltre limite assoluto ±20V dei P-MOS**: il passaggio a KSP42BU NON risolve questo guasto.
+- Con Q804 oppure Q805 corto D-S, l'altro body diode può alimentare l'uscita da uno dei due lati; il solo grafo anti-serie integro non assicura contenimento singolo guasto.
+- L'analisi delle resistenze/correnti, dissipazione di Q806/R2102/D2101, timing ON/OFF, temperature, reverse polarity, riferimenti di tensione e compatibilità elettromagnetica rimane incompleta.
 
-- A 5V enable con BJT ipoteticamente conduttivo, corrente base teorica `IB ≈ (5−VBE)/R2103 − VBE/R2104`: ~0,81–0,97mA negli angoli adottati; **non certifica saturazione, tenuta a T o comportamento di switch OFF/ON**.
-- Se VIN o OUT arriva teoricamente a 48V con Q806 OFF, il **diodo body dei PMOS porta source comune a ~VIN−Vf** se il nodo è senza carico; collettore Q806 può seguire il gate/source fino a ~47,8V oltre il rating **40V VCEO**. L'assenza di ENABLE non garantisce integrità del transistor sotto questo guasto.
-- Se lo Zener D2101 è **OPEN**, un Q806 ideale ON potrebbe imporre `|VGS|≈VIN × R2101/(R2101+R2102)`, fino a ~39,58V a VIN48V nominale: supera il massimo MOSFET `|VGS|20V`. Non esiste contenimento doppio guasto né clamp realmente indipendente.
-- Con un MOSFET short D-S, l'altro diodo di corpo può condurre in una direzione, e il divieto di collegare insieme tabs Q804/Q805 rimane **bloccante**; lo script verifica anche questi percorsi tramite grafo elettrico ideale.
-- Resta da indagare corrente Zener, dissipazione resistenze, safe operating area, off-state leakage a caldo, rimbalzi, cablaggi, transienti e restart.
-
-## Gate prima della qualifica
-
-1. Progettare vero supervisore **indipendente da U801/U802/D806 e dal nodo da proteggere**, con alimentazione controllata fino a guasti, offset e fault dell'intero percorso.
-2. Selezionare Q806 o alternativa THT con tensione VCE robusta contro lo scenario di ingresso ammesso e proteggere l'interfaccia anche in guasto Zener aperto; documentare tempi/energia e controllo del gate source-floating. Un 2N3904BU semplice **non è un componente di sicurezza approvato**.
-3. ERC/pin↔net di tutta la gerarchia dopo eventuale integrazione, qualifica componenti OEM, modello SPICE vendor dove possibile, prove banco a sorgente limitata autorizzate esplicitamente, review indipendente, PCB reale e DRC prima di fabbricare.
-
-**NO FAB / NO TX / NO BATTERIA / NO VEICOLO.** Questa revisione non autorizza alimentazione di alcun componente.
+**Gate successivi:** vero supervisore indipendente con supply protetta da guasti primari e brownout, limitazione VGS a due fault, qualifiche OEM e footprints/pin-pad/tabs, simulazioni vendor, prove limitate e review indipendente prima di qualsiasi integrazione nel master, PCB e fabbricazione. Issue #27 resta aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
