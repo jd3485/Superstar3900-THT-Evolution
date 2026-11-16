@@ -230,6 +230,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_smeter_fault_power_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # V2.6 native MAIN supervisor: U801 LM393 supply can exceed its
+    # absolute voltage limit during combined D806/TL431 open faults.
+    # This screening is not a hardware fail-safe approval.
+    print("::group::V2.6 NATIVE OVP LM393 9072 COMBINED OPEN FAULTS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.6/verify_ovp_dual_open_lm393_supply_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Source impedance at a detector output is UNKNOWN: sweep four illustrative
     # source resistances through real AM455 RC and FRONT/LM386 input loading.
     # Independent four-node complex KCL cross-check across 300 cases.
