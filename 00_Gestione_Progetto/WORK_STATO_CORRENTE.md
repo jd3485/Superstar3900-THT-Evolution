@@ -1,5 +1,17 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 16 novembre 2026 — PR #294 MERGED: gate termico J1902 validato
+
+**PR #294** integrata main SHA `ecdda05a4d99ef0e036dbd256255af5e891b703c` da HEAD `856d6943b14274aa9ddaf9819c812e869b2c7f2b`: CI #43814903278 FAST/FULL/Required **SUCCESS 3/3**, marker `PASS_NATIVE_KICAD9_FRONT_MUTE_J1902_OVERVOLTAGE_RESISTOR_SCREEN_NONFAB` verificato. Nessuna qualifica OEM, nessun limite reale di guasto autorizzato. NO FAB/TX.
+
+---
+
+## 16 novembre 2026 — FRONT S-meter: porte gerarchiche drive/return isolate, candidato
+
+**Branch:** `engineering/v27-front-smeter-native-parent-port-isolation-20261116`, main baseline `688a5a9a93b7b86840898b9c7345a06afad8ba4e` (PR #293 merged). Foglio figlio `FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch` ora espone `METER_DRIVE_CANDIDATE` e `METER_RETURN` tramite hierarchical_label reali J1801/1-2; il master FRONT aggiunge due sheet pin con etichette isolate da AF_GND, DRIVER_GND, LED, bobina e alimentazioni. Due verificatori nativi KiCad9 aggiornati per confermare ERC0 e conservazione prevista 5 fogli/32 ref/22 reti/71 pin; **CI da verificare, nessun merge senza FAST/FULL/Required verdi**. Nessuna sorgente MAIN, FSD OEM, connettore accoppiato, PCB o approvazione sicurezza. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_SMETER_HIERARCHICAL_PORT_BOUNDARY_20261116.md`. PR #294 su sovratensione mute indipendente e in verifica. NO FAB/NO TX/NO BATTERIA/NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #293 MERGED, gate audio fault NC integrato
 
 **PR #293** integrata su main SHA `688a5a9a93b7b86840898b9c7345a06afad8ba4e`, CI #43813871295 FAST/FULL/Required 3/3 SUCCESS, marker nativo `PASS_NATIVE_KICAD9_FRONT_MUTE_120_AC_INJECTION_FAULT_CASES_AF_GND_OPEN_FAIL_CLOSED_NONFAB` confermato nel log. Il modello non costituisce prova di mute fail-safe. NO FAB/NO TX.

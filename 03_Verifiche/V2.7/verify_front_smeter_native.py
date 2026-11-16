@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native KiCad9 ERC and strict pins↔nets for isolated FRONT analog S-meter.
+"""Native KiCad9 contextual-parent ERC and strict pins↔nets for FRONT S-meter.
 
 NOT a qualified meter, protection network, MAIN-FRONT cable or production PCB.
 The two 100k series resistor candidates and 10k potentiometer are only schematic candidates:
@@ -19,6 +19,7 @@ from verify_front_partial_hierarchy_native import verify as verify_front_partial
 from verify_smeter_active_sink_native import main as verify_active_sink_native
 
 ROOT=Path(__file__).resolve().parents[2]
+PARENT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 SCH=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch"
 
 def main():
@@ -49,10 +50,16 @@ def main():
     assert '(symbol "R"' in resistor_symbols
     with tempfile.TemporaryDirectory(prefix="tht_front_smeter_") as d:
         erc=Path(d)/"erc.rpt"
+        # S-meter child now has real hierarchical labels and must be checked
+        # within the containing FRONT parent. Child-as-root ERC reports two
+        # artificial unconnected-to-parent errors; do not suppress ERC rules.
+        assert PARENT.exists()
+        assert text.count('(hierarchical_label "METER_DRIVE_CANDIDATE"')==1
+        assert text.count('(hierarchical_label "METER_RETURN"')==1
         process=subprocess.run(["kicad-cli","sch","erc","--exit-code-violations",
-                                "-o",str(erc),str(SCH)],
+                                "-o",str(erc),str(PARENT)],
                                cwd=ROOT,capture_output=True,text=True)
-        print("SMETER_KICAD_ERC",process.stdout,process.stderr,flush=True)
+        print("SMETER_CONTEXTUAL_PARENT_KICAD_ERC",process.stdout,process.stderr,flush=True)
         if erc.exists():
             print(erc.read_text(encoding="utf-8"),flush=True)
         process.check_returncode()

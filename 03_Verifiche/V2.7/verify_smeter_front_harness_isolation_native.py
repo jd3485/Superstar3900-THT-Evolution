@@ -13,6 +13,7 @@ ROOT=Path(__file__).resolve().parents[2]
 FRONT_SMETER=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_SMETER/FRONT_SMETER_THT_V2_7_DRAFT.kicad_sch"
 FRONT_AUDIO=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
 MAIN_AUDIO=ROOT/"04_KiCad/V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
+FRONT_PARENT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_V2_7_DRAFT.kicad_sch"
 
 METER_EXPECTED={
     "METER_DRIVE_CANDIDATE": {("J1801","1"),("RV1801","1")},
@@ -48,7 +49,23 @@ def main():
         smeter=exported_nets(FRONT_SMETER,out/"smeter.net")
         audio=exported_nets(FRONT_AUDIO,out/"front_audio.net")
         main_audio=exported_nets(MAIN_AUDIO,out/"main_audio.net")
+        parent=exported_nets(FRONT_PARENT,out/"front_parent.net")
     assert_exact(smeter,METER_EXPECTED,"FRONT_SMETER")
+    child_raw=FRONT_SMETER.read_text(encoding="utf-8")
+    parent_raw=FRONT_PARENT.read_text(encoding="utf-8")
+    assert child_raw.count('(hierarchical_label "METER_DRIVE_CANDIDATE" (shape passive)')==1
+    assert child_raw.count('(hierarchical_label "METER_RETURN" (shape passive)')==1
+    assert parent_raw.count('(pin "METER_DRIVE_CANDIDATE" passive')==1
+    assert parent_raw.count('(pin "METER_RETURN" passive')==1
+    assert parent_raw.count('(label "METER_DRIVE_CANDIDATE"')==1
+    assert parent_raw.count('(label "METER_RETURN"')==1
+    # Parent pins are exposed but still end at their own isolated net labels.
+    assert len(parent)==22,(len(parent),sorted(parent))
+    assert len([net for net,pins in parent.items() if ("J1801","1") in pins])==1
+    assert len([net for net,pins in parent.items() if ("J1801","2") in pins])==1
+    assert all(not({("J1801","1"),("J1801","2")}<=pins) for pins in parent.values())
+    assert all(not({("J1801","2"),("K1901","2")}<=pins) for pins in parent.values())
+    assert all(not({("J1801","2"),("RV1301","3")}<=pins) for pins in parent.values())
     assert_exact(audio,AUDIO_EXPECTED,"FRONT_VOLUME")
     assert len(METER_CABLE_FRONT)==2
     assert {v[0:2] for v in METER_CABLE_FRONT.values()}=={
@@ -70,6 +87,7 @@ def main():
                    for pins in smeter.values() for ref,_ in pins)
     print("FRONT_SMETER_CABLE_BOUNDARY_UNASSIGNED_MAIN",{
         "front_side_pin_1": "METER_DRIVE_CANDIDATE",
+        "front_parent_native_port_count":2,
         "front_side_pin_2": "METER_RETURN",
         "main_side_source": None,
         "main_side_return": None,
