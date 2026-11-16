@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #281 MERGED; C1911 bypass bobina THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #281 SHA `ea6f28d414f15abf76d6479bc36db22def8811dc`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #282 MERGED; C1912 bulk polarizzato THT su nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #282 SHA `e4348dab715756f0b3a3b65ae8454b79445d0ff1`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #282 MERGED; C1912 bulk rail bobina in branch
+
+**Verificato GitHub:** PR #282 MERGED su main SHA `e4348dab715756f0b3a3b65ae8454b79445d0ff1`. [Actions #43785677259](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43785677259) FAST/FULL/Required **SUCCESS 3/3**; FULL `DUAL_ENABLE_COIL_DRIVER_NATIVE_KICAD9_ERC Found 0 violations`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, nessun Traceback/error, Required `PASS_REQUIRED_CI_GATE (full_required=true)`. C1911 100 nF THT presente in schema driver standalone, nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-coil-rail-bulk-10u-tht-20261116`: vero **C1912 10 µF / 16 V THT polarizzato** con positivo pin 1 verso **COIL_PLUS_LAB**, negativo pin 2 verso **DRIVER_GND**, impronta radiale 2 mm candidata e simbolo registrato. Test nativo delle **otto reti** aggiornato per C1912 e polarità, rapporto documenta energia limitata, inrush, ESR, maturazione/temperatura e OEM da verificare. PCB FRONT/MAIN inalterate, CI sul nuovo branch ancora da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #281 MERGED; bypass THT bobina su branch
 
