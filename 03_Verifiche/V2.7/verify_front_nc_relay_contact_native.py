@@ -37,10 +37,11 @@ def main():
     assert raw.count('(symbol (lib_id "TH_MUTE:LAB_2PIN")')==3
     assert raw.count('(pin passive line ')==9
     assert '(symbol "RESISTOR_THT_BLEED"' in library
-    assert raw.count('(symbol (lib_id "TH_MUTE:RESISTOR_THT_BLEED")')==1
+    assert raw.count('(symbol (lib_id "TH_MUTE:RESISTOR_THT_BLEED")')==2
     assert raw.count("100k_AMP_INPUT_BLEED_CANDIDATE")==1
+    assert raw.count("1k_SERIES_AUDIO_INPUT_CANDIDATE")==1
     assert all(f'(property "Reference" "{ref}"' in raw
-               for ref in ("K1901","J1901","J1902","J1903","R1901"))
+               for ref in ("K1901","J1901","J1902","J1903","R1901","R1902"))
     assert "NC=GND (NO POWER)" in raw and "UNQUALIFIED" in raw
     assert '(property "Footprint" ""' in raw
     assert '(attr through_hole)' not in raw # abstract symbol, no physical package assigned
@@ -63,13 +64,14 @@ def main():
         front=exported_nets(FRONT,d/"front.net")
         audio=exported_nets(AUDIO,d/"audio.net")
     expected={
-        "AMP_INPUT_MUTED":{("K1901","1"),("J1902","1"),("R1901","1")},
+        "AMP_INPUT_MUTED":{("J1902","1"),("R1901","1"),("R1902","2")},
         "AF_GND":{("K1901","2"),("J1901","2"),("J1902","2"),("R1901","2")},
+        "RELAY_COM_AUDIO":{("K1901","1"),("R1902","1")},
         "VOL_WIPER_TO_AMP":{("K1901","3"),("J1901","1")},
         "COIL_PLUS_LAB":{("K1901","4"),("J1903","1")},
         "COIL_MINUS_LAB":{("K1901","5"),("J1903","2")},
     }
-    assert len(relay)==5,(relay,expected)
+    assert len(relay)==6,(relay,expected)
     for name,pins in expected.items():
         require(relay,name,*pins)
         assert relay[name]==pins,(name,relay[name],pins)
@@ -81,6 +83,7 @@ def main():
     assert not (relay["COIL_PLUS_LAB"] & relay["AF_GND"])
     assert not (relay["COIL_MINUS_LAB"] & relay["AF_GND"])
     assert not (relay["AMP_INPUT_MUTED"] & relay["VOL_WIPER_TO_AMP"])
+    assert not (relay["RELAY_COM_AUDIO"] & relay["AMP_INPUT_MUTED"])
     print("FRONT_NC_MUTE_NATIVE_NETS",{n:sorted(p) for n,p in relay.items()},flush=True)
     print("FRONT_NC_MUTE_LIMITS",{
         "KiCad9_native_ERC_and_pin_net_verified":True,
@@ -92,6 +95,6 @@ def main():
         "board_modified":False,
         "product_fail_safe_certified":False,
         "NO_FAB_NO_TX":True},flush=True)
-    print("PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB",flush=True)
+    print("PASS_KICAD9_FRONT_NC_RELAY_2_THT_RESISTORS_6_ISOLATED_NETS_ERC0_NONFAB",flush=True)
 
 if __name__=="__main__":main()

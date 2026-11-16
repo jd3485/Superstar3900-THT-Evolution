@@ -1,7 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-**Aggiornato:** 16 novembre 2026 (PR #279 MERGED; R1901 100k shunt fisico sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
-**Branch autoritativo:** `main`. Ultimo merge tecnico PR #279 SHA `22e0cc82a4a00eec2e4aa8eb3a1b618ba9a42276`; checkpoint sul branch della revisione successiva.
+**Aggiornato:** 16 novembre 2026 (PR #280 MERGED; R1902 serie 1k ingresso audio sul nuovo branch). **Repository esclusivo:** `jd3485/Superstar3900-THT-Evolution`.
+**Branch autoritativo:** `main`. Ultimo merge tecnico PR #280 SHA `0a52d93e6d93cfa30536570007ecc32e9a65f62f`; checkpoint sul branch della revisione successiva.
+
+## 16 novembre 2026 — PR #280 MERGED; R1902 serie 1k nell'ingresso audio
+
+**Verificato GitHub:** PR #280 MERGED su main SHA `0a52d93e6d93cfa30536570007ecc32e9a65f62f`; [Actions #43782129072](https://github.com/jd3485/Superstar3900-THT-Evolution/actions/runs/43782129072) FAST/FULL/Required **SUCCESS 3/3**. FULL: `PASS_KICAD9_FRONT_NC_RELAY_THT_5PIN_3LABPORTS_5_ISOLATED_NETS_ERC0_NONFAB`, `PASS_KICAD9_FRONT_COIL_DUAL_ENABLE_8NETS_ERC0_48_ILLUSTRATIVE_DC_NO_FAB_NO_TX`, `Found 0 violations`, nessun Traceback/error; Required `PASS_REQUIRED_CI_GATE (full_required=true)`. R1901 100 kΩ tra AMP_INPUT_MUTED e AF_GND integrato nel foglio standalone relay; nessuna PCB prodotto modificata.
+
+**Branch corrente** `engineering/v27-front-relay-input-series-1k-tht-20261116`: R1902 1 kΩ THT fisico in serie fra K1901 COM e J1902 ingresso LM386; rete distinta RELAY_COM_AUDIO. R1901 100k resta a massa lato amplificatore. Sei reti native nel foglio contatti, due verifiche KiCad9 aggiornate, rapporto tecnico include carico audio ipotetico; non simula/sostituisce collaudi OEM, ESD o guasti saldatura NO/GND aperta. PCB FRONT/MAIN inalterate. CI #43783407970 FAST superato ma FULL/Required falliti: test indipendente verify_front_nc_relay_contact_fault_matrix_native.py conservava pin COM sulla rete AMP_INPUT_MUTED prima dell'aggiunta R1902. Corretto confronto delle sei reti, R1902/1↔RELAY_COM_AUDIO, R1902/2↔AMP_INPUT_MUTED e R1901 verso AF_GND; matrix 64 stati resta modello ideale e non qualificazione. Seconda CI #43783793413: FAST SUCCESS, FULL/Required FAILURE dovuta a sequenza letterale \\n anziché newline in verifica Python 64 stati (SyntaxError), senza difetto ERC del foglio a sei reti. Corretto nel branch con commit ab48f235; nuova CI HEAD da verificare; merge sospeso. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
 
 ## 16 novembre 2026 — PR #279 MERGED; nuovo shunt analogico THT su branch
 
