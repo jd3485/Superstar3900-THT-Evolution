@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #340 MERGED; matrice isolamento alette TO-220 in revisione
+
+PR [#340](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/340) **MERGED** main `5b2581ba4f82d1f364e7642378896ecd2f6e10ab`, HEAD `1e4005545ced607605804aca780f3e532dee38d5`, run #44120191088 FAST/FULL/Required 3/3 SUCCESS. Testato rischio di bypass di due stadi tramite alette drain dei MOSFET THT.
+
+Nuovo branch `engineering/v27-to220-insulation-partition-matrix-20261117`: matrice esaustiva dei 15 raggruppamenti elettricamente conduttivi di quattro alette TO-220AB e 4 stati A/B, **60 scenari**. Su netlist KiCad9 24 THT / 54 pin / 14 reti: 7/15 configurazioni bypassano IN↔OUT con entrambi i gate OFF; 10/15 con un solo stadio ON. Nuova verifica FULL e rapporto `03_Verifiche/V2.7/RAPPORTO_TO220_INSULATION_PARTITIONS_20261117.md`. Non esistono dissipatore, isolamento meccanico o PCB qualificati. PR/CI **da verificare**; issue #27 aperta. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #339 MERGED; rischio corto aletta drain TO-220 in verifica
 
 PR [#339](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/339) **MERGED** main `970113fb30fb1e1fc60daf27feab0dabfee8848f` (head `5016b0edb7562deedf1039c1059779162cd2472f`), run #44117310413 FAST/FULL/Required 3/3 SUCCESS. Regressione Rgs OPEN/SHORT 432 corner matematici su KiCad9 nativo, nessuna prova fail-OFF OEM.
