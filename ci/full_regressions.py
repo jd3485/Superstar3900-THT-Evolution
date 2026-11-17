@@ -1034,6 +1034,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_gate_rc_transient_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Release an assumed initially biased ON gate with a persistent sink.
+    # 720 RC cases on native KiCad9 nets with independent trapezoidal cross-check.
+    print("::group::THT TWO STAGE GATE RELEASE 720 NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_gate_release_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
