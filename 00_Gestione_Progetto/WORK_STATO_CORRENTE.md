@@ -1,9 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 17 novembre 2026 — banco PMOS OFF leakage, branch in verifica
+## 17 novembre 2026 — PR #336 MERGED; RC transient nativo in verifica
 
-Branch `engineering/v27-two-stage-off-leakage-screen-20261117`: nuovo test nativo `03_Verifiche/V2.7/verify_two_stage_off_gate_leakage_native.py` agganciato alla FULL: contratto KiCad9 24 THT / 54 pin / 14 reti, due stadi con pullup 47k, 252 corner DC ipotetici di leakage 0–100 µA a BJT OFF (126/stadio), marcatori non-OEM 2/4 V e massimo astratto 4,935 V. Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_OFF_GATE_LEAKAGE_252_20261117.md`. **Non** equivale a misura leakage OEM né fail-safe. PR/CI sul final HEAD da verificare prima di qualsiasi merge; issue #27 OPEN, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+[PR #336](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/336) **MERGED** su main `844cde2d4c45e4cf28e53bb65071f9fb38135d80`, final head `b1cd4f3750cda13a92ba9d66c1b5127281970b30`, run #44075051941 FAST/FULL/Required 3/3 SUCCESS, con evidenza nei log di `PASS_NATIVE_THT_TWO_STAGE_OFF_GATE_LEAKAGE_252_NONFAB`. Test KiCad9 24 THT / 54 pin / 14 reti, 252 corner statici sintetici OFF leakage; non è qualifica di leakage OEM né fail-safe.
 
+Nuovo branch `engineering/v27-gate-off-recovery-rc-native-20261117`: regressione KiCad9 di transitori RC ideali di due gate indipendenti, 576 scenari (288/stadio), C ipotetiche 1/10/100 nF, corrente sink 0/5/25/100 µA e Rgs ±5%. Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_GATE_RC_TRANSIENT_576_20261117.md`, test FULL `verify_two_stage_gate_rc_transient_native.py`. **Non** predice gate charge reale, Miller, soglie MOSFET, qualifica safety o risposta fisica. PR/CI final SHA da verificare prima del merge. #27 OPEN, nessuna PCB; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
 ---
 
 
