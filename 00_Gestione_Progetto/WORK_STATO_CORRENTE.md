@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #345 MERGED; footprint THT reale G5V-1 DC5 sei pad candidata
+
+PR [#345](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/345) **MERGED** main `970e980e91d268abe71a7b45faf5342e3a0a88b3`, head `ab9124969612c59ac4e573dce2ab9891146c9720`, run #44137551958 FAST/FULL/Required 3/3 SUCCESS. Regressione AC NO saldato e AF_GND OPEN modellata, non prova mute hardware.
+
+Branch `engineering/v27-front-g5v1-sixpad-candidate-footprint-20261117`: **nuovo file di vera impronta KiCad** `04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/TH_MUTE_OEM_CANDIDATE.pretty/G5V-1_DC5_OEM_6PIN_CANDIDATE.kicad_mod`, sei pad THT numerati OEM, foro 1mm, coordinate top view controllate con disegno Aratas/Omron e libreria ufficiale KiCad. Nuovo test FULL verifica pad e netlist KiCad9 FRONT 5-pin K1901, che **resta senza impronta** e non viene collegato per evitare errore pin-pad. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_G5V1_REAL_6PAD_FOOTPRINT_20261117.md`. CI/PR da verificare. Nessun PCB completo, DRC o qualifica meccanica. Issue #292/#27 OPEN, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #344 MERGED; mute FRONT NO saldato in verifica
 
 PR [#344](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/344) **MERGED** main `00876955158538094022ca3d11fdba731152524b` (head `a5b5ef56b6f79028498edd794631ffdc12a48b1c`), CI #44133124494 FAST/FULL/Required 3/3 SUCCESS. Verificati 108 corner sintetici G5V-1 con due VCEsat serie; 30 sotto 4V OEM a 23°C, nessuna qualifica hardware.
