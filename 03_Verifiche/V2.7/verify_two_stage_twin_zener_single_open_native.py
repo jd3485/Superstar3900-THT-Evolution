@@ -93,6 +93,37 @@ def main():
                        "single_open_max_absVgs_ideal_V":round(maximum_single,6),
                        "both_open_max_absVgs_ideal_V":round(maximum_double,6)}
     assert total==3888 and per_stage["A"]==per_stage["B"]
+    # Independent current-budget gate based on the actual 47k/10k CAD
+    # values. At an assumed 12V knee, evaluate whether the source can
+    # even supply the candidate 250uA test current to each active diode.
+    # Passing this budget would still NOT prove OEM Zener conduction,
+    # voltage regulation, or equal sharing.
+    budget={}
+    for count in (1,2):
+        below=0
+        total_budget=0
+        for vs,rgs_ohm,rg_ohm,vz in itertools.product(
+            (0.,13.8,20.,24.,36.,48.),
+            (44650.,47000.,49350.),
+            (9500.,10000.,10500.),
+            (11.,12.,13.)):
+            per_diode=max(0.,(vs-vz)/rg_ohm-vz/rgs_ohm)/count
+            below+=per_diode<0.000250
+            total_budget+=1
+        assert total_budget==162
+        budget[count]=(below,total_budget)
+    assert budget=={1:(54,162),2:(64,162)},budget
+    threshold_single=12.+10000.*(12./47000.+0.000250)
+    threshold_pair=12.+10000.*(12./47000.+0.000500)
+    assert 17.<threshold_single<18. and 19.<threshold_pair<20.
+    assert 13.8*47000./57000.<12.
+    print("TWO_STAGE_ZENER_TEST_CURRENT_BUDGET_NONQUALIFYING",{
+        "single_diode_budget_below_250uA":budget[1],
+        "two_ideal_equal_branches_each_below_250uA":budget[2],
+        "nominal_source_threshold_one_250uA_V":round(threshold_single,6),
+        "nominal_source_threshold_two_each_250uA_V":round(threshold_pair,6),
+        "actual_oem_zener_IV_guaranteed":False,
+        "independent_gate_current_sharing_qualified":False},flush=True)
     print("TWO_PMOS_COMPLETE_STAGES_TWIN_ZENER_ISOLATED_BOUNDS",{
         "native_components":24,"native_pins":54,"native_nets":14,
         "synthetic_total":total,"per_stage":per_stage,
