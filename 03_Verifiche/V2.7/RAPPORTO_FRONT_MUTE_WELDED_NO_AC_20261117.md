@@ -1,0 +1,13 @@
+# FRONT K1901 mute relay welded NO plus NC continuity — AC injection fault (17 Nov 2026)
+
+## Real KiCad9 topology
+The partial native FRONT KiCad9 schematic and MAIN LM386 schematic show the intended SPDT contact wiring: K1901 pin 1 = RELAY_COM_AUDIO; pin 2 = AF_GND/NC; pin 3 = VOL_WIPER_TO_AMP/NO. R1902 is 1k from COM to AMP_INPUT_MUTED, R1901 is 100k from AMP_INPUT_MUTED to AF_GND; MAIN input J1202/1 → C1201 100nF → R1201 10k → U1201/3 (LM386 candidate). All pin-net anchors are checked before calculation; the physical FRONT mute relay is still **abstract 5-pin K1901 with no OEM footprint** (separate G5V-1 six-terminal proposal, merged PR #343). No physical board.
+
+## Independent analysis
+New `03_Verifiche/V2.7/verify_front_mute_welded_no_ac_native.py` computes a hypothetical 1V AC source entering via a **welded NO** contact *even though the relay command is OFF and NC may be closed*, and a separate 1V hypothetical cable-injection source capacitively coupled into AMP_INPUT_MUTED. Two **independent complex solvers** (two-node COM/output nodal KCL and independent COM Norton branch reduction) must agree within 1e-11. The hypothetical grids: frequency 300/1000/3000Hz × stray coupling 10pF/100pF/1nF/10nF × NC contact 0.1Ω/10Ω/OPEN × NO contact 0.1Ω/10Ω/OPEN × source resistance 10kΩ/50kΩ: **216 bounded, grounded scenarios**. The same 216 scenarios with the shared AF_GND absent **fail closed with undefined circuit reference**; no invented physically valid amplitude is assigned to the undefined rail. All values beyond named schematic component R/C are test assumptions, not cable or relay OEM measurements.
+
+A welded NO creates a parallel fault path from the volume source to COM while the NC contact can still shunt COM to AF_GND. This may allow uncommanded audio depending on resistance, ground, stray impedance, signal source and load. **Do not treat ideal NC=GND as proof of permanent mute under welded NO or AF_GND-loss.** The calculation does not describe a physical relay whose contacts cannot mechanically occupy both states; it is a **fault-injection** topology for abnormal contacts only. Neither 2-node comparison nor ERC indicates actual occurrence probability, validated amplitude limits, contact endurance or safety.
+
+Parent [PR #344](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/344) merged to main `00876955158538094022ca3d11fdba731152524b` after required FAST/FULL/Required PASS run #44133124494. This test requires independent final-HEAD CI. Issue [#292](https://github.com/jd3485/Superstar3900-THT-Evolution/issues/292) remains OPEN pending contact failure qualification, independent AF_GND integrity, OEM 6-pad relay/driver, cable and actual PCB.
+
+**NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**

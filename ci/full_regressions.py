@@ -1083,6 +1083,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_dual_npn_coil_headroom_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # FRONT NC mute output: hypothetical welded NO drive with NC
+    # simultaneous, coil-off and AF_GND-loss fail-closed AC fault screen.
+    print("::group::FRONT MUTE WELDED NO AC 216 NATIVE SCENARIOS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_mute_welded_no_ac_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
