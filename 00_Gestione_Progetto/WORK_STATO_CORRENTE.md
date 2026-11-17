@@ -1,5 +1,12 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — banco PMOS OFF leakage, branch in verifica
+
+Branch `engineering/v27-two-stage-off-leakage-screen-20261117`: nuovo test nativo `03_Verifiche/V2.7/verify_two_stage_off_gate_leakage_native.py` agganciato alla FULL: contratto KiCad9 24 THT / 54 pin / 14 reti, due stadi con pullup 47k, 252 corner DC ipotetici di leakage 0–100 µA a BJT OFF (126/stadio), marcatori non-OEM 2/4 V e massimo astratto 4,935 V. Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_OFF_GATE_LEAKAGE_252_20261117.md`. **Non** equivale a misura leakage OEM né fail-safe. PR/CI sul final HEAD da verificare prima di qualsiasi merge; issue #27 OPEN, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #334 MERGED; protocollo Pilota V8 in revisione
 
 [PR #334](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/334) **MERGED** su main `7641000726d5aa54e1408d1b729f561cad746fdb`, final head `776e011e3f7cfa066bb47f5ba1619f136b6e47a6`, run #44062345236 FAST/FULL/Required 3/3 SUCCESS. Banco KiCad9 nativo due stadi PMOS, regressione sintetica 1.944 guasti Rgs/serie OPEN/SHORT. Non qualifica fail-safe OEM o hardware; #27 resta aperta, nessuna PCB fabbricabile.
