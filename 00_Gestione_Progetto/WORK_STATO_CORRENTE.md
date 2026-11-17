@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #343 MERGED; margine bobina mute FRONT in verifica
+
+PR [#343](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/343) **MERGED** su main `f4a38756dd0da843c9b219b3a4648610dc74d190`, head `9899a153b483d2745e127cbf0591dd83575d75a5`, run #44129980006 FAST/FULL/Required 3/3 SUCCESS. Mappatura **proposta** OEM G5V-1 DC5: coil 2/9, COM 5/6, NC 1 e NO 10; assente PCB/footprint qualificata.
+
+Branch `engineering/v27-front-g5v1-coil-headroom-pvt-20261117`: netlist KiCad9 FRONT mostra coil K1901 in serie a **due** transistor Q1911/Q1912 prima di DRIVER_GND; non si può assumere 5V su 167Ω OEM. Nuovo test FULL 108 casi ipotetici con rail 4.5–5.25V e VCEsat 0.1/0.3/0.6V per transistor: **30/108 scenari sotto 4V** must-operate OEM standard a 23°C. Serve drive PVT/base/temperatura reale, nessuna garanzia di chiusura NO. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_DUAL_NPN_COIL_HEADROOM_20261117.md`; PR/CI da verificare. #292 OPEN, no FAB/TX/batteria/veicolo.
+
+---
+
+
 ## 17 novembre 2026 — PR #342 MERGED; mappa G5V-1 OEM sei terminali proposta
 
 PR [#342](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/342) **MERGED** main `5b64ad3c5b76938435db48f6e3b0743d73460431`, head `15ea258e1a6e3cd15a5a8f4bccee11cffab8fdd5`, run #44128102517 FAST/FULL/Required 3/3 SUCCESS. K1901 FRONT ancora cinque pin astratti, non compatibile direttamente con relè OEM sei fori.
