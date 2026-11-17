@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #330 MERGED, gate zener dei due stadi anti-serie in verifica
+
+[PR #330](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/330) **MERGED** su main `157caac9912f184b6e2b9e858306e2a1982e5384`, HEAD PR `279bc5403293cfd49bba8acdca60fce89bef88ca`, run #43973726404 **FAST/FULL/Required 3/3 SUCCESS**. Test di 6 fault locali singoli, 15 doppi e consenso esterno comune incollato HIGH sul banco vero KiCad9 24 componenti/54 pin/14 reti; nessuna qualifica OEM, niente PCB.
+
+Nuovo branch `engineering/v27-two-stage-zener-single-open-oem-knee-20261117`: aggiunto `03_Verifiche/V2.7/verify_two_stage_twin_zener_single_open_native.py` a FULL, controllo pin-net, R 47k/10k, doppi Zener 1N4106-1 THT su ciascuno dei due stadi fisici, **3.888 casi matematici sintetici** (1.944 per stadio, OPEN singolo/doppio). Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_FOUR_ZENERS_3888_CORNER_20261117.md`. Non equiparare modello ideale a curva OEM né garanzia VGS <20V, in particolare con diodo superstite sotto IZT=250µA. PR/CI nuove DA VERIFICARE sul HEAD finale. Issue #27 APERTA; NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
 ## 16 novembre 2026 — PR #329 MERGED, matrice 21 guasti su CAD KiCad9 reale
 
 PR [#329](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/329) MERGED su main `855d9daf704900b881c3634426b30c0c2e309038`, head finale `fe4bc7e7049a6a7fd0e45a945c39a8568c4b15ec`, CI run #43916170092 FAST/FULL/Required **3/3 SUCCESS**, ERC0 e netlist nativa 24 componenti/54pin/14 reti per due interruttori PMOS THT anti-serie completi in cascata. PR #330 su branch `engineering/v27-two-stage-double-faults-main-rebased-20261116` aggiunge `03_Verifiche/V2.7/verify_two_pmos_stages_single_double_fault_native.py`, verifica direzionale in base a topologia KiCad9 di 6 guasti singoli e 15 doppi (nel grafo ideale 0/6 singoli, 7/15 doppi con percorso), e report `03_Verifiche/V2.7/RAPPORTO_TWO_FULL_PMOS_STAGES_21_SINGLE_DOUBLE_FAULTS_20261116.md`. Aggiunto guasto di causa comune `COMMON_ENABLE_STUCK_HIGH`: una singola sorgente esterna condivisa incollata HIGH potrebbe accendere entrambi gli stadi, nonostante i due nodi ENABLE separati in KiCad9. I 0/6 guasti singoli riguardano solo la lista di sei fault D–S/C–E, non ogni fault single. Nuova CI PR #330 DA VERIFICARE sul commit finale; non integrare senza FAST/FULL/Required verdi. **NON è sicurezza elettrica qualificata**: supply, comandi, clamp, FET SOA/termico, fault comuni da provare. Issue #27 aperta. NO PCB, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
