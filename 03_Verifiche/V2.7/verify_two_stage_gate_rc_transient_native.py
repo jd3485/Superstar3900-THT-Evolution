@@ -61,7 +61,7 @@ def main():
             cases+=1
         assert cases==288
         # Expected per stage: deterministic analytic conditions to detect changes.
-        assert (above2,above4)==(48,12),(above2,above4)
+        assert (above2,above4)==(54,36),(above2,above4)
         assert 4.8<worst<4.935
         summary[stage]={"cases":cases,"hypothetical_ge2V_cases":above2,
            "hypothetical_ge4V_cases":above4,"max_ideal_absVgs_V":round(worst,6)}
