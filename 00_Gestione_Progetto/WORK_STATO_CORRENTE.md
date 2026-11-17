@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #344 MERGED; mute FRONT NO saldato in verifica
+
+PR [#344](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/344) **MERGED** main `00876955158538094022ca3d11fdba731152524b` (head `a5b5ef56b6f79028498edd794631ffdc12a48b1c`), CI #44133124494 FAST/FULL/Required 3/3 SUCCESS. Verificati 108 corner sintetici G5V-1 con due VCEsat serie; 30 sotto 4V OEM a 23°C, nessuna qualifica hardware.
+
+Branch `engineering/v27-front-mute-welded-no-ac-native-20261117`: nuovo test KiCad9 FRONT/MAIN di **NO saldato + NC idealmente ancora connesso**, injection AC cavo e contatto con resistenza, due solutori indipendenti (nodale/Norton); **216** casi grounded + **216** casi AF_GND comune aperta, dichiarati non determinabili invece di simulare un ritorno artificiale. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_WELDED_NO_AC_20261117.md`, incluso FULL. #292 OPEN; K1901 manca footprint OEM 6 pin, nessuna PCB prodotto. CI/PR nuove da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #343 MERGED; margine bobina mute FRONT in verifica
 
 PR [#343](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/343) **MERGED** su main `f4a38756dd0da843c9b219b3a4648610dc74d190`, head `9899a153b483d2745e127cbf0591dd83575d75a5`, run #44129980006 FAST/FULL/Required 3/3 SUCCESS. Mappatura **proposta** OEM G5V-1 DC5: coil 2/9, COM 5/6, NC 1 e NO 10; assente PCB/footprint qualificata.
