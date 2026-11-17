@@ -998,6 +998,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_pmos_stages_single_double_fault_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Actual KiCad9 two distinct complete PMOS anti-series stages:
+    # four THT 1N4106-1 candidates, two per floating gate; gate voltage
+    # screening at 3888 synthetic corners, NOT an OEM I-V qualification.
+    print("::group::THT TWO STAGE FOUR ZENER 3888 CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_twin_zener_single_open_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
