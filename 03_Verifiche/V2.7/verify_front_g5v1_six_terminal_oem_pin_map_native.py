@@ -100,7 +100,7 @@ def main():
       "synthetic_contact_common_open_cases":states,
       "NC_with_electrical_common_cases":normally_closed,
       "NO_with_electrical_common_cases":normally_open,
-      "double_common_open_cannot_fail_mute":True,
+      "double_common_open_breaks_electrical_mute_path":True,
       "actual_6pad_top_side_footprint_or_relay_migrated":False,
       "coil_driver_powergood_qualified":False,
       "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True},flush=True)
