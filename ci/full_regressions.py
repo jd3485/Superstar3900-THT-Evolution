@@ -1027,6 +1027,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_off_gate_leakage_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # 576 hypothetical RC gate transients on two real KiCad9 PMOS stages;
+    # assumed capacitors and leakage only, no OEM switching qualification.
+    print("::group::THT TWO STAGE GATE RC STEP 576 NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_gate_rc_transient_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
