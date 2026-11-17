@@ -1013,6 +1013,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_zener_short_open_driver_stress_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Two-stage KiCad9 native: 47k pullup / 10k sink OPEN/SHORT,
+    # floating gate and hard-short states under both Zeners OPEN.
+    print("::group::THT TWO STAGE GATE RESISTOR OPEN SHORT 1944",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_gate_resistor_fault_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
