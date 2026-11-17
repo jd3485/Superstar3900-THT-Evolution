@@ -1041,6 +1041,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_gate_release_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Rgs opened, shorted or nominal across two KiCad9 PMOS stage gates:
+    # 432 idealized cases; OPEN with sink gives UNPHYSICAL uncapped growth.
+    print("::group::THT TWO STAGE RGS OPEN SHORT 432 NATIVE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_rgs_return_open_short_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
