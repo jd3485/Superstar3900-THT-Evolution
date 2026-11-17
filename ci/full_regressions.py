@@ -1006,6 +1006,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_twin_zener_single_open_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Independent fault extremes on the same KiCad9 24 THT component
+    # two-stage topology; ideal Zener SHORT vs BOTH OPEN and sink faults.
+    print("::group::THT TWO STAGE CLAMP SHORT OPEN DRIVER EXTREMES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_zener_short_open_driver_stress_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
