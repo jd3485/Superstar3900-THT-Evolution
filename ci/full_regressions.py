@@ -1069,6 +1069,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_mute_g5v1_oem_candidate_gate_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # OEM G5V-1 DC5: pins 5 and 6 are both contact COM; current K1901
+    # is a five-electrical-pin abstract THT relay, not a six-pad OEM footprint.
+    print("::group::FRONT G5V1 SIX TERMINAL OEM NATIVE PIN MAPPING",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_six_terminal_oem_pin_map_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
