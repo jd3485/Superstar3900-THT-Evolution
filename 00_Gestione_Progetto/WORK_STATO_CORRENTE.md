@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #342 MERGED; mappa G5V-1 OEM sei terminali proposta
+
+PR [#342](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/342) **MERGED** main `5b64ad3c5b76938435db48f6e3b0743d73460431`, head `15ea258e1a6e3cd15a5a8f4bccee11cffab8fdd5`, run #44128102517 FAST/FULL/Required 3/3 SUCCESS. K1901 FRONT ancora cinque pin astratti, non compatibile direttamente con relè OEM sei fori.
+
+Branch `engineering/v27-front-g5v1-oem-sixpad-contact-map-20261117`: dal datasheet OEM Aratas/Omron K048-E1 p4 BOTTOM view confermati sei pin G5V-1 DC5: coil 2/9, COM doppio 5/6, NC 1, NO 10; mappa proposta alle reti K1901 **senza** modificare CAD, e 12 casi ideali di guasto dei due COM, inclusa perdita mute con 5 e 6 entrambi OPEN. Nuovo test FULL su netlist KiCad9 FRONT e rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_G5V1_OEM_SIXPIN_MAP_20261117.md`. PR/CI in verifica; simbolo e impronta OEM TOP/BOTTOM **ancora da progettare/validare**. #292 OPEN, no FAB/TX/batteria/veicolo.
+
+---
+
+
 ## 17 novembre 2026 — PR #341 MERGED; K1901 relè NC OEM THT in verifica
 
 PR [#341](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/341) **MERGED** main `bcc324d5ae41d35d032d59555bc288f2aa7a1b97`, head `cce39c4e1f587e085f8cb2731e0900176b9564d8`, run #44123242864 FAST/FULL/Required 3/3 SUCCESS. Matrice 60 scenari di montaggio/isolate tabs THT, non isolamento reale.
