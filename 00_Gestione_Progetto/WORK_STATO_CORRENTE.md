@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #338 MERGED; fault Rgs OPEN/SHORT su due gate in verifica
+
+PR [#338](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/338) **MERGED** main `c6299623faff3f55111fc412c6820d45a71872e2` (HEAD final PR `2b7bab6340f923a7151d32ebb13a72ea3c244a58`). Run #44114976980 FAST/FULL/Required 3/3 SUCCESS, 720 casi RC sintetici ON→OFF nativi KiCad9, non qualifica OFF reale.
+
+Branch `engineering/v27-gate-return-open-short-native-20261117`: verifica KiCad9 pin↔net di entrambi i Rgs 47k, sink 10k e diodi su banco THT 24/54/14; 432 combinazioni matematiche Rgs NOM/OPEN/SHORT, C ipotetiche, sink esterno residuo, t, bias iniziale. OPEN con sink nullo conserva carica del gate; OPEN con sink produce crescita **non fisica e priva di clamp** nel modello, dunque non sicurezza. Nuovo test FULL e rapporto `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_RGS_RETURN_OPEN_SHORT_432_20261117.md`. PR/CI nuove da verificare. Issue #27 OPEN, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #337 MERGED; rilascio gate ON→OFF in verifica
 
 PR [#337](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/337) **MERGED** su main `1995012ad3585bbe86cdbd212668d5768d984367`, head `edad57e042317253fb933f41ea3f6752fdc62164`, run #44076803996 FAST/FULL/Required 3/3 SUCCESS. KiCad9 24 THT/54 pin/14 reti; 576 corner RC sintetici senza Qg/Miller OEM.
