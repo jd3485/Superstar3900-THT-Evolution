@@ -1076,6 +1076,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_six_terminal_oem_pin_map_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native FRONT two-series-NPN coil switching, with hypothetical rail,
+    # VCE(sat) and 167ohm coil tolerance; NOT vendor model or PVT approval.
+    print("::group::FRONT G5V1 COIL HEADROOM 108 NATIVE CORNERS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_dual_npn_coil_headroom_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
