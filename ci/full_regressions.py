@@ -1090,6 +1090,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_mute_welded_no_ac_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Physical six-pad G5V-1 THT footprint candidate: OEM coordinates, not
+    # assigned to still-five-pin FRONT K1901; physical qualification blocked.
+    print("::group::FRONT G5V1 OEM SIXPAD CANDIDATE FOOTPRINT NONFAB",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_oem_sixpad_footprint_candidate_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
