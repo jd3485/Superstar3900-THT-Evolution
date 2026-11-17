@@ -1048,6 +1048,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_rgs_return_open_short_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Four TO-220AB drain-connected tabs may bypass the two OFF switches
+    # if an uninsulated common heat spreader bonds different drain nets.
+    print("::group::THT TWO STAGE TO220 TAB SHORT 21 NATIVE CONTACT CASES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_two_stage_to220_tab_drain_short_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
