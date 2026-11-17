@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #333 MERGED; audit Rgs/sink OPEN-SHORT THT nuova revisione
+
+PR [#333](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/333) **MERGED** su main `e6ccdd6a0082e127e19633e4bdfd55d53558da5a`, final HEAD `e9d0f20b890ff4ea0d40c1558e66ca47b0655ed3`, run #44055467497 FAST/FULL/Required 3/3 SUCCESS: 648 corner sintetici SHORT/OPEN diodi/driver con netlist KiCad9 54pin/14net; nessuna sicurezza OEM.
+
+Nuovo branch `engineering/v27-two-stage-gate-resistor-open-short-native-20261117` da main: verifica nativa dei pin e dei valori 47k/10k dei due stadi, Rgs e Rserie NOM/OPEN/SHORT con sink OFF/ON, **1.944 corner matematici** (972/stadio). Su ogni stadio: 216 gate flottanti/inconoscibili, 54 hard-short ideali source-return, 100 corner DC definiti con |Vgs| >20V e 48V massimo teorico nel caso di entrambi Zener OPEN. Nuovo test integrato nella FULL; rapporto `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_GATE_RESISTOR_OPEN_SHORT_1944_20261117.md`. PR/CI nuove da verificare, NON integrate. #27 OPEN, MAIN/FRONT senza PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 17 novembre 2026 — PR #332 MERGED, stress Zener SHORT/OPEN in revisione riconciliata
 
 PR [#332](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/332) **MERGED** main `28e5ab98aa223c006f835d2971be9048d4b3a209`; HEAD finale `52ed1f869adbb86726b839b3d39eea73a3f0a189`, CI run #44048035832 FAST/FULL/Required 3/3 SUCCESS: audit matematico 250µA per i quattro Zener dei due stadi THT. PR #333 sul vecchio base `eed513cb` aveva FAST/FULL/Required 3/3 SUCCESS run #44049258422 ma conflitto nel checkpoint dopo il merge #332. Modifiche tecniche preservate e riconciliate in nuovo branch `engineering/v27-two-stage-clamp-short-open-rebased-20261117` su main: regressione KiCad9 24 componenti/54 pin/14 reti, 648 corner statici sintetici di Zener entrambi OPEN o uno SHORT, driver DISABLED/ENABLED/C–E SHORT; 38/324 scenari per stadio oltre |Vgs|20V nell'ideale con clamp OPEN; fino a 0,242526W teorici sul resistore serie con clamp in corto. Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_ZENER_SHORT_OPEN_DRIVER_STRESS_20261117.md`, FULL wired. Nuova PR/CI obbligatorie dopo riconciliazione; NO qualifica OEM/fail-safe, #27 OPEN, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
