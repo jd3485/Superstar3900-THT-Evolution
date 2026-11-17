@@ -1055,6 +1055,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_two_stage_to220_tab_drain_short_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Enumerate all conductive mounting partitions for four TO-220 drain tabs.
+    # No insulated heatsink/PCB hardware exists; only native connectivity proof.
+    print("::group::TO220 MOUNTING INSULATION 15 PARTITIONS 60 STATES",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_to220_insulation_partition_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
