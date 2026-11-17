@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #331 MERGED, nuova regressione budget di corrente Zener
+
+[PR #331](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/331) integrata su main `eed513cbf1ff770901320a55026c6a6de14547d7`, head `f594392491692b8abef4dd8dc0eebf833dc6eb2a`; run #43993024762 FAST/FULL/Required 3/3 SUCCESS. Due stadi KiCad9 completi 24 componenti/54 pin/14 reti, quattro Zener 1N4106-1 THT candidati, **3.888 corner sintetici**, non curva OEM. Nuovo branch `engineering/v27-two-stage-zener-knee-current-budget-20261117`: estensione del test FULL nativo con 162 corner di bilancio corrente per uno Zener e 162 per due Zener, rispettivamente 54 e 64 sotto ipotetici 250µA per ramo. Threshold nominali ideali 17,053191/19,553191V con Vz assunto 12V. Rapporto `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_ZENER_250UA_BUDGET_20261117.md`. Nuova PR e CI da verificare; nessuna qualifica safety, #27 OPEN, MAIN/FRONT senza PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 17 novembre 2026 — PR #330 MERGED, gate zener dei due stadi anti-serie in verifica
 
 [PR #330](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/330) **MERGED** su main `157caac9912f184b6e2b9e858306e2a1982e5384`, HEAD PR `279bc5403293cfd49bba8acdca60fce89bef88ca`, run #43973726404 **FAST/FULL/Required 3/3 SUCCESS**. Test di 6 fault locali singoli, 15 doppi e consenso esterno comune incollato HIGH sul banco vero KiCad9 24 componenti/54 pin/14 reti; nessuna qualifica OEM, niente PCB.
