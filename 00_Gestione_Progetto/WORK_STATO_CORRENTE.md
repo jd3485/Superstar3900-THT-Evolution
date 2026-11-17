@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #341 MERGED; K1901 relè NC OEM THT in verifica
+
+PR [#341](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/341) **MERGED** main `bcc324d5ae41d35d032d59555bc288f2aa7a1b97`, head `cce39c4e1f587e085f8cb2731e0900176b9564d8`, run #44123242864 FAST/FULL/Required 3/3 SUCCESS. Matrice 60 scenari di montaggio/isolate tabs THT, non isolamento reale.
+
+Nuovo branch `engineering/v27-front-mute-relay-oem-six-terminal-20261117`: candidato relè mute FRONT **Aratas/Omron G5V-1 DC5**, famiglia marcata OEM “In production” (17/11/2026). Disegno OEM BOTTOM-view **6 fori THT** contro simbolo K1901 **5 pin astratti e nessuna footprint**: **vietata sostituzione diretta**. Test KiCad9 netlist parent di 5 pin, 5V/167Ω ±10% → 27.22–33.27mA ipotetici, rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_MUTE_G5V1_OEM_SIX_HOLE_GATE_20261117.md`. Prerequisito reale: nuovo simbolo/impronta OEM 6 pad, pin mapping, coil PVT/driver e mute fail-NC. Nuova PR/CI da verificare. Issue #27 e #292 OPEN, nessuna PCB nuova. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #340 MERGED; matrice isolamento alette TO-220 in revisione
 
 PR [#340](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/340) **MERGED** main `5b2581ba4f82d1f364e7642378896ecd2f6e10ab`, HEAD `1e4005545ced607605804aca780f3e532dee38d5`, run #44120191088 FAST/FULL/Required 3/3 SUCCESS. Testato rischio di bypass di due stadi tramite alette drain dei MOSFET THT.
