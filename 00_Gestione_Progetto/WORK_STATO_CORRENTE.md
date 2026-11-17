@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #339 MERGED; rischio corto aletta drain TO-220 in verifica
+
+PR [#339](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/339) **MERGED** main `970113fb30fb1e1fc60daf27feab0dabfee8848f` (head `5016b0edb7562deedf1039c1059779162cd2472f`), run #44117310413 FAST/FULL/Required 3/3 SUCCESS. Regressione Rgs OPEN/SHORT 432 corner matematici su KiCad9 nativo, nessuna prova fail-OFF OEM.
+
+Branch `engineering/v27-tab-drain-shared-heatsink-hazard-20261117`: **rischio fisico nuovo verificato su topologia CAD**, aletta metallica IRF9540NPbF TO-220AB elettricamente connessa a DRAIN pin2. Le quattro alette hanno drain su IN/MID/MID/OUT: un dissipatore unico non isolato cortocircuiterebbe IN↔OUT. Nuova regressione FULL KiCad9 24 THT/54 pin/14 reti, sei coppie + 15 doppie coppie idealizzate; **1/6** singole e **9/15** doppie bypassano in entrambe le direzioni. Report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_TO220_TAB_SHORT_20261117.md`; CI e PR nuove da verificare. **Nessun PCB, nessun montaggio/isolamento termico qualificato**, issue #27 aperta. NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+---
+
+
 ## 17 novembre 2026 — PR #338 MERGED; fault Rgs OPEN/SHORT su due gate in verifica
 
 PR [#338](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/338) **MERGED** main `c6299623faff3f55111fc412c6820d45a71872e2` (HEAD final PR `2b7bab6340f923a7151d32ebb13a72ea3c244a58`). Run #44114976980 FAST/FULL/Required 3/3 SUCCESS, 720 casi RC sintetici ON→OFF nativi KiCad9, non qualifica OFF reale.
