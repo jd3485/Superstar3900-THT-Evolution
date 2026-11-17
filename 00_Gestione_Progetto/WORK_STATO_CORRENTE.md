@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #334 MERGED; protocollo Pilota V8 in revisione
+
+[PR #334](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/334) **MERGED** su main `7641000726d5aa54e1408d1b729f561cad746fdb`, final head `776e011e3f7cfa066bb47f5ba1619f136b6e47a6`, run #44062345236 FAST/FULL/Required 3/3 SUCCESS. Banco KiCad9 nativo due stadi PMOS, regressione sintetica 1.944 guasti Rgs/serie OPEN/SHORT. Non qualifica fail-safe OEM o hardware; #27 resta aperta, nessuna PCB fabbricabile.
+
+Nuovo branch `operations/pilota-v8-ci-pause-main-20261117`: `AGENTS.md` introduce l'attesa CI temporizzata del Pilota V8, con marcatore nel corpo `PAUSA_CI` e **ultima riga `ATTESA`**, conservando i quattro segnali finali obbligatori. Documento `00_Gestione_Progetto/PILOTA_V8_PAUSA_CI_20261117.md`. Script userscript V8 fornito all'utente per installazione locale: pausa 240s, verifica di pagina/risposta/editor invariati, arresto manuale, disabilitare V7. Nessun timer server e nessuna elusione di FAST/FULL/Required. PR e CI del protocollo da verificare prima del merge. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 17 novembre 2026 — PR #333 MERGED; audit Rgs/sink OPEN-SHORT THT nuova revisione
 
 PR [#333](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/333) **MERGED** su main `e6ccdd6a0082e127e19633e4bdfd55d53558da5a`, final HEAD `e9d0f20b890ff4ea0d40c1558e66ca47b0655ed3`, run #44055467497 FAST/FULL/Required 3/3 SUCCESS: 648 corner sintetici SHORT/OPEN diodi/driver con netlist KiCad9 54pin/14net; nessuna sicurezza OEM.
