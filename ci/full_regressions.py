@@ -1062,6 +1062,13 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_to220_insulation_partition_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # FRONT K1901 has five abstract electrical pins and NO footprint,
+    # whereas G5V-1 DC5 requires six OEM bottom-view THT mounting holes.
+    print("::group::FRONT MUTE OEM G5V1 SIX HOLE CANDIDATE NATIVE GATE",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_mute_g5v1_oem_candidate_gate_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
