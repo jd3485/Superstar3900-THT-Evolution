@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #337 MERGED; rilascio gate ON→OFF in verifica
+
+PR [#337](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/337) **MERGED** su main `1995012ad3585bbe86cdbd212668d5768d984367`, head `edad57e042317253fb933f41ea3f6752fdc62164`, run #44076803996 FAST/FULL/Required 3/3 SUCCESS. KiCad9 24 THT/54 pin/14 reti; 576 corner RC sintetici senza Qg/Miller OEM.
+
+Nuovo branch `engineering/v27-two-stage-gate-release-initial-charge-20261117`: test nativo `03_Verifiche/V2.7/verify_two_stage_gate_release_native.py` registrato in FULL, **720** casi di scarica ideale gate da |Vgs| iniziale 5/12V con sink residuo 0–100µA, Rgs ±5%, C ipotetiche e controllo analitico↔integrazione trapezoidale. Marcatori 2/4V non soglie OEM, nessuna prova di OFF sicuro; report `03_Verifiche/V2.7/RAPPORTO_TWO_STAGE_GATE_RELEASE_720_20261117.md`. PR/CI di questa revisione da verificare, **non integrata**. Issue #27 OPEN, nessuna PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #336 MERGED; RC transient nativo in verifica
 
 [PR #336](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/336) **MERGED** su main `844cde2d4c45e4cf28e53bb65071f9fb38135d80`, final head `b1cd4f3750cda13a92ba9d66c1b5127281970b30`, run #44075051941 FAST/FULL/Required 3/3 SUCCESS, con evidenza nei log di `PASS_NATIVE_THT_TWO_STAGE_OFF_GATE_LEAKAGE_252_NONFAB`. Test KiCad9 24 THT / 54 pin / 14 reti, 252 corner statici sintetici OFF leakage; non è qualifica di leakage OEM né fail-safe.
