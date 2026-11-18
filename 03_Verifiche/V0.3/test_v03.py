@@ -120,8 +120,8 @@ class PLLV03(unittest.TestCase):
     for path in (main_af,front_af):
         board=(ROOT/path).read_text(encoding='utf-8')
         is_front=(path==front_af)
-        self.assertEqual(board.count('(footprint "'),7 if is_front else 2)
-        self.assertEqual(board.count('(pad "'),19 if is_front else 4)
+        self.assertEqual(board.count('(footprint "'),7 if is_front else 4)
+        self.assertEqual(board.count('(pad "'),19 if is_front else 8)
         self.assertEqual(board.count('(segment '),27 if is_front else 0)
         if is_front:
             for track in (
