@@ -253,7 +253,7 @@ def main():
                 # on the opposite layer; coil pads remain free of copper.
                 for pad,(net,x,y) in expected_relay.items():
                     for tracknet,a,c,width,layer in wires:
-                        if tracknet!=net:
+                        if tracknet!=pcb_net[net]:
                             assert dist((x,y),a,c)-1.0-width/2>=0.2-1e-8,(
                                 "K1901 foreign-net copper clearance",pad,tracknet)
                 # Resistive bleed and series routing must match native master.
