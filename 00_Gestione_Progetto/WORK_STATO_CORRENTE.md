@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato MAIN: U1201 LM386 PDIP8 fisico con otto pad nativi
+
+Branch `engineering/v27-main-u1201-pdip8-native-pad-placement-20261118`: aggiunto U1201 LM386N-1/NOPB candidato in `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` con impronta THT `Package_DIP:DIP-8_W7.62mm` a (130,65). Mappatura nativa pad: 1/8 senza connessione (gain 20), 2/4 GND, 3 AMP_IN, 5 AMP_OUT, 6 AUDIO_6V_LAB, 7 BYPASS. MAIN passa a cinque footprint e sedici pad, con le precedenti quattro piste audio intatte, nessun rame su U1201, nessuna unione IF_BENCH_GND↔GND. Verificatore nativo e whitelist legacy aggiornati.
+
+**Stato:** PR candidata, CI FAST/FULL/Required non ancora verde sullo SHA finale. Geometria/meccanica OEM e interconnessioni di alimentazione/uscita, condensatori decoupling, termica ed EMI ancora da qualificare; niente DRC PCB prodotto, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #388 MERGED: quattro piste audio MAIN C1201/R1201 NONFAB
 
 Branch `engineering/v27-main-lm386-input-cap-prein-copper-20261118`: il candidato MAIN ha quattro segmenti fisici 0,5mm: J1202/1 AUDIO_IN → C1201/1 AUDIO_IN su B.Cu; C1201/2 PRE_IN → R1201/1 PRE_IN su F.Cu. Il pad R1201/2 AMP_IN resta isolato finché U1201 non è posizionato. I ritorni IF_BENCH_GND e GND sono distinti e privi di piste. Nessun collegamento diretto che bypassi C1201 o R1201. Controlli nativi: lista geometrica esatta, connettività pad, clearance su tutti gli otto pad MAIN e continuità dei due gruppi; V0.3/V0.4 aggiornate.
