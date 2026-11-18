@@ -142,7 +142,10 @@ def main():
     missing_singletons={next(iter(p)) for p in omitted}
     assert missing_singletons==omitted_known_nc,(
         "Unexpected KiCad9 nested-only NC pin difference",missing_singletons)
-    assert len(all_parts)==sum(map(len,(old_parts,aud_parts,if_parts,am_parts,buf_parts)))-len(omitted_known_nc)
+    # Two intentional pairwise IF→AM joins reduce net count by exactly two;
+    # pin endpoint count is unchanged. Equality of the complete partition
+    # multisets above remains mandatory, with no unexplained merges.
+    assert len(all_parts)==sum(map(len,(old_parts,aud_parts,if_parts,am_parts,buf_parts)))-len(omitted_known_nc)-len(intentional)
     assert sum(map(len,all_parts))==(
         sum(sum(map(len,p)) for p in (old_parts,aud_parts,if_parts,am_parts,buf_parts))-len(omitted_known_nc))
     print("MAIN_PARTIAL_HIERARCHY_NC_NETLIST_DIFFERENCE",{
