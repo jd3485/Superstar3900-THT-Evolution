@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #360 MERGED: interfaccia DEMOD_AUDIO J1301 nel master FRONT
+
+PR [#360](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/360) **MERGED** su main `b7b2a4706c0c7e3ce10addf586e2fdb7081ad7f9`, HEAD `eda6eda48827f36b1ba68393fbf2f0b16d93824a`. Workflow #44301208606: FAST, FULL KiCad9 ed Required **3/3 SUCCESS**. Creato il figlio FRONT_VOLUME `*_FRONT_HIERARCHICAL_CANDIDATE.kicad_sch` che esporta il segnale di J1301/1 con `DEMOD_AUDIO` gerarchico e conserva la label locale della pista verso RV1301; il benchmark originale non è stato modificato. Il master `FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch` espone la porta DEMOD_AUDIO con sheet pin e wire fisici, senza modificare l'interconnessione volume→mute e l'AF_GND preesistente su J1301/2. Aggiornata regressione `verify_front_g5v1_sixpin_hierarchy_candidate_native.py` con controlli di integrità degli endpoint. Nessun cavo MAIN/FRONT reale, nessun modello di carico IF/AF o PCB/DRC; nessuna qualifica OEM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo CAD:** esporre nel master MAIN l'uscita AM455 J1502 con porta gerarchica senza violare benchmark standalone, poi integrare due connettori/interfacce fisiche THT tra MAIN e FRONT e percorso mute→LM386 con masse controllate, ERC/netlist su entrambi. #27/#292 restano aperti.
+
+---
+
 ## 18 novembre 2026 — PR #358 MERGED: MAIN IF455→AM455 con due collegamenti KiCad9 nativi
 
 PR [#358](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/358) **MERGED** su main commit `9d3065b17e361161e31a8f9f9685b7587ff793b4`, head tecnico `51a0543c2c040b38f6ddea5d6af9e937f4ebb7a3`, run #44296830643 **FAST/FULL/Required 3/3 SUCCESS**. Collegati nel master nativo `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` segnale IF455_FILTER_OUT→IF455_BENCH_IN e ritorno IF_BENCH_GND tramite sheet pin e due wire. I fogli benchmark autonomi IF455_TANK e AM455_ENVELOPE sono preservati per ERC0 isolato; nuove copie `*_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch` utilizzate nel master. Aggiornato `03_Verifiche/V2.7/verify_main_partial_v27_hierarchy_native.py` per imporre esattamente le due unioni di partizioni, conservare tutte le reti non coinvolte e gli NC preesistenti. Il master ha ottenuto **ERC KiCad9 0 errori/0 warning** nella FULL. V2.6 non modificata, FRONT e gli altri blocchi MAIN ancora separati, caricamento IF/detector non qualificato, nessuna PCB reale né DRC, nessuna prova hardware.
