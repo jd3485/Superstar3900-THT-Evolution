@@ -1,5 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #358 MERGED: MAIN IF455→AM455 con due collegamenti KiCad9 nativi
+
+PR [#358](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/358) **MERGED** su main commit `9d3065b17e361161e31a8f9f9685b7587ff793b4`, head tecnico `51a0543c2c040b38f6ddea5d6af9e937f4ebb7a3`, run #44296830643 **FAST/FULL/Required 3/3 SUCCESS**. Collegati nel master nativo `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` segnale IF455_FILTER_OUT→IF455_BENCH_IN e ritorno IF_BENCH_GND tramite sheet pin e due wire. I fogli benchmark autonomi IF455_TANK e AM455_ENVELOPE sono preservati per ERC0 isolato; nuove copie `*_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch` utilizzate nel master. Aggiornato `03_Verifiche/V2.7/verify_main_partial_v27_hierarchy_native.py` per imporre esattamente le due unioni di partizioni, conservare tutte le reti non coinvolte e gli NC preesistenti. Il master ha ottenuto **ERC KiCad9 0 errori/0 warning** nella FULL. V2.6 non modificata, FRONT e gli altri blocchi MAIN ancora separati, caricamento IF/detector non qualificato, nessuna PCB reale né DRC, nessuna prova hardware.
+
+La PR documentale [#357](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/357) è **MERGED** successivamente su main `e036467854b3f6bb10a4e2cc26f1988a38fce81d`; FAST/Required PASS, FULL skipped correttamente per modifica documentale. **HEAD main al bootstrap di questo checkpoint: `e036467854b3f6bb10a4e2cc26f1988a38fce81d`** (da riverificare prima del merge del presente aggiornamento).
+
+**Prossimo CAD:** completare il percorso AM455 audio→FRONT volume/mute→MAIN LM386 con veri connettori THT inter-board, pin↔pad↔net e ritorni di massa separati e validati, senza creare ponti diretti tra PCB. Verificare carico del detector e cablaggi EMC/ground prima della qualifica. Restano #27/#292 OPEN, **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — strategia CAD-first integrata, PR #356
 
 Strategia operativa integrata su main con [PR #356](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/356), commit `125885fb1b18194b3f13fdfaa8b0b5158700f5d8`, Required CI SUCCESS, FAST SUCCESS, FULL skipped correttamente per diff documentale: inventario dei blocchi reali V2.7 MAIN/FRONT, priorità alle modifiche agli schemi e all'integrazione di gerarchie native; regressioni mirate a rischi nuovi e gate obbligatori invariati. Misurare blocchi connessi e interfacce mancanti, non il numero di PR. La policy è ora integrata, **non** significa promozione V2.7, completamento di PCB o verifiche hardware. Continuano NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
