@@ -149,7 +149,9 @@ def main():
                     ("J1302","1"):((75.,35.),1.,4),
                     ("J1302","2"):((75.,37.54),1.,2),
                 }
-                assert set(physical)==set(wanted)
+                relay_keys={("K1901",pin) for pin in ("1","2","5","6","9","10")}
+                assert set(wanted)==set(physical)|relay_keys
+                assert not (set(physical)&relay_keys)
                 wires=[(int(net),(float(x1),float(y1)),(float(x2),float(y2)),
                         float(width),layer)
                        for x1,y1,x2,y2,width,layer,net,uuid in segments]
