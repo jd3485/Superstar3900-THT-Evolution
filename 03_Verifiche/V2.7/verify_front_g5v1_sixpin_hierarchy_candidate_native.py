@@ -66,12 +66,17 @@ def main():
         sorted(set(unaffected_new.items())-set(unaffected_old.items())))
     assert len(nm)==len(om)+1,(len(nm),len(om))
     assert len(old)==len(new)==22,(len(old),len(new))
-    for group in (("AF_GND","DRIVER_GND"),("COIL_PLUS_LAB","COIL_MINUS_LAB"),
-                  ("METER_RETURN","AF_GND"),("ILLUM_RETURN_LAB","AF_GND"),
-                  ("RELAY_COM_AUDIO","AMP_INPUT_MUTED")):
-        assert nm[("K1901","5")]=="RELAY_COM_AUDIO"
-        assert nm[("K1901","6")]=="RELAY_COM_AUDIO"
-        assert group[0]!=group[1]
+    assert nm[("K1901","5")]=="RELAY_COM_AUDIO"
+    assert nm[("K1901","6")]=="RELAY_COM_AUDIO"
+    # Neither preexisting AF/driver isolation nor the audio-mute boundary may collapse.
+    assert nm[("J1902","1")]=="AMP_INPUT_MUTED"
+    assert nm[("J1302","1")]=="VOL_WIPER_TO_AMP"
+    for left,right in (("AF_GND","DRIVER_GND"),("COIL_PLUS_LAB","COIL_MINUS_LAB"),
+                       ("METER_RETURN","AF_GND"),("ILLUM_RETURN_LAB","AF_GND"),
+                       ("RELAY_COM_AUDIO","AMP_INPUT_MUTED")):
+        assert any(net.rsplit("/",1)[-1]==left for net in new),left
+        assert any(net.rsplit("/",1)[-1]==right for net in new),right
+        assert left!=right
     print("PASS_KICAD9_FRONT_5SHEETS_G5V1_SIX_PHYSICAL_PINS_72_ENDPOINTS_22_NETS_ERC0_CANDIDATE",{
         "original_endpoint_count":len(om),
         "candidate_endpoint_count":len(nm),
