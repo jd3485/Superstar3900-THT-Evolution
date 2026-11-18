@@ -1,5 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #368 MERGED: contratto cablaggio audio a due link MAIN/FRONT
+
+PR [#368](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/368) **MERGED** su main `a6dd8acb9bca0b328926b60d755e73bc598471f0`, head `d3c1a63cca97bd97ccf0a4b3399b30f6b48cf72f`. CI #44313008305 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Creato disegno KiCad9 autonomo `04_KiCad/V2.7_DRAFT/MAIN_FRONT_DUAL_AF_HARNESS_V2_7_DRAFT.kicad_sch` e progetto, quattro connettori astratti THT J2701–J2704: link A MAIN AM455 J1502→FRONT J1301, link B FRONT post-mute J1902→MAIN LM386 J1202; quattro reti audio/return distinte nel cavo e otto pin, nessun power feed o bypass J1302→J1202. Verifica `verify_main_front_dual_af_harness_native.py` integrata in `ci/full_regressions.py`: ERC nativo separato per schema cavo, MAIN e FRONT, continuità pin↔net per tutti i quattro capi e isolamento delle due coppie nel disegno, integrità mute.
+
+**Blocco tecnico esplicito:** FRONT J1301/2 e J1902/2 sono già uniti sulla massa `AF_GND`; con entrambi i cavi montati si collegherebbero fra loro i ritorni originariamente separati di MAIN (AM455 IF_BENCH_GND e LM386 GND), potenziale anello di massa. L'isolamento della netlist del solo disegno harness **non** dimostra assenza di anello in assemblaggio. Nessun percorso PCB inter-board progettato o DRC, nessun cavo qualificato per polarizzazione, maschiatura connettori, EMI/ESD, schermatura, ground/chassis, carichi IF/AF. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo CAD:** progettare e verificare topologia ritorni unica/controllata tra due PCB, con documentazione elettrica del punto massa MAIN, eventuale differenziazione/isolamento di un ritorno se giustificato da analisi e no bypass; in seguito implementare PCB reali, pad/pin-net, layout e DRC. Non promuovere il disegno harness a cavo fisico fabbricabile.
+
+---
+
 ## 18 novembre 2026 — PR #366 MERGED: ingresso LM386 J1202 gerarchico MAIN
 
 PR [#366](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/366) **MERGED** su main `db8110661b700eb1d4677fb5b219813774f74227`, head tecnico `bf65585b24af47fa537ae8b72f000f22b09453bf`. CI #44309438165: FAST/FULL native KiCad9/Required **3/3 SUCCESS**. Creato figlio `AUDIO_RX_MONO_LM386_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch` con porte fisiche J1202/1 `AUDIO_IN` e J1202/2 `GND` mantenendo originale benchmark e tutti i componenti. Master `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch`: due sheet pin e due wire stub per ingresso audio/ritorno LM386, indipendenti da AM455 e FRONT. Regressione `verify_main_partial_v27_hierarchy_native.py` espansa a sei wire autorizzati, controlli di partizioni endpoint per J1202 e assenza di unioni indebite tra AF, IF e PLL. Nessun cavo o ritorno comune qualificato; non è una PCB fabbricabile.
