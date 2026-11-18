@@ -116,7 +116,22 @@ def main():
                 assert sorted(actual)==sorted(ordered(*row) for row in expected_routes),(
                     "FRONT unapproved copper geometry",actual)
             else:
-                assert not segments,("MAIN IF and LM386 returns must stay isolated",segments)
+                # MAIN lab AF input: only AUDIO_IN and PRE_IN are routed;
+                # IF_BENCH_GND and GND remain distinct and unrouted.
+                expected_main=[
+                    (3,"B.Cu",(90.,45.),(100.,45.)),
+                    (3,"B.Cu",(100.,45.),(100.,65.)),
+                    (5,"F.Cu",(102.5,65.),(102.5,75.)),
+                    (5,"F.Cu",(102.5,75.),(110.,75.)),
+                ]
+                actual_main=[(int(net),layer,(float(x1),float(y1)),
+                    (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
+                    if float(width)==0.5]
+                assert len(segments)==len(actual_main)==len(expected_main)==4
+                assert sorted(actual_main)==sorted(expected_main),(
+                    "MAIN unauthorized candidate copper",actual_main)
+                assert all(int(n) in (3,5) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,4,6) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -168,6 +183,41 @@ def main():
                     ("R1201","2"):"AMP_IN"}.items())
                 assert "IF_BENCH_GND"!=pads[("C1201","1")]
                 assert "GND"!=pads[("R1201","2")]
+                # Native verified MAIN plated-pad clearance and route topology.
+                from math import hypot
+                mainpads={
+                    ("J1502","1"):((40.,45.),1.,1),
+                    ("J1502","2"):((40.,47.54),1.,2),
+                    ("J1202","1"):((90.,45.),1.,3),
+                    ("J1202","2"):((90.,47.54),1.,4),
+                    ("C1201","1"):((100.,65.),.8,3),
+                    ("C1201","2"):((102.5,65.),.8,5),
+                    ("R1201","1"):((110.,75.),.9,5),
+                    ("R1201","2"):((117.62,75.),.9,6),
+                }
+                assert set(mainpads)==set(wanted)
+                def gap_to_track(pt,a,b):
+                    dx,dy=b[0]-a[0],b[1]-a[1]
+                    den=dx*dx+dy*dy
+                    assert den>0
+                    t=max(0.,min(1.,((pt[0]-a[0])*dx+(pt[1]-a[1])*dy)/den))
+                    return hypot(pt[0]-a[0]-t*dx,pt[1]-a[1]-t*dy)
+                wires_main=[(int(n),(float(x),float(y)),(float(xx),float(yy)),
+                    float(w),l) for x,y,xx,yy,w,l,n,u in segments]
+                for net,a,b,w,layer in wires_main:
+                    for (point,rad,othernet) in mainpads.values():
+                        if net!=othernet:
+                            assert gap_to_track(point,a,b)-rad-w/2>=0.2-1e-8,(
+                                "MAIN different-net pad copper clearance",net,othernet,point)
+                for net in (3,5):
+                    group=[(a,b) for n,a,b,w,l in wires_main if n==net]
+                    assert len(group)==2 and (group[0][1]==group[1][0]),(
+                        "MAIN split audio input copper",net,group)
+                    for point,rad,n in mainpads.values():
+                        if n==net:
+                            assert any(gap_to_track(point,a,b)<1e-8 for a,b in group),(
+                                "MAIN native input pad unconnected",net,point)
+                # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
                     "5":("RELAY_COM_AUDIO",80,65.16),"10":("VOL_WIPER_TO_AMP",85.08,55),
@@ -329,7 +379,7 @@ def main():
         "MAIN":("J1502","J1202","C1201","R1201"),
         "FRONT":("J1301","J1902","RV1301","J1302","K1901","R1901","R1902"),
         "independent_MAIN_nets":6,
-        "MAIN_input_cap_series_resistor_THT_unrouted":True,
+        "MAIN_input_cap_series_resistor_THT_4_audio_segments":True,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
         "FRONT_volume_to_wiper_10_original_segments_preserved":True,
