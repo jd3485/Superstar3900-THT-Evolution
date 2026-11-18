@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #364 MERGED: uscita post-mute J1902 gerarchica FRONT
+
+PR [#364](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/364) **MERGED** main `b28bf1de989b3885473471c1717fb4025b71e583`, head `e872fc880eadabf9ee63c39f6ab2103e52fa2819`. CI #44307125758 **FAST/FULL native KiCad9/Required 3/3 SUCCESS**. Aggiunto figlio `FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_POSTMUTE_HIERARCHICAL_CANDIDATE.kicad_sch` senza alterare il precedente candidato G5V1 isolato; porta gerarchica `AMP_INPUT_MUTED` per J1902/1 e `AF_GND` per J1902/2. Master `FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch`: due sheet pin e due stub elettrici per l'uscita audio dopo mute, senza collegamenti con MAIN o bypass del relay. Aggiornata `verify_front_g5v1_sixpin_hierarchy_candidate_native.py` per convalidare connessioni e conservare la mappa di tutti gli endpoint OEM. Nessun modello di carico o accoppiamento masse qualificato.
+
+**Prossimo CAD:** completare esposizione INPUT J1202 LM386 sul MAIN, verificare i due percorsi fisici J1502→J1301 e J1902→J1202 tramite connettori THT e netlist per PCB separate, prima di valutare cable harness/EMC/ground. Nessun PCB completo, DRC produttivo o misura hardware. #27/#292 OPEN; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #362 MERGED: output AM455 J1502 gerarchico MAIN
 
 PR [#362](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/362) **MERGED** su main `ac7da410f460c6f7e7c1e276633f66dd8de2e79a`, head tecnico `9dba1927b41a75f98df271d473f89ac8def2e1f3`, run #44304120992 **FAST/FULL/Required 3/3 SUCCESS**. Nel master `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` AM455 J1502 pin 1 audio demodulato e pin 2 ritorno IF sono esposti attraverso due porte gerarchiche e due wire stub con label locale, senza realizzare tie LM386 o FRONT. Il figlio MAIN AM455 gerarchico espone i due segnali mantenendo label e componenti esistenti; benchmark autonomo originale non modificato. Aggiornata `verify_main_partial_v27_hierarchy_native.py` per imporre quattro wire nel master, porte, esatta conservazione di tutte le partizioni pin/net preesistenti e distinzione di audio, ingresso IF, ritorno comune nel modulo. Zero nuove unioni elettriche rispetto alle due IF455→AM455 già validate in #358. PR checkpoint #361 **MERGED** su main `e9ab89c5525359e443f12aadd8d66f5d96be5cd7` prima di #362.
