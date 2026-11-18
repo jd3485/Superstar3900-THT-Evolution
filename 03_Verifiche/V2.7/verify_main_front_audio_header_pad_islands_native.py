@@ -26,7 +26,12 @@ BOARDS={
         ("J1301","1"):"DEMOD_AUDIO",
         ("J1301","2"):"AF_GND",
         ("J1902","1"):"AMP_INPUT_MUTED",
-        ("J1902","2"):"AF_GND"}),
+        ("J1902","2"):"AF_GND",
+        ("RV1301","1"):"DEMOD_AUDIO",
+        ("RV1301","2"):"VOL_WIPER_TO_AMP",
+        ("RV1301","3"):"AF_GND",
+        ("J1302","1"):"VOL_WIPER_TO_AMP",
+        ("J1302","2"):"AF_GND"}),
 }
 FOOTPRINT="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 
@@ -37,9 +42,13 @@ def main():
             assert pcb.with_suffix(".kicad_pro").is_file()
             raw=pcb.read_text(encoding="utf8")
             assert raw.startswith("(kicad_pcb (version 20241229)")
-            assert raw.count('(footprint "'+FOOTPRINT+'"')==2
-            assert raw.count('(pad "1" thru_hole')==2
-            assert raw.count('(pad "2" thru_hole')==2
+            assert raw.count('(footprint "'+FOOTPRINT+'"')==(
+                2 if board=="MAIN" else 3)
+            assert raw.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==(
+                0 if board=="MAIN" else 1)
+            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 4)
+            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 4)
+            assert raw.count('(pad "3" thru_hole')==(0 if board=="MAIN" else 1)
             segments=re.findall(
                 r'\(segment \(start ([\d.]+) ([\d.]+)\) '
                 r'\(end ([\d.]+) ([\d.]+)\) '
@@ -47,16 +56,27 @@ def main():
                 r'\(net (\d+)\) \(uuid "([^"]+)"\)\)',raw)
             assert raw.count("(segment ")==len(segments)
             if board=="FRONT":
-                assert len(segments)==1,("Unexpected extra copper segments",segments)
-                x1,y1,x2,y2,width,layer,net,uuid=segments[0]
-                assert (float(x1),float(y1),float(x2),float(y2))==(
-                    40.0,47.54,90.0,47.54),segments
-                assert float(width)==0.5 and layer=="F.Cu" and net=="2"
-                # Two return pads are at (40,47.54) and (90,47.54),
-                # two separate signal pads at y=45. A straight F.Cu
-                # trace 0.5 mm wide stays >= 1.29 mm edge-to-edge
-                # from each 2 mm wide signal pad (2.54-1-0.25).
-                assert min(abs(45.0-float(y1)),abs(45.0-float(y2)))-1.0-float(width)/2>=1.29-1e-9
+                expected_routes=[
+                    (2,"F.Cu",(40,47.54),(90,47.54)),
+                    (1,"F.Cu",(40,45),(40,40)),
+                    (1,"F.Cu",(40,40),(50,40)),
+                    (1,"F.Cu",(50,40),(50,35)),
+                    (1,"F.Cu",(50,35),(58,35)),
+                    (4,"B.Cu",(60.54,35),(60.54,28)),
+                    (4,"B.Cu",(60.54,28),(75,28)),
+                    (4,"B.Cu",(75,28),(75,35)),
+                    (2,"F.Cu",(63.08,35),(63.08,47.54)),
+                    (2,"F.Cu",(75,37.54),(75,47.54)),
+                ]
+                def ordered(net,layer,a,c):
+                    return (net,layer,tuple(sorted((a,c))))
+                actual=[ordered(int(net),layer,
+                    (float(x1),float(y1)),(float(x2),float(y2)))
+                    for x1,y1,x2,y2,width,layer,net,uuid in segments
+                    if float(width)==0.5]
+                assert len(segments)==len(actual)==10
+                assert sorted(actual)==sorted(ordered(*row) for row in expected_routes),(
+                    "FRONT unapproved copper geometry",actual)
             else:
                 assert not segments,("MAIN IF and LM386 returns must stay isolated",segments)
             assert raw.count("(via ")==0
@@ -67,10 +87,10 @@ def main():
                 re.findall(r'^\(net (\d+) "([^"]*)"\)$',raw,re.M)}
             assert pcb_net.get("")==0
             assert set(pcb_net)-{""}==set(wanted.values())
-            assert len(pcb_net)==(5 if board=="MAIN" else 4)
+            assert len(pcb_net)==5
             pads={}
             blocks=raw.split('\n(footprint "')[1:]
-            assert len(blocks)==2
+            assert len(blocks)==(2 if board=="MAIN" else 4)
             refs=set()
             for block in blocks:
                 refmatch=re.search(r'\(property "Reference" "([^"]+)"',block)
@@ -79,13 +99,14 @@ def main():
                 assert ref not in refs
                 refs.add(ref)
                 assert "(attr through_hole)" in block
-                assert FOOTPRINT in block.split('"',1)[0]
+                assert (FOOTPRINT if ref!="RV1301" else
+                    "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL") in block.split('"',1)[0]
                 allpads=re.findall(
                     r'\(pad "(\d+)" thru_hole (?:rect|circle) \(at [^)]+\) '
                     r'\(size [^)]+\) \(drill [^)]+\) '
                     r'\(layers "\*\.Cu" "\*\.Mask"\) '
                     r'\(net (\d+) "([^"]+)"\)',block)
-                assert len(allpads)==2,(board,ref,allpads)
+                assert len(allpads)==(3 if ref=="RV1301" else 2),(board,ref,allpads)
                 for pin,net_id,netname in allpads:
                     assert pcb_net[netname]==int(net_id)
                     assert (ref,pin) not in pads,(board,ref,pin)
@@ -112,17 +133,19 @@ def main():
             positions=out.read_text(encoding="utf8")
             for ref in refs:
                 assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',positions),(board,ref)
-            assert len(refs)==2 and len(pads)==4
+            assert len(refs)==(2 if board=="MAIN" else 4)
+            assert len(pads)==(4 if board=="MAIN" else 9)
     print("PASS_KICAD9_MAIN_FRONT_TWO_SEPARATE_NONFAB_AUDIO_PCB_PAD_ISLANDS_4REF_8THT_PADS",{
         "MAIN":("J1502","J1202"),
         "FRONT":("J1301","J1902"),
         "independent_MAIN_nets":4,
         "independent_FRONT_nets":3,
-        "shared_FRONT_AF_GND_pad_assignments":2,
+        "shared_FRONT_AF_GND_pad_assignments":4,
+        "FRONT_volume_to_wiper_10_physical_segments":True,
         "all_pads_mapped_to_native_schematic_labels":True,
         "native_kicad9_pos_export_both_islands":True,
         "no_edge_no_vias_no_extra_components":True,
-        "FRONT_AF_GND_routed_on_F_Cu_once":True,
+        "FRONT_AF_GND_copper_branched_to_volume_and_header":True,
         "MAIN_returns_unrouted_and_isolated":True,
         "production_DRC_and_routing_claimed":False,
         "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True},flush=True)
