@@ -149,11 +149,14 @@ def main():
                     (9,"B.Cu",(137.62,67.54),(145.,67.54)),
                     (9,"B.Cu",(145.,67.54),(145.,80.)),
                     (9,"B.Cu",(145.,80.),(150.,80.)),
+                    (4,"F.Cu",(152.,80.),(152.,85.)),
+                    (4,"F.Cu",(152.,85.),(130.,85.)),
+                    (4,"F.Cu",(130.,85.),(130.,72.62)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==16
+                assert len(segments)==len(actual_main)==len(expected_main)==19
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
                 assert all(int(n) in (3,4,5,6,9) for *_,n,uuid in segments)
@@ -300,14 +303,18 @@ def main():
                 # GND is a branching MAIN net on F.Cu: J1202/2
                 # must reach both amplifier GND pins without touching IF return.
                 grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
-                assert len(grounded)==6
+                assert len(grounded)==9
                 reachable={(90.,47.54)}
                 for _ in range(len(grounded)+1):
                     for a,c in grounded:
                         if a in reachable: reachable.add(c)
                         if c in reachable: reachable.add(a)
-                assert {(90.,47.54),(130.,67.54),(130.,72.62)}<=reachable
+                assert {(90.,47.54),(130.,67.54),(130.,72.62),(152.,80.)}<=reachable
                 assert all(n!=2 for n,a,c,w,l in wires_main)
+                assert [(a,c,l) for n,a,c,w,l in wires_main if n==4][-3:]==[
+                    ((152.,80.),(152.,85.),"F.Cu"),
+                    ((152.,85.),(130.,85.),"F.Cu"),
+                    ((130.,85.),(130.,72.62),"F.Cu")]
                 # Polarized BYPASS is a distinct B.Cu path from LM386 pin7
                 # to C1204 positive; negative stays GND and unconnected here.
                 bypass=[(a,c,l) for n,a,c,w,l in wires_main if n==9]
@@ -490,7 +497,8 @@ def main():
         "MAIN_U1201_DIP8_native_pads_verified":True,
         "MAIN_C1204_polarized_bypass_THT_placement_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_16_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_19_audio_segments":True,
+        "MAIN_C1204_negative_GND_routed_to_U1201_pin4":True,
         "MAIN_BYPASS_U1201_pin7_to_C1204_positive_connected":True,
         "MAIN_GND_J1202_to_U1201_pins2_4_connected":True,
         "MAIN_AMP_IN_R1201_to_U1201_pin3_connected":True,
