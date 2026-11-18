@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #348 MERGED; gerarchia FRONT G5V-1 sei pin candidata
+
+[#348](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/348) **MERGED** main `fc0c18d2637f736b5215c0c27e684b00edb49f75`, head `75f90c4551923740c8943db29ff3ec11be8bf7cb`, run #44268066447 FAST/FULL/Required **3/3 SUCCESS**. Harness KiCad9 OEM 6-pin isolato e regressione nativa integrati; FRONT canonico cinque-pin invariato.
+
+Branch `engineering/v27-front-sixpin-integrated-hierarchy-candidate-20261118`: nuova **gerarchia alternativa** FRONT a cinque fogli KiCad9, con mute G5V-1 pin fisici 1/2/5/6/9/10 (due COM sul nodo audio), progetto dedicato e regressione FULL ERC/netlist nativa su entrambi i parent, tutte le altre partizioni pin↔net da conservare. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_HIERARCHY_CANDIDATE_20261118.md`. PR/CI da verificare sullo SHA finale; non attribuire PASS in anticipo. Ancora nessuna PCB, DRC, coil/fail-safe qualificato; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #347 MERGED; harness nativo OEM sei-pin isolato in revisione
 
 PR [#347](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/347) **MERGED** main `7b50191a0e7b1a09717f539c716bf007844bc1a3`, final head `e8332db4b195a42b3ce4012a3dcbc2cb95f12b2b`, run #44266013882 FAST/FULL/Required **3/3 SUCCESS**. La regressione corretta ammette coordinate pin intere o decimali, sei punti distinti confermati; simbolo OEM sei terminali disponibile separatamente, K1901 reale ancora astratto.
