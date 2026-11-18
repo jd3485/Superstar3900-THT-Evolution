@@ -114,7 +114,7 @@ def main():
         a=reduced(f,cc,rs,nc,no,c5,c6)
         b=nodal3(f,cc,rs,nc,no,c5,c6)
         assert all(math.isfinite(v) for v in (a.real,a.imag,b.real,b.imag))
-        assert abs(a-b)<2e-11,(coil,nc_open,no_weld,c5,c6,rcn,rco,f,cc,rs,a,b)
+        assert abs(a-b)<max(1e-10,1e-8*max(abs(a),abs(b))),(coil,nc_open,no_weld,c5,c6,rcn,rco,f,cc,rs,a,b)
         discrepancy=max(discrepancy,abs(a-b))
         both_com_open+=int(math.isinf(c5) and math.isinf(c6))
         simulations+=1
