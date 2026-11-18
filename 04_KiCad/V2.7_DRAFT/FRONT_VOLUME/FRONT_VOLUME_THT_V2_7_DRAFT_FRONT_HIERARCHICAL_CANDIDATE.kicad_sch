@@ -55,6 +55,7 @@
 (label "VOL_WIPER_TO_AMP" (at 147.32 100.33 0) (effects (font (size 1 1))) (uuid "7a27f130-1234-4000-8000-000000000017"))
 (wire (pts (xy 40.64 97.79) (xy 35.56 97.79)) (stroke (width 0) (type default)) (uuid "7a27f130-1234-4000-8000-000000000018"))
 (hierarchical_label "DEMOD_AUDIO" (shape passive) (at 35.56 97.79 0) (effects (font (size 1 1))) (uuid "7a27f130-1234-4000-8000-000000000019"))
+(label "DEMOD_AUDIO" (at 35.56 97.79 0) (effects (font (size 1 1))) (uuid "7a27f130-1234-4000-8000-000000000027"))
 (wire (pts (xy 40.64 102.87) (xy 35.56 102.87)) (stroke (width 0) (type default)) (uuid "7a27f130-1234-4000-8000-000000000020"))
 (label "AF_GND" (at 35.56 102.87 0) (effects (font (size 1 1))) (uuid "7a27f130-1234-4000-8000-000000000021"))
 (wire (pts (xy 190.5 97.79) (xy 185.42 97.79)) (stroke (width 0) (type default)) (uuid "7a27f130-1234-4000-8000-000000000022"))
