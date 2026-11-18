@@ -270,6 +270,20 @@ def main():
                         if net!=othernet:
                             assert gap_to_track(point,a,b)-rad-w/2>=0.2-1e-8,(
                                 "MAIN different-net pad copper clearance",net,othernet,point)
+                # Independent same-layer different-net trace/trace spacing
+                # on every MAIN physical candidate route, including BYPASS.
+                def segment_spacing(a,b,c,d):
+                    def cross(p,q,r):
+                        return (q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0])
+                    if cross(a,b,c)*cross(a,b,d)<0 and cross(c,d,a)*cross(c,d,b)<0:
+                        return 0.
+                    return min(gap_to_track(a,c,d),gap_to_track(b,c,d),
+                               gap_to_track(c,a,b),gap_to_track(d,a,b))
+                for i,(na,a,bb,wa,la) in enumerate(wires_main):
+                    for nb,c,d,wb,lb in wires_main[i+1:]:
+                        if na!=nb and la==lb:
+                            assert segment_spacing(a,bb,c,d)-(wa+wb)/2 >= .2-1e-8,(
+                                "MAIN cross-net trace clearance",na,nb,la,a,bb,c,d)
                 for net in (3,5,6):
                     group=[(a,b) for n,a,b,w,l in wires_main if n==net]
                     assert len(group)==(3 if net==6 else 2) and all(group[i][1]==group[i+1][0] for i in range(len(group)-1)),(
