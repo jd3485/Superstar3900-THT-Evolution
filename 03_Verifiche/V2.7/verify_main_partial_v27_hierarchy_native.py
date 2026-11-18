@@ -15,7 +15,7 @@ ROOT=Path(__file__).resolve().parents[2]
 KICAD=ROOT/"04_KiCad"
 MASTER=KICAD/"V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch"
 V26=KICAD/"V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch"
-AUDIO=KICAD/"V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
+AUDIO=KICAD/"V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"
 IF455=KICAD/"V2.7_DRAFT/IF455_TANK/IF455_TANK_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"
 AM455=KICAD/"V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"
 BUFFER=KICAD/"V2.7_DRAFT/IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch"
@@ -51,17 +51,28 @@ def main():
     s=MASTER.read_text(encoding="utf-8")
     assert s.count('(sheet (at ')==5
     assert '../V2.6/PLL_RX_HIERARCHICAL_MASTER_V2.6.kicad_sch' in s
-    assert '"AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"' in s
+    assert '"AUDIO_RX_MONO_LM386_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"' in s
     assert '"IF455_TANK/IF455_TANK_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"' in s
     assert '"AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"' in s
     assert '"IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch"' in s
     # Exactly two physical IF→AM links plus two isolated J1502 AF port stubs.
-    assert s.count('(wire (pts ') == 4 and '(junction ' not in s
+    assert s.count('(wire (pts ') == 6 and '(junction ' not in s
     for wire in ('(xy 160.02 190.5) (xy 213.36 190.5)',
                  '(xy 160.02 195.58) (xy 213.36 195.58)',
                  '(xy 342.9 210.82) (xy 365.76 210.82)',
-                 '(xy 342.9 215.9) (xy 365.76 215.9)'):
+                 '(xy 342.9 215.9) (xy 365.76 215.9)',
+                 '(xy 342.9 100.33) (xy 365.76 100.33)',
+                 '(xy 342.9 105.41) (xy 365.76 105.41)'):
         assert wire in s,wire
+    assert s.count('(pin "AUDIO_IN" passive')==1
+    assert s.count('(pin "GND" passive')==1
+    assert s.count('(label "AUDIO_IN" (at 365.76 100.33 0)')==1
+    assert s.count('(label "GND" (at 365.76 105.41 0)')==1
+    audchild=AUDIO.read_text(encoding="utf-8")
+    audiostandalone=KICAD/"V2.7_DRAFT/AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch"
+    assert audchild.count('(hierarchical_label "AUDIO_IN"')==1
+    assert audchild.count('(hierarchical_label "GND"')==1
+    assert '(hierarchical_label "AUDIO_IN"' not in audiostandalone.read_text(encoding="utf-8")
     assert s.count('(pin "AM_DEMOD_AF_BENCH" passive')==1
     assert s.count('(label "AM_DEMOD_AF_BENCH" (at 365.76 210.82 0)')==1
     # One IF455 return pin plus two AM455 return pins (input and J1502 output).
@@ -114,6 +125,17 @@ def main():
     assert sum(map(len,separate))==len(set().union(*separate)), "Duplicate reference between MAIN children"
     baseline_refs=set().union(*separate)
     assert all_refs==baseline_refs,(all_refs-baseline_refs,baseline_refs-all_refs)
+    # Native J1202 input and return are two distinct existing LM386 nets.
+    # Neither may accidentally merge with AM455 J1502 AF/IF return yet.
+    j1202af=[p for p in all_parts if ("J1202","1") in p]
+    j1202ret=[p for p in all_parts if ("J1202","2") in p]
+    assert len(j1202af)==len(j1202ret)==1
+    assert ("C1201","1") in j1202af[0]
+    assert ("U1201","4") in j1202ret[0]
+    assert j1202af[0].isdisjoint(j1202ret[0])
+    for p in (j1202af[0],j1202ret[0]):
+        assert ("J1502","1") not in p and ("J1502","2") not in p
+
     # Exported AM455 AF port must retain the same J1502 physical pin net
     # and must never share the IF455 detector input signal partition.
     signal_af=[p for p in all_parts if ("J1502","1") in p]
