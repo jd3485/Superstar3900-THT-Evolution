@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato MAIN: ritorno GND J1202→U1201/2 e U1201/4
+## 18 novembre 2026 — PR #394 MERGED: ritorno GND J1202→U1201/2 e U1201/4
 
 Branch `engineering/v27-main-lm386-gnd-pin2-pin4-route-20261118`: sei segmenti 0,5 mm F.Cu dal connettore J1202/2 ai pad U1201/2 e U1201/4 (GND), con diramazione a (125,67.54). MAIN passa da sette a tredici piste KiCad9 THT candidate: percorsi AUDIO_IN→C1201→PRE_IN→R1201→AMP_IN→U1201/3 preservati. IF_BENCH_GND J1502/2 resta **senza rame e separata** da GND. Pin gain 1/8, BYPASS, AMP_OUT e AUDIO_6V_LAB del LM386 ancora privi di connessione fisica. Verifica FULL aggiornata per sei geometrie esatte, grafo della derivazione, pad↔net gerarchici e distanza di ogni pista dai pad di altra rete; regressioni V0.3/V0.4 aggiornate.
 
-**Stato:** candidato, CI sullo SHA finale FAST/FULL/Required non ancora verificata; NONFAB senza alimentazione, outline o DRC prodotto. Qualifica meccanica ed elettrica, connettori/ground-loop, EMI/ESD, e #27/#292 ancora aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#394](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/394) **MERGED** su main `1195937f9b122c4df5c1bb437b1a9267ce4c1db3`, head `cb36dbf1abc561ecd2a057d83426866654043c4a`, CI #44413457537 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale; precedente #44411887439 FULL fallita per asserzione GND obsoleta, corretta senza alterare il rame o ridurre i gate; NONFAB senza alimentazione, outline o DRC prodotto. Qualifica meccanica ed elettrica, connettori/ground-loop, EMI/ESD, e #27/#292 ancora aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
