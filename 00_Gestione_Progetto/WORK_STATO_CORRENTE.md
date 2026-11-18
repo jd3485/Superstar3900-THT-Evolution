@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #349 MERGED; screening 64 guasti del FRONT sei-pin in revisione
+
+PR [#349](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/349) **MERGED** main `06f1847c843a1addd05e3ca4c9fed2744b257d39`, HEAD PR `8045c3488c5405895945614509e789f678b9e8e2`; run #44271061438 FAST/FULL/Required 3/3 **SUCCESS**. Nuovo master parallelo FRONT KiCad9 con G5V-1 sei terminali e COM5/COM6, 5 fogli, 22 net, 72 endpoint (contro 71 astratti), ERC0 entrambi, senza modificare il FRONT legacy. Libreria `TH_MUTE.kicad_sym` e tabella footprint aggiornate.
+
+Branch `engineering/v27-front-oem-sixpin-native-fault-graph-20261118`: regressione FULL su **64 stati di contatto** ancorata a netlist reale del parent 6-pin, doppio COM, NC aperto, NO saldato, apertura di singolo COM e AF_GND, controllo reachability rete audio↔ritorno. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_NATIVE_64_FAULT_GRAPH_20261118.md`. Non qualificazione fisica: nessun PCB/DRC, bobina/PVT, anti-guasto certificato; #27/#292 OPEN. CI/PR su HEAD da verificare. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #348 MERGED; gerarchia FRONT G5V-1 sei pin candidata
 
 [#348](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/348) **MERGED** main `fc0c18d2637f736b5215c0c27e684b00edb49f75`, head `75f90c4551923740c8943db29ff3ec11be8bf7cb`, run #44268066447 FAST/FULL/Required **3/3 SUCCESS**. Harness KiCad9 OEM 6-pin isolato e regressione nativa integrati; FRONT canonico cinque-pin invariato.
