@@ -1,5 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #376 MERGED: prima pista fisica FRONT AF_GND tra i due header audio
+
+PR [#376](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/376) **MERGED** su main `733c3292ac5950071df8b2e0083aed9316dd2e82`, head `2f80d6f967678077a46042551199f15493f7f5a2`, CI #44327321877 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Modificato il candidato fisico `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb`: prima e unica pista F.Cu da J1301/2 (40,47.54 mm) a J1902/2 (90,47.54 mm), larghezza 0,50 mm, net 2 AF_GND, come già connessi nello schema FRONT master. Il verificatore FULL `03_Verifiche/V2.7/verify_main_front_audio_header_pad_islands_native.py` controlla geometria, univocità della pista, pad clearance 1,29 mm nominali con tolleranza numerica 1 nm, export KiCad9 posizioni e assenza di altre piste, vias, zone, Edge.Cuts. I due ritorni MAIN J1502/2 e J1202/2 rimangono separati e senza piste nel candidato MAIN. Le suite storiche V0.3/V0.4 restano fail-closed su questo unico rame aggiuntivo.
+
+**Bloccanti:** è una sola pista in una isola di connettori, non una PCB FRONT completa; mancano componenti/routing completi, dimensioni meccaniche, selezione MPN, connettori cavo, DRC prodotto, ground/chassis/ESD/EMC. La distanza ideale non sostituisce DRC fabbricativo. I due ritorni MAIN sono connessi tramite FRONT quando entrambi i cavi sono montati; un eventuale anello di massa richiede un ulteriore percorso indipendente. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO; #27/#292 OPEN.**
+
+**Prossimo CAD:** aggiungere una o più connessioni fisiche segnale realmente presenti negli schemi, mantenendo isolamento fra ingressi/uscite e verifiche native per pad, piste e clearance; quindi integrare circuiti completi sulle PCB MAIN/FRONT.
+
+---
+
 ## 18 novembre 2026 — PR #374 MERGED: due veri candidati PCB KiCad9 NONFAB con piazzole audio THT
 
 PR [#374](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/374) **MERGED** su main `025b884a960a6d84d699acafe1ab3c8b32a51105`, head `4f4721c5d48c17df8beb35d52e95afca7e7441d0`; CI #44323140305 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Introdotti `04_KiCad/V2.7_DRAFT/MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` e `FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` e relativi progetti KiCad9. Ciascuna isola ha due header fisici e quattro pad THT con mapping reale verso le netlist schematiche parent MAIN (J1502, J1202: quattro reti separate) e FRONT (J1301, J1902: tre reti, AF_GND comune). `03_Verifiche/V2.7/verify_main_front_audio_header_pad_islands_native.py` integrato in regressioni FULL: controlli fail-closed di ref/pad/net, esportazione nativa posizioni dei componenti, assenza segmenti, vias, zone e contorno PCB. Test storici V0.3/V0.4 aggiornati con whitelist puntuale dei soli due PCB NONFAB e controlli di assenza rame/Edge.Cuts; non degradati gli invarianti delle revisioni storiche.
