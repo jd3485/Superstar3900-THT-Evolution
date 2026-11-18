@@ -40,7 +40,7 @@ def main():
     assert members[("R1902","2")]==members[("R1901","1")]==members[("J1902","1")]=="AMP_INPUT_MUTED"
     assert members[("R1901","2")]==members[("J1902","2")]=="AF_GND"
     assert "1k_SERIES_AUDIO_INPUT_CANDIDATE" in MUTE_CHILD.read_text()
-    assert "100k_AMP_INPUT_BLEED_CANDIDATE" in FRONT.read_text()
+    assert "100k_AMP_INPUT_BLEED_CANDIDATE" in MUTE_CHILD.read_text()
     scenarios=0
     undefined_return=0
     numerical_cases=0
