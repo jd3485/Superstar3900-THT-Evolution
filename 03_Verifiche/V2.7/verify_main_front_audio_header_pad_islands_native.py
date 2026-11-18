@@ -112,6 +112,62 @@ def main():
                     assert (ref,pin) not in pads,(board,ref,pin)
                     pads[(ref,pin)]=netname
             assert pads==wanted,(board,pads,wanted)
+            if board=="FRONT":
+                # All 9 physical THT pads from the four provisional footprints.
+                from math import hypot
+                physical={
+                    ("J1301","1"):((40.,45.),1.,1),
+                    ("J1301","2"):((40.,47.54),1.,2),
+                    ("J1902","1"):((90.,45.),1.,3),
+                    ("J1902","2"):((90.,47.54),1.,2),
+                    ("RV1301","1"):((58.,35.),.9,1),
+                    ("RV1301","2"):((60.54,35.),.9,4),
+                    ("RV1301","3"):((63.08,35.),.9,2),
+                    ("J1302","1"):((75.,35.),1.,4),
+                    ("J1302","2"):((75.,37.54),1.,2),
+                }
+                assert set(physical)==set(wanted)
+                wires=[(int(net),(float(x1),float(y1)),(float(x2),float(y2)),
+                        float(width),layer)
+                       for x1,y1,x2,y2,width,layer,net,uuid in segments]
+                def dist(pt,a,c):
+                    dx,dy=c[0]-a[0],c[1]-a[1]
+                    length=dx*dx+dy*dy
+                    assert length>0
+                    t=max(0.,min(1.,((pt[0]-a[0])*dx+(pt[1]-a[1])*dy)/length))
+                    return hypot(pt[0]-a[0]-t*dx,pt[1]-a[1]-t*dy)
+                # THT pads exist on both F.Cu and B.Cu: cross-net tracks
+                # must stay >= 0.20 mm apart from every foreign pad rim.
+                for net,a,c,width,layer in wires:
+                    for point,rad,pad_net in physical.values():
+                        if net!=pad_net:
+                            assert dist(point,a,c)-rad-width/2>=0.2-1e-8,(
+                                "Copper shorts or crowds a foreign pad",
+                                net,pad_net,a,c,point,layer)
+                # Ensure all connected schematic pad sets are actually
+                # linked by copper; copper endpoints may join mid-segment.
+                def onseg(pt,a,c):
+                    return dist(pt,a,c)<1e-7
+                for net in (1,2,4):
+                    group=[(a,c) for n,a,c,w,layer in wires if n==net]
+                    required=[point for point,rad,n in physical.values() if n==net]
+                    assert group and len(required)>=2
+                    reachable={0}
+                    changed=True
+                    while changed:
+                        changed=False
+                        for i,(a,c) in enumerate(group):
+                            if i in reachable:continue
+                            if any(onseg(a,x,y) or onseg(c,x,y) or
+                                   onseg(x,a,c) or onseg(y,a,c)
+                                   for j,(x,y) in enumerate(group) if j in reachable):
+                                reachable.add(i);changed=True
+                    assert len(reachable)==len(group),(net,"unconnected copper",reachable)
+                    assert all(any(onseg(pt,a,c) for a,c in group) for pt in required),(
+                        net,"unattached THT pad",required)
+                # AMP_INPUT_MUTED remains a separate output pad pending the
+                # full G5V1 relay footprint and post-mute routing.
+                assert not any(n==3 for n,a,c,w,layer in wires)
             nets=exported_nets(sch,d/(board+".net"))
             for endpoint,netname in wanted.items():
                 matches=[name for name,members in nets.items()
