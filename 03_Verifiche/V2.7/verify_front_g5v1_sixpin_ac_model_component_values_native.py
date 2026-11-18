@@ -65,8 +65,8 @@ def main():
     r1902=ohms(component_value(mute_text,"R1902"))
     r1201=ohms(component_value(main_text,"R1201"))
     c1201=farads(component_value(main_text,"C1201"))
-    assert farads("100nF_50V_INPUT")==1e-7
-    assert farads("1uF")==1e-6
+    assert abs(farads("100nF_50V_INPUT")-1e-7)<1e-20
+    assert abs(farads("1uF")-1e-6)<1e-18
     for bad in ("100pF_EXTRA)","10nX","", "100nFgarbage"):
         try:
             farads(bad)
