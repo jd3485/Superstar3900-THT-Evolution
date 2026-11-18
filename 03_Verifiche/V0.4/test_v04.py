@@ -122,14 +122,19 @@ class V04(unittest.TestCase):
     }
     for path in islands:
         stub=(ROOT/path).read_text(encoding='utf-8')
-        self.assertEqual(stub.count('(footprint "'),2)
-        self.assertEqual(stub.count('(pad "'),4)
+        is_front=path.endswith('FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb')
+        self.assertEqual(stub.count('(footprint "'),4 if is_front else 2)
+        self.assertEqual(stub.count('(pad "'),9 if is_front else 4)
+        self.assertEqual(stub.count('(segment '),10 if is_front else 0)
+        if is_front:
+            for track in (
+                '(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',
+                '(segment (start 50 35) (end 58 35) (width 0.5) (layer "F.Cu") (net 1)',
+                '(segment (start 60.54 28) (end 75 28) (width 0.5) (layer "B.Cu") (net 4)',
+                '(segment (start 63.08 35) (end 63.08 47.54) (width 0.5) (layer "F.Cu") (net 2)',
+            ):
+                self.assertIn(track,stub)
         self.assertIn('NO FAB / NO TX / NO BATTERIA / NO VEICOLO',stub)
-        if path.endswith('FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb'):
-            self.assertEqual(stub.count('(segment '),1)
-            self.assertIn('(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',stub)
-        else:
-            self.assertNotIn('(segment ',stub)
         for forbidden in ('(via ','(zone ','(layer "Edge.Cuts")'):
             self.assertNotIn(forbidden,stub)
     self.assertEqual(boards,{lab,placement}|islands,(
