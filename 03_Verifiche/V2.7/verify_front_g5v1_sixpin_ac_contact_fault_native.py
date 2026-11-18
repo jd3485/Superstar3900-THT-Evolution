@@ -72,7 +72,7 @@ def main():
     assert scenarios==64
     assert undefined_return==32
     assert dual_com_disconnected==16
-    assert source_present_coil_off==8
+    assert source_present_coil_off==12
     assert numerical_cases==32*len(FREQ)*len(COUPLING)*len(R_SOURCE)*len(NC_CONTACT)*len(NO_CONTACT)
     print("PASS_FRONT_G5V1_SIXPIN_64_CONTACT_STATES_DUAL_SOLVER_AC_NATIVE_NONQUALIFYING",{
         "state_count":scenarios,
