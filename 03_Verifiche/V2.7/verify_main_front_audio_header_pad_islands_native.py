@@ -146,15 +146,18 @@ def main():
                     (4,"F.Cu",(125.,67.54),(130.,67.54)),
                     (4,"F.Cu",(125.,67.54),(125.,72.62)),
                     (4,"F.Cu",(125.,72.62),(130.,72.62)),
+                    (9,"B.Cu",(137.62,67.54),(145.,67.54)),
+                    (9,"B.Cu",(145.,67.54),(145.,80.)),
+                    (9,"B.Cu",(145.,80.),(150.,80.)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==13
+                assert len(segments)==len(actual_main)==len(expected_main)==16
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
-                assert all(int(n) in (3,4,5,6) for *_,n,uuid in segments)
-                assert not any(int(n) in (1,2,7,8,9) for *_,n,uuid in segments)
+                assert all(int(n) in (3,4,5,6,9) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,7,8) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -267,6 +270,20 @@ def main():
                         if net!=othernet:
                             assert gap_to_track(point,a,b)-rad-w/2>=0.2-1e-8,(
                                 "MAIN different-net pad copper clearance",net,othernet,point)
+                # Independent same-layer different-net trace/trace spacing
+                # on every MAIN physical candidate route, including BYPASS.
+                def segment_spacing(a,b,c,d):
+                    def cross(p,q,r):
+                        return (q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0])
+                    if cross(a,b,c)*cross(a,b,d)<0 and cross(c,d,a)*cross(c,d,b)<0:
+                        return 0.
+                    return min(gap_to_track(a,c,d),gap_to_track(b,c,d),
+                               gap_to_track(c,a,b),gap_to_track(d,a,b))
+                for i,(na,a,bb,wa,la) in enumerate(wires_main):
+                    for nb,c,end2,wb,lb in wires_main[i+1:]:
+                        if na!=nb and la==lb:
+                            assert segment_spacing(a,bb,c,end2)-(wa+wb)/2 >= .2-1e-8,(
+                                "MAIN cross-net trace clearance",na,nb,la,a,bb,c,end2)
                 for net in (3,5,6):
                     group=[(a,b) for n,a,b,w,l in wires_main if n==net]
                     assert len(group)==(3 if net==6 else 2) and all(group[i][1]==group[i+1][0] for i in range(len(group)-1)),(
@@ -279,7 +296,7 @@ def main():
                 # pins 1/8 unconnected and both ground returns still separate.
                 amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
                 assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
-                assert all(n not in (0,1,2,7,8,9) for n,a,b,w,l in wires_main)
+                assert all(n not in (0,1,2,7,8) for n,a,b,w,l in wires_main)
                 # GND is a branching MAIN net on F.Cu: J1202/2
                 # must reach both amplifier GND pins without touching IF return.
                 grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
@@ -291,6 +308,16 @@ def main():
                         if c in reachable: reachable.add(a)
                 assert {(90.,47.54),(130.,67.54),(130.,72.62)}<=reachable
                 assert all(n!=2 for n,a,c,w,l in wires_main)
+                # Polarized BYPASS is a distinct B.Cu path from LM386 pin7
+                # to C1204 positive; negative stays GND and unconnected here.
+                bypass=[(a,c,l) for n,a,c,w,l in wires_main if n==9]
+                assert bypass==[
+                    ((137.62,67.54),(145.,67.54),"B.Cu"),
+                    ((145.,67.54),(145.,80.),"B.Cu"),
+                    ((145.,80.),(150.,80.),"B.Cu")]
+                assert pads[("U1201","7")]==pads[("C1204","1")]=="BYPASS"
+                assert not any(n==9 and (a==(152.,80.) or c==(152.,80.))
+                    for n,a,c,w,l in wires_main)
                 # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
@@ -463,7 +490,8 @@ def main():
         "MAIN_U1201_DIP8_native_pads_verified":True,
         "MAIN_C1204_polarized_bypass_THT_placement_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_13_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_16_audio_segments":True,
+        "MAIN_BYPASS_U1201_pin7_to_C1204_positive_connected":True,
         "MAIN_GND_J1202_to_U1201_pins2_4_connected":True,
         "MAIN_AMP_IN_R1201_to_U1201_pin3_connected":True,
         "independent_FRONT_nets":3,
