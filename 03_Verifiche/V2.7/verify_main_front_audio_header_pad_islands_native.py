@@ -31,7 +31,13 @@ BOARDS={
         ("RV1301","2"):"VOL_WIPER_TO_AMP",
         ("RV1301","3"):"AF_GND",
         ("J1302","1"):"VOL_WIPER_TO_AMP",
-        ("J1302","2"):"AF_GND"}),
+        ("J1302","2"):"AF_GND",
+        ("K1901","1"):"AF_GND",
+        ("K1901","2"):"COIL_PLUS_LAB",
+        ("K1901","5"):"RELAY_COM_AUDIO",
+        ("K1901","6"):"RELAY_COM_AUDIO",
+        ("K1901","9"):"COIL_MINUS_LAB",
+        ("K1901","10"):"VOL_WIPER_TO_AMP"}),
 }
 FOOTPRINT="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 
@@ -44,11 +50,14 @@ def main():
             assert raw.startswith("(kicad_pcb (version 20241229)")
             assert raw.count('(footprint "'+FOOTPRINT+'"')==(
                 2 if board=="MAIN" else 3)
+            assert raw.count('(footprint "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE"')==(0 if board=="MAIN" else 1)
             assert raw.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==(
                 0 if board=="MAIN" else 1)
-            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 4)
-            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 4)
+            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 5)
+            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 5)
             assert raw.count('(pad "3" thru_hole')==(0 if board=="MAIN" else 1)
+            for pin in ("5","6","9","10"):
+                assert raw.count('(pad "'+pin+'" thru_hole')==(0 if board=="MAIN" else 1)
             segments=re.findall(
                 r'\(segment \(start ([\d.]+) ([\d.]+)\) '
                 r'\(end ([\d.]+) ([\d.]+)\) '
@@ -87,10 +96,10 @@ def main():
                 re.findall(r'^\(net (\d+) "([^"]*)"\)$',raw,re.M)}
             assert pcb_net.get("")==0
             assert set(pcb_net)-{""}==set(wanted.values())
-            assert len(pcb_net)==5
+            assert len(pcb_net)==(5 if board=="MAIN" else 8)
             pads={}
             blocks=raw.split('\n(footprint "')[1:]
-            assert len(blocks)==(2 if board=="MAIN" else 4)
+            assert len(blocks)==(2 if board=="MAIN" else 5)
             refs=set()
             for block in blocks:
                 refmatch=re.search(r'\(property "Reference" "([^"]+)"',block)
@@ -99,19 +108,28 @@ def main():
                 assert ref not in refs
                 refs.add(ref)
                 assert "(attr through_hole)" in block
-                assert (FOOTPRINT if ref!="RV1301" else
-                    "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL") in block.split('"',1)[0]
+                assert (("TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" if ref=="RV1301"
+                    else "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE" if ref=="K1901"
+                    else FOOTPRINT)) in block.split('"',1)[0]
                 allpads=re.findall(
                     r'\(pad "(\d+)" thru_hole (?:rect|circle) \(at [^)]+\) '
                     r'\(size [^)]+\) \(drill [^)]+\) '
                     r'\(layers "\*\.Cu" "\*\.Mask"\) '
                     r'\(net (\d+) "([^"]+)"\)',block)
-                assert len(allpads)==(3 if ref=="RV1301" else 2),(board,ref,allpads)
+                assert len(allpads)==(6 if ref=="K1901" else 3 if ref=="RV1301" else 2),(board,ref,allpads)
                 for pin,net_id,netname in allpads:
                     assert pcb_net[netname]==int(net_id)
                     assert (ref,pin) not in pads,(board,ref,pin)
                     pads[(ref,pin)]=netname
             assert pads==wanted,(board,pads,wanted)
+            if board=="FRONT":
+                expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
+                    "5":("RELAY_COM_AUDIO",80,65.16),"10":("VOL_WIPER_TO_AMP",85.08,55),
+                    "9":("COIL_MINUS_LAB",85.08,57.54),"6":("RELAY_COM_AUDIO",85.08,65.16)}
+                for pad,(net,x,y) in expected_relay.items():
+                    assert pads[("K1901",pad)]==net
+                # K1901 must remain electrically unrouted in this revision.
+                assert not any(int(n) in (5,6,7) for *_,n,uuid in segments)
             if board=="FRONT":
                 # All 9 physical THT pads from the four provisional footprints.
                 from math import hypot
@@ -189,11 +207,11 @@ def main():
             positions=out.read_text(encoding="utf8")
             for ref in refs:
                 assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',positions),(board,ref)
-            assert len(refs)==(2 if board=="MAIN" else 4)
-            assert len(pads)==(4 if board=="MAIN" else 9)
+            assert len(refs)==(2 if board=="MAIN" else 5)
+            assert len(pads)==(4 if board=="MAIN" else 15)
     print("PASS_KICAD9_MAIN_FRONT_TWO_SEPARATE_NONFAB_AUDIO_PCB_PAD_ISLANDS_4REF_8THT_PADS",{
         "MAIN":("J1502","J1202"),
-        "FRONT":("J1301","J1902"),
+        "FRONT":("J1301","J1902","RV1301","J1302","K1901"),
         "independent_MAIN_nets":4,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
