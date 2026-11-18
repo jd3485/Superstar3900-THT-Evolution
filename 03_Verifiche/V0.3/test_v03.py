@@ -121,7 +121,11 @@ class PLLV03(unittest.TestCase):
         board=(ROOT/path).read_text(encoding='utf-8')
         self.assertEqual(board.count('(footprint "'),2)
         self.assertEqual(board.count('(pad "'),4)
-        self.assertNotIn('(segment ',board)
+        if path==front_af:
+            self.assertEqual(board.count('(segment '),1)
+            self.assertIn('(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',board)
+        else:
+            self.assertNotIn('(segment ',board)
         self.assertNotIn('(via ',board)
         self.assertNotIn('(zone ',board)
         self.assertNotIn('(layer "Edge.Cuts")',board)

@@ -4,7 +4,7 @@
 Each pad-net uses the label of its actual MAIN/FRONT master netlist, with
 physical connector ref/pin and installed thru-hole pad mapping. These islands
 contain ONLY four connector pads each, NOT the complete assembled PCBs.
-NO board edge, routes, zones, physical interboard cable or production DRC.
+NO board edge, zones, physical interboard cable or production DRC. FRONT\ncontains ONLY one real F.Cu AF_GND conductor between the two return pads;\nMAIN still contains no copper at all.
 """
 from pathlib import Path
 from collections import defaultdict
@@ -40,7 +40,26 @@ def main():
             assert raw.count('(footprint "'+FOOTPRINT+'"')==2
             assert raw.count('(pad "1" thru_hole')==2
             assert raw.count('(pad "2" thru_hole')==2
-            assert raw.count("(segment ")==0 and raw.count("(via ")==0
+            segments=re.findall(
+                r'\(segment \(start ([\d.]+) ([\d.]+)\) '
+                r'\(end ([\d.]+) ([\d.]+)\) '
+                r'\(width ([\d.]+)\) \(layer "([^"]+)"\) '
+                r'\(net (\d+)\) \(uuid "([^"]+)"\)\)',raw)
+            assert raw.count("(segment ")==len(segments)
+            if board=="FRONT":
+                assert len(segments)==1,("Unexpected extra copper segments",segments)
+                x1,y1,x2,y2,width,layer,net,uuid=segments[0]
+                assert (float(x1),float(y1),float(x2),float(y2))==(
+                    40.0,47.54,90.0,47.54),segments
+                assert float(width)==0.5 and layer=="F.Cu" and net=="2"
+                # Two return pads are at (40,47.54) and (90,47.54),
+                # two separate signal pads at y=45. A straight F.Cu
+                # trace 0.5 mm wide stays >= 1.29 mm edge-to-edge
+                # from each 2 mm wide signal pad (2.54-1-0.25).
+                assert min(abs(45.0-float(y1)),abs(45.0-float(y2)))-1.0-float(width)/2>=1.29-1e-9
+            else:
+                assert not segments,("MAIN IF and LM386 returns must stay isolated",segments)
+            assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
             assert "NO DRC0 / NO FAB / NO TX" in raw
@@ -102,7 +121,9 @@ def main():
         "shared_FRONT_AF_GND_pad_assignments":2,
         "all_pads_mapped_to_native_schematic_labels":True,
         "native_kicad9_pos_export_both_islands":True,
-        "no_edge_no_copper_no_components_besides_headers":True,
+        "no_edge_no_vias_no_extra_components":True,
+        "FRONT_AF_GND_routed_on_F_Cu_once":True,
+        "MAIN_returns_unrouted_and_isolated":True,
         "production_DRC_and_routing_claimed":False,
         "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True},flush=True)
 

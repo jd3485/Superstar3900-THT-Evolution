@@ -125,7 +125,12 @@ class V04(unittest.TestCase):
         self.assertEqual(stub.count('(footprint "'),2)
         self.assertEqual(stub.count('(pad "'),4)
         self.assertIn('NO FAB / NO TX / NO BATTERIA / NO VEICOLO',stub)
-        for forbidden in ('(segment ','(via ','(zone ','(layer "Edge.Cuts")'):
+        if path.endswith('FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb'):
+            self.assertEqual(stub.count('(segment '),1)
+            self.assertIn('(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',stub)
+        else:
+            self.assertNotIn('(segment ',stub)
+        for forbidden in ('(via ','(zone ','(layer "Edge.Cuts")'):
             self.assertNotIn(forbidden,stub)
     self.assertEqual(boards,{lab,placement}|islands,(
         'Unauthorized PCB beyond guarded NONFAB artifacts',boards))
