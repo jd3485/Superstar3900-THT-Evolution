@@ -17,6 +17,7 @@ from verify_front_mute_welded_no_ac_native import collapsed, nodal
 from verify_front_g5v1_six_terminal_oem_pin_map_native import OEM_TO_EXISTING_NET
 
 FRONT=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch"
+MUTE_CHILD=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_ISOLATED_NATIVE_CANDIDATE.kicad_sch"
 FREQ=(300.,1000.,3000.)
 COUPLING=(100e-12,1e-9,10e-9)
 R_SOURCE=(10000.,50000.)
@@ -38,7 +39,7 @@ def main():
     assert members[("R1902","1")]=="RELAY_COM_AUDIO"
     assert members[("R1902","2")]==members[("R1901","1")]==members[("J1902","1")]=="AMP_INPUT_MUTED"
     assert members[("R1901","2")]==members[("J1902","2")]=="AF_GND"
-    assert "1k_SERIES_AUDIO_INPUT_CANDIDATE" in FRONT.read_text()
+    assert "1k_SERIES_AUDIO_INPUT_CANDIDATE" in MUTE_CHILD.read_text()
     assert "100k_AMP_INPUT_BLEED_CANDIDATE" in FRONT.read_text()
     scenarios=0
     undefined_return=0
