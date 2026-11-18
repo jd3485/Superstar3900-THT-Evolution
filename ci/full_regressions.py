@@ -188,6 +188,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_main_front_dual_af_harness_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Native MAIN/FRONT AF return graph: both cable returns BRIDGE previously
+    # isolated MAIN IF and LM386 grounds, but a CLOSED LOOP requires an
+    # additional independent return; 6 deterministic cable/tie scenarios.
+    print("::group::V2.7 MAIN FRONT TWO AF RETURNS 6 GRAPH TOPOLOGY SCENARIOS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_main_front_audio_return_graph_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Complete isolated AM detector -> FRONT volume -> LM386 input linear
     # load contract: 75 frequency/wiper/Rin points, independent nodal KCL.
     # Native KiCad pin-net anchoring; not an active LM386/detector OEM model.
