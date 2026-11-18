@@ -41,7 +41,7 @@ def main():
     assert OEM_TO_EXISTING_NET["10"]=="VOL_WIPER_TO_AMP"
     assert {OEM_TO_EXISTING_NET["2"],OEM_TO_EXISTING_NET["9"]}=={"COIL_PLUS_LAB","COIL_MINUS_LAB"}
     assert text.count("(pin passive line")==6
-    assert len(set(re.findall(r'\(at (-?\d+\.\d+ -?\d+\.\d+ \d+)\) \(length 5\.08\)',text)))==6
+    assert len(set(re.findall(r'\(at (-?\d+(?:\.\d+)? -?\d+(?:\.\d+)? \d+)\) \(length 5\.08\)',text)))==6
     old=RELAY.read_text(encoding="utf8")
     assert "G5V1_DC5_SIX_TERMINAL_CANDIDATE" not in old
     assert '(property "Footprint" ""' in old
