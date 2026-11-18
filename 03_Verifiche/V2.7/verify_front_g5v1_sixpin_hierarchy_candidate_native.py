@@ -32,6 +32,17 @@ def main():
     assert OLD_RELAY in old_text
     assert OLD_RELAY not in text
     assert text.count(NEW_RELAY)==1
+    # The actual J1301/1 demod input must be exported to the FRONT parent,
+    # while the original standalone volume benchmark stays unchanged.
+    child=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT_FRONT_HIERARCHICAL_CANDIDATE.kicad_sch"
+    standalone=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT.kicad_sch"
+    assert standalone.is_file() and child.is_file()
+    assert "FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT_FRONT_HIERARCHICAL_CANDIDATE.kicad_sch" in text
+    assert text.count('(pin "DEMOD_AUDIO" passive')==1
+    assert text.count('(label "DEMOD_AUDIO" (at 165.1 111.76 0)')==1
+    assert "(xy 142.24 111.76) (xy 165.1 111.76)" in text
+    assert child.read_text(encoding="utf8").count('(hierarchical_label "DEMOD_AUDIO"')==1
+    assert '(hierarchical_label "DEMOD_AUDIO"' not in standalone.read_text(encoding="utf8")
     assert "NO FAB / NO TX" in text
     assert text.count("(sheet (at ")==5
     assert text.count('(pin "COIL_PLUS_LAB" passive')==2
