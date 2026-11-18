@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #354 MERGED; C1201 reale vincolato ai modelli AC in verifica
+
+[#354](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/354) **MERGED** main `a5043334dd5ce458939ed000242f16438b980f85`, final head `007760298d64c10f2926598b6cf49cd01e0d37a4`, run #44288450896 FAST/FULL/Required **3/3 SUCCESS**. Bloccati valori delle istanze R1901=100k, R1902=1k e MAIN R1201=10k rispetto ai modelli numerici.
+
+Branch `engineering/v27-front-sixpin-native-capacitor-value-lock-20261118`: estensione alla vera istanza MAIN C1201=100nF e connessioni native AUDIO_IN→PRE_IN→R1201→LM386 U1201 pin 3 AMP_IN, confronto della capacità in farad con tre solver AC e rifiuto di valori non analizzabili. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_MAIN_LM386_NATIVE_CAPACITOR_VALUE_LOCK_20261118.md`; PR/CI finale da verificare. Non certifica componenti, PCB, DRC o sicurezza; #27/#292 aperti. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #353 MERGED; modello AC vincolato ai valori delle istanze KiCad native
 
 PR [#353](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/353) **MERGED** main `84aab6dc69559b59ba9e9b7d889577ebe25357a6`, final head `127f758b57da027d12d2979289584a334ee99974`, CI #44285490471 FAST/FULL/Required **3/3 SUCCESS**. Nuova verifica del mute deenergizzato con apertura di COM5/COM6 singola/doppia, 48 angoli di prova AC ipotetici.
