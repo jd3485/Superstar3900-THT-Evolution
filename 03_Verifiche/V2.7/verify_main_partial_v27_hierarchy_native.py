@@ -147,7 +147,8 @@ def main():
         sum(sum(map(len,p)) for p in (old_parts,aud_parts,if_parts,am_parts,buf_parts))-len(omitted_known_nc))
     print("MAIN_PARTIAL_HIERARCHY_NC_NETLIST_DIFFERENCE",{
         "nested_omitted_single_pin_nets":sorted(omitted_known_nc),
-        "unrelated_electrically_connected_nets_preserved":True,\n        "intentional_IF455_AM455_signal_return_merges":intentional,
+        "unrelated_electrically_connected_nets_preserved":True,
+        "intentional_IF455_AM455_signal_return_merges":intentional,
         "NC_pins_reclassified_as_connected":False,
     },flush=True)
     print("MAIN_PARTIAL_V27_KICAD9_NATIVE",{
