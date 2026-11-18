@@ -1130,6 +1130,11 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_sixpin_dual_com_impedance_ac_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    print("::group::FRONT G5V1 SIXPIN NATIVE COM SOLDER OPEN MUTE ATTENUATION",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_front_g5v1_sixpin_com_open_attenuation_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     print("PASS_FULL_HISTORICAL_22_WORKFLOWS_AND_ALL_NATIVE_KICAD9_GATES",{"executed_commands":executed},flush=True)
 
 if __name__=="__main__":
