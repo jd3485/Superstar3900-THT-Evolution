@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato MAIN: condensatore C1204 BYPASS 10uF THT fisico NONFAB
+## 18 novembre 2026 — PR #396 MERGED: C1204 BYPASS 10uF THT fisico NONFAB
 
 Branch `engineering/v27-main-c1204-bypass-cap-pad-candidate-20261118`: posizionato condensatore elettrolitico C1204 10uF 16V THT `CP_Radial_D5.0mm_P2.00mm` nello stesso candidato KiCad9 MAIN: pad1 positivo BYPASS net9, pad2 negativo GND net4, corrispondenti ai pin schematici C1204/1 e /2 e a U1201/7 e massa. PCB MAIN: sei footprint e diciotto pad THT; tredici segmenti rame già integrati invariati, ancora **nessun collegamento fisico** alla rete BYPASS. Verifica nativa KiCad9 della netlist e posizione/pad/clearance e test storici V0.3/V0.4 aggiornati.
 
-**Stato:** candidato draft, CI FAST/FULL/Required non ancora verificata. Polarità, ESR, tensione e quote reali da qualificare OEM; decoupling, alimentazione e uscita incompleti; NONFAB senza DRC produttivo, #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#396](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/396) **MERGED** su main `12da97f47fe388c2f4cfea40170434243eda332a`, head `6bfa8f991557573c3465c3146d9b50a4e53e94aa`, run #44416805201 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Polarità, ESR, tensione e quote reali da qualificare OEM; decoupling, alimentazione e uscita incompleti; NONFAB senza DRC produttivo, #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
