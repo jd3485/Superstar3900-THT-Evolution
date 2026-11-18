@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — PR #380 DRAFT: K1901 sei pad THT nel candidato FRONT NONFAB, CI non ancora validata
+## 18 novembre 2026 — PR #380 MERGED: K1901 sei pad THT nel candidato FRONT NONFAB
 
 Sul branch `engineering/v27-front-k1901-sixpad-placement-20261118` sono stati aggiunti al file `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` sei pad fisici passanti K1901 G5V-1 (1 NC=AF_GND, 10 NO=VOL_WIPER_TO_AMP, 5/6 COM=RELAY_COM_AUDIO, 2/9 bobina COIL_PLUS/MINUS_LAB). In totale il candidato FRONT passa a cinque footprint THT, quindici pad e conserva esattamente le dieci piste precedenti. Protezioni V0.3/V0.4 e regressione FULL KiCad9 aggiornate per mapping pad/net, geometria e isolamento del rame esistente. La bobina e il segnale COM **non sono instradati**: non esiste ancora una catena mute fisicamente chiusa.
 
-**Stato:** candidato CAD su PR draft #380, non integrato in main; FAST/FULL/Required sul commit definitivo ancora da verificare. Nessun DRC fabbricativo, qualificazione OEM/PVT, layout prodotto, test fisico o chiusura issue #27/#292. Prossimo passo: superare gate CI su final HEAD, poi integrare R1901/R1902 e routing dei contatti senza bypass o corto audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#380](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/380) **MERGED** su main `83be8ce78305b5ebfdc220a7ad90c47c17b542d8`, head `8934a8122216bcca51d0adb4b8802249a11fe45f`, workflow #44337476448 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. FULL ha inizialmente rilevato errore nel confronto dei pad-set; corretto e riverificato sul commit definitivo. Nessun DRC fabbricativo, qualificazione OEM/PVT, layout prodotto, test fisico o chiusura issue #27/#292. Prossimo passo: integrare R1901/R1902 e routing dei contatti senza bypass o corto audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
