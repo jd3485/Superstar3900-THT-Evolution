@@ -1,5 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #370 MERGED: prova topologica dei ritorni AF fra MAIN e FRONT
+
+PR [#370](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/370) **MERGED** main `9130eb494c9aaf3a0ea299667b25caddded2713c`, head `4c07e591a50e4cf5f3df5501c9e0e9d6daf03db8`, run #44315388727 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Nuova regressione `03_Verifiche/V2.7/verify_main_front_audio_return_graph_native.py`, obbligatoria da `ci/full_regressions.py`, confronta le partizioni pin/net dei master MAIN/FRONT e lo harness candidato, poi applica sei scenari deterministici (nessun cavo, ciascuno singolo, entrambi, ulteriore tie MAIN singolo, due cavi+tie MAIN).
+
+**Risultato topologico:** J1502/2 AM455 e J1202/2 LM386 restano due reti distinte nella netlist MAIN isolata; FRONT J1301/2 e J1902/2 condividono la stessa AF_GND. I due ritorni dei cavi collegati formano un percorso che unisce i due ritorni MAIN **ma NON costituisce da solo un ciclo chiuso**; un secondo percorso conduttivo indipendente fra i due ritorni (ad esempio massa MAIN/chassis/shield) formerebbe un ciclo. L'esistenza e l'impedenza di quel percorso fisico non sono documentate. Nessuna pretesa di star-ground o assenza di disturbi. Da qualificare: riferimento unico su schemi reali, IF/AF load, contatti connettori THT, schermatura, ESD/EMC, ground/chassis e layout PCB. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo CAD-first:** completare architettura PCB MAIN e PCB FRONT con connettori pin/pad/net e trattamento controllato dell'unico percorso di ritorno; valutare topologia RF/AF evitando modifiche silenziose a reti separate. Layout, DRC produttivo e verifiche fisiche rimangono aperti. #27/#292 OPEN.
+
+---
+
 ## 18 novembre 2026 — PR #368 MERGED: contratto cablaggio audio a due link MAIN/FRONT
 
 PR [#368](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/368) **MERGED** su main `a6dd8acb9bca0b328926b60d755e73bc598471f0`, head `d3c1a63cca97bd97ccf0a4b3399b30f6b48cf72f`. CI #44313008305 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Creato disegno KiCad9 autonomo `04_KiCad/V2.7_DRAFT/MAIN_FRONT_DUAL_AF_HARNESS_V2_7_DRAFT.kicad_sch` e progetto, quattro connettori astratti THT J2701–J2704: link A MAIN AM455 J1502→FRONT J1301, link B FRONT post-mute J1902→MAIN LM386 J1202; quattro reti audio/return distinte nel cavo e otto pin, nessun power feed o bypass J1302→J1202. Verifica `verify_main_front_dual_af_harness_native.py` integrata in `ci/full_regressions.py`: ERC nativo separato per schema cavo, MAIN e FRONT, continuità pin↔net per tutti i quattro capi e isolamento delle due coppie nel disegno, integrità mute.
