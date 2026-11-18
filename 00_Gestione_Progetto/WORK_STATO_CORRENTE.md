@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato MAIN: pista AMP_IN R1201→U1201/3 fisica NONFAB
+## 18 novembre 2026 — PR #392 MERGED: pista AMP_IN R1201→U1201/3 fisica NONFAB
 
 Branch `engineering/v27-main-r1201-u1201-pin3-ampin-route-20261118`: aggiunti tre segmenti B.Cu da R1201/2 (117,62;75 mm) a U1201/3 (130;70,08 mm), rete AMP_IN net6. MAIN conta sette tracce totali, con AUDIO_IN e PRE_IN precedentemente collegate tramite C1201/R1201. U1201/1 e /8 (gain 20), GND 2/4, uscita 5, alimentazione 6, bypass 7 sono ancora senza rame. Nessuna via, outline o zona, ritorni IF_BENCH_GND e GND distinti. Regressione nativa con lista geometrica e connettività di tre gruppi net3/net5/net6; V0.3/V0.4 preservano whitelists strette.
 
-**Stato:** PR draft candidata, FAST/FULL/Required sullo SHA finale ancora da verificare. In particolare U1201 non è elettricamente alimentato e la PCB NON è realizzabile; package/OEM, protezioni, termica/EMI e prodotto DRC da qualificare. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#392](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/392) **MERGED** su main `6d888bde8d2b103df95f684df0f9bb3fc23e11ed`, head `84945dd0cc8e2f56a33d443f37d8d165ea6b25bd`, run #44409614585 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. In particolare U1201 non è elettricamente alimentato e la PCB NON è realizzabile; package/OEM, protezioni, termica/EMI e prodotto DRC da qualificare. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
