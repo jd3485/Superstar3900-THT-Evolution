@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #366 MERGED: ingresso LM386 J1202 gerarchico MAIN
+
+PR [#366](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/366) **MERGED** su main `db8110661b700eb1d4677fb5b219813774f74227`, head tecnico `bf65585b24af47fa537ae8b72f000f22b09453bf`. CI #44309438165: FAST/FULL native KiCad9/Required **3/3 SUCCESS**. Creato figlio `AUDIO_RX_MONO_LM386_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch` con porte fisiche J1202/1 `AUDIO_IN` e J1202/2 `GND` mantenendo originale benchmark e tutti i componenti. Master `MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch`: due sheet pin e due wire stub per ingresso audio/ritorno LM386, indipendenti da AM455 e FRONT. Regressione `verify_main_partial_v27_hierarchy_native.py` espansa a sei wire autorizzati, controlli di partizioni endpoint per J1202 e assenza di unioni indebite tra AF, IF e PLL. Nessun cavo o ritorno comune qualificato; non è una PCB fabbricabile.
+
+**Prossimo CAD-first:** chiudere architettura di due PCB separate con connettori THT e netlist controllate: J1502 MAIN→J1301 FRONT demod audio; J1902 FRONT post-mute→J1202 MAIN LM386. Rispettare cavo/masse/EMC e carichi IF/AF ancora da qualificare; nessun ponte diretto schematico tra board. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #364 MERGED: uscita post-mute J1902 gerarchica FRONT
 
 PR [#364](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/364) **MERGED** main `b28bf1de989b3885473471c1717fb4025b71e583`, head `e872fc880eadabf9ee63c39f6ab2103e52fa2819`. CI #44307125758 **FAST/FULL native KiCad9/Required 3/3 SUCCESS**. Aggiunto figlio `FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_POSTMUTE_HIERARCHICAL_CANDIDATE.kicad_sch` senza alterare il precedente candidato G5V1 isolato; porta gerarchica `AMP_INPUT_MUTED` per J1902/1 e `AF_GND` per J1902/2. Master `FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch`: due sheet pin e due stub elettrici per l'uscita audio dopo mute, senza collegamenti con MAIN o bypass del relay. Aggiornata `verify_front_g5v1_sixpin_hierarchy_candidate_native.py` per convalidare connessioni e conservare la mappa di tutti gli endpoint OEM. Nessun modello di carico o accoppiamento masse qualificato.
