@@ -134,15 +134,18 @@ def main():
                     (3,"B.Cu",(100.,45.),(100.,65.)),
                     (5,"F.Cu",(102.5,65.),(102.5,75.)),
                     (5,"F.Cu",(102.5,75.),(110.,75.)),
+                    (6,"B.Cu",(117.62,75.),(122.,75.)),
+                    (6,"B.Cu",(122.,75.),(122.,70.08)),
+                    (6,"B.Cu",(122.,70.08),(130.,70.08)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==4
+                assert len(segments)==len(actual_main)==len(expected_main)==7
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
-                assert all(int(n) in (3,5) for *_,n,uuid in segments)
-                assert not any(int(n) in (1,2,4,6) for *_,n,uuid in segments)
+                assert all(int(n) in (3,5,6) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,4,7,8,9) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -244,14 +247,19 @@ def main():
                         if net!=othernet:
                             assert gap_to_track(point,a,b)-rad-w/2>=0.2-1e-8,(
                                 "MAIN different-net pad copper clearance",net,othernet,point)
-                for net in (3,5):
+                for net in (3,5,6):
                     group=[(a,b) for n,a,b,w,l in wires_main if n==net]
-                    assert len(group)==2 and (group[0][1]==group[1][0]),(
+                    assert len(group)==(3 if net==6 else 2) and all(group[i][1]==group[i+1][0] for i in range(len(group)-1)),(
                         "MAIN split audio input copper",net,group)
                     for point,rad,n in mainpads.values():
                         if n==net:
                             assert any(gap_to_track(point,a,b)<1e-8 for a,b in group),(
                                 "MAIN native input pad unconnected",net,point)
+                # The new amplifier input must terminate on U1201/3, with
+                # pins 1/8 unconnected and both ground returns still separate.
+                amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
+                assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
+                assert all(n not in (0,1,2,4,7,8,9) for n,a,b,w,l in wires_main)
                 # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
@@ -423,7 +431,8 @@ def main():
         "independent_MAIN_nets":9,
         "MAIN_U1201_DIP8_native_pads_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_4_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_7_audio_segments":True,
+        "MAIN_AMP_IN_R1201_to_U1201_pin3_connected":True,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
         "FRONT_volume_to_wiper_10_original_segments_preserved":True,
