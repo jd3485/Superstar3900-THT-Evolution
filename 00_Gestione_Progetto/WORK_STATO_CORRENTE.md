@@ -1,5 +1,14 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 17 novembre 2026 — PR #346 MERGED; simbolo G5V-1 6-pin OEM separato in verifica
+
+PR [#346](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/346) **MERGED** main `d59d44a0e0cd0e23642b2fb15adf3c01e261f738`, head `a4f78dc8e2b8366b1f68fc9cbc6398b330a1ea91`, run #44139642168 FAST/FULL/Required 3/3 SUCCESS. Vera footprint G5V-1 candidata sei pad, NON assegnata a K1901 5-pin.
+
+Branch `engineering/v27-front-g5v1-sixpin-candidate-symbol-20261117`: aggiunta vera libreria simboli KiCad `04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/TH_MUTE_G5V1_SIX_TERMINAL_CANDIDATE.kicad_sym`, sei terminali OEM NC1/NO10/coil2-9/doppio COM5-6 e riferimento alla footprint TH 6-pad di #346. Test FULL verifica mappatura pin↔pad e netlist KiCad9 FRONT originale **ancora 5-pin**. Report `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_SYMBOL_CANDIDATE_20261117.md`. PR/CI da verificare. Nessun collegamento fisico del nuovo simbolo, nessun PCB, DRC o qualifica. #292/#27 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
+
 ## 17 novembre 2026 — PR #345 MERGED; footprint THT reale G5V-1 DC5 sei pad candidata
 
 PR [#345](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/345) **MERGED** main `970e980e91d268abe71a7b45faf5342e3a0a88b3`, head `ab9124969612c59ac4e573dce2ab9891146c9720`, run #44137551958 FAST/FULL/Required 3/3 SUCCESS. Regressione AC NO saldato e AF_GND OPEN modellata, non prova mute hardware.

@@ -1,0 +1,9 @@
+# FRONT G5V-1 DC5 — KiCad six-terminal OEM candidate symbol (17 Nov 2026)
+
+Added real native KiCad symbol library `04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/TH_MUTE_G5V1_SIX_TERMINAL_CANDIDATE.kicad_sym` with six explicit numbered physical electrical terminals (1 NC, 10 NO, 2 coil, 9 coil, 5 and 6 duplicated COM) and reference to the separate six-pad THT OEM footprint candidate from [PR #346](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/346). Pin numbers and bottom-view geometric source: [Aratas/Omron G5V-1 K048-E1 p.4](https://www.aratas.com/system/files/datasheet_pdf/K048-E1.pdf). The six-pad candidate was compared with KiCad's upstream `Relay_SPDT_Omron_G5V-1.kicad_mod`; independent physical sample/thermal/layout review remains outstanding.
+
+A new FULL regression `03_Verifiche/V2.7/verify_front_g5v1_sixpin_symbol_candidate_native.py` checks all six pins and their proposed circuit-net assignment against the physical pad number set, and exports the actual parent FRONT KiCad9 netlist. The existing relay `K1901` retains **five abstract electrical terminals, no OEM footprint**, unaltered. No direct substitution was made, no six-pin relay is yet in the native hierarchy. A separate candidate symbol **does not constitute a valid migrated six-pin product schematic**. For an eventual migration, connect both physical COM pads 5 and 6 intentionally, preserve NC return and coil wiring, and verify ERC, all parent pin-net partitions, footprints, and single faults.
+
+Upstream [PR #346](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/346) merged to main `d59d44a0e0cd0e23642b2fb15adf3c01e261f738`, run #44139642168 FAST/FULL/Required success. This new revision has separate HEAD/CI gates. Issues #292/#27 open, no actual full FRONT PCB, manufacturing DRC, confirmed final OEM MPN, mounting samples, or coil PVT test.
+
+**NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
