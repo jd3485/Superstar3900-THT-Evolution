@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato MAIN: U1201 LM386 PDIP8 fisico con otto pad nativi
+## 18 novembre 2026 — PR #390 MERGED: U1201 LM386 PDIP8 fisico con otto pad nativi
 
 Branch `engineering/v27-main-u1201-pdip8-native-pad-placement-20261118`: aggiunto U1201 LM386N-1/NOPB candidato in `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` con impronta THT `Package_DIP:DIP-8_W7.62mm` a (130,65). Mappatura nativa pad: 1/8 senza connessione (gain 20), 2/4 GND, 3 AMP_IN, 5 AMP_OUT, 6 AUDIO_6V_LAB, 7 BYPASS. MAIN passa a cinque footprint e sedici pad, con le precedenti quattro piste audio intatte, nessun rame su U1201, nessuna unione IF_BENCH_GND↔GND. Verificatore nativo e whitelist legacy aggiornati.
 
-**Stato:** PR candidata, CI FAST/FULL/Required non ancora verde sullo SHA finale. Geometria/meccanica OEM e interconnessioni di alimentazione/uscita, condensatori decoupling, termica ed EMI ancora da qualificare; niente DRC PCB prodotto, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#390](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/390) **MERGED** su main `8e2f7a0955247f8dd44c37fc7303f0133aa530c1`, head `72f9e9484fdacd6c75632d1cc6d3cae6d4739070`, run #44362837139 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Geometria/meccanica OEM e interconnessioni di alimentazione/uscita, condensatori decoupling, termica ed EMI ancora da qualificare; niente DRC PCB prodotto, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
