@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — strategia CAD-first proposta (ramo operativo, non ancora integrata)
+
+Nuovo indirizzo operativo proposto: inventario dei blocchi reali V2.7 MAIN/FRONT, priorità alle modifiche agli schemi e all'integrazione di gerarchie native; regressioni mirate a rischi nuovi e gate obbligatori invariati. Misurare blocchi connessi e interfacce mancanti, non il numero di PR. Il presente aggiornamento è una **proposta nel branch**: non attribuire promozione V2.7, completamento di PCB o verifiche hardware. Continuano NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+
+**Primo prossimo lavoro tecnico dopo l'eventuale merge della policy:** censire 04_KiCad/V2.7_DRAFT contro il master V2.6, individuare la prima integrazione MAIN/FRONT verificabile e aprire una PR CAD concreta (non una PR di soli test). Conservare PR tecniche concorrenti e riconciliare HEAD prima di ogni modifica.
+
+---
+
 ## 18 novembre 2026 — PR #353 MERGED; modello AC vincolato ai valori delle istanze KiCad native
 
 PR [#353](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/353) **MERGED** main `84aab6dc69559b59ba9e9b7d889577ebe25357a6`, final head `127f758b57da027d12d2979289584a334ee99974`, CI #44285490471 FAST/FULL/Required **3/3 SUCCESS**. Nuova verifica del mute deenergizzato con apertura di COM5/COM6 singola/doppia, 48 angoli di prova AC ipotetici.
