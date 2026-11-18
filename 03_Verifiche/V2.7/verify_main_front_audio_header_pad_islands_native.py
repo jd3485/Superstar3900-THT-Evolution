@@ -22,7 +22,11 @@ BOARDS={
         ("J1502","1"):"AM_DEMOD_AF_BENCH",
         ("J1502","2"):"IF_BENCH_GND",
         ("J1202","1"):"AUDIO_IN",
-        ("J1202","2"):"GND"}),
+        ("J1202","2"):"GND",
+        ("C1201","1"):"AUDIO_IN",
+        ("C1201","2"):"PRE_IN",
+        ("R1201","1"):"PRE_IN",
+        ("R1201","2"):"AMP_IN"}),
     "FRONT":(FRONT,BASE/"FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb",{
         ("J1301","1"):"DEMOD_AUDIO",
         ("J1301","2"):"AF_GND",
@@ -57,10 +61,12 @@ def main():
                 2 if board=="MAIN" else 3)
             assert raw.count('(footprint "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE"')==(0 if board=="MAIN" else 1)
             assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"')==(0 if board=="MAIN" else 2)
+            assert raw.count('(footprint "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm"')==(1 if board=="MAIN" else 0)
+            assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==(
                 0 if board=="MAIN" else 1)
-            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 7)
-            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 7)
+            assert raw.count('(pad "1" thru_hole')==(4 if board=="MAIN" else 7)
+            assert raw.count('(pad "2" thru_hole')==(4 if board=="MAIN" else 7)
             assert raw.count('(pad "3" thru_hole')==(0 if board=="MAIN" else 1)
             for pin in ("5","6","9","10"):
                 assert raw.count('(pad "'+pin+'" thru_hole')==(0 if board=="MAIN" else 1)
@@ -119,10 +125,10 @@ def main():
                 re.findall(r'^\(net (\d+) "([^"]*)"\)$',raw,re.M)}
             assert pcb_net.get("")==0
             assert set(pcb_net)-{""}==set(wanted.values())
-            assert len(pcb_net)==(5 if board=="MAIN" else 8)
+            assert len(pcb_net)==(7 if board=="MAIN" else 8)
             pads={}
             blocks=raw.split('\n(footprint "')[1:]
-            assert len(blocks)==(2 if board=="MAIN" else 7)
+            assert len(blocks)==(4 if board=="MAIN" else 7)
             refs=set()
             for block in blocks:
                 refmatch=re.search(r'\(property "Reference" "([^"]+)"',block)
@@ -134,6 +140,8 @@ def main():
                 assert (("TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" if ref=="RV1301"
                     else "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE" if ref=="K1901"
                     else "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" if ref in ("R1901","R1902")
+                    else "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm" if ref=="C1201"
+                    else "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" if ref=="R1201"
                     else FOOTPRINT)) in block.split('"',1)[0]
                 allpads=re.findall(
                     r'\(pad "(\d+)" thru_hole (?:rect|circle) \(at [^)]+\) '
@@ -146,6 +154,20 @@ def main():
                     assert (ref,pin) not in pads,(board,ref,pin)
                     pads[(ref,pin)]=netname
             assert pads==wanted,(board,pads,wanted)
+            if board=="MAIN":
+                # Real LM386 schematic nodes: C1201 AUDIO_IN -> PRE_IN,
+                # R1201 PRE_IN -> AMP_IN; PCB pad placement unconnected.
+                for ref,coord in {"C1201":(100.,65.),
+                                  "R1201":(110.,75.)}.items():
+                    block=next(b for b in blocks if f'(property "Reference" "{ref}"' in b)
+                    assert f'(at {coord[0]:g} {coord[1]:g})' in block
+                assert all(pads[(ref,pin)]==net for (ref,pin),net in {
+                    ("C1201","1"):"AUDIO_IN",
+                    ("C1201","2"):"PRE_IN",
+                    ("R1201","1"):"PRE_IN",
+                    ("R1201","2"):"AMP_IN"}.items())
+                assert "IF_BENCH_GND"!=pads[("C1201","1")]
+                assert "GND"!=pads[("R1201","2")]
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
                     "5":("RELAY_COM_AUDIO",80,65.16),"10":("VOL_WIPER_TO_AMP",85.08,55),
@@ -301,12 +323,13 @@ def main():
             positions=out.read_text(encoding="utf8")
             for ref in refs:
                 assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',positions),(board,ref)
-            assert len(refs)==(2 if board=="MAIN" else 7)
-            assert len(pads)==(4 if board=="MAIN" else 19)
+            assert len(refs)==(4 if board=="MAIN" else 7)
+            assert len(pads)==(8 if board=="MAIN" else 19)
     print("PASS_KICAD9_MAIN_FRONT_TWO_SEPARATE_NONFAB_AUDIO_PCB_PAD_ISLANDS_4REF_8THT_PADS",{
-        "MAIN":("J1502","J1202"),
+        "MAIN":("J1502","J1202","C1201","R1201"),
         "FRONT":("J1301","J1902","RV1301","J1302","K1901","R1901","R1902"),
-        "independent_MAIN_nets":4,
+        "independent_MAIN_nets":6,
+        "MAIN_input_cap_series_resistor_THT_unrouted":True,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
         "FRONT_volume_to_wiper_10_original_segments_preserved":True,

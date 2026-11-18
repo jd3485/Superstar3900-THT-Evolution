@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato PR MAIN: C1201 e R1201 fisici THT, CI da verificare
+
+Branch `engineering/v27-main-c1201-r1201-tht-placement-20261118`: aggiunti al candidato `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` i due veri footprint THT indicati nello schema LM386 `AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch`: C1201 100nF (pad 1 AUDIO_IN, pad 2 PRE_IN) e R1201 10k (pad 1 PRE_IN, pad 2 AMP_IN). MAIN passa da due a quattro componenti e da quattro a otto pad THT; reti MAIN da quattro a sei. Nessuna pista, via, zona o outline; ritorni IF_BENCH_GND e GND rimangono **separati**. Test KiCad9 pad↔net gerarchici e posizione per entrambe le parti aggiunti; invarianti V0.3/V0.4 aggiornati.
+
+**Stato:** branch candidato, CI FAST/FULL/Required non ancora verificata. Componenti e posizioni non qualificati OEM, nessun DRC prodotto. Prossimo CAD: collocare U1201 PDIP8 e verificare pin↔net, poi interconnessioni audio senza unire i due ritorni. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #384 MERGED: 17 piste mute audio THT nel candidato FRONT NONFAB
 
 Branch `engineering/v27-front-mute-copper-routed-candidate-20261118`: estesi i dieci segmenti precedenti a ventisette piste fisiche KiCad9 sulle due facce per connettere K1901/10 (NO) al wiper, K1901/1 (NC) alla massa AF, COM5/6 a R1902/1, R1902/2 al carico J1902/1 e al bleed R1901/1, R1901/2 ad AF_GND. Pad bobina K1901/2 e /9 restano **senza rame e senza alimentazione**. Niente scorciatoia diretta VOL_WIPER→AMP_INPUT_MUTED: il percorso audio non mutato candidato richiede il contatto NO del relè energizzato e R1902; a bobina non energizzata COM è collegato ad AF_GND tramite NC, come da topologia schematica. Verificatore nativo aggiornato con lista esatta dei segmenti, controlli di connettività per reti 1-5, tutte le clearance pad↔pista su entrambi gli strati, incroci fra piste di reti diverse sullo stesso layer, e regressioni legacy non allentate per Edge.Cuts/vias/zone.
