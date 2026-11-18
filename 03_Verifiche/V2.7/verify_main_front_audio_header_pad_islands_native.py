@@ -121,7 +121,9 @@ def main():
         "shared_FRONT_AF_GND_pad_assignments":2,
         "all_pads_mapped_to_native_schematic_labels":True,
         "native_kicad9_pos_export_both_islands":True,
-        "no_edge_no_vias_no_extra_components":True,\n        "FRONT_AF_GND_routed_on_F_Cu_once":True,\n        "MAIN_returns_unrouted_and_isolated":True,
+        "no_edge_no_vias_no_extra_components":True,
+        "FRONT_AF_GND_routed_on_F_Cu_once":True,
+        "MAIN_returns_unrouted_and_isolated":True,
         "production_DRC_and_routing_claimed":False,
         "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True},flush=True)
 
