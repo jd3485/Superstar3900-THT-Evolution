@@ -55,12 +55,24 @@ def main():
     assert '"IF455_TANK/IF455_TANK_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"' in s
     assert '"AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT_MAIN_HIERARCHICAL_CANDIDATE.kicad_sch"' in s
     assert '"IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch"' in s
-    # Only the two reviewed IF455→AM455 signal/return physical wires are allowed.
-    assert s.count('(wire (pts ') == 2 and '(junction ' not in s
-    assert '(xy 160.02 190.5) (xy 213.36 190.5)' in s
-    assert '(xy 160.02 195.58) (xy 213.36 195.58)' in s
+    # Exactly two physical IF→AM links plus two isolated J1502 AF port stubs.
+    assert s.count('(wire (pts ') == 4 and '(junction ' not in s
+    for wire in ('(xy 160.02 190.5) (xy 213.36 190.5)',
+                 '(xy 160.02 195.58) (xy 213.36 195.58)',
+                 '(xy 342.9 210.82) (xy 365.76 210.82)',
+                 '(xy 342.9 215.9) (xy 365.76 215.9)'):
+        assert wire in s,wire
+    assert s.count('(pin "AM_DEMOD_AF_BENCH" passive')==1
+    assert s.count('(label "AM_DEMOD_AF_BENCH" (at 365.76 210.82 0)')==1
+    # One IF455 return pin plus two AM455 return pins (input and J1502 output).
+    assert s.count('(pin "IF_BENCH_GND" passive')==3
     for name in ('IF455_FILTER_OUT','IF455_BENCH_IN','IF_BENCH_GND'):
         assert name in s
+    amchild=AM455.read_text(encoding="utf-8")
+    standalone=KICAD/"V2.7_DRAFT/AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch"
+    assert amchild.count('(hierarchical_label "AM_DEMOD_AF_BENCH"')==1
+    assert amchild.count('(hierarchical_label "IF_BENCH_GND"')==2
+    assert '(hierarchical_label "AM_DEMOD_AF_BENCH"' not in standalone.read_text(encoding="utf-8")
     assert 'NO FAB' in s and 'NO TX' in s
     assert MASTER.with_suffix(".kicad_pro").is_file()
     tab=(MASTER.parent/"sym-lib-table").read_text(encoding="utf-8")
@@ -102,6 +114,14 @@ def main():
     assert sum(map(len,separate))==len(set().union(*separate)), "Duplicate reference between MAIN children"
     baseline_refs=set().union(*separate)
     assert all_refs==baseline_refs,(all_refs-baseline_refs,baseline_refs-all_refs)
+    # Exported AM455 AF port must retain the same J1502 physical pin net
+    # and must never share the IF455 detector input signal partition.
+    signal_af=[p for p in all_parts if ("J1502","1") in p]
+    ground_af=[p for p in all_parts if ("J1502","2") in p]
+    assert len(signal_af)==len(ground_af)==1
+    assert ("J1501","1") not in signal_af[0]
+    assert ("J1501","2") in ground_af[0]
+    assert signal_af[0].isdisjoint(ground_af[0])
     # The only intentional changes are merges of IF455 J1602 to AM455 J1501
     # on the signal (pin 1) and isolated return (pin 2) paths. Model the
     # expected native partitions from standalone exported netlists, not names.
