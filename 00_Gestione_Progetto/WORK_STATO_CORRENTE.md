@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato MAIN: condensatore C1204 BYPASS 10uF THT fisico NONFAB
+
+Branch `engineering/v27-main-c1204-bypass-cap-pad-candidate-20261118`: posizionato condensatore elettrolitico C1204 10uF 16V THT `CP_Radial_D5.0mm_P2.00mm` nello stesso candidato KiCad9 MAIN: pad1 positivo BYPASS net9, pad2 negativo GND net4, corrispondenti ai pin schematici C1204/1 e /2 e a U1201/7 e massa. PCB MAIN: sei footprint e diciotto pad THT; tredici segmenti rame già integrati invariati, ancora **nessun collegamento fisico** alla rete BYPASS. Verifica nativa KiCad9 della netlist e posizione/pad/clearance e test storici V0.3/V0.4 aggiornati.
+
+**Stato:** candidato draft, CI FAST/FULL/Required non ancora verificata. Polarità, ESR, tensione e quote reali da qualificare OEM; decoupling, alimentazione e uscita incompleti; NONFAB senza DRC produttivo, #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #394 MERGED: ritorno GND J1202→U1201/2 e U1201/4
 
 Branch `engineering/v27-main-lm386-gnd-pin2-pin4-route-20261118`: sei segmenti 0,5 mm F.Cu dal connettore J1202/2 ai pad U1201/2 e U1201/4 (GND), con diramazione a (125,67.54). MAIN passa da sette a tredici piste KiCad9 THT candidate: percorsi AUDIO_IN→C1201→PRE_IN→R1201→AMP_IN→U1201/3 preservati. IF_BENCH_GND J1502/2 resta **senza rame e separata** da GND. Pin gain 1/8, BYPASS, AMP_OUT e AUDIO_6V_LAB del LM386 ancora privi di connessione fisica. Verifica FULL aggiornata per sei geometrie esatte, grafo della derivazione, pad↔net gerarchici e distanza di ogni pista dai pad di altra rete; regressioni V0.3/V0.4 aggiornate.
