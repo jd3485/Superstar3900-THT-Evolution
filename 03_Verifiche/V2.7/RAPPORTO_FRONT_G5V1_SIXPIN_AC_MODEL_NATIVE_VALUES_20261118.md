@@ -1,0 +1,9 @@
+# FRONT G5V-1 six-physical-pin: KiCad resistor instance ↔ AC solver value lock (18 Nov 2026)
+
+PR [#353](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/353) merged on main `84aab6dc69559b59ba9e9b7d889577ebe25357a6`, final head `127f758b57da027d12d2979289584a334ee99974`, run #44285490471 FAST/FULL/Required **3/3 success**. The real six-pin relay candidate is still *unqualified*, with #27/#292 open.
+
+Previous AC regressions independently verified native pin-to-net connectivity but partly searched literal resistor annotations instead of parsing the **specific KiCad component instance values**. A wiring-preserving edit changing the actual resistor value could leave mathematical constants silently stale.
+
+This revision adds `03_Verifiche/V2.7/verify_front_g5v1_sixpin_ac_model_component_values_native.py` to the FULL CI regression. KiCad9 native exports confirm physical R1901 pins 1/2 between AMP_INPUT_MUTED/AF_GND; R1902 between RELAY_COM_AUDIO/AMP_INPUT_MUTED; MAIN R1201 between PRE_IN/AMP_IN. The test parses **unique symbol instance** values from the genuine mute child and MAIN schematic and requires R1901=100kΩ, R1902=1kΩ, R1201=10kΩ. It compares those against constants from three otherwise independent existing numeric solvers (`verify_front_g5v1_sixpin_dual_com_impedance_ac_native.py`, `verify_front_mute_welded_no_ac_native.py`, and `verify_front_mute_nc_coupled_audio_fault_native.py`), plus consistency of C_INPUT and LM386 RIN across implementations. The numeric model may not silently diverge from these native KiCad instance values.
+
+This is a stronger input-assumption and regression integrity gate, **not** a verification of actual resistor tolerance, analog ground robustness, coil actuation PVT, real PCB layout or DRC. No hardware has been made or tested. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**

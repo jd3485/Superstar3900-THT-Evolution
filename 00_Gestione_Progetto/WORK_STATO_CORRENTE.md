@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #353 MERGED; modello AC vincolato ai valori delle istanze KiCad native
+
+PR [#353](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/353) **MERGED** main `84aab6dc69559b59ba9e9b7d889577ebe25357a6`, final head `127f758b57da027d12d2979289584a334ee99974`, CI #44285490471 FAST/FULL/Required **3/3 SUCCESS**. Nuova verifica del mute deenergizzato con apertura di COM5/COM6 singola/doppia, 48 angoli di prova AC ipotetici.
+
+Branch `engineering/v27-front-sixpin-ac-model-value-lock-20261118`: regressione FULL KiCad9 che estrae gli effettivi valori delle istanze R1901 100k, R1902 1k e R1201 10k dai rispettivi schemi figlio FRONT e MAIN, verifica connessioni native e blocca scostamenti rispetto ai tre modelli AC. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_AC_MODEL_NATIVE_VALUES_20261118.md`. CI/PR da verificare al final HEAD; ancora nessun PCB, DRC o qualifica fisica, #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #352 MERGED; attenuazione NC con guasto COM in verifica
 
 PR [#352](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/352) **MERGED** main `2eb28bd2245e08330c688c5ab60008290c0a7b33`, final head `190756d2d91e3d80c9a4e34d1efbe88273e07d5e`, run #44283080410 FAST/FULL/Required **3/3 SUCCESS**. Verificati 3456 casi AC con due pad COM fisici e resistenze finite, con AF_GND aperto lasciato non risolvibile e nessuna qualifica hardware.
