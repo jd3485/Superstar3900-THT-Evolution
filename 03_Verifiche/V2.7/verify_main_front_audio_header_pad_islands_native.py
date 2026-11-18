@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""KiCad9 isolated NONFAB physical pads on each PCB, two audio headers each.
+"""KiCad9 NONFAB pad islands: MAIN audio headers, FRONT AF plus candidate relay.
 
-Each pad-net uses the label of its actual MAIN/FRONT master netlist, with
-physical connector ref/pin and installed thru-hole pad mapping. These islands
-contain ONLY four connector pads each, NOT the complete assembled PCBs.
-NO board edge, zones, physical interboard cable or production DRC. FRONT\ncontains ONLY one real F.Cu AF_GND conductor between the two return pads;\nMAIN still contains no copper at all.
+All physical pad nets are compared with actual hierarchical master KiCad9 nets.
+FRONT includes four AF refs and K1901 6-terminal relay footprint placement;
+new relay pins remain deliberately unrouted, with no claimed physical mute.
+No product board outline, manufacturing DRC or safety qualification.
 """
 from pathlib import Path
 from collections import defaultdict
@@ -126,8 +126,13 @@ def main():
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
                     "5":("RELAY_COM_AUDIO",80,65.16),"10":("VOL_WIPER_TO_AMP",85.08,55),
                     "9":("COIL_MINUS_LAB",85.08,57.54),"6":("RELAY_COM_AUDIO",85.08,65.16)}
+                relay_block=next(b for b in blocks if '(property "Reference" "K1901"' in b)
                 for pad,(net,x,y) in expected_relay.items():
                     assert pads[("K1901",pad)]==net
+                    localx,localy=x-80,y-55
+                    assert f'(pad "{pad}" thru_hole' in relay_block
+                    assert f'(at {localx:g} {localy:g})' in relay_block
+
                 # K1901 must remain electrically unrouted in this revision.
                 assert not any(int(n) in (5,6,7) for *_,n,uuid in segments)
             if board=="FRONT":
@@ -183,8 +188,14 @@ def main():
                     assert len(reachable)==len(group),(net,"unconnected copper",reachable)
                     assert all(any(onseg(pt,a,c) for a,c in group) for pt in required),(
                         net,"unattached THT pad",required)
-                # AMP_INPUT_MUTED remains a separate output pad pending the
-                # full G5V1 relay footprint and post-mute routing.
+                # K1901 is now placed but unrouted: detect any legacy copper
+                # crossing its six plated through-hole pads on either layer.
+                for pad,(net,x,y) in expected_relay.items():
+                    for tracknet,a,c,width,layer in wires:
+                        if tracknet!=net:
+                            assert dist((x,y),a,c)-1.0-width/2>=0.2-1e-8,(
+                                "K1901 foreign-net copper clearance",pad,tracknet)
+                # AMP_INPUT_MUTED is a separate pad; post-mute path not routed.
                 assert not any(n==3 for n,a,c,w,layer in wires)
             nets=exported_nets(sch,d/(board+".net"))
             for endpoint,netname in wanted.items():
