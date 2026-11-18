@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato MAIN: prime 4 piste audio C1201/R1201 NONFAB
+
+Branch `engineering/v27-main-lm386-input-cap-prein-copper-20261118`: il candidato MAIN ha quattro segmenti fisici 0,5mm: J1202/1 AUDIO_IN → C1201/1 AUDIO_IN su B.Cu; C1201/2 PRE_IN → R1201/1 PRE_IN su F.Cu. Il pad R1201/2 AMP_IN resta isolato finché U1201 non è posizionato. I ritorni IF_BENCH_GND e GND sono distinti e privi di piste. Nessun collegamento diretto che bypassi C1201 o R1201. Controlli nativi: lista geometrica esatta, connettività pad, clearance su tutti gli otto pad MAIN e continuità dei due gruppi; V0.3/V0.4 aggiornate.
+
+**Stato:** branch candidato in attesa CI FAST/FULL/Required sullo SHA definitivo; geometrie THT non qualificate, PCB priva di outline/DRC fabbricativo, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #386 MERGED: C1201 e R1201 fisici THT nel candidato MAIN
 
 Branch `engineering/v27-main-c1201-r1201-tht-placement-20261118`: aggiunti al candidato `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` i due veri footprint THT indicati nello schema LM386 `AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch`: C1201 100nF (pad 1 AUDIO_IN, pad 2 PRE_IN) e R1201 10k (pad 1 PRE_IN, pad 2 AMP_IN). MAIN passa da due a quattro componenti e da quattro a otto pad THT; reti MAIN da quattro a sei. Nessuna pista, via, zona o outline; ritorni IF_BENCH_GND e GND rimangono **separati**. Test KiCad9 pad↔net gerarchici e posizione per entrambe le parti aggiunti; invarianti V0.3/V0.4 aggiornati.
