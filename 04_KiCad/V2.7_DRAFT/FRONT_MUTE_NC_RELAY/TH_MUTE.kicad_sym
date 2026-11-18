@@ -32,4 +32,18 @@
 (symbol "RESISTOR_THT_BLEED_1_1"
 (pin passive line (at -12.7 0 0)(length 5.08)(name "A" (effects (font (size 1 1))))(number "1" (effects (font (size 1 1)))))
 (pin passive line (at 12.7 0 180)(length 5.08)(name "B" (effects (font (size 1 1))))(number "2" (effects (font (size 1 1)))))))
+(symbol "G5V1_DC5_SIXPIN_CANDIDATE"
+(pin_numbers (hide yes))(pin_names (offset 0.76))(in_bom yes)(on_board yes)
+(property "Reference" "K" (at 0 20.32 0) (effects (font (size 1 1))))
+(property "Value" "G5V1_DC5_UNQUALIFIED" (at 0 -20.32 0) (effects (font (size 1 1))))
+(property "Footprint" "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE" (at 0 0 0) (effects (font (size 1 1))))
+(symbol "G5V1_DC5_SIXPIN_CANDIDATE_0_1" (rectangle (start -10.16 10.16)(end 10.16 -10.16)(stroke (width 0.254)(type default))(fill (type background))))
+(symbol "G5V1_DC5_SIXPIN_CANDIDATE_1_1"
+(pin passive line (at -15.24 0 0)(length 5.08)(name "COM_A" (effects (font (size 1 1))))(number "5" (effects (font (size 1 1)))))
+(pin passive line (at -15.24 -5.08 0)(length 5.08)(name "COM_B" (effects (font (size 1 1))))(number "6" (effects (font (size 1 1)))))
+(pin passive line (at 15.24 -5.08 180)(length 5.08)(name "NC_AF_GND" (effects (font (size 1 1))))(number "1" (effects (font (size 1 1)))))
+(pin passive line (at 15.24 5.08 180)(length 5.08)(name "NO_VOL_WIPER" (effects (font (size 1 1))))(number "10" (effects (font (size 1 1)))))
+(pin passive line (at -5.08 15.24 270)(length 5.08)(name "COIL_PLUS" (effects (font (size 1 1))))(number "2" (effects (font (size 1 1)))))
+(pin passive line (at 5.08 15.24 270)(length 5.08)(name "COIL_MINUS" (effects (font (size 1 1))))(number "9" (effects (font (size 1 1)))))
+))
 )
