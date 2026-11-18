@@ -123,8 +123,8 @@ class V04(unittest.TestCase):
     for path in islands:
         stub=(ROOT/path).read_text(encoding='utf-8')
         is_front=path.endswith('FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb')
-        self.assertEqual(stub.count('(footprint "'),5 if is_front else 2)
-        self.assertEqual(stub.count('(pad "'),15 if is_front else 4)
+        self.assertEqual(stub.count('(footprint "'),7 if is_front else 2)
+        self.assertEqual(stub.count('(pad "'),19 if is_front else 4)
         self.assertEqual(stub.count('(segment '),10 if is_front else 0)
         if is_front:
             for track in (
