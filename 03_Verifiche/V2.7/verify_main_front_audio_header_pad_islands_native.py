@@ -3,7 +3,8 @@
 
 All physical pad nets are compared with actual hierarchical master KiCad9 nets.
 FRONT includes audio refs, K1901 and two THT resistor footprints;
-new relay pins remain deliberately unrouted, with no claimed physical mute.
+relay contacts and passive AF nets have routed copper; coil pins remain unrouted.
+This is a CAD candidate and cannot establish physical fail-safe operation.
 No product board outline, manufacturing DRC or safety qualification.
 """
 from pathlib import Path
@@ -81,6 +82,23 @@ def main():
                     (4,"B.Cu",(75,28),(75,35)),
                     (2,"F.Cu",(63.08,35),(63.08,47.54)),
                     (2,"F.Cu",(75,37.54),(75,47.54)),
+                    (4,"B.Cu",(75,35),(85.08,35)),
+                    (4,"B.Cu",(85.08,35),(85.08,55)),
+                    (2,"F.Cu",(80,55),(80,47.54)),
+                    (2,"F.Cu",(110.16,60),(120,60)),
+                    (2,"F.Cu",(120,60),(120,47.54)),
+                    (2,"F.Cu",(120,47.54),(90,47.54)),
+                    (5,"F.Cu",(80,65.16),(85.08,65.16)),
+                    (5,"F.Cu",(85.08,65.16),(90,65.16)),
+                    (5,"F.Cu",(90,65.16),(90,70)),
+                    (5,"F.Cu",(90,70),(100,70)),
+                    (3,"B.Cu",(100,60),(100,65)),
+                    (3,"B.Cu",(100,65),(105,65)),
+                    (3,"B.Cu",(105,65),(105,70)),
+                    (3,"B.Cu",(105,70),(110.16,70)),
+                    (3,"B.Cu",(110.16,70),(115,70)),
+                    (3,"B.Cu",(115,70),(115,45)),
+                    (3,"B.Cu",(115,45),(90,45)),
                 ]
                 def ordered(net,layer,a,c):
                     return (net,layer,tuple(sorted((a,c))))
@@ -88,7 +106,7 @@ def main():
                     (float(x1),float(y1)),(float(x2),float(y2)))
                     for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual)==10
+                assert len(segments)==len(actual)==27
                 assert sorted(actual)==sorted(ordered(*row) for row in expected_routes),(
                     "FRONT unapproved copper geometry",actual)
             else:
@@ -139,8 +157,8 @@ def main():
                     assert f'(pad "{pad}" thru_hole' in relay_block
                     assert f'(at {localx:g} {localy:g})' in relay_block
 
-                # K1901 must remain electrically unrouted in this revision.
-                assert not any(int(n) in (5,6,7) for *_,n,uuid in segments)
+                # Coil contacts are not routed and the lab driver is not qualified.
+                assert not any(int(n) in (6,7) for *_,n,uuid in segments)
             if board=="FRONT":
                 # All 9 physical THT pads from the four provisional footprints.
                 from math import hypot
@@ -159,6 +177,19 @@ def main():
                 resistor_keys={(ref,pin) for ref in ("R1901","R1902") for pin in ("1","2")}
                 assert set(wanted)==set(physical)|relay_keys|resistor_keys
                 assert not (set(physical)&(relay_keys|resistor_keys))
+                physical.update({
+                    ("K1901","1"):((80.,55.),1.,2),
+                    ("K1901","2"):((80.,57.54),1.,6),
+                    ("K1901","5"):((80.,65.16),1.,5),
+                    ("K1901","6"):((85.08,65.16),1.,5),
+                    ("K1901","9"):((85.08,57.54),1.,7),
+                    ("K1901","10"):((85.08,55.),1.,4),
+                    ("R1901","1"):((100.,60.),.9,3),
+                    ("R1901","2"):((110.16,60.),.9,2),
+                    ("R1902","1"):((100.,70.),.9,5),
+                    ("R1902","2"):((110.16,70.),.9,3),
+                })
+                assert set(wanted)==set(physical)
                 wires=[(int(net),(float(x1),float(y1)),(float(x2),float(y2)),
                         float(width),layer)
                        for x1,y1,x2,y2,width,layer,net,uuid in segments]
@@ -180,7 +211,7 @@ def main():
                 # linked by copper; copper endpoints may join mid-segment.
                 def onseg(pt,a,c):
                     return dist(pt,a,c)<1e-7
-                for net in (1,2,4):
+                for net in (1,2,3,4,5):
                     group=[(a,c) for n,a,c,w,layer in wires if n==net]
                     required=[point for point,rad,n in physical.values() if n==net]
                     assert group and len(required)>=2
@@ -197,15 +228,14 @@ def main():
                     assert len(reachable)==len(group),(net,"unconnected copper",reachable)
                     assert all(any(onseg(pt,a,c) for a,c in group) for pt in required),(
                         net,"unattached THT pad",required)
-                # K1901 is now placed but unrouted: detect any legacy copper
-                # crossing its six plated through-hole pads on either layer.
+                # All K1901 plated pads must clear foreign-net copper, even
+                # on the opposite layer; coil pads remain free of copper.
                 for pad,(net,x,y) in expected_relay.items():
                     for tracknet,a,c,width,layer in wires:
                         if tracknet!=net:
                             assert dist((x,y),a,c)-1.0-width/2>=0.2-1e-8,(
                                 "K1901 foreign-net copper clearance",pad,tracknet)
-                # Resistive bleed and series path must match actual master
-                # nets and remain physically unrouted for this NONFAB study.
+                # Resistive bleed and series routing must match native master.
                 physical_resistors={
                     ("R1901","1"):("AMP_INPUT_MUTED",(100.,60.)),
                     ("R1901","2"):("AF_GND",(110.16,60.)),
@@ -223,8 +253,11 @@ def main():
                         if tracknet!=pcb_net[net]:
                             assert dist(pos,a,c)-0.9-width/2>=0.2-1e-8,(
                                 "resistor foreign-net copper clearance",ref,pin)
-                # AMP_INPUT_MUTED is still a separate signal; COM has no copper.
-                assert not any(n==3 for n,a,c,w,layer in wires)
+                # Strict isolation: coil nets never routed and no direct
+                # copper path joins relay NO/wiper net4 with amp output net3.
+                assert not any(n in (6,7) for n,a,c,w,layer in wires)
+                assert sum(n==3 for n,a,c,w,layer in wires)==7
+                assert sum(n==5 for n,a,c,w,layer in wires)==4
             nets=exported_nets(sch,d/(board+".net"))
             for endpoint,netname in wanted.items():
                 matches=[name for name,members in nets.items()
@@ -254,7 +287,9 @@ def main():
         "independent_MAIN_nets":4,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
-        "FRONT_volume_to_wiper_10_physical_segments":True,
+        "FRONT_volume_to_wiper_10_original_segments_preserved":True,
+        "FRONT_mute_17_new_candidate_segments":True,
+        "K1901_coil_unrouted":True,
         "all_pads_mapped_to_native_schematic_labels":True,
         "native_kicad9_pos_export_both_islands":True,
         "no_edge_no_vias_no_extra_components":True,
