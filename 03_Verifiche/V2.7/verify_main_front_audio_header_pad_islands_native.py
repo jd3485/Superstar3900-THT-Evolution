@@ -2,7 +2,7 @@
 """KiCad9 NONFAB pad islands: MAIN audio headers, FRONT AF plus candidate relay.
 
 All physical pad nets are compared with actual hierarchical master KiCad9 nets.
-FRONT includes four AF refs and K1901 6-terminal relay footprint placement;
+FRONT includes audio refs, K1901 and two THT resistor footprints;
 new relay pins remain deliberately unrouted, with no claimed physical mute.
 No product board outline, manufacturing DRC or safety qualification.
 """
@@ -37,7 +37,11 @@ BOARDS={
         ("K1901","5"):"RELAY_COM_AUDIO",
         ("K1901","6"):"RELAY_COM_AUDIO",
         ("K1901","9"):"COIL_MINUS_LAB",
-        ("K1901","10"):"VOL_WIPER_TO_AMP"}),
+        ("K1901","10"):"VOL_WIPER_TO_AMP",
+        ("R1901","1"):"AMP_INPUT_MUTED",
+        ("R1901","2"):"AF_GND",
+        ("R1902","1"):"RELAY_COM_AUDIO",
+        ("R1902","2"):"AMP_INPUT_MUTED"}),
 }
 FOOTPRINT="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 
@@ -51,10 +55,11 @@ def main():
             assert raw.count('(footprint "'+FOOTPRINT+'"')==(
                 2 if board=="MAIN" else 3)
             assert raw.count('(footprint "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE"')==(0 if board=="MAIN" else 1)
+            assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"')==(0 if board=="MAIN" else 2)
             assert raw.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==(
                 0 if board=="MAIN" else 1)
-            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 5)
-            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 5)
+            assert raw.count('(pad "1" thru_hole')==(2 if board=="MAIN" else 7)
+            assert raw.count('(pad "2" thru_hole')==(2 if board=="MAIN" else 7)
             assert raw.count('(pad "3" thru_hole')==(0 if board=="MAIN" else 1)
             for pin in ("5","6","9","10"):
                 assert raw.count('(pad "'+pin+'" thru_hole')==(0 if board=="MAIN" else 1)
@@ -99,7 +104,7 @@ def main():
             assert len(pcb_net)==(5 if board=="MAIN" else 8)
             pads={}
             blocks=raw.split('\n(footprint "')[1:]
-            assert len(blocks)==(2 if board=="MAIN" else 5)
+            assert len(blocks)==(2 if board=="MAIN" else 7)
             refs=set()
             for block in blocks:
                 refmatch=re.search(r'\(property "Reference" "([^"]+)"',block)
@@ -110,6 +115,7 @@ def main():
                 assert "(attr through_hole)" in block
                 assert (("TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL" if ref=="RV1301"
                     else "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE" if ref=="K1901"
+                    else "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" if ref in ("R1901","R1902")
                     else FOOTPRINT)) in block.split('"',1)[0]
                 allpads=re.findall(
                     r'\(pad "(\d+)" thru_hole (?:rect|circle) \(at [^)]+\) '
@@ -150,8 +156,9 @@ def main():
                     ("J1302","2"):((75.,37.54),1.,2),
                 }
                 relay_keys={("K1901",pin) for pin in ("1","2","5","6","9","10")}
-                assert set(wanted)==set(physical)|relay_keys
-                assert not (set(physical)&relay_keys)
+                resistor_keys={(ref,pin) for ref in ("R1901","R1902") for pin in ("1","2")}
+                assert set(wanted)==set(physical)|relay_keys|resistor_keys
+                assert not (set(physical)&(relay_keys|resistor_keys))
                 wires=[(int(net),(float(x1),float(y1)),(float(x2),float(y2)),
                         float(width),layer)
                        for x1,y1,x2,y2,width,layer,net,uuid in segments]
@@ -197,7 +204,26 @@ def main():
                         if tracknet!=net:
                             assert dist((x,y),a,c)-1.0-width/2>=0.2-1e-8,(
                                 "K1901 foreign-net copper clearance",pad,tracknet)
-                # AMP_INPUT_MUTED is a separate pad; post-mute path not routed.
+                # Resistive bleed and series path must match actual master
+                # nets and remain physically unrouted for this NONFAB study.
+                physical_resistors={
+                    ("R1901","1"):("AMP_INPUT_MUTED",(100.,60.)),
+                    ("R1901","2"):("AF_GND",(110.16,60.)),
+                    ("R1902","1"):("RELAY_COM_AUDIO",(100.,70.)),
+                    ("R1902","2"):("AMP_INPUT_MUTED",(110.16,70.)),
+                }
+                assert set(physical_resistors)==resistor_keys
+                for (ref,pin),(net,pos) in physical_resistors.items():
+                    assert pads[(ref,pin)]==net
+                    block=next(b for b in blocks if f'(property "Reference" "{ref}"' in b)
+                    local=(0.,0.) if pin=="1" else (10.16,0.)
+                    assert f'(pad "{pin}" thru_hole' in block
+                    assert f'(at {local[0]:g} {local[1]:g})' in block
+                    for tracknet,a,c,width,layer in wires:
+                        if tracknet!=pcb_net[net]:
+                            assert dist(pos,a,c)-0.9-width/2>=0.2-1e-8,(
+                                "resistor foreign-net copper clearance",ref,pin)
+                # AMP_INPUT_MUTED is still a separate signal; COM has no copper.
                 assert not any(n==3 for n,a,c,w,layer in wires)
             nets=exported_nets(sch,d/(board+".net"))
             for endpoint,netname in wanted.items():
@@ -220,11 +246,11 @@ def main():
             positions=out.read_text(encoding="utf8")
             for ref in refs:
                 assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',positions),(board,ref)
-            assert len(refs)==(2 if board=="MAIN" else 5)
-            assert len(pads)==(4 if board=="MAIN" else 15)
+            assert len(refs)==(2 if board=="MAIN" else 7)
+            assert len(pads)==(4 if board=="MAIN" else 19)
     print("PASS_KICAD9_MAIN_FRONT_TWO_SEPARATE_NONFAB_AUDIO_PCB_PAD_ISLANDS_4REF_8THT_PADS",{
         "MAIN":("J1502","J1202"),
-        "FRONT":("J1301","J1902","RV1301","J1302","K1901"),
+        "FRONT":("J1301","J1902","RV1301","J1302","K1901","R1901","R1902"),
         "independent_MAIN_nets":4,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
