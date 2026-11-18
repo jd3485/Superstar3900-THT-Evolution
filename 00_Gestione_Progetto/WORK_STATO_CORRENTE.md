@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato MAIN: prime 4 piste audio C1201/R1201 NONFAB
+## 18 novembre 2026 — PR #388 MERGED: quattro piste audio MAIN C1201/R1201 NONFAB
 
 Branch `engineering/v27-main-lm386-input-cap-prein-copper-20261118`: il candidato MAIN ha quattro segmenti fisici 0,5mm: J1202/1 AUDIO_IN → C1201/1 AUDIO_IN su B.Cu; C1201/2 PRE_IN → R1201/1 PRE_IN su F.Cu. Il pad R1201/2 AMP_IN resta isolato finché U1201 non è posizionato. I ritorni IF_BENCH_GND e GND sono distinti e privi di piste. Nessun collegamento diretto che bypassi C1201 o R1201. Controlli nativi: lista geometrica esatta, connettività pad, clearance su tutti gli otto pad MAIN e continuità dei due gruppi; V0.3/V0.4 aggiornate.
 
-**Stato:** branch candidato in attesa CI FAST/FULL/Required sullo SHA definitivo; geometrie THT non qualificate, PCB priva di outline/DRC fabbricativo, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#388](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/388) **MERGED** su main `9b352b2c0b12ef13965fcc3ffde8def35c53935e`, head `af1e6bbda322d90dba9b958da57265668c58164a`, workflow #44360000182 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale; geometrie THT non qualificate, PCB priva di outline/DRC fabbricativo, #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
