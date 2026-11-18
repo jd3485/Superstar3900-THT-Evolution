@@ -265,7 +265,7 @@ def main():
                 # pins 1/8 unconnected and both ground returns still separate.
                 amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
                 assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
-                assert all(n not in (0,1,2,4,7,8,9) for n,a,b,w,l in wires_main)
+                assert all(n not in (0,1,2,7,8,9) for n,a,b,w,l in wires_main)
                 # GND is a branching MAIN net on F.Cu: J1202/2
                 # must reach both amplifier GND pins without touching IF return.
                 grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
