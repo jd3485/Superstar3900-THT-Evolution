@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato MAIN: pista BYPASS LM386 pin7→C1204/1 NONFAB
+
+Branch `engineering/v27-main-u1201-c1204-bypass-copper-20261118`: aggiunti tre segmenti B.Cu 0,5 mm dalla piazzola U1201/7 (137,62;67,54) al positivo C1204/1 (150;80), net9 BYPASS, con due curve a (145;67,54) e (145;80). MAIN sale a sedici segmenti fisici, già presenti i tredici percorsi ingresso, AMP_IN e GND; IF_BENCH_GND resta separata, mentre C1204/2 negativo è ancora privo di piste. Verificatore KiCad9 FULL esteso con geometria esatta, connettività, clearance pad↔rame e netlist gerarchica, conteggi V0.3/V0.4 stretti.
+
+**Stato:** candidato PR draft in attesa CI sullo SHA finale. Mancano collegamento C1204/2 GND, alimentazione AUDIO_6V_LAB e uscita AMP_OUT, qualifica OEM, DRC fabbricativo e #27/#292. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #396 MERGED: C1204 BYPASS 10uF THT fisico NONFAB
 
 Branch `engineering/v27-main-c1204-bypass-cap-pad-candidate-20261118`: posizionato condensatore elettrolitico C1204 10uF 16V THT `CP_Radial_D5.0mm_P2.00mm` nello stesso candidato KiCad9 MAIN: pad1 positivo BYPASS net9, pad2 negativo GND net4, corrispondenti ai pin schematici C1204/1 e /2 e a U1201/7 e massa. PCB MAIN: sei footprint e diciotto pad THT; tredici segmenti rame già integrati invariati, ancora **nessun collegamento fisico** alla rete BYPASS. Verifica nativa KiCad9 della netlist e posizione/pad/clearance e test storici V0.3/V0.4 aggiornati.
