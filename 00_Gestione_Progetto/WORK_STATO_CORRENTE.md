@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #380 DRAFT: K1901 sei pad THT nel candidato FRONT NONFAB, CI non ancora validata
+
+Sul branch `engineering/v27-front-k1901-sixpad-placement-20261118` sono stati aggiunti al file `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` sei pad fisici passanti K1901 G5V-1 (1 NC=AF_GND, 10 NO=VOL_WIPER_TO_AMP, 5/6 COM=RELAY_COM_AUDIO, 2/9 bobina COIL_PLUS/MINUS_LAB). In totale il candidato FRONT passa a cinque footprint THT, quindici pad e conserva esattamente le dieci piste precedenti. Protezioni V0.3/V0.4 e regressione FULL KiCad9 aggiornate per mapping pad/net, geometria e isolamento del rame esistente. La bobina e il segnale COM **non sono instradati**: non esiste ancora una catena mute fisicamente chiusa.
+
+**Stato:** candidato CAD su PR draft #380, non integrato in main; FAST/FULL/Required sul commit definitivo ancora da verificare. Nessun DRC fabbricativo, qualificazione OEM/PVT, layout prodotto, test fisico o chiusura issue #27/#292. Prossimo passo: superare gate CI su final HEAD, poi integrare R1901/R1902 e routing dei contatti senza bypass o corto audio. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #378 MERGED: volume FRONT fisico e routing audio candidato
 
 PR [#378](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/378) **MERGED** su main commit `418a8edcb23fc56856ed02859730c389513332cf`, head `7bf49e982aeb521a4f7a00a852193d97a7836152`. Workflow #44331342703: FAST/FULL KiCad9/Required **3/3 SUCCESS** sullo SHA finale. Sul candidato fisico NONFAB FRONT sono presenti J1301, RV1301 THT provvisorio, J1302 e J1902: nove pad THT e dieci segmenti di rame da 0,5 mm (F.Cu/B.Cu), reti DEMOD_AUDIO, VOL_WIPER_TO_AMP e AF_GND, senza instradare AMP_INPUT_MUTED. Test FULL verifica netlist gerarchica, assegnazione pad, geometria, clearance nominali e connettività; MAIN con i due ritorni ancora separati. I master e le revisioni storiche non sono promossi a PCB completa.
