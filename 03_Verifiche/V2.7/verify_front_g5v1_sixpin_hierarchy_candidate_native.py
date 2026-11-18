@@ -15,7 +15,7 @@ from verify_front_g5v1_six_terminal_oem_pin_map_native import OEM_TO_EXISTING_NE
 
 CAND=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch"
 OLD_RELAY="FRONT_MUTE_NC_RELAY/FRONT_NC_MUTE_CONTACT_THT_V2_7_DRAFT.kicad_sch"
-NEW_RELAY="FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_ISOLATED_NATIVE_CANDIDATE.kicad_sch"
+NEW_RELAY="FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_POSTMUTE_HIERARCHICAL_CANDIDATE.kicad_sch"
 
 def pinmap(nets):
     result={}
@@ -32,6 +32,18 @@ def main():
     assert OLD_RELAY in old_text
     assert OLD_RELAY not in text
     assert text.count(NEW_RELAY)==1
+    assert text.count('(pin "AMP_INPUT_MUTED" passive')==1
+    assert text.count('(pin "AF_GND" passive')==3
+    assert '(xy 205.74 237.49) (xy 217.17 237.49)' in text
+    assert '(xy 205.74 242.57) (xy 217.17 242.57)' in text
+    original_relay=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_ISOLATED_NATIVE_CANDIDATE.kicad_sch"
+    routed_relay=ROOT/"04_KiCad/V2.7_DRAFT"/NEW_RELAY
+    assert original_relay.is_file() and routed_relay.is_file()
+    original_text=original_relay.read_text(encoding="utf8")
+    routed_text=routed_relay.read_text(encoding="utf8")
+    assert routed_text.count('(hierarchical_label "AMP_INPUT_MUTED"')==1
+    assert routed_text.count('(hierarchical_label "AF_GND"')==2
+    assert '(hierarchical_label "AMP_INPUT_MUTED"' not in original_text
     # The actual J1301/1 demod input must be exported to the FRONT parent,
     # while the original standalone volume benchmark stays unchanged.
     child=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_VOLUME/FRONT_VOLUME_THT_V2_7_DRAFT_FRONT_HIERARCHICAL_CANDIDATE.kicad_sch"
