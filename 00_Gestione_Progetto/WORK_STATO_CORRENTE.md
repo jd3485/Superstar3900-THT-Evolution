@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #350 MERGED; fault AC del relè sei-pin in verifica
+
+PR [#350](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/350) **MERGED** su main `0925c17254bc978689a08220f1aa2a324a8d883a` (HEAD PR `0ca0ab2017e2ec213fae55d17ffcdd49252355b4`), run #44274041529 FAST/FULL/Required 3/3 **SUCCESS**. Regressione 64 stati guasto ancorata alla netlist KiCad9 reale del FRONT G5V-1 sei-pin.
+
+Branch `engineering/v27-front-g5v1-sixpin-native-ac-contact-fault-20261118`: ulteriore verifica nativa con due solver AC indipendenti, 64 configurazioni relè incluse aperture COM5/COM6, 32 casi AF_GND aperto non risolvibili (non mascherati), 1152 combinazioni a riferimento definito, collegamenti R1902 1k/R1901 100k controllati da netlist reale. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_AC_CONTACT_FAULT_NATIVE_20261118.md`. PR/CI da confermare al final HEAD. Nessuna certificazione fail-safe/PCB/DRC, #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #349 MERGED; screening 64 guasti del FRONT sei-pin in revisione
 
 PR [#349](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/349) **MERGED** main `06f1847c843a1addd05e3ca4c9fed2744b257d39`, HEAD PR `8045c3488c5405895945614509e789f678b9e8e2`; run #44271061438 FAST/FULL/Required 3/3 **SUCCESS**. Nuovo master parallelo FRONT KiCad9 con G5V-1 sei terminali e COM5/COM6, 5 fogli, 22 net, 72 endpoint (contro 71 astratti), ERC0 entrambi, senza modificare il FRONT legacy. Libreria `TH_MUTE.kicad_sym` e tabella footprint aggiornate.
