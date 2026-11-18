@@ -64,7 +64,8 @@ def main():
         assert wire in s,wire
     assert s.count('(pin "AM_DEMOD_AF_BENCH" passive')==1
     assert s.count('(label "AM_DEMOD_AF_BENCH" (at 365.76 210.82 0)')==1
-    assert s.count('(pin "IF_BENCH_GND" passive')==2
+    # One IF455 return pin plus two AM455 return pins (input and J1502 output).
+    assert s.count('(pin "IF_BENCH_GND" passive')==3
     for name in ('IF455_FILTER_OUT','IF455_BENCH_IN','IF_BENCH_GND'):
         assert name in s
     amchild=AM455.read_text(encoding="utf-8")
