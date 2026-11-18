@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — strategia CAD-first proposta (ramo operativo, non ancora integrata)
+## 18 novembre 2026 — strategia CAD-first integrata, PR #356
 
-Nuovo indirizzo operativo proposto: inventario dei blocchi reali V2.7 MAIN/FRONT, priorità alle modifiche agli schemi e all'integrazione di gerarchie native; regressioni mirate a rischi nuovi e gate obbligatori invariati. Misurare blocchi connessi e interfacce mancanti, non il numero di PR. Il presente aggiornamento è una **proposta nel branch**: non attribuire promozione V2.7, completamento di PCB o verifiche hardware. Continuano NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
+Strategia operativa integrata su main con [PR #356](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/356), commit `125885fb1b18194b3f13fdfaa8b0b5158700f5d8`, Required CI SUCCESS, FAST SUCCESS, FULL skipped correttamente per diff documentale: inventario dei blocchi reali V2.7 MAIN/FRONT, priorità alle modifiche agli schemi e all'integrazione di gerarchie native; regressioni mirate a rischi nuovi e gate obbligatori invariati. Misurare blocchi connessi e interfacce mancanti, non il numero di PR. La policy è ora integrata, **non** significa promozione V2.7, completamento di PCB o verifiche hardware. Continuano NO FAB / NO TX / NO BATTERIA / NO VEICOLO.
 
-**Primo prossimo lavoro tecnico dopo l'eventuale merge della policy:** censire 04_KiCad/V2.7_DRAFT contro il master V2.6, individuare la prima integrazione MAIN/FRONT verificabile e aprire una PR CAD concreta (non una PR di soli test). Conservare PR tecniche concorrenti e riconciliare HEAD prima di ogni modifica.
+**Primo prossimo lavoro tecnico:** censire 04_KiCad/V2.7_DRAFT contro il master V2.6, individuare la prima integrazione MAIN/FRONT verificabile e aprire una PR CAD concreta (non una PR di soli test). Conservare PR tecniche concorrenti e riconciliare HEAD prima di ogni modifica.
 
 ---
 
