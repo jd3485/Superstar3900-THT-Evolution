@@ -1,5 +1,16 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #378 MERGED: volume FRONT fisico e routing audio candidato
+
+PR [#378](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/378) **MERGED** su main commit `418a8edcb23fc56856ed02859730c389513332cf`, head `7bf49e982aeb521a4f7a00a852193d97a7836152`. Workflow #44331342703: FAST/FULL KiCad9/Required **3/3 SUCCESS** sullo SHA finale. Sul candidato fisico NONFAB FRONT sono presenti J1301, RV1301 THT provvisorio, J1302 e J1902: nove pad THT e dieci segmenti di rame da 0,5 mm (F.Cu/B.Cu), reti DEMOD_AUDIO, VOL_WIPER_TO_AMP e AF_GND, senza instradare AMP_INPUT_MUTED. Test FULL verifica netlist gerarchica, assegnazione pad, geometria, clearance nominali e connettività; MAIN con i due ritorni ancora separati. I master e le revisioni storiche non sono promossi a PCB completa.
+
+**Limiti:** geometria RV1301 non qualificata OEM, interfaccia cavo e chassis/ESD/EMC aperte, percorso post-mute da instradare dopo integrazione componenti, PCB complete e DRC produttivo assenti, issue #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+**Prossimo CAD-first:** integrare sul FRONT il relè mute OEM sei-pin e i componenti del relativo sottocircuito, poi instradare soltanto reti dimostrate dalla netlist nativa (J1302→mute→J1902), senza bypass né falsa qualifica fisica. Verificare KiCad9/ERC, pin-pad-net e required CI sullo SHA finale; portare successivamente altri blocchi su MAIN.
+
+---
+
+
 ## 18 novembre 2026 — PR #376 MERGED: prima pista fisica FRONT AF_GND tra i due header audio
 
 PR [#376](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/376) **MERGED** su main `733c3292ac5950071df8b2e0083aed9316dd2e82`, head `2f80d6f967678077a46042551199f15493f7f5a2`, CI #44327321877 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Modificato il candidato fisico `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb`: prima e unica pista F.Cu da J1301/2 (40,47.54 mm) a J1902/2 (90,47.54 mm), larghezza 0,50 mm, net 2 AF_GND, come già connessi nello schema FRONT master. Il verificatore FULL `03_Verifiche/V2.7/verify_main_front_audio_header_pad_islands_native.py` controlla geometria, univocità della pista, pad clearance 1,29 mm nominali con tolleranza numerica 1 nm, export KiCad9 posizioni e assenza di altre piste, vias, zone, Edge.Cuts. I due ritorni MAIN J1502/2 e J1202/2 rimangono separati e senza piste nel candidato MAIN. Le suite storiche V0.3/V0.4 restano fail-closed su questo unico rame aggiuntivo.
