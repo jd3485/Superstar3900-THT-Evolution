@@ -55,7 +55,12 @@ def main():
     assert '"IF455_TANK/IF455_TANK_THT_V2_7_DRAFT.kicad_sch"' in s
     assert '"AM455_ENVELOPE/AM455_ENVELOPE_THT_V2_7_DRAFT.kicad_sch"' in s
     assert '"IF455_KSP10_FOLLOWER/IF455_KSP10_FOLLOWER_THT_V2_7_DRAFT.kicad_sch"' in s
-    assert '(wire ' not in s and '(junction ' not in s
+    # Only the two reviewed IF455→AM455 signal/return physical wires are allowed.
+    assert s.count('(wire (pts ') == 2 and '(junction ' not in s
+    assert '(xy 160.02 190.5) (xy 213.36 190.5)' in s
+    assert '(xy 160.02 195.58) (xy 213.36 195.58)' in s
+    for name in ('IF455_FILTER_OUT','IF455_BENCH_IN','IF_BENCH_GND'):
+        assert name in s
     assert 'NO FAB' in s and 'NO TX' in s
     assert MASTER.with_suffix(".kicad_pro").is_file()
     tab=(MASTER.parent/"sym-lib-table").read_text(encoding="utf-8")
@@ -97,10 +102,28 @@ def main():
     assert sum(map(len,separate))==len(set().union(*separate)), "Duplicate reference between MAIN children"
     baseline_refs=set().union(*separate)
     assert all_refs==baseline_refs,(all_refs-baseline_refs,baseline_refs-all_refs)
-    # All net groups must be conserved with no accidental audio↔RF ground ties.
+    # The only intentional changes are merges of IF455 J1602 to AM455 J1501
+    # on the signal (pin 1) and isolated return (pin 2) paths. Model the
+    # expected native partitions from standalone exported netlists, not names.
+    def containing(parts,endpoint):
+        found=[p for p in parts if endpoint in p]
+        assert len(found)==1,(endpoint,found)
+        return found[0]
     expected=Counter(list(old_parts)+list(aud_parts)+list(if_parts)+list(am_parts)+list(buf_parts))
-    # Count the KEYS, not dict values (which are native net-name strings).
+    intentional=[]
+    for pin in ('1','2'):
+        ip=containing(if_parts,('J1602',pin))
+        ap=containing(am_parts,('J1501',pin))
+        assert ip!=ap and expected[ip]==1 and expected[ap]==1
+        expected.subtract([ip,ap])
+        combined=ip | ap
+        assert len(combined)==len(ip)+len(ap)
+        expected.update([combined])
+        intentional.append((pin,len(ip),len(ap),len(combined)))
+    expected=+expected
     actual=Counter(list(all_parts))
+    # All other connected groups (including V2.6 PLL, audio, KSP10)
+    # remain identical, modulo the reviewed legacy standalone NC omission.
     # Native KiCad9 nested hierarchy omits isolated single-pin NC nets when
     # a source sheet becomes a child. This is NOT permission to alter any
     # electrically connected net: every multi-pin group must match exactly.
@@ -124,7 +147,7 @@ def main():
         sum(sum(map(len,p)) for p in (old_parts,aud_parts,if_parts,am_parts,buf_parts))-len(omitted_known_nc))
     print("MAIN_PARTIAL_HIERARCHY_NC_NETLIST_DIFFERENCE",{
         "nested_omitted_single_pin_nets":sorted(omitted_known_nc),
-        "electrically_connected_nets_preserved":True,
+        "unrelated_electrically_connected_nets_preserved":True,\n        "intentional_IF455_AM455_signal_return_merges":intentional,
         "NC_pins_reclassified_as_connected":False,
     },flush=True)
     print("MAIN_PARTIAL_V27_KICAD9_NATIVE",{
@@ -136,14 +159,14 @@ def main():
         "combined_original_reference_count":len(all_refs),
         "V26_net_partitions_unchanged":True,
         "audio_net_partitions_unchanged":True,
-        "IF455_tank_net_partitions_unchanged":True,
-        "AM455_envelope_net_partitions_unchanged":True,
+        "IF455_tank_net_partitions_unchanged_except_two_reviewed_merges":True,
+        "AM455_envelope_net_partitions_unchanged_except_two_reviewed_merges":True,
         "KSP10_buffer_net_partitions_unchanged":True,
         "no_unintended_audio_RFPll_power_ground_tie":True,
         "product_radio_MAIN_PCB_exists":False,
         "RF_IF_PLL_TX_and_supply_qualified":False,
         "NO_FAB_NO_TX":True},flush=True)
-    print("PASS_KICAD9_MAIN_PARTIAL_176REFS_FIVE_ISOLATED_CHILDREN_ALL_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB",flush=True)
+    print("PASS_KICAD9_MAIN_PARTIAL_176REFS_TWO_INTENTIONAL_IF_AM_LINKS_ALL_OTHER_CONNECTED_PIN_NETS_PRESERVED_ERC0_NO_FAB",flush=True)
 
 
 if __name__=="__main__":
