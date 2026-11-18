@@ -33,7 +33,7 @@ def main():
     assert OLD_RELAY not in text
     assert text.count(NEW_RELAY)==1
     assert text.count('(pin "AMP_INPUT_MUTED" passive')==1
-    assert text.count('(pin "AF_GND" passive')==2
+    assert text.count('(pin "AF_GND" passive')==3
     assert '(xy 205.74 237.49) (xy 217.17 237.49)' in text
     assert '(xy 205.74 242.57) (xy 217.17 242.57)' in text
     original_relay=ROOT/"04_KiCad/V2.7_DRAFT/FRONT_MUTE_NC_RELAY/FRONT_G5V1_SIXPIN_ISOLATED_NATIVE_CANDIDATE.kicad_sch"
