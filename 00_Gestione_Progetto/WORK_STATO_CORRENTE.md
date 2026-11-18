@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato PR mute copper FRONT: 17 nuove piste audio NONFAB, non ancora validato
+
+Branch `engineering/v27-front-mute-copper-routed-candidate-20261118`: estesi i dieci segmenti precedenti a ventisette piste fisiche KiCad9 sulle due facce per connettere K1901/10 (NO) al wiper, K1901/1 (NC) alla massa AF, COM5/6 a R1902/1, R1902/2 al carico J1902/1 e al bleed R1901/1, R1901/2 ad AF_GND. Pad bobina K1901/2 e /9 restano **senza rame e senza alimentazione**. Niente scorciatoia diretta VOL_WIPER→AMP_INPUT_MUTED: l'unico percorso audio attivo passa dal contatto relay e R1902. Verificatore nativo aggiornato con lista esatta dei segmenti, controlli di connettività per reti 1-5, tutte le clearance pad↔pista su entrambi gli strati, incroci fra piste di reti diverse sullo stesso layer, e regressioni legacy non allentate per Edge.Cuts/vias/zone.
+
+**Stato:** candidato su branch; verifiche CI FAST/FULL/Required sullo SHA finale **ancora da ottenere**. Routing 2D non equivale a DRC PCB fabbricativa né a conferma delle distanze e delle connessioni in assemblaggio. Footprint relay/resistori/potenziometro e connettori non qualificati, driver mute e coil ancora incompleti, ground/chassis/EMI e fail-safe da validare. #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #382 MERGED: resistori mute THT fisici R1901/R1902 sul FRONT NONFAB
 
 PR [#382](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/382) **MERGED** su main `b11df68c1a693002b6ad1a70b5b529c9ec95b7b2`, head `ad0e3323ab968378166858e75ca2d5ba2a682feb`, run #44348622079 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Il candidato PCB FRONT `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` ora include i resistori assiali THT R1901 (100k bleed AMP_INPUT_MUTED→AF_GND) e R1902 (1k serie RELAY_COM_AUDIO→AMP_INPUT_MUTED): sette footprint e diciannove pad passanti, con i dieci segmenti rame preesistenti immutati. Verifica nativa della gerarchia KiCad9, pad↔net, coordinate e clearance, protezioni legacy V0.3/V0.4 aggiornate. Nessun rame aggiunto fra relè, resistori e uscita; connessione mute fisica **non ancora realizzata**.
