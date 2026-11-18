@@ -23,6 +23,7 @@
 (pad "1" thru_hole rect (at 0 0) (size 2 2) (drill 1) (layers "*.Cu" "*.Mask") (net 3 "AMP_INPUT_MUTED") (uuid "f2730002-1118-4000-8000-000000000011"))
 (pad "2" thru_hole circle (at 0 2.54) (size 2 2) (drill 1) (layers "*.Cu" "*.Mask") (net 2 "AF_GND") (uuid "f2730002-1118-4000-8000-000000000012"))
 )
-(gr_text "FRONT 2-HEADER AUDIO PAD ISLAND ONLY - NO EDGE, NO COPPER ROUTES, NO ASSEMBLY, NO DRC0 / NO FAB / NO TX / NO BATTERIA / NO VEICOLO" (at 68 83) (layer "Cmts.User") (uuid "f2730002-1118-4000-8000-000000000013") (effects (font (size 1 1) (thickness 0.15))))
+(gr_text "FRONT 2-HEADER AUDIO PAD ISLAND - SINGLE AF_GND F.Cu RETURN ONLY - NO EDGE, NO ASSEMBLY, NO DRC0 / NO FAB / NO TX / NO BATTERIA / NO VEICOLO" (at 68 83) (layer "Cmts.User") (uuid "f2730002-1118-4000-8000-000000000013") (effects (font (size 1 1) (thickness 0.15))))
+(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2) (uuid "f2730002-1118-4000-8000-000000000014"))
 (embedded_fonts no)
 )
