@@ -137,15 +137,21 @@ def main():
                     (6,"B.Cu",(117.62,75.),(122.,75.)),
                     (6,"B.Cu",(122.,75.),(122.,70.08)),
                     (6,"B.Cu",(122.,70.08),(130.,70.08)),
+                    (4,"F.Cu",(90.,47.54),(90.,55.)),
+                    (4,"F.Cu",(90.,55.),(125.,55.)),
+                    (4,"F.Cu",(125.,55.),(125.,67.54)),
+                    (4,"F.Cu",(125.,67.54),(130.,67.54)),
+                    (4,"F.Cu",(125.,67.54),(125.,72.62)),
+                    (4,"F.Cu",(125.,72.62),(130.,72.62)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==7
+                assert len(segments)==len(actual_main)==len(expected_main)==13
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
-                assert all(int(n) in (3,5,6) for *_,n,uuid in segments)
-                assert not any(int(n) in (1,2,4,7,8,9) for *_,n,uuid in segments)
+                assert all(int(n) in (3,4,5,6) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,7,8,9) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -259,7 +265,18 @@ def main():
                 # pins 1/8 unconnected and both ground returns still separate.
                 amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
                 assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
-                assert all(n not in (0,1,2,4,7,8,9) for n,a,b,w,l in wires_main)
+                assert all(n not in (0,1,2,7,8,9) for n,a,b,w,l in wires_main)
+                # GND is a branching MAIN net on F.Cu: J1202/2
+                # must reach both amplifier GND pins without touching IF return.
+                grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
+                assert len(grounded)==6
+                reachable={(90.,47.54)}
+                for _ in range(len(grounded)+1):
+                    for a,c in grounded:
+                        if a in reachable: reachable.add(c)
+                        if c in reachable: reachable.add(a)
+                assert {(90.,47.54),(130.,67.54),(130.,72.62)}<=reachable
+                assert all(n!=2 for n,a,c,w,l in wires_main)
                 # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
@@ -431,7 +448,8 @@ def main():
         "independent_MAIN_nets":9,
         "MAIN_U1201_DIP8_native_pads_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_7_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_13_audio_segments":True,
+        "MAIN_GND_J1202_to_U1201_pins2_4_connected":True,
         "MAIN_AMP_IN_R1201_to_U1201_pin3_connected":True,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
@@ -442,7 +460,7 @@ def main():
         "native_kicad9_pos_export_both_islands":True,
         "no_edge_no_vias_no_extra_components":True,
         "FRONT_AF_GND_copper_branched_to_volume_and_header":True,
-        "MAIN_returns_unrouted_and_isolated":True,
+        "MAIN_IF_return_unrouted_GND_only_routed_isolated":True,
         "production_DRC_and_routing_claimed":False,
         "NO_FAB_NO_TX_NO_BATTERY_NO_VEHICLE":True},flush=True)
 

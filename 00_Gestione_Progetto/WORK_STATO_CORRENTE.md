@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — candidato MAIN: ritorno GND J1202→U1201/2 e U1201/4
+
+Branch `engineering/v27-main-lm386-gnd-pin2-pin4-route-20261118`: sei segmenti 0,5 mm F.Cu dal connettore J1202/2 ai pad U1201/2 e U1201/4 (GND), con diramazione a (125,67.54). MAIN passa da sette a tredici piste KiCad9 THT candidate: percorsi AUDIO_IN→C1201→PRE_IN→R1201→AMP_IN→U1201/3 preservati. IF_BENCH_GND J1502/2 resta **senza rame e separata** da GND. Pin gain 1/8, BYPASS, AMP_OUT e AUDIO_6V_LAB del LM386 ancora privi di connessione fisica. Verifica FULL aggiornata per sei geometrie esatte, grafo della derivazione, pad↔net gerarchici e distanza di ogni pista dai pad di altra rete; regressioni V0.3/V0.4 aggiornate.
+
+**Stato:** candidato, CI sullo SHA finale FAST/FULL/Required non ancora verificata; NONFAB senza alimentazione, outline o DRC prodotto. Qualifica meccanica ed elettrica, connettori/ground-loop, EMI/ESD, e #27/#292 ancora aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #392 MERGED: pista AMP_IN R1201→U1201/3 fisica NONFAB
 
 Branch `engineering/v27-main-r1201-u1201-pin3-ampin-route-20261118`: aggiunti tre segmenti B.Cu da R1201/2 (117,62;75 mm) a U1201/3 (130;70,08 mm), rete AMP_IN net6. MAIN conta sette tracce totali, con AUDIO_IN e PRE_IN precedentemente collegate tramite C1201/R1201. U1201/1 e /8 (gain 20), GND 2/4, uscita 5, alimentazione 6, bypass 7 sono ancora senza rame. Nessuna via, outline o zona, ritorni IF_BENCH_GND e GND distinti. Regressione nativa con lista geometrica e connettività di tre gruppi net3/net5/net6; V0.3/V0.4 preservano whitelists strette.
