@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 18 novembre 2026 — candidato PR MAIN: C1201 e R1201 fisici THT, CI da verificare
+## 18 novembre 2026 — PR #386 MERGED: C1201 e R1201 fisici THT nel candidato MAIN
 
 Branch `engineering/v27-main-c1201-r1201-tht-placement-20261118`: aggiunti al candidato `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` i due veri footprint THT indicati nello schema LM386 `AUDIO_RX_MONO_LM386_V2_7_DRAFT.kicad_sch`: C1201 100nF (pad 1 AUDIO_IN, pad 2 PRE_IN) e R1201 10k (pad 1 PRE_IN, pad 2 AMP_IN). MAIN passa da due a quattro componenti e da quattro a otto pad THT; reti MAIN da quattro a sei. Nessuna pista, via, zona o outline; ritorni IF_BENCH_GND e GND rimangono **separati**. Test KiCad9 pad↔net gerarchici e posizione per entrambe le parti aggiunti; invarianti V0.3/V0.4 aggiornati.
 
-**Stato:** branch candidato, CI FAST/FULL/Required non ancora verificata. Componenti e posizioni non qualificati OEM, nessun DRC prodotto. Prossimo CAD: collocare U1201 PDIP8 e verificare pin↔net, poi interconnessioni audio senza unire i due ritorni. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#386](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/386) **MERGED** su main `a156b0032a4ee19787e72754ea015ae9c0fed843`, head `c0aea9707faa1bb5a8c468eee62694fc4740e160`, workflow #44357476352 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Componenti e posizioni non qualificati OEM, nessun DRC prodotto. Prossimo CAD: collocare U1201 PDIP8 e verificare pin↔net, poi interconnessioni audio senza unire i due ritorni. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
