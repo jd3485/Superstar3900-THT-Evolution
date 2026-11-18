@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #352 MERGED; attenuazione NC con guasto COM in verifica
+
+PR [#352](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/352) **MERGED** main `2eb28bd2245e08330c688c5ab60008290c0a7b33`, final head `190756d2d91e3d80c9a4e34d1efbe88273e07d5e`, run #44283080410 FAST/FULL/Required **3/3 SUCCESS**. Verificati 3456 casi AC con due pad COM fisici e resistenze finite, con AF_GND aperto lasciato non risolvibile e nessuna qualifica hardware.
+
+Branch `engineering/v27-front-sixpin-com-open-attenuation-native-20261118`: test FULL che misura la degradazione di attenuazione NC nello stato bobina spenta per 48 casi AC esemplificativi, con apertura COM5/COM6 singola/doppia ancorata a netlist KiCad9 reale; due COM aperti equivalgono a NC aperto, non silenzio garantito. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_SIXPIN_COM_OPEN_ATTENUATION_20261118.md`. PR/CI finale ancora da verificare; #27/#292 OPEN, nessun PCB/DRC/hardware qualificato. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #351 MERGED; resistenza COM doppio del relè sei-pin in verifica
 
 [#351](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/351) **MERGED** main `f09d3b6d9ae81ea0dce9b77d058ef8054681887e`, head `ff712737bdba66a02405a241ae41877028bdc7c5`, run #44278619593 FAST/FULL/Required **3/3 SUCCESS**. Screening AC 64 stati e 1152 casi a massa definita, due solver; riferimento AF_GND aperto non qualificabile.
