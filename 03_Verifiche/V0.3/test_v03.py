@@ -119,16 +119,20 @@ class PLLV03(unittest.TestCase):
     front_af='04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb'
     for path in (main_af,front_af):
         board=(ROOT/path).read_text(encoding='utf-8')
-        self.assertEqual(board.count('(footprint "'),2)
-        self.assertEqual(board.count('(pad "'),4)
-        if path==front_af:
-            self.assertEqual(board.count('(segment '),1)
-            self.assertIn('(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',board)
-        else:
-            self.assertNotIn('(segment ',board)
-        self.assertNotIn('(via ',board)
-        self.assertNotIn('(zone ',board)
-        self.assertNotIn('(layer "Edge.Cuts")',board)
+        is_front=(path==front_af)
+        self.assertEqual(board.count('(footprint "'),4 if is_front else 2)
+        self.assertEqual(board.count('(pad "'),9 if is_front else 4)
+        self.assertEqual(board.count('(segment '),10 if is_front else 0)
+        if is_front:
+            for track in (
+                '(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',
+                '(segment (start 50 35) (end 58 35) (width 0.5) (layer "F.Cu") (net 1)',
+                '(segment (start 60.54 28) (end 75 28) (width 0.5) (layer "B.Cu") (net 4)',
+                '(segment (start 63.08 35) (end 63.08 47.54) (width 0.5) (layer "F.Cu") (net 2)',
+            ):
+                self.assertIn(track,board)
+        for forbidden in ('(via ','(zone ','(layer "Edge.Cuts")'):
+            self.assertNotIn(forbidden,board)
         self.assertIn('NO FAB / NO TX / NO BATTERIA / NO VEICOLO',board)
     allowed={lab,placement,main_af,front_af}
     self.assertTrue(boards.issubset(allowed),('Unexpected product/unqualified PCB file',boards-allowed))
