@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #362 MERGED: output AM455 J1502 gerarchico MAIN
+
+PR [#362](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/362) **MERGED** su main `ac7da410f460c6f7e7c1e276633f66dd8de2e79a`, head tecnico `9dba1927b41a75f98df271d473f89ac8def2e1f3`, run #44304120992 **FAST/FULL/Required 3/3 SUCCESS**. Nel master `04_KiCad/V2.7_DRAFT/MAIN_RADIO_PARTIAL_V2_7_DRAFT.kicad_sch` AM455 J1502 pin 1 audio demodulato e pin 2 ritorno IF sono esposti attraverso due porte gerarchiche e due wire stub con label locale, senza realizzare tie LM386 o FRONT. Il figlio MAIN AM455 gerarchico espone i due segnali mantenendo label e componenti esistenti; benchmark autonomo originale non modificato. Aggiornata `verify_main_partial_v27_hierarchy_native.py` per imporre quattro wire nel master, porte, esatta conservazione di tutte le partizioni pin/net preesistenti e distinzione di audio, ingresso IF, ritorno comune nel modulo. Zero nuove unioni elettriche rispetto alle due IF455→AM455 già validate in #358. PR checkpoint #361 **MERGED** su main `e9ab89c5525359e443f12aadd8d66f5d96be5cd7` prima di #362.
+
+**Prossimo CAD-first:** interfacce fisiche THT PCB-MAIN↔PCB-FRONT per AM455 J1502→FRONT J1301, e post-mute FRONT J1902→MAIN LM386 J1202 con continuità netlist su ciascuna PCB, ground e carichi verificati; non confondere un harness bench con un PCB manufacturabile. Resta da qualificare carico rivelatore, shield/EMI, accoppiamento masse e relay OEM. #27/#292 OPEN. Nessun layout qualificato, DRC di prodotto o misura hardware. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #360 MERGED: interfaccia DEMOD_AUDIO J1301 nel master FRONT
 
 PR [#360](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/360) **MERGED** su main `b7b2a4706c0c7e3ce10addf586e2fdb7081ad7f9`, HEAD `eda6eda48827f36b1ba68393fbf2f0b16d93824a`. Workflow #44301208606: FAST, FULL KiCad9 ed Required **3/3 SUCCESS**. Creato il figlio FRONT_VOLUME `*_FRONT_HIERARCHICAL_CANDIDATE.kicad_sch` che esporta il segnale di J1301/1 con `DEMOD_AUDIO` gerarchico e conserva la label locale della pista verso RV1301; il benchmark originale non è stato modificato. Il master `FRONT_CONTROL_PARTIAL_G5V1_SIXPIN_CANDIDATE.kicad_sch` espone la porta DEMOD_AUDIO con sheet pin e wire fisici, senza modificare l'interconnessione volume→mute e l'AF_GND preesistente su J1301/2. Aggiornata regressione `verify_front_g5v1_sixpin_hierarchy_candidate_native.py` con controlli di integrità degli endpoint. Nessun cavo MAIN/FRONT reale, nessun modello di carico IF/AF o PCB/DRC; nessuna qualifica OEM. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
