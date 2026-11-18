@@ -41,10 +41,10 @@ def main():
             assert raw.count('(pad "1" thru_hole')==2
             assert raw.count('(pad "2" thru_hole')==2
             segments=re.findall(
-                r'\\(segment \\(start ([\\d.]+) ([\\d.]+)\\) '
-                r'\\(end ([\\d.]+) ([\\d.]+)\\) '
-                r'\\(width ([\\d.]+)\\) \\(layer "([^"]+)"\\) '
-                r'\\(net (\\d+)\\) \\(uuid "([^"]+)"\\)\\)',raw)
+                r'\(segment \(start ([\d.]+) ([\d.]+)\) '
+                r'\(end ([\d.]+) ([\d.]+)\) '
+                r'\(width ([\d.]+)\) \(layer "([^"]+)"\) '
+                r'\(net (\d+)\) \(uuid "([^"]+)"\)\)',raw)
             assert raw.count("(segment ")==len(segments)
             if board=="FRONT":
                 assert len(segments)==1,("Unexpected extra copper segments",segments)
