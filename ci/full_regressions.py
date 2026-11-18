@@ -196,6 +196,14 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_main_front_audio_return_graph_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Exact four real MAIN/FRONT audio 2-pin THT headers: KiCad9 netlist
+    # symbol pin 1/2 -> installed KiCad footprint pads 1/2, NOT an
+    # assembly/mating-cable or production board routing qualification.
+    print("::group::V2.7 MAIN FRONT FOUR AUDIO HEADERS EIGHT NATIVE THT PADS",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_main_front_audio_connector_footprints_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Complete isolated AM detector -> FRONT volume -> LM386 input linear
     # load contract: 75 frequency/wiper/Rin points, independent nodal KCL.
     # Native KiCad pin-net anchoring; not an active LM386/detector OEM model.
