@@ -114,7 +114,21 @@ class V04(unittest.TestCase):
     boards={p.relative_to(ROOT).as_posix() for p in (ROOT/'04_KiCad').rglob('*.kicad_pcb')}
     lab='04_KiCad/V2.7_DRAFT/FRONT_ILLUM_BENCH/FRONT_ILLUM_BENCH_V2_7_LABONLY.kicad_pcb'
     placement='04_KiCad/V2.7_DRAFT/FRONT_PLACEMENT/FRONT_CONTROL_13REFS_PLACEMENT_NONFAB.kicad_pcb'
-    self.assertEqual(boards,{lab,placement},('Unauthorized PCB outside two explicitly known NONFAB artifacts',boards))
+    # Two additional connector-only KiCad9 pad-islands are explicitly
+    # permitted ONLY when they have no copper, outline, vias or zones.
+    islands={
+        '04_KiCad/V2.7_DRAFT/MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb',
+        '04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb',
+    }
+    for path in islands:
+        stub=(ROOT/path).read_text(encoding='utf-8')
+        self.assertEqual(stub.count('(footprint "'),2)
+        self.assertEqual(stub.count('(pad "'),4)
+        self.assertIn('NO FAB / NO TX / NO BATTERIA / NO VEICOLO',stub)
+        for forbidden in ('(segment ','(via ','(zone ','(layer "Edge.Cuts")'):
+            self.assertNotIn(forbidden,stub)
+    self.assertEqual(boards,{lab,placement}|islands,(
+        'Unauthorized PCB beyond guarded NONFAB artifacts',boards))
     candidate=(ROOT/placement).read_text(encoding='utf-8')
     self.assertEqual(candidate.count('(footprint "'),13)
     self.assertIn('NOT PRODUCTION PCB',candidate)

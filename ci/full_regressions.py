@@ -204,6 +204,15 @@ def main()->None:
                     str(ROOT/"03_Verifiche/V2.7/verify_main_front_audio_connector_footprints_native.py")],
                    cwd=ROOT,check=True)
     print("::endgroup::",flush=True)
+    # Physical KiCad9 two separate MAIN/FRONT board islands: 2 THT audio
+    # connector footprints each, 4 pads each, exact native schematic
+    # net assignments and two real component position exports.
+    # No full PCB, edge, routes or DRC0/manufacturability claim.
+    print("::group::V2.7 MAIN FRONT 2 PHYSICAL PCB AUDIO PAD ISLANDS KICAD9",flush=True)
+    subprocess.run([sys.executable,"-B",
+                    str(ROOT/"03_Verifiche/V2.7/verify_main_front_audio_header_pad_islands_native.py")],
+                   cwd=ROOT,check=True)
+    print("::endgroup::",flush=True)
     # Complete isolated AM detector -> FRONT volume -> LM386 input linear
     # load contract: 75 frequency/wiper/Rin points, independent nodal KCL.
     # Native KiCad pin-net anchoring; not an active LM386/detector OEM model.
