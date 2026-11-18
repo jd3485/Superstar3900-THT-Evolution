@@ -1,5 +1,15 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #372 MERGED: otto pin audio MAIN/FRONT verificati fino ai pad THT
+
+PR [#372](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/372) **MERGED** su main `0061676771785a2665c6a01c7fe65da0587405d4`, head `6bfb859f97931947f2c6ab6eba8b867e66298462`, CI #44318521539 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Nuova regressione FULL `03_Verifiche/V2.7/verify_main_front_audio_connector_footprints_native.py`: netlist native dei master MAIN e FRONT e harness a due link, mapping di ogni simbolo fisico J1502/J1202 MAIN, J1301/J1902 FRONT ai rispettivi pin 1/2 e ai pad numerati 1/2 dell'impronta KiCad9 installata `Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical`, tutti `thru_hole`; otto terminali fisici THT candidati verificati. I quattro J2701-J2704 del disegno cablaggio sono **astrazioni**, non connettori femmina o cavi qualificati. Nessuna produzione, nessun routing qualificato.
+
+**Bloccanti aperti:** tutti e quattro i connettori PCB sono pin-header candidati e il progetto NON specifica accoppiamenti/polarizzazione/harness; ground/chassis/EMC e topologia di ritorno MAIN richiedono lavoro, potenziale ciclo solo in presenza di un secondo percorso. Mancano layout completi di entrambe le PCB, revisione OEM componenti, DRC di prodotto e prove fisiche. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+**Prossimo CAD-first:** portare verso PCB fisiche separate MAIN e FRONT i contratti AF su net/pad reali, senza promuovere prematuramente geometrie o tie di massa; analizzare interfacce PCB, posizionamento, footprint OEM e ritorni.
+
+---
+
 ## 18 novembre 2026 — PR #370 MERGED: prova topologica dei ritorni AF fra MAIN e FRONT
 
 PR [#370](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/370) **MERGED** main `9130eb494c9aaf3a0ea299667b25caddded2713c`, head `4c07e591a50e4cf5f3df5501c9e0e9d6daf03db8`, run #44315388727 **FAST/FULL KiCad9/Required 3/3 SUCCESS**. Nuova regressione `03_Verifiche/V2.7/verify_main_front_audio_return_graph_native.py`, obbligatoria da `ci/full_regressions.py`, confronta le partizioni pin/net dei master MAIN/FRONT e lo harness candidato, poi applica sei scenari deterministici (nessun cavo, ciascuno singolo, entrambi, ulteriore tie MAIN singolo, due cavi+tie MAIN).
