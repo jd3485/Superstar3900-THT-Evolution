@@ -56,7 +56,7 @@ def main():
                 # two separate signal pads at y=45. A straight F.Cu
                 # trace 0.5 mm wide stays >= 1.29 mm edge-to-edge
                 # from each 2 mm wide signal pad (2.54-1-0.25).
-                assert min(abs(45.0-float(y1)),abs(45.0-float(y2)))-1.0-float(width)/2>=1.29
+                assert min(abs(45.0-float(y1)),abs(45.0-float(y2)))-1.0-float(width)/2>=1.29-1e-9
             else:
                 assert not segments,("MAIN IF and LM386 returns must stay isolated",segments)
             assert raw.count("(via ")==0
