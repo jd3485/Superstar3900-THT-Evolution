@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #382 MERGED: resistori mute THT fisici R1901/R1902 sul FRONT NONFAB
+
+PR [#382](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/382) **MERGED** su main `b11df68c1a693002b6ad1a70b5b529c9ec95b7b2`, head `ad0e3323ab968378166858e75ca2d5ba2a682feb`, run #44348622079 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Il candidato PCB FRONT `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` ora include i resistori assiali THT R1901 (100k bleed AMP_INPUT_MUTED→AF_GND) e R1902 (1k serie RELAY_COM_AUDIO→AMP_INPUT_MUTED): sette footprint e diciannove pad passanti, con i dieci segmenti rame preesistenti immutati. Verifica nativa della gerarchia KiCad9, pad↔net, coordinate e clearance, protezioni legacy V0.3/V0.4 aggiornate. Nessun rame aggiunto fra relè, resistori e uscita; connessione mute fisica **non ancora realizzata**.
+
+**Prossimo CAD:** instradare le connessioni effettive dimostrate dalle netlist (in particolare K1901 COM5/6→R1902/1, R1902/2→J1902/1 e R1901/1, R1901/2→AF_GND), preservando isolamenti, ritorni e meccanica candidata. Bloccanti: driver coil e alimentazione, mute fail-safe PVT, MPN/footprint OEM, chassis/ESD/EMC, DRC PCB produttivo, prove fisiche, safety #27/#292 aperte. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 18 novembre 2026 — PR #380 MERGED: K1901 sei pad THT nel candidato FRONT NONFAB
 
 Sul branch `engineering/v27-front-k1901-sixpad-placement-20261118` sono stati aggiunti al file `04_KiCad/V2.7_DRAFT/FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` sei pad fisici passanti K1901 G5V-1 (1 NC=AF_GND, 10 NO=VOL_WIPER_TO_AMP, 5/6 COM=RELAY_COM_AUDIO, 2/9 bobina COIL_PLUS/MINUS_LAB). In totale il candidato FRONT passa a cinque footprint THT, quindici pad e conserva esattamente le dieci piste precedenti. Protezioni V0.3/V0.4 e regressione FULL KiCad9 aggiornate per mapping pad/net, geometria e isolamento del rame esistente. La bobina e il segnale COM **non sono instradati**: non esiste ancora una catena mute fisicamente chiusa.
