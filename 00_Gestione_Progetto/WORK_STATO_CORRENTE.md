@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 18 novembre 2026 — PR #351 MERGED; resistenza COM doppio del relè sei-pin in verifica
+
+[#351](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/351) **MERGED** main `f09d3b6d9ae81ea0dce9b77d058ef8054681887e`, head `ff712737bdba66a02405a241ae41877028bdc7c5`, run #44278619593 FAST/FULL/Required **3/3 SUCCESS**. Screening AC 64 stati e 1152 casi a massa definita, due solver; riferimento AF_GND aperto non qualificabile.
+
+Branch `engineering/v27-front-sixpin-com-contact-impedance-native-20261118`: nuova regressione FULL ancorata alla netlist parent FRONT KiCad9 relè OEM 6-pin: **3456 combinazioni AC** con resistenza di saldatura COM5/COM6 indipendente 0.05Ω/5Ω/aperta, contatti NC/NO, guasti relè, e **3456 stati AF_GND aperto** marcati non risolvibili. Soluzione nodale complessa a tre nodi confrontata con riduzione Norton indipendente. Rapporto `03_Verifiche/V2.7/RAPPORTO_FRONT_G5V1_FINITE_DUAL_COM_IMPEDANCE_AC_20261118.md`. PR/CI da verificare; **nessuna qualifica OEM, PCB, DRC o sicurezza**; issue #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 18 novembre 2026 — PR #350 MERGED; fault AC del relè sei-pin in verifica
 
 PR [#350](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/350) **MERGED** su main `0925c17254bc978689a08220f1aa2a324a8d883a` (HEAD PR `0ca0ab2017e2ec213fae55d17ffcdd49252355b4`), run #44274041529 FAST/FULL/Required 3/3 **SUCCESS**. Regressione 64 stati guasto ancorata alla netlist KiCad9 reale del FRONT G5V-1 sei-pin.
