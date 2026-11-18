@@ -122,7 +122,7 @@ class PLLV03(unittest.TestCase):
         is_front=(path==front_af)
         self.assertEqual(board.count('(footprint "'),7 if is_front else 4)
         self.assertEqual(board.count('(pad "'),19 if is_front else 8)
-        self.assertEqual(board.count('(segment '),27 if is_front else 0)
+        self.assertEqual(board.count('(segment '),27 if is_front else 4)
         if is_front:
             for track in (
                 '(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',
