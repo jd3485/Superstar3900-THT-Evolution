@@ -26,7 +26,15 @@ BOARDS={
         ("C1201","1"):"AUDIO_IN",
         ("C1201","2"):"PRE_IN",
         ("R1201","1"):"PRE_IN",
-        ("R1201","2"):"AMP_IN"}),
+        ("R1201","2"):"AMP_IN",
+        ("U1201","1"):"",
+        ("U1201","2"):"GND",
+        ("U1201","3"):"AMP_IN",
+        ("U1201","4"):"GND",
+        ("U1201","5"):"AMP_OUT",
+        ("U1201","6"):"AUDIO_6V_LAB",
+        ("U1201","7"):"BYPASS",
+        ("U1201","8"):""}),
     "FRONT":(FRONT,BASE/"FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb",{
         ("J1301","1"):"DEMOD_AUDIO",
         ("J1301","2"):"AF_GND",
@@ -62,14 +70,17 @@ def main():
             assert raw.count('(footprint "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE"')==(0 if board=="MAIN" else 1)
             assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"')==(0 if board=="MAIN" else 2)
             assert raw.count('(footprint "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm"')==(1 if board=="MAIN" else 0)
+            assert raw.count('(footprint "Package_DIP:DIP-8_W7.62mm"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "TH_FRONT:Potentiometer_THT_3Pin_PROVISIONAL"')==(
                 0 if board=="MAIN" else 1)
-            assert raw.count('(pad "1" thru_hole')==(4 if board=="MAIN" else 7)
-            assert raw.count('(pad "2" thru_hole')==(4 if board=="MAIN" else 7)
-            assert raw.count('(pad "3" thru_hole')==(0 if board=="MAIN" else 1)
+            assert raw.count('(pad "1" thru_hole')==(5 if board=="MAIN" else 7)
+            assert raw.count('(pad "2" thru_hole')==(5 if board=="MAIN" else 7)
+            assert raw.count('(pad "3" thru_hole')==(1 if board=="MAIN" else 1)
             for pin in ("5","6","9","10"):
-                assert raw.count('(pad "'+pin+'" thru_hole')==(0 if board=="MAIN" else 1)
+                assert raw.count('(pad "'+pin+'" thru_hole')==((1 if pin in ("5","6") else 0) if board=="MAIN" else 1)
+            for pin in ("4","7","8"):
+                assert raw.count('(pad "'+pin+'" thru_hole')==(1 if board=="MAIN" else 0)
             segments=re.findall(
                 r'\(segment \(start ([\d.]+) ([\d.]+)\) '
                 r'\(end ([\d.]+) ([\d.]+)\) '
@@ -139,11 +150,11 @@ def main():
             pcb_net={name:int(num) for num,name in
                 re.findall(r'^\(net (\d+) "([^"]*)"\)$',raw,re.M)}
             assert pcb_net.get("")==0
-            assert set(pcb_net)-{""}==set(wanted.values())
-            assert len(pcb_net)==(7 if board=="MAIN" else 8)
+            assert set(pcb_net)-{""}==set(wanted.values())-{""}
+            assert len(pcb_net)==(10 if board=="MAIN" else 8)
             pads={}
             blocks=raw.split('\n(footprint "')[1:]
-            assert len(blocks)==(4 if board=="MAIN" else 7)
+            assert len(blocks)==(5 if board=="MAIN" else 7)
             refs=set()
             for block in blocks:
                 refmatch=re.search(r'\(property "Reference" "([^"]+)"',block)
@@ -157,13 +168,14 @@ def main():
                     else "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" if ref in ("R1901","R1902")
                     else "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm" if ref=="C1201"
                     else "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" if ref=="R1201"
+                    else "Package_DIP:DIP-8_W7.62mm" if ref=="U1201"
                     else FOOTPRINT)) in block.split('"',1)[0]
                 allpads=re.findall(
                     r'\(pad "(\d+)" thru_hole (?:rect|circle) \(at [^)]+\) '
                     r'\(size [^)]+\) \(drill [^)]+\) '
                     r'\(layers "\*\.Cu" "\*\.Mask"\) '
-                    r'\(net (\d+) "([^"]+)"\)',block)
-                assert len(allpads)==(6 if ref=="K1901" else 3 if ref=="RV1301" else 2),(board,ref,allpads)
+                    r'\(net (\d+) "([^"]*)"\)',block)
+                assert len(allpads)==(8 if ref=="U1201" else 6 if ref=="K1901" else 3 if ref=="RV1301" else 2),(board,ref,allpads)
                 for pin,net_id,netname in allpads:
                     assert pcb_net[netname]==int(net_id)
                     assert (ref,pin) not in pads,(board,ref,pin)
@@ -181,6 +193,21 @@ def main():
                     ("C1201","2"):"PRE_IN",
                     ("R1201","1"):"PRE_IN",
                     ("R1201","2"):"AMP_IN"}.items())
+                # Physical U1201 pad geometry follows KiCad DIP8 TOP view;
+                # pins 1 and 8 have deliberately no net in this gain=20 lab schematic.
+                dip=next(b for b in blocks if '(property "Reference" "U1201"' in b)
+                assert '(at 130 65)' in dip
+                expected_dip={
+                    "1":("",0.,0.),"2":("GND",0.,2.54),
+                    "3":("AMP_IN",0.,5.08),"4":("GND",0.,7.62),
+                    "5":("AMP_OUT",7.62,7.62),
+                    "6":("AUDIO_6V_LAB",7.62,5.08),
+                    "7":("BYPASS",7.62,2.54),"8":("",7.62,0.),
+                }
+                for pin,(net,x,y) in expected_dip.items():
+                    assert pads[("U1201",pin)]==net
+                    assert f'(pad "{pin}" thru_hole' in dip
+                    assert f'(at {x:g} {y:g})' in dip
                 assert "IF_BENCH_GND"!=pads[("C1201","1")]
                 assert "GND"!=pads[("R1201","2")]
                 # Native verified MAIN plated-pad clearance and route topology.
@@ -194,6 +221,14 @@ def main():
                     ("C1201","2"):((102.5,65.),.8,5),
                     ("R1201","1"):((110.,75.),.9,5),
                     ("R1201","2"):((117.62,75.),.9,6),
+                    ("U1201","1"):((130.,65.),.8,0),
+                    ("U1201","2"):((130.,67.54),.8,4),
+                    ("U1201","3"):((130.,70.08),.8,6),
+                    ("U1201","4"):((130.,72.62),.8,4),
+                    ("U1201","5"):((137.62,72.62),.8,7),
+                    ("U1201","6"):((137.62,70.08),.8,8),
+                    ("U1201","7"):((137.62,67.54),.8,9),
+                    ("U1201","8"):((137.62,65.),.8,0),
                 }
                 assert set(mainpads)==set(wanted)
                 def gap_to_track(pt,a,b):
@@ -356,6 +391,13 @@ def main():
             for endpoint,netname in wanted.items():
                 matches=[name for name,members in nets.items()
                          if endpoint in members]
+                if netname=="":
+                    # Gain pins 1/8 unconnected: do not silently assign
+                    # their pad to the amplifier supply or an audio net.
+                    assert board=="MAIN" and endpoint in {
+                        ("U1201","1"),("U1201","8")}
+                    assert not matches,(board,endpoint,"unconnected pin gained copper",matches)
+                    continue
                 assert len(matches)==1,(board,endpoint,matches)
                 # KiCad hierarchy names may be absolute paths. Preserve
                 # the pin net's leaf name, never silently join unlike nets.
@@ -373,12 +415,14 @@ def main():
             positions=out.read_text(encoding="utf8")
             for ref in refs:
                 assert re.search(r'(?m)^\s*'+re.escape(ref)+r'\s',positions),(board,ref)
-            assert len(refs)==(4 if board=="MAIN" else 7)
-            assert len(pads)==(8 if board=="MAIN" else 19)
+            assert len(refs)==(5 if board=="MAIN" else 7)
+            assert len(pads)==(16 if board=="MAIN" else 19)
     print("PASS_KICAD9_MAIN_FRONT_TWO_SEPARATE_NONFAB_AUDIO_PCB_PAD_ISLANDS_4REF_8THT_PADS",{
-        "MAIN":("J1502","J1202","C1201","R1201"),
+        "MAIN":("J1502","J1202","C1201","R1201","U1201"),
         "FRONT":("J1301","J1902","RV1301","J1302","K1901","R1901","R1902"),
-        "independent_MAIN_nets":6,
+        "independent_MAIN_nets":9,
+        "MAIN_U1201_DIP8_native_pads_verified":True,
+        "MAIN_U1201_gain_pins_1_and_8_no_net":True,
         "MAIN_input_cap_series_resistor_THT_4_audio_segments":True,
         "independent_FRONT_nets":3,
         "shared_FRONT_AF_GND_pad_assignments":4,
