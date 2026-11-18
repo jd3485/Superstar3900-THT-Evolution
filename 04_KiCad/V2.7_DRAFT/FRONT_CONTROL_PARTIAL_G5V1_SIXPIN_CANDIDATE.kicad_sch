@@ -46,7 +46,7 @@
 (wire (pts (xy 307.34 100.33) (xy 299.72 100.33)) (stroke (width 0) (type default)) (uuid "7fa30000-0000-4000-8000-000000000005"))
 (label "METER_RETURN" (at 299.72 100.33 0) (effects (font (size 1 1))) (uuid "7fa30000-0000-4000-8000-000000000006"))
 (wire (pts (xy 142.24 111.76) (xy 165.1 111.76)) (stroke (width 0) (type default)) (uuid "b6f10000-0000-4000-8000-000000000042"))
-(label "FRONT_J1301_DEMOD_AF_PIN1" (at 165.1 111.76 0) (effects (font (size 1 1))) (uuid "b6f10000-0000-4000-8000-000000000043"))
+(label "DEMOD_AUDIO" (at 165.1 111.76 0) (effects (font (size 1 1))) (uuid "b6f10000-0000-4000-8000-000000000043"))
 (sheet_instances (path "/" (page "1")))
 (embedded_fonts no)
 )
