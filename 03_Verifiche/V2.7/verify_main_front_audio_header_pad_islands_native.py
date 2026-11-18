@@ -221,13 +221,14 @@ def main():
                             abs(z)<1e-9 and dist(a,c,d)<1e-9 or
                             abs(t)<1e-9 and dist(b,c,d)<1e-9)
                 for i,(net,a,b,width,layer) in enumerate(wires):
-                    for other,c,d,w2,other_layer in wires[i+1:]:
+                    for other,c,other_end,w2,other_layer in wires[i+1:]:
                         if net==other or layer!=other_layer:
                             continue
-                        gap=0. if intersects(a,b,c,d) else min(
-                            dist(a,c,d),dist(b,c,d),dist(c,a,b),dist(d,a,b))
+                        gap=0. if intersects(a,b,c,other_end) else min(
+                            dist(a,c,other_end),dist(b,c,other_end),
+                            dist(c,a,b),dist(other_end,a,b))
                         assert gap-(width+w2)/2>=0.2-1e-8,(
-                            "same-layer copper collision",net,other,a,b,c,d)
+                            "same-layer copper collision",net,other,a,b,c,other_end)
                 # Ensure all connected schematic pad sets are actually
                 # linked by copper; copper endpoints may join mid-segment.
                 def onseg(pt,a,c):
