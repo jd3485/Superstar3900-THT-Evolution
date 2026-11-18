@@ -207,6 +207,27 @@ def main():
                             assert dist(point,a,c)-rad-width/2>=0.2-1e-8,(
                                 "Copper shorts or crowds a foreign pad",
                                 net,pad_net,a,c,point,layer)
+                # Reject same-layer cross-net copper intersections and spacing
+                # below 0.20mm, in addition to every plated pad clearance.
+                def cross(a,b,c):
+                    return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
+                def intersects(a,b,c,d):
+                    p,q=cross(a,b,c),cross(a,b,d)
+                    z,t=cross(c,d,a),cross(c,d,b)
+                    if p*q < -1e-12 and z*t < -1e-12:
+                        return True
+                    return (abs(p)<1e-9 and dist(c,a,b)<1e-9 or
+                            abs(q)<1e-9 and dist(d,a,b)<1e-9 or
+                            abs(z)<1e-9 and dist(a,c,d)<1e-9 or
+                            abs(t)<1e-9 and dist(b,c,d)<1e-9)
+                for i,(net,a,b,width,layer) in enumerate(wires):
+                    for other,c,d,w2,other_layer in wires[i+1:]:
+                        if net==other or layer!=other_layer:
+                            continue
+                        gap=0. if intersects(a,b,c,d) else min(
+                            dist(a,c,d),dist(b,c,d),dist(c,a,b),dist(d,a,b))
+                        assert gap-(width+w2)/2>=0.2-1e-8,(
+                            "same-layer copper collision",net,other,a,b,c,d)
                 # Ensure all connected schematic pad sets are actually
                 # linked by copper; copper endpoints may join mid-segment.
                 def onseg(pt,a,c):
