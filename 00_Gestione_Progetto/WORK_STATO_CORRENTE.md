@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 19 novembre 2026 — PR candidata: sei footprint THT reali per uscita LM386, Zobel, bulk e connettori (NONFAB)
+
+Branch `engineering/v27-main-lm386-output-passives-six-part-20261119`, base main `e0a6e196a3a2ca2943614fcca0d073e3b198807d`. Il candidato MAIN `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` conserva i 25 segmenti esistenti e aggiunge **6 footprint THT con 12 pad**: C1202 220uF/16V uscita (positivo verso AMP_OUT), C1203 47nF Zobel, R1202 10R Zobel, C1206 100uF bulk, J1201 sorgente 6V da banco e J1203 SPK_HOT/GND. Complessivamente 13 footprint, 32 pad, 11 reti nominate. Mappatura verso i pin dello schematico LM386 aggiornata nel verificatore nativo e controlli di clearance dei nuovi pad; nessun rame aggiunto alle nuove reti e nessun collegamento fisico fra alimentazione laboratorio e U1201. Posizionamenti e dimensioni sono **provvisori** e richiedono verifica meccanica ed elettrica indipendente.
+
+**Stato:** branch candidato in verifica, **NON integrato in main** fino a required CI verde sullo SHA definitivo. Se i verificatori legacy rifiutano l'estensione controllata, correggere le loro whitelist senza allentare invarianti. Restano blocchi: alimentazione qualificata con protezioni, routing di AMP_OUT/ZOBEL/SPK_HOT/bulk, polarità e footprint OEM, margini e dimensioni scheda, DRC di prodotto, #27/#292, collaudo. **NO FAB / NO GERBER PRODUZIONE / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 19 novembre 2026 — candidato MAIN: U1201/6→C1205/1 AUDIO_6V_LAB locale NONFAB
 
 Branch `engineering/v27-main-u1201-pin6-c1205-vcc-route-20261119`: aggiunte quattro piste B.Cu 0,5 mm sul net8 AUDIO_6V_LAB da U1201/6 (137,62;70,08) a C1205/1 (147;95) attraverso (140;70,08), (140;90), (147;90). MAIN conta ora venticinque segmenti; sette footprint e venti pad THT invariati. Conservate le precedenti 21 piste, ritorno IF_BENCH_GND separato e rete AMP_OUT senza rame. La nuova connessione serve il disaccoppiamento locale ma **non** porta alcuna sorgente 6 V fisica alla PCB. Verifiche native pin↔net, geometria e clearance aggiornate, test V0.3/V0.4 fail-closed.
