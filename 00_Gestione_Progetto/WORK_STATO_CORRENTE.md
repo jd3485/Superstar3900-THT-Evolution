@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 19 novembre 2026 — candidato MAIN: C1205/2 massa GND fisica NONFAB
+
+Branch `engineering/v27-main-c1205-negative-gnd-route-20261119`: aggiunte due piste F.Cu 0,5 mm da C1205/2 (149,5;95) a (152;95) e (152;85), net GND, connesse alla rete già presente J1202/2↔U1201/2/4↔C1204/2. MAIN conta ventuno segmenti, sette footprint e venti pad THT. C1205/1 AUDIO_6V_LAB e U1201/6 restano entrambi senza alimentazione fisica; IF_BENCH_GND separata, nessuna modifica ai percorsi AUDIO_IN/PRE_IN/AMP_IN/BYPASS. Verifiche KiCad9 e conteggi storici aggiornati, da confermare su FAST/FULL/Required.
+
+**Stato:** candidato draft, **NONFAB**, manca alimentazione, bulk, uscita, DRC fabbricativo, qualifica OEM e prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 19 novembre 2026 — PR #402 MERGED: C1205 100nF THT disaccoppiamento LM386 NONFAB
 
 Branch `engineering/v27-main-c1205-decoupling-tht-placement-20261119`: posizionato sul candidato MAIN KiCad9 il condensatore C1205 `100nF_25V_DECOUPLE`, THT `Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm`, (147,95 mm); pad1 AUDIO_6V_LAB net8, pad2 GND net4, in accordo alla netlist dello schema nativo. MAIN passa a sette footprint e venti pad THT, lasciando intatti i diciannove segmenti di rame. Nuovi controlli nativi per footprint, pad, coordinate e netlist, guardie V0.3/V0.4 aggiornate.
