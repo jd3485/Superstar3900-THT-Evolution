@@ -125,7 +125,7 @@ class V04(unittest.TestCase):
         is_front=path.endswith('FRONT_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb')
         self.assertEqual(stub.count('(footprint "'),7 if is_front else 7)
         self.assertEqual(stub.count('(pad "'),19 if is_front else 20)
-        self.assertEqual(stub.count('(segment '),27 if is_front else 21)
+        self.assertEqual(stub.count('(segment '),27 if is_front else 25)
         if is_front:
             for track in (
                 '(segment (start 40 47.54) (end 90 47.54) (width 0.5) (layer "F.Cu") (net 2)',

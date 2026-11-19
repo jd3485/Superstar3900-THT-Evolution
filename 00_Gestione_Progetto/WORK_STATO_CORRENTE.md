@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 19 novembre 2026 — candidato MAIN: U1201/6→C1205/1 AUDIO_6V_LAB locale NONFAB
+
+Branch `engineering/v27-main-u1201-pin6-c1205-vcc-route-20261119`: aggiunte quattro piste B.Cu 0,5 mm sul net8 AUDIO_6V_LAB da U1201/6 (137,62;70,08) a C1205/1 (147;95) attraverso (140;70,08), (140;90), (147;90). MAIN conta ora venticinque segmenti; sette footprint e venti pad THT invariati. Conservate le precedenti 21 piste, ritorno IF_BENCH_GND separato e rete AMP_OUT senza rame. La nuova connessione serve il disaccoppiamento locale ma **non** porta alcuna sorgente 6 V fisica alla PCB. Verifiche native pin↔net, geometria e clearance aggiornate, test V0.3/V0.4 fail-closed.
+
+**Stato:** candidato draft, CI sullo SHA finale ancora da verificare. Resta NONFAB: senza sorgente 6 V, bulk, AMP_OUT, outline, DRC di produzione, qualifica OEM e prove fisiche; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 19 novembre 2026 — PR #404 MERGED: C1205/2 massa GND fisica NONFAB
 
 Branch `engineering/v27-main-c1205-negative-gnd-route-20261119`: aggiunte due piste F.Cu 0,5 mm da C1205/2 (149,5;95) a (152;95) e (152;85), net GND, connesse alla rete già presente J1202/2↔U1201/2/4↔C1204/2. MAIN conta ventuno segmenti, sette footprint e venti pad THT. C1205/1 AUDIO_6V_LAB e U1201/6 restano entrambi senza alimentazione fisica; IF_BENCH_GND separata, nessuna modifica ai percorsi AUDIO_IN/PRE_IN/AMP_IN/BYPASS. Verifiche KiCad9 e conteggi storici aggiornati, da confermare su FAST/FULL/Required.
