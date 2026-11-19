@@ -1,5 +1,13 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 19 novembre 2026 — candidato MAIN: C1205 100nF THT disaccoppiamento LM386 NONFAB
+
+Branch `engineering/v27-main-c1205-decoupling-tht-placement-20261119`: posizionato sul candidato MAIN KiCad9 il condensatore C1205 `100nF_25V_DECOUPLE`, THT `Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm`, (147,95 mm); pad1 AUDIO_6V_LAB net8, pad2 GND net4, in accordo alla netlist dello schema nativo. MAIN passa a sette footprint e venti pad THT, lasciando intatti i diciannove segmenti di rame. Nuovi controlli nativi per footprint, pad, coordinate e netlist, guardie V0.3/V0.4 aggiornate.
+
+**Stato:** candidato draft: FAST/FULL KiCad9/Required sul commit finale da verificare; C1205 NON collegato fisicamente, alimentazione U1201/6, bulk, AMP_OUT e filtri da completare; senza outline, produzione DRC, qualifica OEM o prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+
+---
+
 ## 19 novembre 2026 — PR #400 MERGED: C1204/2 negativo collegato GND NONFAB
 
 Branch `engineering/v27-main-c1204-bypass-negative-gnd-route-20261119`: tre nuove piste 0,5 mm F.Cu da C1204/2 (152;80) via (152;85) e (130;85) al pin massa LM386 U1201/4 (130;72,62), unite al già presente ritorno GND J1202/2→U1201/2/4. Preservate tutte le sedici precedenti piste, inclusa BYPASS U1201/7→C1204/1; MAIN ora con diciannove segmenti. IF_BENCH_GND resta distinto senza rame, nessun collegamento alle reti AMP_OUT o AUDIO_6V_LAB. Verificatore KiCad9 nativo esteso con grafo massa, lista geometrica esatta e clearance pad e intertraccia, guard V0.3/V0.4 aggiornati.
