@@ -4,7 +4,7 @@
 
 Branch `engineering/v27-main-u1201-pin6-c1205-vcc-route-20261119`: aggiunte quattro piste B.Cu 0,5 mm sul net8 AUDIO_6V_LAB da U1201/6 (137,62;70,08) a C1205/1 (147;95) attraverso (140;70,08), (140;90), (147;90). MAIN conta ora venticinque segmenti; sette footprint e venti pad THT invariati. Conservate le precedenti 21 piste, ritorno IF_BENCH_GND separato e rete AMP_OUT senza rame. La nuova connessione serve il disaccoppiamento locale ma **non** porta alcuna sorgente 6 V fisica alla PCB. Verifiche native pin↔net, geometria e clearance aggiornate, test V0.3/V0.4 fail-closed.
 
-**Stato:** candidato draft, CI sullo SHA finale ancora da verificare. Resta NONFAB: senza sorgente 6 V, bulk, AMP_OUT, outline, DRC di produzione, qualifica OEM e prove fisiche; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#406](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/406) **MERGED** su main `3239a219e0c7a2be1a4143b8a212c61a982c8e61`, head `2e22a4f63390539bfa500bfcfa3d9296238d7ebf`, CI #44491540597 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sul commit finale. Resta NONFAB: senza sorgente 6 V, bulk, AMP_OUT, outline, DRC di produzione, qualifica OEM e prove fisiche; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
