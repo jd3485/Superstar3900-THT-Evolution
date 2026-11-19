@@ -156,15 +156,19 @@ def main():
                     (4,"F.Cu",(130.,85.),(130.,72.62)),
                     (4,"F.Cu",(149.5,95.),(152.,95.)),
                     (4,"F.Cu",(152.,95.),(152.,85.)),
+                    (8,"B.Cu",(137.62,70.08),(140.,70.08)),
+                    (8,"B.Cu",(140.,70.08),(140.,90.)),
+                    (8,"B.Cu",(140.,90.),(147.,90.)),
+                    (8,"B.Cu",(147.,90.),(147.,95.)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==21
+                assert len(segments)==len(actual_main)==len(expected_main)==25
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
-                assert all(int(n) in (3,4,5,6,9) for *_,n,uuid in segments)
-                assert not any(int(n) in (1,2,7,8) for *_,n,uuid in segments)
+                assert all(int(n) in (3,4,5,6,8,9) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,7) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -312,7 +316,7 @@ def main():
                 # pins 1/8 unconnected and both ground returns still separate.
                 amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
                 assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
-                assert all(n not in (0,1,2,7,8) for n,a,b,w,l in wires_main)
+                assert all(n not in (0,1,2,7) for n,a,b,w,l in wires_main)
                 # GND is a branching MAIN net on F.Cu: J1202/2
                 # must reach both amplifier GND pins without touching IF return.
                 grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
@@ -341,6 +345,16 @@ def main():
                 assert pads[("U1201","7")]==pads[("C1204","1")]=="BYPASS"
                 assert not any(n==9 and (a==(152.,80.) or c==(152.,80.))
                     for n,a,c,w,l in wires_main)
+                # AUDIO_6V_LAB is only the local U1201/6→C1205/1 decoupling
+                # branch: it is not connected to a qualified laboratory power source.
+                supply=[(a,c,l) for n,a,c,w,l in wires_main if n==8]
+                assert supply==[
+                    ((137.62,70.08),(140.,70.08),"B.Cu"),
+                    ((140.,70.08),(140.,90.),"B.Cu"),
+                    ((140.,90.),(147.,90.),"B.Cu"),
+                    ((147.,90.),(147.,95.),"B.Cu")]
+                assert pads[("U1201","6")]==pads[("C1205","1")]=="AUDIO_6V_LAB"
+                assert not any(n in (1,2,7) for n,a,c,w,l in wires_main)
                 # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
@@ -514,7 +528,8 @@ def main():
         "MAIN_C1204_polarized_bypass_THT_placement_verified":True,
         "MAIN_C1205_100nF_supply_decoupling_THT_placement_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_21_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_25_audio_segments":True,
+        "MAIN_U1201_pin6_to_C1205_positive_decoupling_connected":True,
         "MAIN_C1205_negative_GND_routed_from_pad2":True,
         "MAIN_C1204_negative_GND_routed_to_U1201_pin4":True,
         "MAIN_BYPASS_U1201_pin7_to_C1204_positive_connected":True,
