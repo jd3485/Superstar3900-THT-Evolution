@@ -73,7 +73,6 @@ def main():
                 2 if board=="MAIN" else 3)
             assert raw.count('(footprint "TH_MUTE_OEM_CANDIDATE:G5V-1_DC5_OEM_6PIN_CANDIDATE"')==(0 if board=="MAIN" else 1)
             assert raw.count('(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"')==(0 if board=="MAIN" else 2)
-            assert raw.count('(footprint "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "Package_DIP:DIP-8_W7.62mm"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"')==(1 if board=="MAIN" else 0)
             assert raw.count('(footprint "Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm"')==(2 if board=="MAIN" else 0)
