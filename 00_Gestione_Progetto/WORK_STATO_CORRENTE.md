@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 19 novembre 2026 — candidato MAIN: C1205/2 massa GND fisica NONFAB
+## 19 novembre 2026 — PR #404 MERGED: C1205/2 massa GND fisica NONFAB
 
 Branch `engineering/v27-main-c1205-negative-gnd-route-20261119`: aggiunte due piste F.Cu 0,5 mm da C1205/2 (149,5;95) a (152;95) e (152;85), net GND, connesse alla rete già presente J1202/2↔U1201/2/4↔C1204/2. MAIN conta ventuno segmenti, sette footprint e venti pad THT. C1205/1 AUDIO_6V_LAB e U1201/6 restano entrambi senza alimentazione fisica; IF_BENCH_GND separata, nessuna modifica ai percorsi AUDIO_IN/PRE_IN/AMP_IN/BYPASS. Verifiche KiCad9 e conteggi storici aggiornati, da confermare su FAST/FULL/Required.
 
-**Stato:** candidato draft, **NONFAB**, manca alimentazione, bulk, uscita, DRC fabbricativo, qualifica OEM e prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#404](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/404) **MERGED** su main `2e3bdc66c982601a5cf9fcc9c28f3ed9f0b1e628`, HEAD `c8afa6ba230b3065c7615b691dc25552932607ce`, run #44490069291 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. **NONFAB**, manca alimentazione, bulk, uscita, DRC fabbricativo, qualifica OEM e prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
