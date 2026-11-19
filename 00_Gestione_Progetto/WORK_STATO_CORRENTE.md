@@ -1,5 +1,11 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
+## 19 novembre 2026 — nuova PR candidata MAIN: AMP_OUT U1201/5 verso C1202/1 e C1203/1, NONFAB
+
+Branch `engineering/v27-main-lm386-output-ampout-branch-20261119` basato sul merge PR #408 `eee90f510bc719c59964c946ffa943a42ad80e75`. Cinque piste fisiche aggiunte sul F.Cu alla rete AMP_OUT, da U1201/5 (137,62;72,62) con diramazione (160;72,62) verso C1202/1 (167;65) e C1203/1 (167;82). Restano 13 componenti THT / 32 pad, 30 segmenti rame. Verificatore nativo esteso a forma esatta del ramo, pad/net e clearance; regressioni legacy aggiornate senza allentamento. **Branch in verifica, non dichiarare merge né CI verde prima dei gate sullo SHA finale.** La connessione SPK_HOT, ZOBEL verso R1202, 6V qualificata, chassis/outline e DRC prodotto restano assenti. #27/#292 OPEN; **NO FAB / NO TX / NO BATTERIA / NO VEICOLO**.
+
+---
+
 ## 19 novembre 2026 — PR candidata: sei footprint THT reali per uscita LM386, Zobel, bulk e connettori (NONFAB)
 
 Branch `engineering/v27-main-lm386-output-passives-six-part-20261119`, base main `e0a6e196a3a2ca2943614fcca0d073e3b198807d`. Il candidato MAIN `MAIN_AUDIO_2HEADER_PAD_ISLAND_NONFAB.kicad_pcb` conserva i 25 segmenti esistenti e aggiunge **6 footprint THT con 12 pad**: C1202 220uF/16V uscita (positivo verso AMP_OUT), C1203 47nF Zobel, R1202 10R Zobel, C1206 100uF bulk, J1201 sorgente 6V da banco e J1203 SPK_HOT/GND. Complessivamente 13 footprint, 32 pad, 11 reti nominate. Mappatura verso i pin dello schematico LM386 aggiornata nel verificatore nativo e controlli di clearance dei nuovi pad; nessun rame aggiunto alle nuove reti e nessun collegamento fisico fra alimentazione laboratorio e U1201. Posizionamenti e dimensioni sono **provvisori** e richiedono verifica meccanica ed elettrica indipendente.
