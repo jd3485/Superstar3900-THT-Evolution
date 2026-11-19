@@ -169,15 +169,20 @@ def main():
                     (8,"B.Cu",(140.,70.08),(140.,90.)),
                     (8,"B.Cu",(140.,90.),(147.,90.)),
                     (8,"B.Cu",(147.,90.),(147.,95.)),
+                    (7,"F.Cu",(137.62,72.62),(160.,72.62)),
+                    (7,"F.Cu",(160.,72.62),(160.,65.)),
+                    (7,"F.Cu",(160.,65.),(167.,65.)),
+                    (7,"F.Cu",(160.,72.62),(160.,82.)),
+                    (7,"F.Cu",(160.,82.),(167.,82.)),
                 ]
                 actual_main=[(int(net),layer,(float(x1),float(y1)),
                     (float(x2),float(y2))) for x1,y1,x2,y2,width,layer,net,uuid in segments
                     if float(width)==0.5]
-                assert len(segments)==len(actual_main)==len(expected_main)==25
+                assert len(segments)==len(actual_main)==len(expected_main)==30
                 assert sorted(actual_main)==sorted(expected_main),(
                     "MAIN unauthorized candidate copper",actual_main)
-                assert all(int(n) in (3,4,5,6,8,9) for *_,n,uuid in segments)
-                assert not any(int(n) in (1,2,7) for *_,n,uuid in segments)
+                assert all(int(n) in (3,4,5,6,7,8,9) for *_,n,uuid in segments)
+                assert not any(int(n) in (1,2,10,11) for *_,n,uuid in segments)
             assert raw.count("(via ")==0
             assert "(zone " not in raw and '(layer "Edge.Cuts")' not in raw
             assert "(gr_rect " not in raw and "(gr_poly " not in raw
@@ -340,7 +345,7 @@ def main():
                 # pins 1/8 unconnected and both ground returns still separate.
                 amp=[(a,b) for n,a,b,w,l in wires_main if n==6]
                 assert len(amp)==3 and amp[0][0]==(117.62,75.) and amp[-1][1]==(130.,70.08)
-                assert all(n not in (0,1,2,7) for n,a,b,w,l in wires_main)
+                assert all(n not in (0,1,2,10,11) for n,a,b,w,l in wires_main)
                 # GND is a branching MAIN net on F.Cu: J1202/2
                 # must reach both amplifier GND pins without touching IF return.
                 grounded=[(a,b) for n,a,b,w,l in wires_main if n==4]
@@ -378,7 +383,19 @@ def main():
                     ((140.,90.),(147.,90.),"B.Cu"),
                     ((147.,90.),(147.,95.),"B.Cu")]
                 assert pads[("U1201","6")]==pads[("C1205","1")]=="AUDIO_6V_LAB"
-                assert not any(n in (1,2,7) for n,a,c,w,l in wires_main)
+                assert not any(n in (1,2,10,11) for n,a,c,w,l in wires_main)
+                # Real output branching joins LM386 pin5 to the positive output
+                # coupling capacitor and Zobel capacitor; speaker path and Zobel
+                # resistor remain unrouted at this stage. No accidental supply link.
+                output=[(a,c,l) for n,a,c,w,l in wires_main if n==7]
+                assert output==[
+                    ((137.62,72.62),(160.,72.62),"F.Cu"),
+                    ((160.,72.62),(160.,65.),"F.Cu"),
+                    ((160.,65.),(167.,65.),"F.Cu"),
+                    ((160.,72.62),(160.,82.),"F.Cu"),
+                    ((160.,82.),(167.,82.),"F.Cu")]
+                assert pads[("U1201","5")]==pads[("C1202","1")]==pads[("C1203","1")]=="AMP_OUT"
+                assert all(n not in (10,11) for n,a,c,w,l in wires_main)
                 # No MAIN copper joins the distinct input and output returns.
             if board=="FRONT":
                 expected_relay={"1":("AF_GND",80,55),"2":("COIL_PLUS_LAB",80,57.54),
@@ -553,7 +570,8 @@ def main():
         "MAIN_C1204_polarized_bypass_THT_placement_verified":True,
         "MAIN_C1205_100nF_supply_decoupling_THT_placement_verified":True,
         "MAIN_U1201_gain_pins_1_and_8_no_net":True,
-        "MAIN_input_cap_series_resistor_THT_25_audio_segments":True,
+        "MAIN_input_cap_series_resistor_THT_30_audio_segments":True,
+        "MAIN_AMP_OUT_pin5_to_C1202_and_C1203_positive_connected":True,
         "MAIN_U1201_pin6_to_C1205_positive_decoupling_connected":True,
         "MAIN_C1205_negative_GND_routed_from_pad2":True,
         "MAIN_C1204_negative_GND_routed_to_U1201_pin4":True,
