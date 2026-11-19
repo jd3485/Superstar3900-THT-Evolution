@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 19 novembre 2026 — candidato MAIN: C1205 100nF THT disaccoppiamento LM386 NONFAB
+## 19 novembre 2026 — PR #402 MERGED: C1205 100nF THT disaccoppiamento LM386 NONFAB
 
 Branch `engineering/v27-main-c1205-decoupling-tht-placement-20261119`: posizionato sul candidato MAIN KiCad9 il condensatore C1205 `100nF_25V_DECOUPLE`, THT `Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm`, (147,95 mm); pad1 AUDIO_6V_LAB net8, pad2 GND net4, in accordo alla netlist dello schema nativo. MAIN passa a sette footprint e venti pad THT, lasciando intatti i diciannove segmenti di rame. Nuovi controlli nativi per footprint, pad, coordinate e netlist, guardie V0.3/V0.4 aggiornate.
 
-**Stato:** candidato draft: FAST/FULL KiCad9/Required sul commit finale da verificare; C1205 NON collegato fisicamente, alimentazione U1201/6, bulk, AMP_OUT e filtri da completare; senza outline, produzione DRC, qualifica OEM o prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#402](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/402) **MERGED** su main `79f1621667099158d567dc50c9a15edb33feba8c`, head `eaa872a9458d3fc961ffb36bae073d36fb16112d`, run #44488401280 con **FAST/FULL KiCad9/Required 3/3 SUCCESS** sui tre job; precedente run #44487917438 FULL FAILED per asserzione obsoleta C_Disc=1 anziché 2, corretta mantenendo tutti gli altri test; C1205 NON collegato fisicamente, alimentazione U1201/6, bulk, AMP_OUT e filtri da completare; senza outline, produzione DRC, qualifica OEM o prove fisiche. #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
