@@ -1,10 +1,10 @@
 # WORK_STATO_CORRENTE.md — checkpoint canonico Superstar 3900 THT Evolution
 
-## 19 novembre 2026 — candidato MAIN: C1204/2 negativo collegato GND NONFAB
+## 19 novembre 2026 — PR #400 MERGED: C1204/2 negativo collegato GND NONFAB
 
 Branch `engineering/v27-main-c1204-bypass-negative-gnd-route-20261119`: tre nuove piste 0,5 mm F.Cu da C1204/2 (152;80) via (152;85) e (130;85) al pin massa LM386 U1201/4 (130;72,62), unite al già presente ritorno GND J1202/2→U1201/2/4. Preservate tutte le sedici precedenti piste, inclusa BYPASS U1201/7→C1204/1; MAIN ora con diciannove segmenti. IF_BENCH_GND resta distinto senza rame, nessun collegamento alle reti AMP_OUT o AUDIO_6V_LAB. Verificatore KiCad9 nativo esteso con grafo massa, lista geometrica esatta e clearance pad e intertraccia, guard V0.3/V0.4 aggiornati.
 
-**Stato:** candidato PR draft in attesa FAST/FULL/Required sullo SHA finale. Layout NONFAB senza alimentazione LM386, condensatori decoupling fisici, uscita, DRC fabbricativo o qualifica OEM; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
+**Stato:** PR [#400](https://github.com/jd3485/Superstar3900-THT-Evolution/pull/400) **MERGED** su main `12b9f9c85997fa29ae93ff2ce5e49a7227629477`, head `3e9a260b22dfe682193a548b51cfb4802f92a0c3`, CI #44420879216 **FAST/FULL KiCad9/Required 3/3 SUCCESS** sullo SHA finale. Layout NONFAB senza alimentazione LM386, condensatori decoupling fisici, uscita, DRC fabbricativo o qualifica OEM; #27/#292 OPEN. **NO FAB / NO TX / NO BATTERIA / NO VEICOLO.**
 
 ---
 
