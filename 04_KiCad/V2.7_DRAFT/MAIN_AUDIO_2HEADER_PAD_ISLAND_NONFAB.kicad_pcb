@@ -95,5 +95,7 @@
 (pad "1" thru_hole rect (at 0 0) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask") (net 8 "AUDIO_6V_LAB") (uuid "f2810001-1119-4000-8000-000000000005"))
 (pad "2" thru_hole circle (at 2.5 0) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask") (net 4 "GND") (uuid "f2810001-1119-4000-8000-000000000006"))
 )
+(segment (start 149.5 95) (end 152 95) (width 0.5) (layer "F.Cu") (net 4) (uuid "f2820001-1119-4000-8000-100000000000"))
+(segment (start 152 95) (end 152 85) (width 0.5) (layer "F.Cu") (net 4) (uuid "f2820001-1119-4000-8000-100000000001"))
 (embedded_fonts no)
 )
